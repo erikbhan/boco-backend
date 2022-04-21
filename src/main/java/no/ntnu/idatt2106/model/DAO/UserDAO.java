@@ -29,10 +29,6 @@ public class UserDAO {
     private String salt;
     @Column(name = "picture")
     private String picture;
-    @Column(name= "salt")
-    private String salt;
-    @Column(name = "hash")
-    private String hash;
 
     public String getSalt() {
         return salt;
