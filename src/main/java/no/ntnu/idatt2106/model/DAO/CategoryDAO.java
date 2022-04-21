@@ -17,6 +17,15 @@ public class CategoryDAO {
     @Column(name= "name")
     private String name;
 
+    public CategoryDAO(String name){
+        this.name = name;
+    }
+    public CategoryDAO() {
+
+    }
+
+
+
     public long getCategoryID() {
         return this.categoryID;
     }

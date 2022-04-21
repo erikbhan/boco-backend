@@ -23,6 +23,15 @@ public class UserGroupDAO {
      @Column(name = "is_administrator")
      private boolean isAdministrator;
 
+     public UserGroupDAO(GroupDAO groupID, UserDAO userID, boolean isAdministrator) {
+          this.groupID = groupID;
+          this.userID = userID;
+          this.isAdministrator = isAdministrator;
+     }
+
+     public UserGroupDAO() {
+     }
+
      public GroupDAO getGroupID() {
           return groupID;
      }

@@ -28,6 +28,17 @@ public class UserDAO {
     @Column(name = "picture")
     private String picture;
 
+    public UserDAO(String email, String firstName, String lastName, String address, String password, String picture) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.password = password;
+        this.picture = picture;
+    }
+
+    public UserDAO() {
+    }
 
     public long getUserID() {
         return this.userID;

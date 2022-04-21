@@ -11,6 +11,17 @@ import javax.persistence.Table;
 @Table(name = "public.Group")
 public class GroupDAO {
 
+    public GroupDAO(String name, String description, int visibility, String location, String picture) {
+        this.name = name;
+        this.description = description;
+        this.visibility = visibility;
+        this.location = location;
+        this.picture = picture;
+    }
+
+    public GroupDAO() {
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "group_id")
