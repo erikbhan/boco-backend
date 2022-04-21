@@ -1,23 +1,35 @@
 package no.ntnu.idatt2106.model.DAO;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import no.ntnu.idatt2106.model.ID.GroupListingID;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "public.group_listing")
+@IdClass(GroupListingID.class)
 public class GroupListingDAO {
     @Id
-    private long groupID;
+    @ManyToOne
+    @JoinColumn(name = "group_id")
+    private GroupDAO groupID;
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "listing_id")
+    private ListingDAO listingID;
 
-
-    public long getGroupID() {
+    public GroupDAO getGroupID() {
         return groupID;
     }
 
-    public void setGroupID(long groupID) {
+    public void setGroupID(GroupDAO groupID) {
         this.groupID = groupID;
     }
 
+    public ListingDAO getListingID() {
+        return listingID;
+    }
 
+    public void setListingID(ListingDAO listingID) {
+        this.listingID = listingID;
+    }
 }

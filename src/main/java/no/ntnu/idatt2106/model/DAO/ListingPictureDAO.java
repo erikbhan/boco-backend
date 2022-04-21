@@ -1,11 +1,6 @@
 package no.ntnu.idatt2106.model.DAO;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "public.Listing_picture")
@@ -17,6 +12,9 @@ public class ListingPictureDAO {
     private long listingPicureID;
     @Column(name= "picture")
     private String picture;
+    @ManyToOne
+    @JoinColumn(name = "listing_id")
+    private ListingDAO listingID;
 
     public long getListingPicureID() {
         return this.listingPicureID;

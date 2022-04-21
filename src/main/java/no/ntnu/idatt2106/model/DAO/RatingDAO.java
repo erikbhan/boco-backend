@@ -1,11 +1,6 @@
 package no.ntnu.idatt2106.model.DAO;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "public.Rating")
@@ -19,9 +14,11 @@ public class RatingDAO {
     private int score;
     @Column(name = "comment")
     private String comment;
-    @Column(name= "renter_is_reciever_of_rating")
-    private boolean renterIsRecieverOfRating;
-
+    @Column(name= "renter_is_receiver_of_rating")
+    private boolean renterIsReceiverOfRating;
+    @ManyToOne
+    @JoinColumn(name = "rent_id")
+    private RentDAO rentID;
 
     public long getRatingID() {
         return this.ratingID;
@@ -47,15 +44,15 @@ public class RatingDAO {
         this.comment = comment;
     }
 
-    public boolean isRenterIsRecieverOfRating() {
-        return this.renterIsRecieverOfRating;
+    public boolean isRenterIsReceiverOfRating() {
+        return this.renterIsReceiverOfRating;
     }
 
-    public boolean getRenterIsRecieverOfRating() {
-        return this.renterIsRecieverOfRating;
+    public boolean getRenterIsReceiverOfRating() {
+        return this.renterIsReceiverOfRating;
     }
 
-    public void setRenterIsRecieverOfRating(boolean renterIsRecieverOfRating) {
-        this.renterIsRecieverOfRating = renterIsRecieverOfRating;
+    public void setRenterIsReceiverOfRating(boolean renterIsReceiverOfRating) {
+        this.renterIsReceiverOfRating = renterIsReceiverOfRating;
     }
 }

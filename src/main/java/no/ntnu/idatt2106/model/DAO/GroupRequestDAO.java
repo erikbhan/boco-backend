@@ -1,11 +1,6 @@
 package no.ntnu.idatt2106.model.DAO;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "public.Group_request")
@@ -17,6 +12,15 @@ public class GroupRequestDAO {
     private long groupRequestID;
     @Column(name= "text")
     private String text;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserDAO userID;
+    @ManyToOne
+    @JoinColumn(name = "group_id")
+    private GroupDAO groupID;
+    @ManyToOne
+    @JoinColumn(name = "notification_id")
+    private NotificationDAO notificationID;
 
     public long getGroupRequestID() {
         return this.groupRequestID;

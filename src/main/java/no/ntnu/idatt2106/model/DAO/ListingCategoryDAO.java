@@ -1,22 +1,35 @@
 package no.ntnu.idatt2106.model.DAO;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import no.ntnu.idatt2106.model.ID.ListingCategoryID;
+
+import javax.persistence.*;
 
 @Entity
-@Table(name = "listing_category")
+@Table(name = "public.listing_category")
+@IdClass(ListingCategoryID.class)
 public class ListingCategoryDAO {
     @Id
-    private long listingID;
+    @ManyToOne
+    @JoinColumn(name = "listing_id")
+    private ListingDAO listingID;
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private CategoryDAO categoryID;
 
-
-    public long getListingID() {
+    public ListingDAO getListingID() {
         return listingID;
     }
 
-    public void setListingID(long listingID) {
+    public void setListingID(ListingDAO listingID) {
         this.listingID = listingID;
     }
 
+    public CategoryDAO getCategoryID() {
+        return categoryID;
+    }
+
+    public void setCategoryID(CategoryDAO categoryID) {
+        this.categoryID = categoryID;
+    }
 }

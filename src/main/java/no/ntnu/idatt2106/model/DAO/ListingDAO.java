@@ -1,10 +1,6 @@
 package no.ntnu.idatt2106.model.DAO;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 @Entity
 @Table(name = "public.Listing")
 public class ListingDAO{
@@ -20,7 +16,9 @@ public class ListingDAO{
     private double pricePerDay;
     @Column(name = "address")
     private String address;
-
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    private UserDAO userID;
 
     public long getListingID() {
         return this.listingID;
