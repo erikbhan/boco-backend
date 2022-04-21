@@ -29,6 +29,28 @@ public class UserDAO {
     private String salt;
     @Column(name = "picture")
     private String picture;
+    @Column(name= "salt")
+    private String salt;
+    @Column(name = "hash")
+    private String hash;
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
+    }
+
+
 
     public UserDAO(String email, String firstName, String lastName, String address, String salt, String picture) {
         this.email = email;
@@ -67,7 +89,7 @@ public class UserDAO {
     }
 
     public String getLastName() {
-        return this.lastName;
+        return lastName;
     }
 
     public void setLastName(String lastName) {
