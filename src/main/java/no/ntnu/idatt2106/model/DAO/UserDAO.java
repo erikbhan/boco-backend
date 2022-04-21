@@ -16,9 +16,9 @@ import javax.persistence.Table;
 public class UserDAO {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private int userID;
+    private long userID;
     @Column(name = "email")
     private String email;
     @Column(name = "first_name")
@@ -50,11 +50,23 @@ public class UserDAO {
         this.hash = hash;
     }
 
-    public int getUserID() {
+    public UserDAO(String email, String firstName, String lastName, String address, String salt, String picture) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.salt = salt;
+        this.picture = picture;
+    }
+
+    public UserDAO() {
+    }
+
+    public long getUserID() {
         return this.userID;
     }
 
-    public void setUserID(int userID) {
+    public void setUserID(long userID) {
         this.userID = userID;
     }
 
@@ -88,6 +100,14 @@ public class UserDAO {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getPassword() {
+        return this.salt;
+    }
+
+    public void setPassword(String password) {
+        this.salt = password;
     }
 
     public String getPicture() {
