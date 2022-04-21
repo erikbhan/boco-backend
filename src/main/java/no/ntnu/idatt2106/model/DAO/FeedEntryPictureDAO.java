@@ -5,29 +5,27 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Feed_entry_picture")
+@Table(name = "public.Feed_entry_picture")
 public class FeedEntryPictureDAO {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "feed_picture_id")
-    private int feedPictureID;
+    private long feedPictureID;
     @Column(name = "picture")
     private String picture;
     // @ManyToOne
     // @JoinColumn(name = "feed_entry_Id")
     private int feedEntryID;
 
-    public int getFeedPictureID() {
+    public long getFeedPictureID() {
         return this.feedPictureID;
     }
 
-    public void setFeedPictureID(int feedPictureID) {
+    public void setFeedPictureID(long feedPictureID) {
         this.feedPictureID = feedPictureID;
     }
 

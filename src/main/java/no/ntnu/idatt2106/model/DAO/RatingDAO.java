@@ -8,13 +8,13 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Rating")
+@Table(name = "public.Rating")
 public class RatingDAO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "rating_id")
-    private int ratingID;
+    private long ratingID;
     @Column(name= "score")
     private int score;
     @Column(name = "comment")
@@ -23,11 +23,11 @@ public class RatingDAO {
     private boolean renterIsRecieverOfRating;
 
 
-    public int getRatingID() {
+    public long getRatingID() {
         return this.ratingID;
     }
 
-    public void setRatingID(int ratingID) {
+    public void setRatingID(long ratingID) {
         this.ratingID = ratingID;
     }
 

@@ -9,23 +9,23 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Notification")
+@Table(name = "public.Notification")
 public class NotificationDAO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "notification_id")
-    private int notificationID;
+    private long notificationID;
     @Column(name= "is_seen")
     private boolean isSeen;
     @Column(name= "created_time")
     private Date createdTime;
 
-    public int getNotificationID() {
+    public long getNotificationID() {
         return this.notificationID;
     }
 
-    public void setNotificationID(int notificationID) {
+    public void setNotificationID(long notificationID) {
         this.notificationID = notificationID;
     }
 

@@ -8,21 +8,21 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Group_request")
+@Table(name = "public.Group_request")
 public class GroupRequestDAO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "group_request_id")
-    private int groupRequestID;
+    private long groupRequestID;
     @Column(name= "text")
     private String text;
 
-    public int getGroupRequestID() {
+    public long getGroupRequestID() {
         return this.groupRequestID;
     }
 
-    public void setGroupRequestID(int groupRequestID) {
+    public void setGroupRequestID(long groupRequestID) {
         this.groupRequestID = groupRequestID;
     }
 

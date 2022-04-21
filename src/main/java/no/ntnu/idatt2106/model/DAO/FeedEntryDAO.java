@@ -7,18 +7,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Feed_entry")
+@Table(name = "public.Feed_entry")
 public class FeedEntryDAO {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "feed_entry_id")
-    private int feedEntryID;
+    private long feedEntryID;
     @Column(name = "title")
     private String title;
     @Column(name = "text")
@@ -34,11 +32,11 @@ public class FeedEntryDAO {
     // @JoinColumn(name = "group_Id")
     private int groupID;
 
-    public int getFeedEntryID() {
+    public long getFeedEntryID() {
         return this.feedEntryID;
     }
 
-    public void setFeedEntryID(int FeedEntryID) {
+    public void setFeedEntryID(long FeedEntryID) {
         this.feedEntryID = FeedEntryID;
     }
 

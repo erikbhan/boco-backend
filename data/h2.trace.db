@@ -1,3 +1,0 @@
-2022-04-21 10:56:29 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "CREATE TABLE GROUP[*] (GROUP_ID INTEGER NOT NULL, DESCRIPTION VARCHAR(255), LOCATION VARCHAR(255), NAME VARCHAR(255), PICTURE VARCHAR(255), VISIBILITY BOOLEAN, PRIMARY KEY (GROUP_ID))"; expected "identifier"; SQL statement:
-create table group (group_id integer not null, description varchar(255), location varchar(255), name varchar(255), picture varchar(255), visibility boolean, primary key (group_id)) [42001-200]

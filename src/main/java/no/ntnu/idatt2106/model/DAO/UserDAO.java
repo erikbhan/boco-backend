@@ -8,13 +8,13 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "User")
+@Table(name = "public.User")
 public class UserDAO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_id")
-    private int userID;
+    private long userID;
     @Column(name = "email")
     private String email;
     @Column(name = "first_name")
@@ -29,11 +29,11 @@ public class UserDAO {
     private String picture;
 
 
-    public int getUserID() {
+    public long getUserID() {
         return this.userID;
     }
 
-    public void setUserID(int userID) {
+    public void setUserID(long userID) {
         this.userID = userID;
     }
 

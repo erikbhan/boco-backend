@@ -5,29 +5,27 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Comment")
+@Table(name = "public.Comment")
 public class CommentDAO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "comment_id")
-    private int commentID;
+    private long commentID;
     @Column(name= "text")
     private String text;
     // @ManyToOne
     // @JoinColumn(name = "feed_entry_Id")
     private int feedEntryID;
 
-    public int getCommentID() {
+    public long getCommentID() {
         return this.commentID;
     }
 
-    public void setCommentID(int commentID) {
+    public void setCommentID(long commentID) {
         this.commentID = commentID;
     }
 

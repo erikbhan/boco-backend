@@ -8,12 +8,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 @Entity
-@Table(name = "Rent")
+@Table(name = "public.Rent")
 public class RentDAO{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "rent_id")
-    private int rent_id;
+    private long rentID;
     @Column(name = "from_time")
     private Date fromTime;
     @Column(name = "to_time")
@@ -22,12 +22,12 @@ public class RentDAO{
     private boolean isAccepted;
 
 
-    public int getRent_id() {
-        return this.rent_id;
+    public long getRentID() {
+        return this.rentID;
     }
 
-    public void setRent_id(int rent_id) {
-        this.rent_id = rent_id;
+    public void setRentID(long rent_id) {
+        this.rentID = rent_id;
     }
 
     public Date getFromTime() {

@@ -6,12 +6,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 @Entity
-@Table(name = "Listing")
+@Table(name = "public.Listing")
 public class ListingDAO{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "listing_id")
-    private int listingID;
+    private long listingID;
     @Column(name = "title")
     private String title;
     @Column(name = "description")
@@ -22,11 +22,11 @@ public class ListingDAO{
     private String address;
 
 
-    public int getListingID() {
+    public long getListingID() {
         return this.listingID;
     }
 
-    public void setListingID(int listingID) {
+    public void setListingID(long listingID) {
         this.listingID = listingID;
     }
 

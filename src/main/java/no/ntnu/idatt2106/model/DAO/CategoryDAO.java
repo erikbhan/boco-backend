@@ -8,21 +8,21 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Category")
+@Table(name = "public.Category")
 public class CategoryDAO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "category_id")
-    private int categoryID;
+    private long categoryID;
     @Column(name= "name")
     private String name;
 
-    public int getCategoryID() {
+    public long getCategoryID() {
         return this.categoryID;
     }
 
-    public void setCategoryID(int categoryID) {
+    public void setCategoryID(long categoryID) {
         this.categoryID = categoryID;
     }
 

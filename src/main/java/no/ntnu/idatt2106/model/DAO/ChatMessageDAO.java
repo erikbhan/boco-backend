@@ -12,31 +12,31 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Chat_message")
+@Table(name = "public.Chat_message")
 public class ChatMessageDAO {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "message_id")
-    private int messageID;
+    private long messageID;
     @Column(name = "text")
     private String text;
     @Column(name = "time_sent")
     private Date timeSent;
     @Column(name = "is_read")
     private Boolean isRead;
-    //@ManyToOne
-    //@JoinColumn(name = "sending_user_id")
-    private int seendingUserID;
-    // @ManyToOne
-    // @JoinColumn(name = "receiving_user_id")
-    private int receivingUserID;
+    @ManyToOne
+    @JoinColumn(name = "sending_user")
+    private UserDAO sendingUserID;
+    @ManyToOne
+    @JoinColumn(name = "receiving_user")
+    private UserDAO receivingUserID;
 
-    public int getMessageID() {
+    public long getMessageID() {
         return this.messageID;
     }
 
-    public void setMessageID(int messageID) {
+    public void setMessageID(long messageID) {
         this.messageID = messageID;
     }
 
@@ -68,19 +68,27 @@ public class ChatMessageDAO {
         this.isRead = isRead;
     }
 
-    public int getSeendingUserID() {
-        return this.seendingUserID;
+    public Boolean getRead() {
+        return isRead;
     }
 
-    public void setSeendingUserID(int seendingUserID) {
-        this.seendingUserID = seendingUserID;
+    public void setRead(Boolean read) {
+        isRead = read;
     }
 
-    public int getReceivingUserID() {
-        return this.receivingUserID;
+    public UserDAO getSendingUserID() {
+        return sendingUserID;
     }
 
-    public void setReceivingUserID(int receivingUserID) {
+    public void setSendingUserID(UserDAO sendingUserID) {
+        this.sendingUserID = sendingUserID;
+    }
+
+    public UserDAO getReceivingUserID() {
+        return receivingUserID;
+    }
+
+    public void setReceivingUserID(UserDAO receivingUserID) {
         this.receivingUserID = receivingUserID;
     }
 }
