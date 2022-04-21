@@ -12,7 +12,7 @@ import javax.persistence.Table;
  * All fields in the User table is represented in this class, with access methods for everyone.
  */
 @Entity
-@Table(name = "User")
+@Table(name = "User", schema = "public")
 public class UserDAO {
 
     @Id
