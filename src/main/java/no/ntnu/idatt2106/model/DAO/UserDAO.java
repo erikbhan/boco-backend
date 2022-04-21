@@ -31,8 +31,29 @@ public class UserDAO {
     private String password;
     @Column(name = "picture")
     private String picture;
-    @Column(name = "salt")
+    @Column(name= "salt")
     private String salt;
+    @Column(name = "hash")
+    private String hash;
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
+    }
+
+
+
 
     public int getUserID() {
         return this.userID;
@@ -59,7 +80,7 @@ public class UserDAO {
     }
 
     public String getLastName() {
-        return this.lastName;
+        return lastName;
     }
 
     public void setLastName(String lastName) {
@@ -89,8 +110,4 @@ public class UserDAO {
     public void setPicture(String picture) {
         this.picture = picture;
     }
-
-    public String getSalt() {return salt;}
-
-    public void setSalt(String salt) {this.salt = salt;}
 }
