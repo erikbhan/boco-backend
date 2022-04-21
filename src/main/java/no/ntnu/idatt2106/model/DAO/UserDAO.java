@@ -7,9 +7,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * This class functions as a representation of the table User in the DB.
+ * All fields in the User table is represented in this class, with access methods for everyone.
+ */
 @Entity
 @Table(name = "User")
-public class User {
+public class UserDAO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,7 +31,8 @@ public class User {
     private String password;
     @Column(name = "picture")
     private String picture;
-
+    @Column(name = "salt")
+    private String salt;
 
     public int getUserID() {
         return this.userID;
@@ -84,5 +89,8 @@ public class User {
     public void setPicture(String picture) {
         this.picture = picture;
     }
-    
+
+    public String getSalt() {return salt;}
+
+    public void setSalt(String salt) {this.salt = salt;}
 }
