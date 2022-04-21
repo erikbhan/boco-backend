@@ -19,8 +19,8 @@ public class FeedEntryPictureDAO {
     private int feedPictureID;
     @Column(name = "picture")
     private String picture;
-    @ManyToOne
-    @JoinColumn(name = "feed_entry_Id")
+    // @ManyToOne
+    // @JoinColumn(name = "feed_entry_Id")
     private int feedEntryID;
 
     public int getFeedPictureID() {

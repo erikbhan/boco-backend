@@ -27,11 +27,11 @@ public class FeedEntryDAO {
     private Boolean isRequest;
     @Column(name = "time_posted")
     private Date timePosted;
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    // @ManyToOne
+    // @JoinColumn(name = "user_id")
     private int userID;
-    @ManyToOne
-    @JoinColumn(name = "group_Id")
+    // @ManyToOne
+    // @JoinColumn(name = "group_Id")
     private int groupID;
 
     public int getFeedEntryID() {

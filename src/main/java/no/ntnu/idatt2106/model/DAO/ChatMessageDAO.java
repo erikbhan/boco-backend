@@ -25,11 +25,11 @@ public class ChatMessageDAO {
     private Date timeSent;
     @Column(name = "is_read")
     private Boolean isRead;
-    @ManyToOne
-    @JoinColumn(name = "sending_user_id")
+    //@ManyToOne
+    //@JoinColumn(name = "sending_user_id")
     private int seendingUserID;
-    @ManyToOne
-    @JoinColumn(name = "receiving_user_id")
+    // @ManyToOne
+    // @JoinColumn(name = "receiving_user_id")
     private int receivingUserID;
 
     public int getMessageID() {

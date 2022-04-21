@@ -19,8 +19,8 @@ public class CommentDAO {
     private int commentID;
     @Column(name= "text")
     private String text;
-    @ManyToOne
-    @JoinColumn(name = "feed_entry_Id")
+    // @ManyToOne
+    // @JoinColumn(name = "feed_entry_Id")
     private int feedEntryID;
 
     public int getCommentID() {
