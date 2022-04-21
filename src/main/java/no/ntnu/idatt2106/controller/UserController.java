@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 /**
  * The main controller for the api requests related to the user.
  */
-@RequestMapping("/api")
 @RestController
 @CrossOrigin
 public class UserController {
