@@ -61,10 +61,7 @@ public class LoginService {
         return access_token;
     }
 
-
     public TokenDTO tokenDTO(String token){
         return TokenUtil.getDataJWT(token);
     }
-
-
 }

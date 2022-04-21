@@ -2,6 +2,8 @@ package no.ntnu.idatt2106.service;
 
 import no.ntnu.idatt2106.model.DAO.UserDAO;
 import no.ntnu.idatt2106.repository.UserRepository;
+// import no.ntnu.idatt2106.util.HashUtil;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -55,6 +57,7 @@ public class UserService {
      * @param user The UserDAO of the new user you want to store in the DB.
      */
     public void saveUser(UserDAO user) {
+        System.out.println(user.getEmail());
         System.out.println("SAVING THE NEW USER TO THE DATABASE");
         userRepository.save(user);
     }
@@ -70,4 +73,9 @@ public class UserService {
         System.out.println("FINDING ALL USERS WITH THE FULLNAME: " + firstName + " " + lastName);
         return userRepository.findUserDAOByFirstNameAndLastName(firstName,lastName);
     }
+
+    // public UserDAO getNewUser(String email, String password, String firstName, String lastName, String address) {
+
+    //     return new UserDAO();
+    // }
 }
