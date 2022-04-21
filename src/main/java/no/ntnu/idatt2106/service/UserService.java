@@ -3,7 +3,6 @@ package no.ntnu.idatt2106.service;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
 import no.ntnu.idatt2106.repository.UserRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 /**
@@ -71,6 +70,6 @@ public class UserService {
      */
     public List<UserDAO> findAllUsersWithSameFullName(String firstName, String lastName) {
         System.out.println("FINDING ALL USERS WITH THE FULLNAME: " + firstName + " " + lastName);
-        return userRepository.findUserDAOByFirstNameAndLastName(firstName,lastName);
+        return userRepository.findUserDAOByFirstNameAndLastName(firstName, lastName);
     }
 }
