@@ -3,7 +3,7 @@ package no.ntnu.idatt2106.model.DAO;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "public.Comment")
+@Table(name = "Comment", schema = "public")
 public class CommentDAO {
 
     @Id

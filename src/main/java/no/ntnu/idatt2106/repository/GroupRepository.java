@@ -2,8 +2,8 @@ package no.ntnu.idatt2106.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import no.ntnu.idatt2106.model.DAO.GroupDAO;
+import no.ntnu.idatt2106.model.DAO.CommunityDAO;
 
-public interface GroupRepository extends JpaRepository<GroupDAO, Long> {
+public interface GroupRepository extends JpaRepository<CommunityDAO, Long> {
     
 }

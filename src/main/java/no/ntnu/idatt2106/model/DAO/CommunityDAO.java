@@ -8,10 +8,10 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "public.Group")
-public class GroupDAO {
+@Table(name = "Community", schema = "public")
+public class CommunityDAO {
 
-    public GroupDAO(String name, String description, int visibility, String location, String picture) {
+    public CommunityDAO(String name, String description, int visibility, String location, String picture) {
         this.name = name;
         this.description = description;
         this.visibility = visibility;
@@ -19,13 +19,13 @@ public class GroupDAO {
         this.picture = picture;
     }
 
-    public GroupDAO() {
+    public CommunityDAO() {
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "group_id")
-    private long groupID;
+    @Column(name = "community_id")
+    private long communityID;
     @Column(name = "name")
     private String name;
     @Column(name = "description")

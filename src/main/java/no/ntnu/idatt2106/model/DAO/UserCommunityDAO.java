@@ -1,20 +1,20 @@
 package no.ntnu.idatt2106.model.DAO;
 
-import no.ntnu.idatt2106.model.ID.UserGroupID;
+import no.ntnu.idatt2106.model.ID.UserCommunityID;
 
 import javax.persistence.*;
 
 /**
- *Junction table for handling the many to many connection between classes User and Group
+ *Junction table for handling the many to many connection between classes User and Community
  */
 @Entity
-@Table(name = "public.user_group")
-@IdClass(UserGroupID.class)
-public class UserGroupDAO {
+@Table(name = "user_community", schema = "public")
+@IdClass(UserCommunityID.class)
+public class UserCommunityDAO {
      @Id
      @ManyToOne
-     @JoinColumn(name = "group_id")
-     private GroupDAO groupID;
+     @JoinColumn(name = "community_id")
+     private CommunityDAO communityID;
      @Id
      @ManyToOne
      @JoinColumn(name = "user_id")
@@ -23,21 +23,21 @@ public class UserGroupDAO {
      @Column(name = "is_administrator")
      private boolean isAdministrator;
 
-     public UserGroupDAO(GroupDAO groupID, UserDAO userID, boolean isAdministrator) {
-          this.groupID = groupID;
+     public UserCommunityDAO(CommunityDAO communityID, UserDAO userID, boolean isAdministrator) {
+          this.communityID = communityID;
           this.userID = userID;
           this.isAdministrator = isAdministrator;
      }
 
-     public UserGroupDAO() {
+     public UserCommunityDAO() {
      }
 
-     public GroupDAO getGroupID() {
-          return groupID;
+     public CommunityDAO getCommunityID() {
+          return communityID;
      }
 
-     public void setGroupID(GroupDAO groupID) {
-          this.groupID = groupID;
+     public void setCommunityID(CommunityDAO communityID) {
+          this.communityID = communityID;
      }
 
      public UserDAO getUserID() {

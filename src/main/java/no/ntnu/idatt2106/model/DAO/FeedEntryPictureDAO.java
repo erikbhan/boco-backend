@@ -1,14 +1,9 @@
 package no.ntnu.idatt2106.model.DAO;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
-@Table(name = "public.Feed_entry_picture")
+@Table(name = "Feed_entry_picture", schema = "public")
 public class FeedEntryPictureDAO {
     
     @Id
@@ -17,9 +12,9 @@ public class FeedEntryPictureDAO {
     private long feedPictureID;
     @Column(name = "picture")
     private String picture;
-    // @ManyToOne
-    // @JoinColumn(name = "feed_entry_Id")
-    private int feedEntryID;
+    @ManyToOne
+    @JoinColumn(name = "feed_entry_Id")
+    private FeedEntryDAO feedEntryID;
 
     public long getFeedPictureID() {
         return this.feedPictureID;
@@ -37,11 +32,11 @@ public class FeedEntryPictureDAO {
         this.picture = picture;
     }
 
-    public int getFeedEntryID() {
-        return this.feedEntryID;
+    public FeedEntryDAO getFeedEntryID() {
+        return feedEntryID;
     }
 
-    public void setFeedEntryID(int feedEntryID) {
+    public void setFeedEntryID(FeedEntryDAO feedEntryID) {
         this.feedEntryID = feedEntryID;
     }
 }
