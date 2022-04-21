@@ -12,7 +12,7 @@ import javax.persistence.Table;
 public class FeedEntryPictureDAO {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "feed_picture_id")
     private long feedPictureID;
     @Column(name = "picture")

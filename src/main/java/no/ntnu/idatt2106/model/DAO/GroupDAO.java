@@ -12,7 +12,7 @@ import javax.persistence.Table;
 public class GroupDAO {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "group_id")
     private long groupID;
     @Column(name = "name")

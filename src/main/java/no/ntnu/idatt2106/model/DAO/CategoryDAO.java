@@ -10,9 +10,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "public.Category")
 public class CategoryDAO {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id")
     private long categoryID;
     @Column(name= "name")

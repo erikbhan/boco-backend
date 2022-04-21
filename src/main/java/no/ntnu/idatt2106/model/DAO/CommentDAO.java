@@ -1,25 +1,20 @@
 package no.ntnu.idatt2106.model.DAO;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "public.Comment")
 public class CommentDAO {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
     private long commentID;
     @Column(name= "text")
     private String text;
-    // @ManyToOne
-    // @JoinColumn(name = "feed_entry_Id")
-    private int feedEntryID;
+    @ManyToOne
+    @JoinColumn(name = "feed_entry_Id")
+    private FeedEntryDAO feedEntryID;
 
     public long getCommentID() {
         return this.commentID;
@@ -37,11 +32,11 @@ public class CommentDAO {
         this.text = text;
     }
 
-    public int getFeedEntryID() {
-        return this.feedEntryID;
+    public FeedEntryDAO getFeedEntryID() {
+        return feedEntryID;
     }
 
-    public void setFeedEntryID(int feedEntryID) {
+    public void setFeedEntryID(FeedEntryDAO feedEntryID) {
         this.feedEntryID = feedEntryID;
     }
 }

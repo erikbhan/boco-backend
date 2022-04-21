@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class RatingDAO {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "rating_id")
     private long ratingID;
     @Column(name= "score")

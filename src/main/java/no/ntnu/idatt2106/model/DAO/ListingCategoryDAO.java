@@ -4,6 +4,9 @@ import no.ntnu.idatt2106.model.ID.ListingCategoryID;
 
 import javax.persistence.*;
 
+/**
+ *Table for handling the many to many connection between classes Listing and Category
+ */
 @Entity
 @Table(name = "public.listing_category")
 @IdClass(ListingCategoryID.class)

@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Table(name = "public.Listing")
 public class ListingDAO{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "listing_id")
     private long listingID;
     @Column(name = "title")

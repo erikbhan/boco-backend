@@ -1,0 +1,1 @@
+INSERT INTO PUBLIC_CATEGORY (name) VALUES ('HEi på dei1');

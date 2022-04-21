@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Table(name = "public.Rent")
 public class RentDAO{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "rent_id")
     private long rentID;
     @Column(name = "from_time")

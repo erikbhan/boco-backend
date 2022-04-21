@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class GroupRequestDAO {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "group_request_id")
     private long groupRequestID;
     @Column(name= "text")

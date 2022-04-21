@@ -4,6 +4,9 @@ import no.ntnu.idatt2106.model.ID.GroupListingID;
 
 import javax.persistence.*;
 
+/**
+ *Table for handling the many to many connection between classes Group and Listing
+ */
 @Entity
 @Table(name = "public.group_listing")
 @IdClass(GroupListingID.class)

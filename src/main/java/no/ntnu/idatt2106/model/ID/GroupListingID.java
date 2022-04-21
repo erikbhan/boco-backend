@@ -2,6 +2,9 @@ package no.ntnu.idatt2106.model.ID;
 
 import java.io.Serializable;
 
+/**
+ * Class for creating a composite primary key for the junction table GroupListing
+ */
 public class GroupListingID implements Serializable {
     private long groupID;
     private long listingID;

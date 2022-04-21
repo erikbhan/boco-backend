@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class FeedEntryDAO {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "feed_entry_id")
     private long feedEntryID;
     @Column(name = "title")

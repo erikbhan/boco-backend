@@ -13,7 +13,7 @@ import javax.persistence.Table;
 public class NotificationDAO {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "notification_id")
     private long notificationID;
     @Column(name= "is_seen")

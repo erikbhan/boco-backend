@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class ListingPictureDAO {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "listing_picture_id")
     private long listingPicureID;
     @Column(name= "picture")
