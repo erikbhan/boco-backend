@@ -1,0 +1,42 @@
+version: '3'
+services:
+
+  boco-db:
+    image: "postgres:14-alpine"
+    container_name: boco-db
+    volumes:
+      - boco-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=boco
+      - POSTGRES_PASSWORD=boco
+      - POSTGRES_DB=boco
+
+  boco-app:
+    build: ./
+    container_name: boco-app
+    environment:
+      # - DB_SERVER=boco-db
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://boco-db:5432/boco
+      - SPRING_DATASOURCE_USERNAME=boco
+      - SPRING_DATASOURCE_PASSWORD=boco
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.PostgreSQLDialect
+      - SPRING_JPA_OPEN_IN_VIEW=false
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    ports:
+      - 3000:3000
+    links:
+      - boco-db
+
+  # Add frontend?
+  # kanban-ui:
+  #   build: ./kanban-ui
+  #   container_name: kanban-ui
+  #   ports:
+  #     - 4200:80
+  #   links:
+  #     - kanban-app
+
+volumes:
+  boco-data:
