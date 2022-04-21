@@ -3,6 +3,7 @@ package no.ntnu.idatt2106.util;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import no.ntnu.idatt2106.model.DTO.TokenDTO;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -34,6 +35,15 @@ public class TokenUtil {
 
         // Check expiration
         return JWT.decode(token).getExpiresAt().after(new Date());
+    }
+
+    /**
+     * Grabs the data segment of the JWT
+     * @param token JWT token
+     * @return Data from the JWT token as TokenDTO
+     */
+    public static TokenDTO getDataJWT(String token) {
+        return new TokenDTO(JWT.decode(token).getClaims());
     }
 
 

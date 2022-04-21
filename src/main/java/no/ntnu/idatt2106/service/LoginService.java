@@ -5,6 +5,8 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
+import no.ntnu.idatt2106.model.DTO.TokenDTO;
+import no.ntnu.idatt2106.util.TokenUtil;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
@@ -21,7 +23,7 @@ public class LoginService {
     public boolean attemptAuthentication(String email, String password) throws NoSuchAlgorithmException {
 
         UserDAO user = userService.findByEmail(email);
-        if (user ==null){
+        if (user == null) {
             return false;
         }
         MessageDigest md = MessageDigest.getInstance("SHA-512");
@@ -42,8 +44,8 @@ public class LoginService {
         //Making a jwt token
         String access_token = JWT.create()
                 .withSubject(user.getEmail())
-                .withClaim("firstname", user.getFirstName())
-                .withClaim("lastname", user.getLastName())
+                .withClaim("first_name", user.getFirstName())
+                .withClaim("last_name", user.getLastName())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 60 * 48 * 60 * 1000))
                 .sign(algorithm);
 
@@ -54,12 +56,9 @@ public class LoginService {
     }
 
 
-    public UserDAO getUserFromJWT(String token){
-        JWTVerifier jwtVerifier = JWT.require(algorithm).build();
-        DecodedJWT decodedJWT = jwtVerifier.verify(token);
-        return userService.findByEmail(decodedJWT.getSubject());
+    public TokenDTO tokenDTO(String token){
+        return TokenUtil.getDataJWT(token);
     }
-
 
 
 }
