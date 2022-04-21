@@ -1,5 +1,6 @@
 package no.ntnu.idatt2106.middleware;
 
+import no.ntnu.idatt2106.util.TokenUtil;
 import org.aopalliance.intercept.Joinpoint;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Before;
@@ -30,5 +31,6 @@ public class RequireAuthAspect {
                 if(!TokenUtil.verifyToken(token)) {
                         throw new Exception("Invalid token");
                 }
+
         }
 }
