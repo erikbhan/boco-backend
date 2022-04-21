@@ -8,13 +8,13 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "User")
-public class User {
+@Table(name = "public.User")
+public class UserDAO {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private int userID;
+    private long userID;
     @Column(name = "email")
     private String email;
     @Column(name = "first_name")
@@ -28,12 +28,23 @@ public class User {
     @Column(name = "picture")
     private String picture;
 
+    public UserDAO(String email, String firstName, String lastName, String address, String password, String picture) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.password = password;
+        this.picture = picture;
+    }
 
-    public int getUserID() {
+    public UserDAO() {
+    }
+
+    public long getUserID() {
         return this.userID;
     }
 
-    public void setUserID(int userID) {
+    public void setUserID(long userID) {
         this.userID = userID;
     }
 
