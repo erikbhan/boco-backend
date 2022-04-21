@@ -24,7 +24,7 @@ public class UserController {
      * A method for finding a user from a user id.
      * @param userDTO The object containing the token and user id.
      * @return Returns a response entity containing either the UserDAO object or
-     * a http status not found if the user is not found within the DB.
+     * the http status not found if the user is not found within the DB.
      */
     @GetMapping("/user/findUser")
     public ResponseEntity getAUserFromUserId(@RequestBody UserDTO userDTO) {
@@ -43,7 +43,7 @@ public class UserController {
      * A method to get the full name out of a user id.
      * @param userDTO The object containing the token and user id.
      * @return Returns a response entity containing either the full name of the user or
-     * a http status not found if the user is not found in the DB.
+     * the http status not found if the user is not found in the DB.
      */
     @GetMapping("/user/fullname")
     public ResponseEntity getFullnameForAUser(@RequestBody UserDTO userDTO) {
@@ -52,7 +52,8 @@ public class UserController {
 
         System.out.println("Trying to find the full name of the user");
         String fullname = userService.findFullNameFromUserId(Integer.valueOf(userDTO.getUserId()));
-        if(fullname != null || fullname.contentEquals(" ")) {
+        System.out.println("Full name of the user is: " + fullname);
+        if(fullname != null && !(fullname.contentEquals(" ") || fullname.contentEquals("No such user"))) {
             return ResponseEntity.ok().body(fullname);
         }
         return new ResponseEntity("No user was found", HttpStatus.NOT_FOUND);

@@ -46,6 +46,9 @@ public class UserService {
     public String findFullNameFromUserId(int userId) {
         System.out.println("FINDING THE FULL NAME OF THE USER");
         UserDAO user = userRepository.findUserDAOByUserID(userId);
+        if(user == null) {
+            return "No such user";
+        }
         String fullName = user.getFirstName() + " " + user.getLastName();
         return fullName;
     }

@@ -4,6 +4,11 @@ public class UserDTO {
     String token;
     String userId;
 
+    public UserDTO(String token, String userId) {
+        this.token = token;
+        this.userId = userId;
+    }
+
     public String getToken() {
         return token;
     }

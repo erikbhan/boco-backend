@@ -6,14 +6,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 /**
  * This class functions as a representation of the table User in the DB.
  * All fields in the User table is represented in this class, with access methods for everyone.
  */
 @Entity
-@Table(name = "User")
-public class UserDAO {
+@Table(name = "User", schema = "public")
+public class UserDAO implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,6 +34,19 @@ public class UserDAO {
     private String picture;
     @Column(name = "salt")
     private String salt;
+
+    public UserDAO(String email, String firstName, String lastName, String address, String password, String picture, String salt) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.password = password;
+        this.picture = picture;
+        this.salt = salt;
+    }
+
+    public UserDAO() {
+    }
 
     public int getUserID() {
         return this.userID;
