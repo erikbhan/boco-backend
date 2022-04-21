@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import no.ntnu.idatt2106.model.DAO.CommunityDAO;
 
-public interface GroupRepository extends JpaRepository<CommunityDAO, Long> {
+public interface CommunityRepository extends JpaRepository<CommunityDAO, Long> {
     
 }
