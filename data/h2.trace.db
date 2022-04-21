@@ -1,0 +1,3 @@
+2022-04-21 14:08:25 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PUBLIC_USER" not found; SQL statement:
+INSERT INTO PUBLIC_USER (email, first_name, last_name, address ,password , picture) VALUES ( 'test@email' , 'guy' , 'guysson', 'add' , 'pass' , 'this is picture') [42102-200]

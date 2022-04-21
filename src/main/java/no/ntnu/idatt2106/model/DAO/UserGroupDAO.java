@@ -4,6 +4,9 @@ import no.ntnu.idatt2106.model.ID.UserGroupID;
 
 import javax.persistence.*;
 
+/**
+ *Junction table for handling the many to many connection between classes User and Group
+ */
 @Entity
 @Table(name = "public.user_group")
 @IdClass(UserGroupID.class)
@@ -16,6 +19,9 @@ public class UserGroupDAO {
      @ManyToOne
      @JoinColumn(name = "user_id")
      private UserDAO userID;
+
+     @Column(name = "is_administrator")
+     private boolean isAdministrator;
 
      public GroupDAO getGroupID() {
           return groupID;
@@ -31,5 +37,13 @@ public class UserGroupDAO {
 
      public void setUserID(UserDAO userID) {
           this.userID = userID;
+     }
+
+     public boolean isAdministrator() {
+          return isAdministrator;
+     }
+
+     public void setAdministrator(boolean administrator) {
+          isAdministrator = administrator;
      }
 }
