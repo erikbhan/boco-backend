@@ -7,6 +7,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
 import no.ntnu.idatt2106.model.DTO.TokenDTO;
 import no.ntnu.idatt2106.util.TokenUtil;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
@@ -16,10 +17,15 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.Date;
 
-
+@Service
 public class LoginService {
     private UserService userService;
     private Algorithm algorithm = Algorithm.HMAC256("tiL8yZXjlEvxKImZS0YeIQC5V29PFDcm2wSHn47texw6fpNKv34uqyWe/NUz5go3aAkRflcDFVfpfYwoLPZrFA==".getBytes(StandardCharsets.UTF_8));
+
+    public LoginService(UserService userService) {
+        this.userService = userService;
+    }
+
     public boolean attemptAuthentication(String email, String password) throws NoSuchAlgorithmException {
 
         UserDAO user = userService.findByEmail(email);
