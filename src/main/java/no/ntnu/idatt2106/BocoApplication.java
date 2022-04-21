@@ -19,7 +19,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SecurityScheme(name = "Account Token", scheme = "Bearer", type = SecuritySchemeType.HTTP, in = SecuritySchemeIn.HEADER)
 public class BocoApplication {
 
-	private String DATABASE_URL;
+	//@Value("${DATABASE_URL}")
+	//private String DATABASE_URL;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(BocoApplication.class, args);
