@@ -1,11 +1,12 @@
 package no.ntnu.idatt2106.controller;
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import no.ntnu.idatt2106.exception.StatusCodeException;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
 import no.ntnu.idatt2106.model.DTO.LoginDTO;
 import no.ntnu.idatt2106.service.LoginService;
 import no.ntnu.idatt2106.service.UserService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletException;
@@ -14,6 +15,7 @@ import java.security.NoSuchAlgorithmException;
 
 @RequestMapping("/api")
 @RestController
+@ApiResponse(responseCode = "200")
 @CrossOrigin
 public class LoginController {
     private final UserService userService;
@@ -25,15 +27,21 @@ public class LoginController {
     }
 
     @PostMapping("/login/authentication")
-    public ResponseEntity<String> loggingIn(@RequestBody LoginDTO loginDTO)
-            throws NoSuchAlgorithmException, ServletException, IOException{
+    public String login(@RequestBody LoginDTO loginDTO)
+            throws StatusCodeException {
+
         System.out.println(loginDTO.email);
         System.out.println(loginDTO.password);
-        if (loginService.attemptAuthentication(loginDTO.getEmail(), loginDTO.getPassword())) {
+        try {
+            if (!loginService.attemptAuthentication(loginDTO.getEmail(), loginDTO.getPassword()))
+                throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Failed login");
             UserDAO user = userService.findByEmail(loginDTO.getEmail());
-            String token = loginService.successfulAuthentication(user);
-            return new ResponseEntity(token, HttpStatus.OK);
+            return loginService.successfulAuthentication(user);
+        } catch (NoSuchAlgorithmException | IOException | ServletException e) {
+
+            e.printStackTrace();
+            throw new StatusCodeException(HttpStatus.INTERNAL_SERVER_ERROR, "How did you get here");
         }
-        return new ResponseEntity("Failed login", HttpStatus.BAD_REQUEST);
+
     }
 }
