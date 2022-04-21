@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "User")
-public class User {
+public class UserDAO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,6 +27,28 @@ public class User {
     private String password;
     @Column(name = "picture")
     private String picture;
+    @Column(name= "salt")
+    private String salt;
+    @Column(name = "hash")
+    private String hash;
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
+    }
+
+
 
 
     public int getUserID() {
@@ -54,7 +76,7 @@ public class User {
     }
 
     public String getLastName() {
-        return this.lastName;
+        return lastName;
     }
 
     public void setLastName(String lastName) {
