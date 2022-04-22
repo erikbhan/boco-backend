@@ -50,6 +50,9 @@ public class UserDAO {
         this.hash = hash;
     }
 
+    public UserDAO() {
+    }
+
     public UserDAO(String email, String firstName, String lastName, String address, String salt, String picture) {
         this.email = email;
         this.firstName = firstName;
@@ -57,9 +60,6 @@ public class UserDAO {
         this.address = address;
         this.salt = salt;
         this.picture = picture;
-    }
-
-    public UserDAO() {
     }
 
     public int getUserID() {
