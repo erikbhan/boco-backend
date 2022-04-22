@@ -25,7 +25,7 @@ public class CommunityDAO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "community_id")
-    private long communityID;
+    private int communityID;
     @Column(name = "name")
     private String name;
     @Column(name = "description")

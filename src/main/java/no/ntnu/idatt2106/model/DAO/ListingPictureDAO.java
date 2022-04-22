@@ -9,18 +9,18 @@ public class ListingPictureDAO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "listing_picture_id")
-    private long listingPicureID;
+    private int listingPicureID;
     @Column(name= "picture")
     private String picture;
     @ManyToOne
     @JoinColumn(name = "listing_id")
     private ListingDAO listingID;
 
-    public long getListingPicureID() {
+    public int getListingPicureID() {
         return this.listingPicureID;
     }
 
-    public void setListingPicureID(long listingPicureID) {
+    public void setListingPicureID(int listingPicureID) {
         this.listingPicureID = listingPicureID;
     }
 

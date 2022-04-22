@@ -7,7 +7,7 @@ public class ListingDAO{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "listing_id")
-    private long listingID;
+    private int listingID;
     @Column(name = "title")
     private String title;
     @Column(name = "description")
@@ -20,11 +20,11 @@ public class ListingDAO{
     @JoinColumn(name = "userId")
     private UserDAO userID;
 
-    public long getListingID() {
+    public int getListingID() {
         return this.listingID;
     }
 
-    public void setListingID(long listingID) {
+    public void setListingID(int listingID) {
         this.listingID = listingID;
     }
 

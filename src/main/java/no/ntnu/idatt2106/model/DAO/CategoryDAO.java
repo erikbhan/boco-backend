@@ -13,7 +13,7 @@ public class CategoryDAO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id")
-    private long categoryID;
+    private int categoryID;
     @Column(name= "name")
     private String name;
 
@@ -30,7 +30,7 @@ public class CategoryDAO {
         return this.categoryID;
     }
 
-    public void setCategoryID(long categoryID) {
+    public void setCategoryID(int categoryID) {
         this.categoryID = categoryID;
     }
 
