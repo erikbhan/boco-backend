@@ -18,7 +18,7 @@ public class ChatMessageDAO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "message_id")
-    private long messageID;
+    private int messageID;
     @Column(name = "text")
     private String text;
     @Column(name = "time_sent")
@@ -36,7 +36,7 @@ public class ChatMessageDAO {
         return this.messageID;
     }
 
-    public void setMessageID(long messageID) {
+    public void setMessageID(int messageID) {
         this.messageID = messageID;
     }
 

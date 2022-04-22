@@ -15,17 +15,17 @@ public class NotificationDAO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "notification_id")
-    private long notificationID;
+    private int notificationID;
     @Column(name= "is_seen")
     private boolean isSeen;
     @Column(name= "created_time")
     private Date createdTime;
 
-    public long getNotificationID() {
+    public int getNotificationID() {
         return this.notificationID;
     }
 
-    public void setNotificationID(long notificationID) {
+    public void setNotificationID(int notificationID) {
         this.notificationID = notificationID;
     }
 

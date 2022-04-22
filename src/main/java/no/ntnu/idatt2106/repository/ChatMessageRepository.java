@@ -4,5 +4,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import no.ntnu.idatt2106.model.DAO.ChatMessageDAO;
 
-public interface ChatMessageRepository extends JpaRepository<ChatMessageDAO, Long> {
+public interface ChatMessageRepository extends JpaRepository<ChatMessageDAO, Integer> {
 }
