@@ -12,13 +12,13 @@ import javax.persistence.Table;
  * All fields in the User table is represented in this class, with access methods for everyone.
  */
 @Entity
-@Table(name = "User", schema = "public")
+@Table(name = "user", schema = "public")
 public class UserDAO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private long userID;
+    private int userID;
     @Column(name = "email")
     private String email;
     @Column(name = "first_name")
@@ -34,39 +34,35 @@ public class UserDAO {
     @Column(name = "hash")
     private String hash;
 
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
-
-    public String getHash() {
-        return hash;
-    }
-
-    public void setHash(String hash) {
-        this.hash = hash;
-    }
-
-    public UserDAO(String email, String firstName, String lastName, String address, String salt, String picture) {
+    public UserDAO(String email, String firstName, String lastName, String address, String picture, String salt, String hash) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
-        this.salt = salt;
         this.picture = picture;
+        this.salt = salt;
+        this.hash = hash;
+    }
+
+    public UserDAO(int userID, String email, String firstName, String lastName, String address, String picture, String salt, String hash) {
+        this.userID = userID;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.picture = picture;
+        this.salt = salt;
+        this.hash = hash;
     }
 
     public UserDAO() {
     }
 
-    public long getUserID() {
+    public int getUserID() {
         return this.userID;
     }
 
-    public void setUserID(long userID) {
+    public void setUserID(int userID) {
         this.userID = userID;
     }
 
@@ -94,27 +90,19 @@ public class UserDAO {
         this.lastName = lastName;
     }
 
-    public String getAddress() {
-        return this.address;
-    }
+    public String getAddress() {return this.address;}
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+    public void setAddress(String address) {this.address = address;}
 
-    public String getPassword() {
-        return this.salt;
-    }
+    public String getPicture() {return this.picture;}
 
-    public void setPassword(String password) {
-        this.salt = password;
-    }
+    public void setPicture(String picture) {this.picture = picture;}
 
-    public String getPicture() {
-        return this.picture;
-    }
+    public String getSalt() {return salt;}
 
-    public void setPicture(String picture) {
-        this.picture = picture;
-    }
+    public void setSalt(String salt) {this.salt = salt;}
+
+    public String getHash() {return hash;}
+
+    public void setHash(String hash) {this.hash = hash;}
 }

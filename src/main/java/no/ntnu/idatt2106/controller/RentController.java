@@ -43,7 +43,7 @@ public class RentController {
     public List<RentDAO> getRentHistoryOfUser(@PathVariable() int userid) throws Exception {
         if(userid > 0) {
             List<RentDAO> rentHistory = rentService
-                    .findAllRentDAOWithRenterIdAndStatus(Integer.valueOf(userid), true);
+                    .findAllRentDAOWithRenterIdAndStatus(userid, true);
 
             if(rentHistory != null && rentHistory.size() > 0) {
                 return rentHistory;
