@@ -5,13 +5,12 @@ import no.ntnu.idatt2106.model.DAO.CommunityDAO;
 import no.ntnu.idatt2106.model.DAO.UserCommunityDAO;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
 import no.ntnu.idatt2106.model.DTO.UserCommunityDTO;
+import no.ntnu.idatt2106.model.DTO.UserDTO;
 import no.ntnu.idatt2106.repository.CommunityRepository;
 import no.ntnu.idatt2106.service.UserCommunityService;
 import no.ntnu.idatt2106.service.UserService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.lang.UsesSunHttpServer;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin
@@ -36,8 +35,10 @@ public class UserCommunityController {
         userCommunityService.addUserToCommunity(user, communityDAO);
     }
 
-
-
-
+    @GetMapping("/getCommunities")
+    public void getCommunitiesForUser(@RequestBody UserCommunityDTO userCommunityDTO ){
+        UserDAO user = userService.findUserByUserId(userCommunityDTO.getUserID());
+        userCommunityService.getAllCommunitiesForUser(user);
+    }
 
 }

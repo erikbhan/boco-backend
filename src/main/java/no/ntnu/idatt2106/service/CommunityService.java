@@ -2,7 +2,9 @@ package no.ntnu.idatt2106.service;
 
 import no.ntnu.idatt2106.model.DAO.CommunityDAO;
 import no.ntnu.idatt2106.repository.CommunityRepository;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CommunityService {
     private final CommunityRepository communityRepository;
 
