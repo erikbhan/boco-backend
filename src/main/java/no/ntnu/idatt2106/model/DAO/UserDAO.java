@@ -7,8 +7,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * This class functions as a representation of the table User in the DB.
+ * All fields in the User table is represented in this class, with access methods for everyone.
+ */
 @Entity
-@Table(name = "public.User")
+@Table(name = "User", schema = "public")
 public class UserDAO {
 
     @Id
@@ -23,17 +27,35 @@ public class UserDAO {
     private String lastName;
     @Column(name = "address")
     private String address;
-    @Column(name = "password")
-    private String password;
     @Column(name = "picture")
     private String picture;
+    @Column(name= "salt")
+    private String salt;
+    @Column(name = "hash")
+    private String hash;
 
-    public UserDAO(String email, String firstName, String lastName, String address, String password, String picture) {
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
+    }
+
+    public UserDAO(String email, String firstName, String lastName, String address, String salt, String picture) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
-        this.password = password;
+        this.salt = salt;
         this.picture = picture;
     }
 
@@ -65,7 +87,7 @@ public class UserDAO {
     }
 
     public String getLastName() {
-        return this.lastName;
+        return lastName;
     }
 
     public void setLastName(String lastName) {
@@ -81,11 +103,11 @@ public class UserDAO {
     }
 
     public String getPassword() {
-        return this.password;
+        return this.salt;
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.salt = password;
     }
 
     public String getPicture() {
@@ -95,5 +117,4 @@ public class UserDAO {
     public void setPicture(String picture) {
         this.picture = picture;
     }
-    
 }

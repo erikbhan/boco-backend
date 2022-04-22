@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "public.Notification")
+@Table(name = "Notification", schema = "public")
 public class NotificationDAO {
 
     @Id

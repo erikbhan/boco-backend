@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "public.Chat_message")
+@Table(name = "Chat_message", schema = "public")
 public class ChatMessageDAO {
     
     @Id

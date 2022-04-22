@@ -1,13 +1,11 @@
 package no.ntnu.idatt2106.model.DAO;
 
-import org.apache.catalina.User;
-
 import java.sql.Date;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "public.Feed_entry")
+@Table(name = "Feed_entry", schema = "public")
 public class FeedEntryDAO {
     
     @Id
@@ -26,8 +24,8 @@ public class FeedEntryDAO {
     @JoinColumn(name = "user_id")
     private UserDAO userID;
     @ManyToOne
-    @JoinColumn(name = "group_Id")
-    private GroupDAO groupID;
+    @JoinColumn(name = "community_Id")
+    private CommunityDAO communityID;
     @ManyToOne
     @JoinColumn(name = "notification_id")
     private NotificationDAO notificationID;
@@ -92,12 +90,12 @@ public class FeedEntryDAO {
         this.userID = userID;
     }
 
-    public GroupDAO getGroupID() {
-        return groupID;
+    public CommunityDAO getCommunityID() {
+        return communityID;
     }
 
-    public void setGroupID(GroupDAO groupID) {
-        this.groupID = groupID;
+    public void setCommunityID(CommunityDAO communityID) {
+        this.communityID = communityID;
     }
 
     public NotificationDAO getNotificationID() {

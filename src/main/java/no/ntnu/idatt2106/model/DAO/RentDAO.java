@@ -4,7 +4,7 @@ import java.sql.Date;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "public.Rent")
+@Table(name = "Rent", schema = "public")
 public class RentDAO{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

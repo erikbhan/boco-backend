@@ -8,7 +8,7 @@ import javax.persistence.*;
  *Junction table for handling the many to many connection between classes Listing and Category
  */
 @Entity
-@Table(name = "public.listing_category")
+@Table(name = "listing_category", schema = "public")
 @IdClass(ListingCategoryID.class)
 public class ListingCategoryDAO {
     @Id

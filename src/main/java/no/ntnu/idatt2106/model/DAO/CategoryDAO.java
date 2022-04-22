@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "public.Category")
+@Table(name = "Category", schema = "public")
 public class CategoryDAO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -3,7 +3,7 @@ package no.ntnu.idatt2106.model.DAO;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "public.Rating")
+@Table(name = "Rating", schema = "public")
 public class RatingDAO {
 
     @Id
