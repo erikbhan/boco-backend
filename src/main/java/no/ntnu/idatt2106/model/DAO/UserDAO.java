@@ -23,11 +23,9 @@ public class UserDAO {
     private String lastName;
     @Column(name = "address")
     private String address;
-    @Column(name = "password")
-    private String password;
     @Column(name = "picture")
     private String picture;
-    @Column(name= "salt")
+    @Column(name = "salt")
     private String salt;
     @Column(name = "hash")
     private String hash;
@@ -47,8 +45,6 @@ public class UserDAO {
     public void setHash(String hash) {
         this.hash = hash;
     }
-
-
 
 
     public int getUserID() {
@@ -91,14 +87,6 @@ public class UserDAO {
         this.address = address;
     }
 
-    public String getPassword() {
-        return this.password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getPicture() {
         return this.picture;
     }
@@ -106,5 +94,5 @@ public class UserDAO {
     public void setPicture(String picture) {
         this.picture = picture;
     }
-    
 }
+

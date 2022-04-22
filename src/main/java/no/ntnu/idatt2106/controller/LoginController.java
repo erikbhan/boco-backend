@@ -32,9 +32,10 @@ public class LoginController {
 
         System.out.println(loginDTO.email);
         System.out.println(loginDTO.password);
+
         try {
             if (!loginService.attemptAuthentication(loginDTO.getEmail(), loginDTO.getPassword()))
-                throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Failed login");
+                throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Login failed");
             UserDAO user = userService.findByEmail(loginDTO.getEmail());
             return loginService.successfulAuthentication(user);
         } catch (NoSuchAlgorithmException | IOException | ServletException e) {
