@@ -5,6 +5,7 @@ public class ListingDTO {
     private String description;
     private double pricePerDay;
     private String address;
+    private long userID;
 
 
     public String getTitle() {
@@ -37,6 +38,14 @@ public class ListingDTO {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public long getUserID() {
+        return this.userID;
+    }
+
+    public void setUserID(long userID) {
+        this.userID = userID;
     }
 
 }
