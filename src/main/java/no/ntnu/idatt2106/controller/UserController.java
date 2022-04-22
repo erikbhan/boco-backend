@@ -34,15 +34,12 @@ public class UserController {
      * @return Returns a response entity containing either the UserDAO object or
      * the http status not found if the user is not found within the DB.
      */
-    @GetMapping("/user/findUser")
+    @GetMapping("/users/{userid}/profile")
     @Operation(summary = "Get at user by the user id")
     @ApiResponse(responseCode = "404", description = "User not found in the DB")
-    public UserDAO getAUserFromUserId() throws StatusCodeException {
+    public UserDAO getAUserFromUserId(@PathVariable() int userid) throws StatusCodeException {
         System.out.println("Trying to find a user");
-        TokenDTO token = TokenUtil.getDataJWT();
-        System.out.println("This is the token: " + token);
-        System.out.println("The int is: " + Integer.valueOf(token.getAccountId()));
-        UserDAO user = userService.findUserByUserId(Integer.valueOf(token.getAccountId()));
+        UserDAO user = userService.findUserByUserId(userid);
         if(user == null) {
             throw new StatusCodeException(HttpStatus.NOT_FOUND, "User not found in DB");
         }
