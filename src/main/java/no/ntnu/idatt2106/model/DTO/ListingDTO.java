@@ -1,32 +1,12 @@
-package no.ntnu.idatt2106.model.DAO;
-import javax.persistence.*;
+package no.ntnu.idatt2106.model.DTO;
 
-@Entity
-@Table(name = "Listing", schema = "public")
-public class ListingDAO{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "listing_id")
-    private long listingID;
-    @Column(name = "title")
+public class ListingDTO {
     private String title;
-    @Column(name = "description")
     private String description;
-    @Column(name = "price_per_day")
     private double pricePerDay;
-    @Column(name = "address")
     private String address;
-    @ManyToOne
-    @JoinColumn(name = "userId")
-    private UserDAO userID;
+    private long userID;
 
-    public long getListingID() {
-        return this.listingID;
-    }
-
-    public void setListingID(long listingID) {
-        this.listingID = listingID;
-    }
 
     public String getTitle() {
         return this.title;
@@ -60,12 +40,11 @@ public class ListingDAO{
         this.address = address;
     }
 
-
-    public UserDAO getUserID() {
+    public long getUserID() {
         return this.userID;
     }
 
-    public void setUserID(UserDAO userID) {
+    public void setUserID(long userID) {
         this.userID = userID;
     }
 
