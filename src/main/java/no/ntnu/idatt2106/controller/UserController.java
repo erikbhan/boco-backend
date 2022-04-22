@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.*;
 /**
  * The main controller for the api requests related to the user.
  */
-@RequestMapping("/api")
 @RestController
+@RequestMapping("/api")
 @CrossOrigin
 @ApiResponse(responseCode = "200")
 @ApiResponse(responseCode = "401", description = "Not authenticated")

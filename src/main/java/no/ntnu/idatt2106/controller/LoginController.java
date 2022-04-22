@@ -12,8 +12,8 @@ import javax.servlet.ServletException;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
-@RequestMapping("/api")
 @RestController
+@RequestMapping("/api")
 @CrossOrigin
 public class LoginController {
     private final UserService userService;
