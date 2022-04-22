@@ -27,7 +27,7 @@ public class ListingController {
 
     @PostMapping("/listing")
     public ResponseEntity<String> postListing(@RequestBody ListingDTO listingDTO){
-        System.out.println("\n\n\n-----------------" +listingDTO.getUserID() + "---------------\n\n\n");
+        System.out.println("\n\n\n-----------------" +listingDTO.getUserID() + "---------------\n\n");
         try{
             listingService.saveListing(listingDTO);
             return new ResponseEntity<String>("Annonse opprettet", HttpStatus.CREATED);
