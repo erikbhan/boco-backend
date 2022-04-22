@@ -1,5 +1,6 @@
 package no.ntnu.idatt2106.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import no.ntnu.idatt2106.exception.StatusCodeException;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
@@ -15,6 +16,7 @@ import java.security.NoSuchAlgorithmException;
 
 @RestController
 @ApiResponse(responseCode = "200")
+
 @CrossOrigin
 public class LoginController {
     private final UserService userService;
@@ -24,14 +26,10 @@ public class LoginController {
         this.userService = userService;
         this.loginService = loginService;
     }
-
+    @Operation(summary = "Log in the user")
     @PostMapping("/login/authentication")
     public String login(@RequestBody LoginDTO loginDTO)
             throws StatusCodeException {
-
-        System.out.println(loginDTO.email);
-        System.out.println(loginDTO.password);
-
 
         try {
             if (!loginService.attemptAuthentication(loginDTO.getEmail(), loginDTO.getPassword()))
