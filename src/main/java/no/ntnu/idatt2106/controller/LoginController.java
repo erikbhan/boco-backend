@@ -27,6 +27,9 @@ public class LoginController {
         this.loginService = loginService;
     }
     @Operation(summary = "Log in the user")
+    @ApiResponse(responseCode = "200", description = "Login successful")
+    @ApiResponse(responseCode = "400", description = "Login failed")
+    @ApiResponse(responseCode = "500", description = "Unexpected server error")
     @PostMapping("/login/authentication")
     public String login(@RequestBody LoginDTO loginDTO)
             throws StatusCodeException {
