@@ -52,6 +52,7 @@ public class LoginService {
                 .withSubject(user.getEmail())
                 .withClaim("first_name", user.getFirstName())
                 .withClaim("last_name", user.getLastName())
+                .withClaim("account_id", user.getUserID())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 60 * 48 * 60 * 1000))
                 .sign(algorithm);
 
@@ -61,10 +62,7 @@ public class LoginService {
         return access_token;
     }
 
-
     public TokenDTO tokenDTO(String token){
         return TokenUtil.getDataJWT(token);
     }
-
-
 }
