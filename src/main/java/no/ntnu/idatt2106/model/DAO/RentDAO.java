@@ -22,21 +22,17 @@ public class RentDAO{
     @ManyToOne
     @JoinColumn(name = "renter_id")
     private UserDAO renterID;
-    @ManyToOne
-    @JoinColumn(name = "notification_id")
-    private NotificationDAO notificationID;
-
 
     public int getRentID() {
-        return this.rentID;
+        return rentID;
     }
 
-    public void setRentID(int rent_id) {
-        this.rentID = rent_id;
+    public void setRentID(int rentID) {
+        this.rentID = rentID;
     }
 
     public Date getFromTime() {
-        return this.fromTime;
+        return fromTime;
     }
 
     public void setFromTime(Date fromTime) {
@@ -44,23 +40,35 @@ public class RentDAO{
     }
 
     public Date getToTime() {
-        return this.toTime;
+        return toTime;
     }
 
     public void setToTime(Date toTime) {
         this.toTime = toTime;
     }
 
-    public boolean isIsAccepted() {
-        return this.isAccepted;
+    public boolean isAccepted() {
+        return isAccepted;
     }
 
-    public boolean getIsAccepted() {
-        return this.isAccepted;
+    public void setAccepted(boolean accepted) {
+        isAccepted = accepted;
     }
 
-    public void setIsAccepted(boolean isAccepted) {
-        this.isAccepted = isAccepted;
+    public ListingDAO getListingOwnerID() {
+        return listingOwnerID;
+    }
+
+    public void setListingOwnerID(ListingDAO listingOwnerID) {
+        this.listingOwnerID = listingOwnerID;
+    }
+
+    public UserDAO getRenterID() {
+        return renterID;
+    }
+
+    public void setRenterID(UserDAO renterID) {
+        this.renterID = renterID;
     }
 
 }
