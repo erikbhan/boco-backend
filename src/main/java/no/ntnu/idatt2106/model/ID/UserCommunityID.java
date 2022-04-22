@@ -6,10 +6,10 @@ import java.io.Serializable;
  * Class for creating a composite primary key for the junction table UserCommunity
  */
 public class UserCommunityID implements Serializable {
-    private long userID;
-    private long communityID;
+    private int userID;
+    private int communityID;
 
-    public UserCommunityID(long userID, long communityID){
+    public UserCommunityID(int userID, int communityID){
         this.userID = userID;
         this.communityID = communityID;
     }
@@ -17,19 +17,19 @@ public class UserCommunityID implements Serializable {
     public UserCommunityID() {
     }
 
-    public long getUserID() {
+    public int getUserID() {
         return userID;
     }
 
-    public void setUserID(long userID) {
+    public void setUserID(int userID) {
         this.userID = userID;
     }
 
-    public long getCommunityID() {
+    public int getCommunityID() {
         return communityID;
     }
 
-    public void setCommunityID(long communityID) {
+    public void setCommunityID(int communityID) {
         this.communityID = communityID;
     }
 }

@@ -18,7 +18,7 @@ public class UserDAO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private long userID;
+    private int userID;
     @Column(name = "email")
     private String email;
     @Column(name = "first_name")
@@ -62,11 +62,11 @@ public class UserDAO {
     public UserDAO() {
     }
 
-    public long getUserID() {
+    public int getUserID() {
         return this.userID;
     }
 
-    public void setUserID(long userID) {
+    public void setUserID(int userID) {
         this.userID = userID;
     }
 

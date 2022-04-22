@@ -9,18 +9,18 @@ public class FeedEntryPictureDAO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "feed_picture_id")
-    private long feedPictureID;
+    private int feedPictureID;
     @Column(name = "picture")
     private String picture;
     @ManyToOne
     @JoinColumn(name = "feed_entry_Id")
     private FeedEntryDAO feedEntryID;
 
-    public long getFeedPictureID() {
+    public int getFeedPictureID() {
         return this.feedPictureID;
     }
 
-    public void setFeedPictureID(long feedPictureID) {
+    public void setFeedPictureID(int feedPictureID) {
         this.feedPictureID = feedPictureID;
     }
 

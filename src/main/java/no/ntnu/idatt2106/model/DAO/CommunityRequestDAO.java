@@ -9,7 +9,7 @@ public class CommunityRequestDAO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Community_request_id")
-    private long communityRequestID;
+    private int communityRequestID;
     @Column(name= "text")
     private String text;
     @ManyToOne
@@ -22,11 +22,11 @@ public class CommunityRequestDAO {
     @JoinColumn(name = "notification_id")
     private NotificationDAO notificationID;
 
-    public long getCommunityRequestID() {
+    public int getCommunityRequestID() {
         return communityRequestID;
     }
 
-    public void setCommunityRequestID(long communityRequestID) {
+    public void setCommunityRequestID(int communityRequestID) {
         this.communityRequestID = communityRequestID;
     }
 
