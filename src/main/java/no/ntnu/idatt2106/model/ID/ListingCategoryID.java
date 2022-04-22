@@ -7,27 +7,27 @@ import java.io.Serializable;
  */
 
 public class ListingCategoryID implements Serializable {
-    private long listingID;
-    private long categoryID;
+    private int listingID;
+    private int categoryID;
 
-    public ListingCategoryID(long listingID, long categoryID){
+    public ListingCategoryID(int listingID, int categoryID){
         this.listingID = listingID;
         this.categoryID = categoryID;
     }
 
-    public long getListingID() {
+    public int getListingID() {
         return listingID;
     }
 
-    public long getCategoryID() {
+    public int getCategoryID() {
         return categoryID;
     }
 
-    public void setCategoryID(long categoryID) {
+    public void setCategoryID(int categoryID) {
         this.categoryID = categoryID;
     }
 
-    public void setListingID(long listingID) {
+    public void setListingID(int listingID) {
         this.listingID = listingID;
     }
 }

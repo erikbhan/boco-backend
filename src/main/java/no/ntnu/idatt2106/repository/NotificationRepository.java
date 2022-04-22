@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import no.ntnu.idatt2106.model.DAO.NotificationDAO;
 
-public interface NotificationRepository extends JpaRepository<NotificationDAO, Long> {
+public interface NotificationRepository extends JpaRepository<NotificationDAO, Integer> {
     
 }

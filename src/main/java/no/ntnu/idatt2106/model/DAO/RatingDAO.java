@@ -9,7 +9,7 @@ public class RatingDAO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "rating_id")
-    private long ratingID;
+    private int ratingID;
     @Column(name= "score")
     private int score;
     @Column(name = "comment")
@@ -20,11 +20,11 @@ public class RatingDAO {
     @JoinColumn(name = "rent_id")
     private RentDAO rentID;
 
-    public long getRatingID() {
+    public int getRatingID() {
         return this.ratingID;
     }
 
-    public void setRatingID(long ratingID) {
+    public void setRatingID(int ratingID) {
         this.ratingID = ratingID;
     }
 

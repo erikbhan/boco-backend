@@ -11,7 +11,7 @@ public class FeedEntryDAO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "feed_entry_id")
-    private long feedEntryID;
+    private int feedEntryID;
     @Column(name = "title")
     private String title;
     @Column(name = "text")
@@ -30,11 +30,11 @@ public class FeedEntryDAO {
     @JoinColumn(name = "notification_id")
     private NotificationDAO notificationID;
 
-    public long getFeedEntryID() {
+    public int getFeedEntryID() {
         return this.feedEntryID;
     }
 
-    public void setFeedEntryID(long FeedEntryID) {
+    public void setFeedEntryID(int FeedEntryID) {
         this.feedEntryID = FeedEntryID;
     }
 
