@@ -16,7 +16,6 @@ import java.security.NoSuchAlgorithmException;
 
 @RestController
 @ApiResponse(responseCode = "200")
-
 @CrossOrigin
 public class LoginController {
     private final UserService userService;
