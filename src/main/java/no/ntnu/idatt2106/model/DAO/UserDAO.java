@@ -27,8 +27,6 @@ public class UserDAO {
     private String lastName;
     @Column(name = "address")
     private String address;
-    @Column(name = "password")
-    private String password;
     @Column(name = "picture")
     private String picture;
     @Column(name= "salt")
@@ -36,14 +34,25 @@ public class UserDAO {
     @Column(name = "hash")
     private String hash;
 
-    public UserDAO(String email, String firstName, String lastName, String address, String password, String picture, String salt) {
+    public UserDAO(String email, String firstName, String lastName, String address, String picture, String salt, String hash) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
-        this.password = password;
         this.picture = picture;
         this.salt = salt;
+        this.hash = hash;
+    }
+
+    public UserDAO(int userID, String email, String firstName, String lastName, String address, String picture, String salt, String hash) {
+        this.userID = userID;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.picture = picture;
+        this.salt = salt;
+        this.hash = hash;
     }
 
     public UserDAO() {
@@ -89,14 +98,6 @@ public class UserDAO {
         this.address = address;
     }
 
-    public String getPassword() {
-        return this.password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getPicture() {
         return this.picture;
     }
@@ -105,19 +106,11 @@ public class UserDAO {
         this.picture = picture;
     }
 
-    public String getSalt() {
-        return salt;
-    }
+    public String getSalt() {return salt;}
 
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
+    public void setSalt(String salt) {this.salt = salt;}
 
-    public String getHash() {
-        return hash;
-    }
+    public String getHash() {return hash;}
 
-    public void setHash(String hash) {
-        this.hash = hash;
-    }
+    public void setHash(String hash) {this.hash = hash;}
 }

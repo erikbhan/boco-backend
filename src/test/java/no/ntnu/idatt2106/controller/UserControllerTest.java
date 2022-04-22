@@ -2,8 +2,10 @@ package no.ntnu.idatt2106.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import no.ntnu.idatt2106.BocoApplication;
+import no.ntnu.idatt2106.model.DAO.UserDAO;
 import no.ntnu.idatt2106.model.DTO.UserDTO;
 import no.ntnu.idatt2106.repository.UserRepository;
+import no.ntnu.idatt2106.service.LoginService;
 import no.ntnu.idatt2106.service.UserService;
 import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
@@ -17,7 +19,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import javax.servlet.ServletException;
 import javax.sql.DataSource;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -31,6 +35,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
+    String userToken;
+    UserDAO user;
+    UserDAO user2;
+    String user2Token;
 
     @Autowired
     UserService userService;
@@ -38,11 +46,22 @@ public class UserControllerTest {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    LoginService loginService;
+
     @BeforeAll
     static void setup(@Autowired DataSource dataSource) throws SQLException {
         try (Connection conn = dataSource.getConnection()) {
             ScriptUtils.executeSqlScript(conn, new ClassPathResource("data.sql"));
         }
+    }
+
+    @BeforeEach
+    void login() throws ServletException, IOException {
+        user = new UserDAO(2022,"test@email.com", "test", "user", "gløshaugen", "ok", "l/hjdIHi9Us2uJZ7MP/urY6ALjISdukPrN5sjpD7wTMEV+DnQkWzOF3qfnO6r2PnIQM6zP7ZcdEYh0Gdok8nFQ==", "Ge7Y9frKWdgKcAysHdYCIoOOsAcn9We3f2+C74xlc6kWQZn2scBE8sEf4iZezwsmG/KdeeEuspZD9Q4Ojt27Hg==");
+        userToken = loginService.successfulAuthentication(user);
+        user2 = new UserDAO(10,"not@email.com", "test", "mcTester", "gløshaugen", "ok", "l/hjdIHi9Us2uJZ7MP/urY6ALjISdukPrN5sjpD7wTMEV+DnQkWzOF3qfnO6r2PnIQM6zP7ZcdEYh0Gdok8nFQ==", "Ge7Y9frKWdgKcAysHdYCIoOOsAcn9We3f2+C74xlc6kWQZn2scBE8sEf4iZezwsmG/KdeeEuspZD9Q4Ojt27Hg==");
+        user2Token = loginService.successfulAuthentication(user2);
     }
 
 
@@ -56,8 +75,8 @@ public class UserControllerTest {
     @Test
     void userController_getAUserFromUserId_ShouldBeOk() throws Exception {
         mockMvc.perform(get("/api/user/findUser")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(new UserDTO("token","2022"))))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk());
     }
 
@@ -65,23 +84,7 @@ public class UserControllerTest {
     void userController_getAUserFromUserId_ShouldGive4xxError() throws Exception {
         mockMvc.perform(get("/api/user/findUser")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(new UserDTO("token","10"))))
-                .andExpect(status().is4xxClientError());
-    }
-
-    @Test
-    void userController_getFullnameForAUser_ShouldGiveOk() throws Exception {
-        mockMvc.perform(get("/api/user/fullname")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(new UserDTO("token","2022"))))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    void userController_getFullnameForAUser_ShouldGive4xxError() throws Exception {
-        mockMvc.perform(get("/api/user/fullname")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(new UserDTO("token","10"))))
+                        .header("Authorization", "Bearer " + user2Token))
                 .andExpect(status().is4xxClientError());
     }
 

@@ -40,6 +40,8 @@ public class UserController {
     public UserDAO getAUserFromUserId() throws StatusCodeException {
         System.out.println("Trying to find a user");
         TokenDTO token = TokenUtil.getDataJWT();
+        System.out.println("This is the token: " + token);
+        System.out.println("The int is: " + Integer.valueOf(token.getAccountId()));
         UserDAO user = userService.findUserByUserId(Integer.valueOf(token.getAccountId()));
         if(user == null) {
             throw new StatusCodeException(HttpStatus.NOT_FOUND, "User not found in DB");

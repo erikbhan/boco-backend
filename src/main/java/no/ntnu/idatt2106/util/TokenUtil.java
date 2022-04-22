@@ -43,6 +43,7 @@ public class TokenUtil {
      * @return Data from the JWT token as TokenDTO
      */
     public static TokenDTO getDataJWT(String token) {
+        TokenDTO ok = new TokenDTO(JWT.decode(token).getClaims());
         return new TokenDTO(JWT.decode(token).getClaims());
     }
 
