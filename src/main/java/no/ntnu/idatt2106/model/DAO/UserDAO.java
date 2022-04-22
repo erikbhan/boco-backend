@@ -7,6 +7,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * This class functions as a representation of the table User in the DB.
+ * All fields in the User table is represented in this class, with access methods for everyone.
+ */
 @Entity
 @Table(name = "User", schema = "public")
 public class UserDAO {
@@ -23,12 +27,12 @@ public class UserDAO {
     private String lastName;
     @Column(name = "address")
     private String address;
-    @Column(name = "hash")
-    private String hash;
-    @Column(name = "salt")
-    private String salt;
     @Column(name = "picture")
     private String picture;
+    @Column(name= "salt")
+    private String salt;
+    @Column(name = "hash")
+    private String hash;
 
     public String getSalt() {
         return salt;
@@ -45,8 +49,6 @@ public class UserDAO {
     public void setHash(String hash) {
         this.hash = hash;
     }
-
-
 
     public UserDAO(String email, String firstName, String lastName, String address, String salt, String picture) {
         this.email = email;
@@ -115,5 +117,4 @@ public class UserDAO {
     public void setPicture(String picture) {
         this.picture = picture;
     }
-    
 }

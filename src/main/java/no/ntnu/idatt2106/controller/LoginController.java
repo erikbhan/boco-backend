@@ -12,7 +12,6 @@ import javax.servlet.ServletException;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
-@RequestMapping("/api")
 @RestController
 @CrossOrigin
 public class LoginController {
@@ -30,7 +29,7 @@ public class LoginController {
         System.out.println(loginDTO.email);
         System.out.println(loginDTO.password);
         if (loginService.attemptAuthentication(loginDTO.getEmail(), loginDTO.getPassword())) {
-            UserDAO user = userService.findByEmail(loginDTO.getEmail());
+            UserDAO user = userService.findUserByEmail(loginDTO.getEmail());
             String token = loginService.successfulAuthentication(user);
             return new ResponseEntity(token, HttpStatus.OK);
         }

@@ -28,7 +28,7 @@ public class LoginService {
 
     public boolean attemptAuthentication(String email, String password) throws NoSuchAlgorithmException {
 
-        UserDAO user = userService.findByEmail(email);
+        UserDAO user = userService.findUserByEmail(email);
         if (user == null) {
             return false;
         }
@@ -61,10 +61,7 @@ public class LoginService {
         return access_token;
     }
 
-
     public TokenDTO tokenDTO(String token){
         return TokenUtil.getDataJWT(token);
     }
-
-
 }
