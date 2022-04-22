@@ -1,13 +1,11 @@
 package no.ntnu.idatt2106.controller;
-import java.io.IOException;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import no.ntnu.idatt2106.BocoApplication;
 import no.ntnu.idatt2106.model.DTO.LoginDTO;
-import no.ntnu.idatt2106.model.DTO.TokenDTO;
+import no.ntnu.idatt2106.repository.UserRepository;
 import no.ntnu.idatt2106.service.LoginService;
 import no.ntnu.idatt2106.service.UserService;
-import org.apache.juli.logging.Log;
-import org.checkerframework.checker.units.qual.A;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,36 +18,53 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @AutoConfigureMockMvc
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = BocoApplication.class)
 @WebAppConfiguration
 public class LoginControllerTest {
-        @Autowired
-        MockMvc mvc;
-        @Autowired
-        WebApplicationContext webApplicationContext;
+    @Autowired
+    UserService userService;
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    LoginService loginService;
 
 
-        protected void setUp() {
-            mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        }
+    @Autowired
+    MockMvc mvc;
+    @Autowired
+    WebApplicationContext webApplicationContext;
 
-    //Tests that 4xx error code is given when entering wrong email and password
+
+    protected void setUp() {
+        mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+    }
+
+
+    //Tests that 200 code is given when providing correct email and password
+    @Test
+    public void LoginController_login_ShouldGive200OK() throws Exception {
+        mvc.perform(post("/login/authentication")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(new LoginDTO("test@test.com", "hei"))))
+                .andExpect(status().is2xxSuccessful());
+    }
+
+    //Tests that 4xx error code is given when providing wrong email and password
     @Test
     public void loginController_login_ShouldGive4xxError() throws Exception {
-        mvc.perform(post("/api/login/authentication")
+        mvc.perform(post("/login/authentication")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(new LoginDTO("feilemail@email.com","detteeretdårligpassord"))))
+                .content(asJsonString(new LoginDTO("feilemail@email.com", "detteeretdårligpassord"))))
                 .andExpect(status().is4xxClientError());
     }
+
 
     public static String asJsonString(final Object obj) {
         try {
@@ -58,9 +73,6 @@ public class LoginControllerTest {
             throw new RuntimeException(e);
         }
     }
-
-
-
 
 
 }
