@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import no.ntnu.idatt2106.model.DAO.RentDAO;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 
 @Repository

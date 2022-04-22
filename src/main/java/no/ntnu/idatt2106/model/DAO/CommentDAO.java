@@ -9,18 +9,18 @@ public class CommentDAO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
-    private long commentID;
+    private int commentID;
     @Column(name= "text")
     private String text;
     @ManyToOne
     @JoinColumn(name = "feed_entry_Id")
     private FeedEntryDAO feedEntryID;
 
-    public long getCommentID() {
+    public int getCommentID() {
         return this.commentID;
     }
 
-    public void setCommentID(long commentID) {
+    public void setCommentID(int commentID) {
         this.commentID = commentID;
     }
 

@@ -9,7 +9,7 @@ public class RentDAO{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "rent_id")
-    private long rentID;
+    private int rentID;
     @Column(name = "from_time")
     private Date fromTime;
     @Column(name = "to_time")
@@ -27,11 +27,11 @@ public class RentDAO{
     private NotificationDAO notificationID;
 
 
-    public long getRentID() {
+    public int getRentID() {
         return this.rentID;
     }
 
-    public void setRentID(long rent_id) {
+    public void setRentID(int rent_id) {
         this.rentID = rent_id;
     }
 
