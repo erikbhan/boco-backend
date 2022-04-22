@@ -26,8 +26,9 @@ public class ListingService {
         listing.setDescription(listingDTO.getAddress());
         listing.setAddress(listingDTO.getAddress());
         listing.setPricePerDay(listingDTO.getPricePerDay());
-        //listing.setUserID(userRepository.getById(listingDTO.getUserID()));
+        listing.setUserID(userRepository.getById(listingDTO.getUserID()));
         listingRepository.save(listing);
+        
     }
 
     

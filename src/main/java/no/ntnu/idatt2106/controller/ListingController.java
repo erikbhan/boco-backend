@@ -4,14 +4,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import no.ntnu.idatt2106.model.DAO.ListingDAO;
 import no.ntnu.idatt2106.model.DTO.ListingDTO;
 import no.ntnu.idatt2106.repository.ListingRepository;
+import no.ntnu.idatt2106.service.ListingCategoryService;
 import no.ntnu.idatt2106.service.ListingService;
 
 
@@ -20,21 +21,24 @@ import no.ntnu.idatt2106.service.ListingService;
 @CrossOrigin
 public class ListingController {
     private final ListingService listingService;
+    private final ListingCategoryService listingCategoryService;
 
-    public ListingController(ListingService listingService){
+    public ListingController(ListingService listingService, ListingCategoryService listingCategoryService){
         this.listingService = listingService;
+        this.listingCategoryService = listingCategoryService;
     }
 
     @PostMapping("/listing")
-    public ResponseEntity<String> postListing(@RequestBody ListingDTO listingDTO){
-        System.out.println("\n\n\n-----------------" +listingDTO.getUserID() + "---------------\n\n");
+    public ResponseEntity<ListingDTO> postListing(@RequestBody ListingDTO listingDTO){
+        listingService.saveListing(listingDTO);
         try{
-            listingService.saveListing(listingDTO);
-            return new ResponseEntity<String>("Annonse opprettet", HttpStatus.CREATED);
+            // for(String categoryName: listingDTO.getCategoryNames()){
+            //     listingCategoryService.saveListingCategory(categoryName, listingDTO.);
+            // }
+            return new ResponseEntity<ListingDTO>(listingDTO, HttpStatus.CREATED);
         }
         catch(Exception e){
-            e.printStackTrace();
-            return new ResponseEntity<String>("Kunne ikke opprette", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<ListingDTO>(listingDTO, HttpStatus.BAD_REQUEST);
         }
     }
 }

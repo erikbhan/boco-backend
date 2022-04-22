@@ -1,11 +1,17 @@
 package no.ntnu.idatt2106.model.DTO;
 
+import java.util.List;
+
 public class ListingDTO {
     private String title;
     private String description;
     private double pricePerDay;
     private String address;
-    private long userID;
+    private int userID;
+    private List<String> categoryNames;
+
+    public ListingDTO() {
+    }
 
 
     public String getTitle() {
@@ -40,12 +46,21 @@ public class ListingDTO {
         this.address = address;
     }
 
-    public long getUserID() {
+    public int getUserID() {
         return this.userID;
     }
 
-    public void setUserID(long userID) {
+    public void setUserID(int userID) {
         this.userID = userID;
+    }
+
+
+    public List<String> getCategoryNames() {
+        return this.categoryNames;
+    }
+
+    public void setCategoryNames(List<String> categoryNames) {
+        this.categoryNames = categoryNames;
     }
 
 }
