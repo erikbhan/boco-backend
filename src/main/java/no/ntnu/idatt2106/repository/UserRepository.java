@@ -3,7 +3,19 @@ package no.ntnu.idatt2106.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import no.ntnu.idatt2106.model.DAO.UserDAO;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
+/**
+ * A class meant to access the User table in the DB.
+ * This class contains some premade methods and some custom-made ones.
+ */
+@Repository
 public interface UserRepository extends JpaRepository<UserDAO, Integer> {
-    UserDAO findByEmail(String email);
+    UserDAO findUserDAOByEmail(String email);
+
+    UserDAO findUserDAOByUserID(int userId);
+
+    List<UserDAO> findUserDAOByFirstNameAndLastName(String firstName, String lastName);
 }

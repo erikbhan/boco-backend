@@ -13,7 +13,6 @@ import javax.servlet.ServletException;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
-@RequestMapping("/api")
 @RestController
 @ApiResponse(responseCode = "200")
 @CrossOrigin
@@ -33,16 +32,16 @@ public class LoginController {
         System.out.println(loginDTO.email);
         System.out.println(loginDTO.password);
 
+
         try {
             if (!loginService.attemptAuthentication(loginDTO.getEmail(), loginDTO.getPassword()))
                 throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Login failed");
-            UserDAO user = userService.findByEmail(loginDTO.getEmail());
+            UserDAO user = userService.findUserByEmail(loginDTO.getEmail());
             return loginService.successfulAuthentication(user);
         } catch (NoSuchAlgorithmException | IOException | ServletException e) {
 
             e.printStackTrace();
             throw new StatusCodeException(HttpStatus.INTERNAL_SERVER_ERROR, "How did you get here");
-        }
 
-    }
-}
+
+    }}}

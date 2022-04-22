@@ -7,14 +7,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * This class functions as a representation of the table User in the DB.
+ * All fields in the User table is represented in this class, with access methods for everyone.
+ */
 @Entity
 @Table(name = "User", schema = "public")
 public class UserDAO {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private int userID;
+    private long userID;
     @Column(name = "email")
     private String email;
     @Column(name = "first_name")
@@ -25,7 +29,7 @@ public class UserDAO {
     private String address;
     @Column(name = "picture")
     private String picture;
-    @Column(name = "salt")
+    @Column(name= "salt")
     private String salt;
     @Column(name = "hash")
     private String hash;
@@ -46,12 +50,23 @@ public class UserDAO {
         this.hash = hash;
     }
 
+    public UserDAO(String email, String firstName, String lastName, String address, String salt, String picture) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.salt = salt;
+        this.picture = picture;
+    }
 
-    public int getUserID() {
+    public UserDAO() {
+    }
+
+    public long getUserID() {
         return this.userID;
     }
 
-    public void setUserID(int userID) {
+    public void setUserID(long userID) {
         this.userID = userID;
     }
 
@@ -87,6 +102,14 @@ public class UserDAO {
         this.address = address;
     }
 
+    public String getPassword() {
+        return this.salt;
+    }
+
+    public void setPassword(String password) {
+        this.salt = password;
+    }
+
     public String getPicture() {
         return this.picture;
     }
@@ -95,4 +118,3 @@ public class UserDAO {
         this.picture = picture;
     }
 }
-
