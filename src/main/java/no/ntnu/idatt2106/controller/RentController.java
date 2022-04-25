@@ -2,10 +2,7 @@ package no.ntnu.idatt2106.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import no.ntnu.idatt2106.exception.StatusCodeException;
-import no.ntnu.idatt2106.model.DTO.RentDTO;
 import no.ntnu.idatt2106.service.RentService;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,10 +19,28 @@ public class RentController {
         this.rentService = rentService;
     }
 
-    @Operation(summary = "Adds new rent")
-    @ApiResponse(responseCode = "201", description = "Created")
-    @PostMapping("/rent/add")
-    public void addRent(@RequestBody RentDTO rentDTO) {
-        rentService.saveRent(rentDTO);
+    /**
+     * Method for accepting a rent.
+     * @param rentId ID for rent to be accepted
+     */
+    @Operation(summary = "Accepts rent")
+    @ApiResponse(responseCode = "200", description = "Ok")
+    @ApiResponse()
+    @PostMapping("/rent/accept")
+    public String acceptRentRequest(@RequestBody int rentId) {
+        rentService.acceptRent(rentId);
+        return "Accepted rent";
+    }
+
+    /**
+     * Method for deleting a rent.
+     * @param rentId ID for rent to be deleted
+     */
+    @Operation(summary = "Deletes rent")
+    @ApiResponse(responseCode = "200", description = "Ok")
+    @PostMapping("/rent/delete")
+    public String deleteRent(@RequestBody int rentId) {
+        rentService.deleteRent(rentId);
+        return "Deleted rent";
     }
 }
