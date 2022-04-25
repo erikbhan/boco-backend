@@ -154,6 +154,14 @@ public class RentControllerTest {
     }
 
     @Test
+    void rentController_deleteNonExistingRent_ShouldBe4xx() throws Exception {
+        mockMvc.perform(post("/api/renting/10002/delete")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
     void rentController_acceptRent_ShouldBeOk() throws Exception {
         mockMvc.perform(put("/renting/10000/accept")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -169,6 +177,14 @@ public class RentControllerTest {
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk());
     }
+    @Test
+    void rentController_acceptNonExistingRent_ShouldBe4xx() throws  Exception {
+        mockMvc.perform(post("/api/renting/10002/accept")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().is4xxClientError());
+    }
+
 
     public static String asJsonString(final Object obj) {
         try {
