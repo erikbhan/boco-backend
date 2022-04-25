@@ -1,7 +1,9 @@
 package no.ntnu.idatt2106.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import no.ntnu.idatt2106.BocoApplication;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
+import no.ntnu.idatt2106.model.DTO.RentDTO;
 import no.ntnu.idatt2106.repository.RentRepository;
 import no.ntnu.idatt2106.service.LoginService;
 import no.ntnu.idatt2106.service.RentService;
@@ -24,10 +26,11 @@ import javax.servlet.ServletException;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.SQLException;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -93,6 +96,54 @@ public class RentControllerTest {
                 .andExpect(status().isOk());
     }
 
+    @Test
+    void rentController_getFullRentHistoryOfOwner_ShouldGive4xxError() throws Exception {
+        mockMvc.perform(get("/api/users/10/profile/rent/userHistory/owner/all")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    void rentController_getFullRentHistoryOfUser_ShouldBeOk() throws Exception {
+        mockMvc.perform(get("/api/users/2022/profile/rent/userHistory/all")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void rentController_getFullRentHistoryOfUser_ShouldGive4xxError() throws Exception {
+        mockMvc.perform(get("/api/users/10/profile/rent/userHistory/all")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    void rentController_getRentHistoryOfOwner_ShouldBeOk() throws Exception {
+        mockMvc.perform(get("/api/users/3034/profile/rent/userHistory/owner")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void rentController_getRentHistoryOfOwner_ShouldGive4xxError() throws Exception {
+        mockMvc.perform(get("/api/users/10/profile/rent/userHistory/owner")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    void rentController_saveRentingAgreementForRenter_ShouldBeOk() throws Exception {
+        mockMvc.perform(post("/api/renting/renter/save")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(new RentDTO(new Date(2013,8,23),new Date(2016,6,4),false,1235,2022)))
+                        .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().isOk());
+    }
 
     @Test
     void rentController_deleteRent_ShouldBeOk() throws Exception{
@@ -111,13 +162,21 @@ public class RentControllerTest {
     }
 
     @Test
-    void rentController_acceptRent_ShouldBeOk() throws  Exception {
-        mockMvc.perform(post("/api/renting/10000/accept")
+    void rentController_acceptRent_ShouldBeOk() throws Exception {
+        mockMvc.perform(put("/api/renting/10000/accept")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk());
     }
 
+    @Test
+    void rentController_saveRentingAgreementForRenter_ShouldGive4xx() throws Exception {
+        mockMvc.perform(post("/api/renting/renter/save")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(new RentDTO(new Date(2013,8,23),new Date(2016,6,4),false,1235,2022)))
+                        .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().isOk());
+    }
     @Test
     void rentController_acceptNonExistingRent_ShouldBe4xx() throws  Exception {
         mockMvc.perform(post("/api/renting/10002/accept")
@@ -127,4 +186,11 @@ public class RentControllerTest {
     }
 
 
+    public static String asJsonString(final Object obj) {
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
