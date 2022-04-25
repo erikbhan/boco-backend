@@ -8,3 +8,4 @@ DELETE FROM public.listing WHERE listing_id = '1236';
 
 DELETE FROM public.user WHERE email = 'fake@user.com';
 DELETE FROM public.user WHERE email = 'test@email.com';
+

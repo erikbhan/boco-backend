@@ -27,29 +27,17 @@ public class TokenDTO {
         this.lastName = claims.get("last_name").asString();
     }
 
-    public String getEmail() {
-        return email;
-    }
+    public String getEmail() {return email;}
 
-    public int getExp() {
-        return exp;
-    }
+    public int getExp() {return exp;}
 
-    public void setExp(int exp) {
-        this.exp = exp;
-    }
+    public void setExp(int exp) {this.exp = exp;}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    public void setEmail(String email) {this.email = email;}
 
-    public String getAccountId() {
-        return accountId;
-    }
+    public int getAccountId() {return Integer.valueOf(accountId);}
 
-    public void setAccountId(String accountId) {
-        this.accountId = accountId;
-    }
+    public void setAccountId(String accountId) {this.accountId = accountId;}
 
     public String getFirstName() {return firstName;}
 
@@ -58,4 +46,5 @@ public class TokenDTO {
     public void setFirstName(String firstName) {this.firstName = firstName;}
 
     public void setLastName(String lastName) {this.lastName = lastName;}
+
 }

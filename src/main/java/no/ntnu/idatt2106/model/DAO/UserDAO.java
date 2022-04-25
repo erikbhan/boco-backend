@@ -16,7 +16,7 @@ import javax.persistence.Table;
 public class UserDAO {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_id")
     private int userID;
     @Column(name = "email")
