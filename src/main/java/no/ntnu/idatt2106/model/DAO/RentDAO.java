@@ -71,4 +71,15 @@ public class RentDAO{
         this.renterID = renterID;
     }
 
+    @Override
+    public String toString() {
+        return "RentDAO{" +
+                "rentID=" + rentID +
+                ", fromTime=" + fromTime +
+                ", toTime=" + toTime +
+                ", isAccepted=" + isAccepted +
+                ", listingOwnerID=" + listingOwnerID +
+                ", renterID=" + renterID +
+                '}';
+    }
 }

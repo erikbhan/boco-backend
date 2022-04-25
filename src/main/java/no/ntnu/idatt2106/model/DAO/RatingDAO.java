@@ -48,11 +48,15 @@ public class RatingDAO {
         return this.renterIsReceiverOfRating;
     }
 
-    public boolean getRenterIsReceiverOfRating() {
-        return this.renterIsReceiverOfRating;
-    }
-
     public void setRenterIsReceiverOfRating(boolean renterIsReceiverOfRating) {
         this.renterIsReceiverOfRating = renterIsReceiverOfRating;
+    }
+
+    public RentDAO getRentID() {
+        return rentID;
+    }
+
+    public void setRentID(RentDAO rentID) {
+        this.rentID = rentID;
     }
 }
