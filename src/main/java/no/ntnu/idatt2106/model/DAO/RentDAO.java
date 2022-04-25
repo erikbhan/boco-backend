@@ -26,6 +26,14 @@ public class RentDAO{
     @JoinColumn(name = "notification_id")
     private NotificationDAO notificationID;
 
+    public RentDAO(Date fromTime, Date toTime, boolean isAccepted, ListingDAO listingOwnerID, UserDAO renterID, NotificationDAO notificationID) {
+        this.fromTime = fromTime;
+        this.toTime = toTime;
+        this.isAccepted = isAccepted;
+        this.listingOwnerID = listingOwnerID;
+        this.renterID = renterID;
+        this.notificationID = notificationID;
+    }
 
     public int getRentID() {
         return this.rentID;
