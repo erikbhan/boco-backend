@@ -46,5 +46,7 @@ public class TokenUtil {
         return new TokenDTO(JWT.decode(token).getClaims());
     }
 
-
+    public static TokenDTO getDataJWT() {
+        return TokenUtil.getDataJWT(TokenUtil.getToken());
+    }
 }

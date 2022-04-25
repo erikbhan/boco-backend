@@ -1,0 +1,1 @@
+DELETE FROM public.User WHERE email = 'test@email.com';
