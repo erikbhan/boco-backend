@@ -3,6 +3,9 @@ package no.ntnu.idatt2106.service;
 import no.ntnu.idatt2106.model.DAO.ListingDAO;
 import no.ntnu.idatt2106.repository.ListingRepository;
 import org.springframework.stereotype.Service;
+import no.ntnu.idatt2106.model.DAO.UserDAO;
+
+import java.util.List;
 
 @Service
 public class ListingService {
@@ -12,7 +15,11 @@ public class ListingService {
         this.listingRepository = listingRepository;
     }
 
-    public ListingDAO getListingFromId(int id) {
-        return listingRepository.getById(id);
+    public ListingDAO findListingByListingId(int listingId) {
+        return listingRepository.findListingDAOByListingID(listingId);
+    }
+
+    public List<ListingDAO> findAllListingDAOByIdOfOwner(UserDAO ownerId) {
+        return listingRepository.findAllByUserID(ownerId);
     }
 }

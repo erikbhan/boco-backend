@@ -39,8 +39,6 @@ public class LoginService {
         if (new String(hashedPassword).equals(new String(user.getHash().getBytes(StandardCharsets.UTF_8)))) {
             return true;
         }
-        System.out.println("Password entered by user: " + new String(hashedPassword));
-        System.out.println("Password in database: " + new String(user.getHash().getBytes(StandardCharsets.UTF_8)));
         return false;
     }
 
@@ -49,12 +47,12 @@ public class LoginService {
         Algorithm algorithm = Algorithm.HMAC256("tiL8yZXjlEvxKImZS0YeIQC5V29PFDcm2wSHn47texw6fpNKv34uqyWe/NUz5go3aAkRflcDFVfpfYwoLPZrFA==".getBytes(StandardCharsets.UTF_8));
         //Making a jwt token
         String access_token = JWT.create()
-                .withSubject(user.getEmail())
+                .withClaim("email", user.getEmail())
                 .withClaim("first_name", user.getFirstName())
                 .withClaim("last_name", user.getLastName())
+                .withClaim("account_id", String.valueOf(user.getUserID()))
                 .withExpiresAt(new Date(System.currentTimeMillis() + 60 * 48 * 60 * 1000))
                 .sign(algorithm);
-
 
         System.out.println("You were authenticated : " + access_token);
 

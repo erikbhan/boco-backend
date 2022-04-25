@@ -20,6 +20,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+
     /**
      * A method to find a specific user by their unique user id.
      * @param userId The unique user id of the user you want to find

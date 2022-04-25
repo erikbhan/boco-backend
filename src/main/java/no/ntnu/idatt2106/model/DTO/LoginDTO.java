@@ -1,6 +1,11 @@
 package no.ntnu.idatt2106.model.DTO;
 
 public class LoginDTO {
+    public LoginDTO(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
     public String email;
     public String password;
 
