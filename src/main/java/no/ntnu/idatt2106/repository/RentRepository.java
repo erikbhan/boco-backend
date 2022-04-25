@@ -8,6 +8,10 @@ import no.ntnu.idatt2106.model.DAO.RentDAO;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 
+/**
+ * A class meant to access the rent table in the DB.
+ * This class contains some premade methods and some custom-made ones.
+ */
 @Repository
 public interface RentRepository extends JpaRepository<RentDAO, Long> {
     List<RentDAO> findAllByRenterIDAndIsAccepted(UserDAO renterID, boolean isAccepted);

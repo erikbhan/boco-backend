@@ -42,12 +42,25 @@ public class RentService {
         return rentRepository.findAllByRenterIDAndIsAccepted(renter,isAccepted);
     }
 
+    /**
+     * A method to find all rent daos for a renter with a given id.
+     * This method returns all rent daos with this id, both accepted and not.
+     * @param renterId The id of the renter to search for.
+     * @return Returns a list containing all rent daos with this renter id.
+     */
     public List<RentDAO> findAllRentDAOWithRenterId(int renterId) {
         System.out.println(String.format("FINDING FULL RENT HISTORY FOR USER %s", renterId));
         UserDAO renter = userService.findUserByUserId(renterId);
         return rentRepository.findAllByRenterID(renter);
     }
 
+    /**
+     * A method to find all rentDAOs with an owner id.
+     * Returns a list of all rent daos for this owner, or null if no items are listed with this owner id.
+     * @param ownerId The id of the owner of the listed items.
+     * @return Returns a list of all rent daos for this owner,
+     * or null if no items are listed with this owner id.
+     */
     public List<RentDAO> findAllRentDAOWithOwnerId(int ownerId) {
         System.out.println(String.format("FINDING ALL LISTED OBJECTS FOR OWNER WITH ID %s", ownerId));
         UserDAO owner = userService.findUserByUserId(ownerId);
@@ -68,7 +81,14 @@ public class RentService {
         return null;
     }
 
-    public List<RentDAO> filterAListOfRentDAOByStatusOfAgreement(List<RentDAO> list,boolean isAccepted) {
+    /**
+     * A method to filter a list of Rent daos by a given status.
+     * Returns a selected list of rent daos from the given list, all containing the correct status.
+     * @param list The list of rent daos to sort
+     * @param isAccepted The status of the rent daos you want. Is either true for accepted or false for not.
+     * @return Returns a selected list of rent daos from the given list, all containing the correct status.
+     */
+    public List<RentDAO> filterAListOfRentDAOByStatusOfAgreement(List<RentDAO> list, boolean isAccepted) {
         List<RentDAO> listWithCorrectStatus = new ArrayList<>();
         for(int i = 0; i < list.size(); i++) {
             RentDAO rentAgreement = list.get(i);
@@ -79,11 +99,23 @@ public class RentService {
         return listWithCorrectStatus;
     }
 
+    /**
+     * A method for saving a user to the DB.
+     * This method returns a string with the accept-message if the save was successful.
+     * @param agreement the rent agreement to be saved in the DB.
+     * @return Returns a string with the accept-message if the save was successful.
+     */
     public String saveNewRentAgreementToDB(RentDAO agreement) {
         rentRepository.save(agreement);
         return "The agreement was saved in the DB";
     }
 
+    /**
+     * A method for converting rent dtos to rent daos.
+     * This method will leave all null fields in the rent dto empty in the rent dao.
+     * @param rentDTO The rent dto to be made into a rent dao.
+     * @return Returns the new rent dao made from the rent dto.
+     */
     public RentDAO convertFromRentDTOTORentDAO(RentDTO rentDTO) {
         Integer notificationId = rentDTO.getNotificationId();
         Integer renterId = rentDTO.getRenterId();
@@ -103,16 +135,29 @@ public class RentService {
         return new RentDAO(rentDTO.getFromTime(), rentDTO.getToTime(), rentDTO.getAccepted(), listing, renter, notification);
     }
 
+    /**
+     * A method for changing the accept-status of a rent agreement to accepted.
+     * @param rentDAO The rent agreement, which status should be changed.
+     */
     public void acceptRent(RentDAO rentDAO) {
         System.out.println(String.format("RENT WITH ID %S ACCEPTED", rentDAO.getRentID()));
         rentDAO.setAccepted(true);
     }
 
+    /**
+     * A method which deletes a rent agreement from the db.
+     * @param rentId The id of the rent agreement to be deleted.
+     */
     public void deleteRent(int rentId) {
         System.out.println(String.format("RENT WITH ID %S DELETED", rentId));
         rentRepository.delete(rentRepository.findByRentID(rentId));
     }
 
+    /**
+     * A method which finds a single rent dao from the DB.
+     * @param rentId The id of the rent dao to search for.
+     * @return Returns a rent dao object with the given rentId.
+     */
     public RentDAO getRentFromId(int rentId) {
         System.out.println(String.format("GOT RENT OBJECT WITH ID %S", rentId));
         return rentRepository.findByRentID(rentId);

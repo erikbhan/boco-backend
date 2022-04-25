@@ -3,6 +3,10 @@ import java.sql.Date;
 
 import javax.persistence.*;
 
+/**
+ * This class functions as a representation of the table rent in the DB.
+ * All fields in the rent table is represented in this class, with access methods for everyone.
+ */
 @Entity
 @Table(name = "rent", schema = "public")
 public class RentDAO{

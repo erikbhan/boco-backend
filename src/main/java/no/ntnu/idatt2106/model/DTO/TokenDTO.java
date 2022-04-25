@@ -4,6 +4,10 @@ import com.auth0.jwt.interfaces.Claim;
 
 import java.util.Map;
 
+/**
+ * A class representing the token information.
+ * This class should be used for the transfer of token information.
+ */
 public class TokenDTO {
     String email;
     int exp;

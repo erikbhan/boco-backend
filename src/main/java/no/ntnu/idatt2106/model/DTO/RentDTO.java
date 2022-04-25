@@ -2,6 +2,11 @@ package no.ntnu.idatt2106.model.DTO;
 
 import java.sql.Date;
 
+/**
+ * A class representing the rent agreement object.
+ * This class shall be returned to the frontend instead of the rent dao.
+ * This class contains necessary access-methods for the data it contains.
+ */
 public class RentDTO {
     Date fromTime;
     Date toTime;
