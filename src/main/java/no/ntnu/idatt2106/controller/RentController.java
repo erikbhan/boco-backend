@@ -2,11 +2,11 @@ package no.ntnu.idatt2106.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import no.ntnu.idatt2106.exception.StatusCodeException;
+import no.ntnu.idatt2106.model.DAO.RentDAO;
 import no.ntnu.idatt2106.service.RentService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin
@@ -24,11 +24,14 @@ public class RentController {
      * @param rentId ID for rent to be accepted
      */
     @Operation(summary = "Accepts rent")
-    @ApiResponse(responseCode = "200", description = "Ok")
-    @ApiResponse()
-    @PostMapping("/rent/accept")
-    public String acceptRentRequest(@RequestBody int rentId) {
-        rentService.acceptRent(rentId);
+    @ApiResponse(responseCode = "404", description = "Rent not found in DB")
+    @PostMapping("/renting/renter/accept")
+    public String acceptRentRequest(@PathVariable() int rentId) throws StatusCodeException {
+        RentDAO rent = rentService.getRentFromId(rentId);
+        if (rent == null) {
+            throw new StatusCodeException(HttpStatus.NOT_FOUND, "Could not find rent with ID: " + rentId);
+        }
+        rentService.acceptRent(rent);
         return "Accepted rent";
     }
 
@@ -37,9 +40,13 @@ public class RentController {
      * @param rentId ID for rent to be deleted
      */
     @Operation(summary = "Deletes rent")
-    @ApiResponse(responseCode = "200", description = "Ok")
-    @PostMapping("/rent/delete")
-    public String deleteRent(@RequestBody int rentId) {
+    @ApiResponse(responseCode = "404", description = "Rent not found in DB")
+    @PostMapping("/renting/renter/delete")
+    public String deleteRent(@PathVariable() int rentId) throws StatusCodeException {
+        RentDAO rent = rentService.getRentFromId(rentId);
+        if (rent == null) {
+            throw new StatusCodeException(HttpStatus.NOT_FOUND, "Could not find rent with ID: " + rentId);
+        }
         rentService.deleteRent(rentId);
         return "Deleted rent";
     }
