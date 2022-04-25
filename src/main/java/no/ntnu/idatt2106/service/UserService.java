@@ -1,6 +1,7 @@
 package no.ntnu.idatt2106.service;
 
 import no.ntnu.idatt2106.model.DAO.UserDAO;
+import no.ntnu.idatt2106.model.DTO.UserDTO;
 import no.ntnu.idatt2106.repository.UserRepository;
 // import no.ntnu.idatt2106.util.HashUtil;
 
@@ -75,6 +76,12 @@ public class UserService {
     public List<UserDAO> findAllUsersWithSameFullName(String firstName, String lastName) {
         System.out.println("FINDING ALL USERS WITH THE FULLNAME: " + firstName + " " + lastName);
         return userRepository.findUserDAOByFirstNameAndLastName(firstName, lastName);
+    }
+
+    public UserDTO convertUserDAOIntoUserDTO(UserDAO userDAO) {
+        return new UserDTO(String.valueOf(userDAO.getUserID()), userDAO.getEmail(),
+                userDAO.getFirstName(), userDAO.getLastName(), userDAO.getAddress(),
+                userDAO.getPicture());
     }
 
     // public UserDAO getNewUser(String email, String password, String firstName, String lastName, String address) {

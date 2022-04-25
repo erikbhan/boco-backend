@@ -74,7 +74,7 @@ public class UserControllerTest {
 
     @Test
     void userController_getAUserFromUserId_ShouldBeOk() throws Exception {
-        mockMvc.perform(get("/api/users/2022/profile")
+        mockMvc.perform(get("/users/2022/profile")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk());
@@ -82,7 +82,7 @@ public class UserControllerTest {
 
     @Test
     void userController_getAUserFromUserId_ShouldGive4xxError() throws Exception {
-        mockMvc.perform(get("/api/users/10/profile")
+        mockMvc.perform(get("/users/10/profile")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + user2Token))
                 .andExpect(status().is4xxClientError());

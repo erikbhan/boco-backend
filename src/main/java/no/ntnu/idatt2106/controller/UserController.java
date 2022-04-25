@@ -5,19 +5,15 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import no.ntnu.idatt2106.exception.StatusCodeException;
 import no.ntnu.idatt2106.middleware.RequireAuth;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
-import no.ntnu.idatt2106.model.DTO.TokenDTO;
 import no.ntnu.idatt2106.model.DTO.UserDTO;
 import no.ntnu.idatt2106.service.UserService;
-import no.ntnu.idatt2106.util.TokenUtil;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
  * The main controller for the api requests related to the user.
  */
 @RestController
-@RequestMapping("/api")
 @CrossOrigin
 @ApiResponse(responseCode = "200")
 @ApiResponse(responseCode = "401", description = "Not authenticated")
@@ -37,12 +33,12 @@ public class UserController {
     @GetMapping("/users/{userid}/profile")
     @Operation(summary = "Get at user by the user id")
     @ApiResponse(responseCode = "404", description = "User not found in the DB")
-    public UserDAO getAUserFromUserId(@PathVariable() int userid) throws StatusCodeException {
+    public UserDTO getAUserFromUserId(@PathVariable() int userid) throws StatusCodeException {
         System.out.println("Trying to find a user");
         UserDAO user = userService.findUserByUserId(userid);
         if(user == null) {
             throw new StatusCodeException(HttpStatus.NOT_FOUND, "User not found in DB");
         }
-        return user;
+        return userService.convertUserDAOIntoUserDTO(user);
     }
 }
