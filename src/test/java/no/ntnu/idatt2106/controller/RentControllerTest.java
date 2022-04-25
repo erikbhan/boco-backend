@@ -29,8 +29,8 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -146,6 +146,22 @@ public class RentControllerTest {
     }
 
     @Test
+    void rentController_deleteRent_ShouldBeOk() throws Exception{
+        mockMvc.perform(post("/api/renting/10001/delete")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + userToken))
+        .andExpect(status().isOk());
+    }
+
+    @Test
+    void rentController_acceptRent_ShouldBeOk() throws Exception {
+        mockMvc.perform(put("/api/renting/10000/accept")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().isOk());
+    }
+
+    @Test
     void rentController_saveRentingAgreementForRenter_ShouldGive4xx() throws Exception {
         mockMvc.perform(post("/api/renting/renter/save")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -161,5 +177,4 @@ public class RentControllerTest {
             throw new RuntimeException(e);
         }
     }
-
 }
