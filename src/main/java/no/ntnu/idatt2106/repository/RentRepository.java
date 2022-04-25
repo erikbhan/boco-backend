@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import no.ntnu.idatt2106.model.DAO.RentDAO;
 import org.springframework.stereotype.Repository;
-
+import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
@@ -17,4 +17,9 @@ import java.util.List;
 public interface RentRepository extends JpaRepository<RentDAO, Integer> {
     List<RentDAO> findRentDAOSByRenterID(UserDAO renter);
     List<RentDAO> findRentDAOSByListingOwnerID(ListingDAO listing);
+    List<RentDAO> findAllByRenterID(UserDAO renterId);
+
+    List<RentDAO> findAllByListingOwnerID(ListingDAO listingId);
+
+    RentDAO findByRentID(int rentId);
 }

@@ -47,12 +47,14 @@ public class LoginService {
         Algorithm algorithm = Algorithm.HMAC256("tiL8yZXjlEvxKImZS0YeIQC5V29PFDcm2wSHn47texw6fpNKv34uqyWe/NUz5go3aAkRflcDFVfpfYwoLPZrFA==".getBytes(StandardCharsets.UTF_8));
         //Making a jwt token
         String access_token = JWT.create()
-                .withSubject(user.getEmail())
+                .withClaim("email", user.getEmail())
                 .withClaim("first_name", user.getFirstName())
                 .withClaim("last_name", user.getLastName())
+                .withClaim("account_id", String.valueOf(user.getUserID()))
                 .withExpiresAt(new Date(System.currentTimeMillis() + 60 * 48 * 60 * 1000))
                 .sign(algorithm);
 
+        System.out.println("You were authenticated : " + access_token);
 
         return access_token;
     }

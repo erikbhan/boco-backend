@@ -4,7 +4,7 @@ import java.sql.Date;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Rent", schema = "public")
+@Table(name = "rent", schema = "public")
 public class RentDAO{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +22,21 @@ public class RentDAO{
     @ManyToOne
     @JoinColumn(name = "renter_id")
     private UserDAO renterID;
+    @ManyToOne
+    @JoinColumn(name = "notification_id")
+    private NotificationDAO notificationID;
+
+    public RentDAO(Date fromTime, Date toTime, boolean isAccepted, ListingDAO listingOwnerID, UserDAO renterID, NotificationDAO notificationID) {
+        this.fromTime = fromTime;
+        this.toTime = toTime;
+        this.isAccepted = isAccepted;
+        this.listingOwnerID = listingOwnerID;
+        this.renterID = renterID;
+        this.notificationID = notificationID;
+    }
+
+    public RentDAO() {
+    }
 
     public int getRentID() {
         return rentID;
@@ -47,7 +62,7 @@ public class RentDAO{
         this.toTime = toTime;
     }
 
-    public boolean isAccepted() {
+    public boolean getIsAccepted() {
         return isAccepted;
     }
 
@@ -71,15 +86,7 @@ public class RentDAO{
         this.renterID = renterID;
     }
 
-    @Override
-    public String toString() {
-        return "RentDAO{" +
-                "rentID=" + rentID +
-                ", fromTime=" + fromTime +
-                ", toTime=" + toTime +
-                ", isAccepted=" + isAccepted +
-                ", listingOwnerID=" + listingOwnerID +
-                ", renterID=" + renterID +
-                '}';
-    }
+    public NotificationDAO getNotificationID() {return notificationID;}
+
+    public void setNotificationID(NotificationDAO notificationID) {this.notificationID = notificationID;}
 }
