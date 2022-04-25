@@ -42,4 +42,13 @@ public class RatingController {
             return ratings;
         } else throw new StatusCodeException(HttpStatus.OK, "User not found or had no ratings as owner");
     }
+
+    @Operation(summary = "Finds average rating of user")
+    @ApiResponse(responseCode = "404", description = "User not found in DB")
+    @GetMapping("/rating/average")
+    public float getAverageRating(@RequestParam int userID) throws StatusCodeException {
+        if (userService.findUserByUserId(userID) != null){
+            return ratingService.findAverageRating(userID);
+        } else throw new StatusCodeException(HttpStatus.OK, "User not found or had no ratings as owner");
+    }
 }

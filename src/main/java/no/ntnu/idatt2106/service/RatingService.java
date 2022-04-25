@@ -42,6 +42,12 @@ public class RatingService {
         ratingRepository.save(rating);
     }
 
+    /**
+     * A method to find all ratings
+     *
+     * @param userID
+     * @return
+     */
     public List<RatingDTO> findRatingsAsRenterByUserID(int userID){
         //finner rating som leier
         UserDAO userDAO = userService.findUserByUserId(userID);
@@ -78,5 +84,19 @@ public class RatingService {
             }
         }
         return ratings.subList(0,ratings.size());
+    }
+
+    public float findAverageRating(int userID){
+        float averageRating = 0;
+        List<RatingDTO> ratingsAsRenter = findRatingsAsRenterByUserID(userID);
+        List<RatingDTO> ratingAsOwner = findRatingsAsOwnerByUserID(userID);
+        for (RatingDTO asRenter: ratingsAsRenter){
+            averageRating += asRenter.getScore();
+        }
+        for (RatingDTO asOwner: ratingAsOwner){
+            averageRating += asOwner.getScore();
+        }
+        averageRating /= (ratingAsOwner.size() + ratingsAsRenter.size());
+        return averageRating;
     }
 }

@@ -25,9 +25,7 @@ public class RentService {
     private final RentRepository rentRepository;
     private final UserService userService;
     private final ListingService listingService;
-    private final UserService userService;
     private final NotificationService notificationService;
-    private final ListingService listingService;
 
     public RentService(RentRepository rentRepository, UserService userService,
                        NotificationService notificationService, ListingService listingService) {

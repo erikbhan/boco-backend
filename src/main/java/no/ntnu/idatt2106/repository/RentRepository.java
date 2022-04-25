@@ -15,11 +15,10 @@ import java.util.List;
  */
 @Repository
 public interface RentRepository extends JpaRepository<RentDAO, Integer> {
+    List<RentDAO> findAllByRenterIDAndIsAccepted(UserDAO renterID, boolean isAccepted);
     List<RentDAO> findRentDAOSByRenterID(UserDAO renter);
     List<RentDAO> findRentDAOSByListingOwnerID(ListingDAO listing);
     List<RentDAO> findAllByRenterID(UserDAO renterId);
-
     List<RentDAO> findAllByListingOwnerID(ListingDAO listingId);
-
     RentDAO findByRentID(int rentId);
 }
