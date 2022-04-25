@@ -92,14 +92,17 @@ public class RentService {
     }
 
     public void acceptRent(RentDAO rentDAO) {
+        System.out.println(String.format("RENT WITH ID %S ACCEPTED", rentDAO.getRentID()));
         rentDAO.setAccepted(true);
     }
 
     public void deleteRent(int rentId) {
+        System.out.println(String.format("RENT WITH ID %S DELETED", rentId));
         rentRepository.delete(rentRepository.findByRentID(rentId));
     }
 
     public RentDAO getRentFromId(int rentId) {
+        System.out.println(String.format("GOT RENT OBJECT WITH ID %S", rentId));
         return rentRepository.findByRentID(rentId);
     }
 }

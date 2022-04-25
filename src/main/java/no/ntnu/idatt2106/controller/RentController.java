@@ -157,7 +157,7 @@ public class RentController {
      */
     @Operation(summary = "Accepts rent")
     @ApiResponse(responseCode = "404", description = "Rent not found in DB")
-    @PostMapping("/renting/renter/accept")
+    @PostMapping("/renting/{rentId}/accept")
     public String acceptRentRequest(@PathVariable() int rentId) throws StatusCodeException {
         RentDAO rent = rentService.getRentFromId(rentId);
         if (rent == null) {
@@ -173,7 +173,7 @@ public class RentController {
      */
     @Operation(summary = "Deletes rent")
     @ApiResponse(responseCode = "404", description = "Rent not found in DB")
-    @PostMapping("/renting/renter/delete")
+    @PostMapping("/renting/{rentId}/delete")
     public String deleteRent(@PathVariable() int rentId) throws StatusCodeException {
         RentDAO rent = rentService.getRentFromId(rentId);
         if (rent == null) {
