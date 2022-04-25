@@ -29,8 +29,6 @@ import no.ntnu.idatt2106.service.UserService;
  */
 @RestController
 @CrossOrigin
-@ApiResponse(responseCode = "200")
-@ApiResponse(responseCode = "400")
 
 public class ListingController {
     private final ListingService listingService;
@@ -52,6 +50,9 @@ public class ListingController {
      * @param listingDTO Object
      * @throws StatusCodeException
      */
+    @ApiResponse(responseCode = "200", description = "Listing posted")
+    @ApiResponse(responseCode = "400", description = "User not found")
+    @ApiResponse(responseCode = "500", description = "Something went wrong")
     @PostMapping("/listing")
     @Operation(summary = "Post Listing and adding all the listing's categories to the ListingCategory junction table")
 
@@ -64,6 +65,9 @@ public class ListingController {
             listing.setAddress(listingDTO.getAddress());
             listing.setPricePerDay(listingDTO.getPricePerDay());
             listing.setUserID(userService.findUserByUserId(listingDTO.getUserID()));
+            if(listing.getUserID() == null){
+                throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User not found");
+            }
             //Saves the DAO to the DB
             listingService.saveListing(listing);
             //The for-loop goes through the categories of listing, adding them to the 
