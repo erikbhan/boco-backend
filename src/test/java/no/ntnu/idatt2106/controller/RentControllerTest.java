@@ -74,7 +74,7 @@ public class RentControllerTest {
 
     @Test
     void rentController_getRentHistoryOfUser_ShouldBeOk() throws Exception {
-        mockMvc.perform(get("/api/users/2022/profile/rent/userHistory")
+        mockMvc.perform(get("/users/2022/profile/rent/userHistory")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk());
@@ -82,7 +82,7 @@ public class RentControllerTest {
 
     @Test
     void rentController_getRentHistoryOfUser_ShouldGive4xxError() throws Exception {
-        mockMvc.perform(get("/api/users/10/profile/rent/userHistory")
+        mockMvc.perform(get("/users/10/profile/rent/userHistory")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().is4xxClientError());
@@ -90,7 +90,7 @@ public class RentControllerTest {
 
     @Test
     void rentController_getFullRentHistoryOfOwner_ShouldBeOk() throws Exception {
-        mockMvc.perform(get("/api/users/3034/profile/rent/userHistory/owner/all")
+        mockMvc.perform(get("/users/3034/profile/rent/userHistory/owner/all")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk());
@@ -98,7 +98,7 @@ public class RentControllerTest {
 
     @Test
     void rentController_getFullRentHistoryOfOwner_ShouldGive4xxError() throws Exception {
-        mockMvc.perform(get("/api/users/10/profile/rent/userHistory/owner/all")
+        mockMvc.perform(get("/users/10/profile/rent/userHistory/owner/all")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().is4xxClientError());
@@ -106,7 +106,7 @@ public class RentControllerTest {
 
     @Test
     void rentController_getFullRentHistoryOfUser_ShouldBeOk() throws Exception {
-        mockMvc.perform(get("/api/users/2022/profile/rent/userHistory/all")
+        mockMvc.perform(get("/users/2022/profile/rent/userHistory/all")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk());
@@ -114,7 +114,7 @@ public class RentControllerTest {
 
     @Test
     void rentController_getFullRentHistoryOfUser_ShouldGive4xxError() throws Exception {
-        mockMvc.perform(get("/api/users/10/profile/rent/userHistory/all")
+        mockMvc.perform(get("/users/10/profile/rent/userHistory/all")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().is4xxClientError());
@@ -122,7 +122,7 @@ public class RentControllerTest {
 
     @Test
     void rentController_getRentHistoryOfOwner_ShouldBeOk() throws Exception {
-        mockMvc.perform(get("/api/users/3034/profile/rent/userHistory/owner")
+        mockMvc.perform(get("/users/3034/profile/rent/userHistory/owner")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk());
@@ -130,7 +130,7 @@ public class RentControllerTest {
 
     @Test
     void rentController_getRentHistoryOfOwner_ShouldGive4xxError() throws Exception {
-        mockMvc.perform(get("/api/users/10/profile/rent/userHistory/owner")
+        mockMvc.perform(get("/users/10/profile/rent/userHistory/owner")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().is4xxClientError());
@@ -138,7 +138,7 @@ public class RentControllerTest {
 
     @Test
     void rentController_saveRentingAgreementForRenter_ShouldBeOk() throws Exception {
-        mockMvc.perform(post("/api/renting/renter/save")
+        mockMvc.perform(post("/renting/renter/save")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(new RentDTO(new Date(2013,8,23),new Date(2016,6,4),false,1235,2022)))
                         .header("Authorization", "Bearer " + userToken))
@@ -147,7 +147,7 @@ public class RentControllerTest {
 
     @Test
     void rentController_deleteRent_ShouldBeOk() throws Exception{
-        mockMvc.perform(post("/api/renting/10001/delete")
+        mockMvc.perform(post("/renting/10001/delete")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", "Bearer " + userToken))
         .andExpect(status().isOk());
@@ -155,7 +155,7 @@ public class RentControllerTest {
 
     @Test
     void rentController_acceptRent_ShouldBeOk() throws Exception {
-        mockMvc.perform(put("/api/renting/10000/accept")
+        mockMvc.perform(put("/renting/10000/accept")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk());
@@ -163,7 +163,7 @@ public class RentControllerTest {
 
     @Test
     void rentController_saveRentingAgreementForRenter_ShouldGive4xx() throws Exception {
-        mockMvc.perform(post("/api/renting/renter/save")
+        mockMvc.perform(post("/renting/renter/save")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(new RentDTO(new Date(2013,8,23),new Date(2016,6,4),false,1235,2022)))
                         .header("Authorization", "Bearer " + userToken))

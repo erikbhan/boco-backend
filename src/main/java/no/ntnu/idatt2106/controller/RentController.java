@@ -22,7 +22,6 @@ import java.util.List;
  * This class controls the api request related to renting objects.
  */
 @RestController
-@RequestMapping("/api")
 @CrossOrigin
 @ApiResponse(responseCode = "200")
 @ApiResponse(responseCode = "401", description = "Not authenticated")
@@ -43,7 +42,7 @@ public class RentController {
      */
     @GetMapping("/users/{userid}/profile/rent/userHistory")
     @Operation(summary = "Get the full list of rent objects which a user has rented")
-    @ApiResponse(responseCode = "404", description = "User not found in the DB")
+    @ApiResponse(responseCode = "400", description = "User not found in the DB")
     public List<RentDAO> getRentHistoryOfUser(@PathVariable() int userid) throws Exception {
         if(userid > 0) {
             List<RentDAO> rentHistory = rentService
@@ -52,9 +51,9 @@ public class RentController {
             if(rentHistory != null && rentHistory.size() > 0) {
                 return rentHistory;
             }
-            throw new StatusCodeException(HttpStatus.NOT_FOUND, "No rent history was found for a user with this id");
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "No rent history was found for a user with this id");
         }
-        throw new StatusCodeException(HttpStatus.NOT_FOUND, "User id is not valid");
+        throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User id is not valid");
     }
 
     /**
@@ -66,7 +65,7 @@ public class RentController {
      */
     @GetMapping("/users/{userid}/profile/rent/userHistory/all")
     @Operation(summary = "Get a list of all rent agreements for a user, both accepted and not.")
-    @ApiResponse(responseCode = "404", description = "User not found in the DB")
+    @ApiResponse(responseCode = "400", description = "User not found in the DB")
     public List<RentDAO> getFullRentHistoryOfUser(@PathVariable() int userid) throws Exception {
         if(userid > 0) {
             List<RentDAO> rentHistory = rentService
@@ -75,9 +74,9 @@ public class RentController {
             if(rentHistory != null && rentHistory.size() > 0) {
                 return rentHistory;
             }
-            throw new StatusCodeException(HttpStatus.NOT_FOUND, "No rent history was found for a user with this id");
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "No rent history was found for a user with this id");
         }
-        throw new StatusCodeException(HttpStatus.NOT_FOUND, "User id is not valid");
+        throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User id is not valid");
     }
 
     /**
@@ -89,7 +88,7 @@ public class RentController {
      */
     @GetMapping("/users/{userid}/profile/rent/userHistory/owner/all")
     @Operation(summary = "Get a list of all rent agreements for a user, both accepted and not.")
-    @ApiResponse(responseCode = "404", description = "User not found in the DB")
+    @ApiResponse(responseCode = "400", description = "User not found in the DB")
     public List<RentDAO> getFullRentHistoryOfOwner(@PathVariable() int userid) throws Exception {
         if(userid > 0) {
             List<RentDAO> rentHistory = rentService
@@ -98,9 +97,9 @@ public class RentController {
             if(rentHistory != null && rentHistory.size() > 0) {
                 return rentHistory;
             }
-            throw new StatusCodeException(HttpStatus.NOT_FOUND, "No rent history was found for a user with this id");
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "No rent history was found for a user with this id");
         }
-        throw new StatusCodeException(HttpStatus.NOT_FOUND, "User id is not valid");
+        throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User id is not valid");
     }
 
     /**
@@ -111,7 +110,7 @@ public class RentController {
      */
     @GetMapping("/users/{userid}/profile/rent/userHistory/owner")
     @Operation(summary = "Get a list of all rent agreements for a user, both accepted and not.")
-    @ApiResponse(responseCode = "404", description = "User not found in the DB")
+    @ApiResponse(responseCode = "400", description = "User not found in the DB")
     public List<RentDAO> getRentHistoryOfOwner(@PathVariable() int userid) throws Exception {
         if(userid > 0) {
             List<RentDAO> rentHistoryFull = rentService
@@ -123,9 +122,9 @@ public class RentController {
             if(rentHistory != null && rentHistory.size() > 0) {
                 return rentHistory;
             }
-            throw new StatusCodeException(HttpStatus.NOT_FOUND, "No rent history was found for a user with this id");
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "No rent history was found for a user with this id");
         }
-        throw new StatusCodeException(HttpStatus.NOT_FOUND, "User id is not valid");
+        throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User id is not valid");
     }
 
     /**
@@ -159,12 +158,12 @@ public class RentController {
      * @param rentId ID for rent to be accepted
      */
     @Operation(summary = "Accepts rent")
-    @ApiResponse(responseCode = "404", description = "Rent not found in DB")
+    @ApiResponse(responseCode = "400", description = "Rent not found in DB")
     @PutMapping("/renting/{rentId}/accept")
     public String acceptRentRequest(@PathVariable() int rentId) throws StatusCodeException {
         RentDAO rent = rentService.getRentFromId(rentId);
         if (rent == null) {
-            throw new StatusCodeException(HttpStatus.NOT_FOUND, "Could not find rent with ID: " + rentId);
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Could not find rent with ID: " + rentId);
         }
         rentService.acceptRent(rent);
         return "Accepted rent";
@@ -175,12 +174,12 @@ public class RentController {
      * @param rentId ID for rent to be deleted
      */
     @Operation(summary = "Deletes rent")
-    @ApiResponse(responseCode = "404", description = "Rent not found in DB")
+    @ApiResponse(responseCode = "400", description = "Rent not found in DB")
     @PostMapping("/renting/{rentId}/delete")
     public String deleteRent(@PathVariable() int rentId) throws StatusCodeException {
         RentDAO rent = rentService.getRentFromId(rentId);
         if (rent == null) {
-            throw new StatusCodeException(HttpStatus.NOT_FOUND, "Could not find rent with ID: " + rentId);
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Could not find rent with ID: " + rentId);
         }
         rentService.deleteRent(rentId);
         return "Deleted rent";
