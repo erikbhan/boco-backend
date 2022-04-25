@@ -27,7 +27,6 @@ import no.ntnu.idatt2106.service.UserService;
 /**
  * The controller for handling api request related to Listings
  */
-@RequestMapping("/api")
 @RestController
 @CrossOrigin
 @ApiResponse(responseCode = "200")
