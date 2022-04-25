@@ -49,7 +49,7 @@ public class LoginControllerTest {
 
     //Tests that 200 code is given when providing correct email and password
     @Test
-    public void LoginController_login_ShouldGive200OK() throws Exception {
+    public void loginController_login_ShouldGive200OK() throws Exception {
         mvc.perform(post("/login/authentication")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(new LoginDTO("test@test.com", "hei"))))

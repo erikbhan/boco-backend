@@ -53,8 +53,6 @@ public class LoginService {
                 .withClaim("account_id", String.valueOf(user.getUserID()))
                 .withExpiresAt(new Date(System.currentTimeMillis() + 60 * 48 * 60 * 1000))
                 .sign(algorithm);
-
-
         return access_token;
     }
 
