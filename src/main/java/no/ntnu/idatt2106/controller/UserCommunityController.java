@@ -43,7 +43,7 @@ public class UserCommunityController {
     @Operation(summary = "Get all communities a specific user is part of")
     @ApiResponse(responseCode = "200", description = "Found communities")
     @ApiResponse(responseCode = "400", description = "Illegal operation")
-    @GetMapping("/getCommunities")
+    @GetMapping("/getCommunitiesForUser")
     public void getCommunitiesForUser(@RequestBody UserCommunityDTO userCommunityDTO ) throws StatusCodeException {
         UserDAO user = userService.findUserByUserId(userCommunityDTO.getUserID());
         if(user==null){
