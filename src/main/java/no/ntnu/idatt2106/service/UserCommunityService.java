@@ -36,7 +36,6 @@ public class UserCommunityService {
         ArrayList<CommunityDAO> communityDAOList = new ArrayList<>();
         for (int i = 0; i < communityList.size(); i++) {
             CommunityDAO communityDAO = communityService.findCommunityDAOByCommunityID(communityList.get(i).getCommunityID().getCommunityID());
-            System.out.println("Communities denne brukeren er med i: " + communityDAO.getName());
             communityDAOList.add(communityDAO);
         }
         return communityDAOList;
