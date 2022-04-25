@@ -32,16 +32,10 @@ public class ListingCategoryService {
      * @param categoryDAO
      * @param listingDAO
      */
-    public boolean saveListingCategory(CategoryDAO categoryDAO, ListingDAO listingDAO){
-        System.out.println("\n-----------------------1------------------\n");
+    public void saveListingCategory(CategoryDAO categoryDAO, ListingDAO listingDAO){
         ListingCategoryDAO listingCategoryDAO = new ListingCategoryDAO();
-        System.out.println("\n-----------------------2------------------\n");
         listingCategoryDAO.setCategoryID(categoryDAO);
-        System.out.println("\n-----------------------3------------------\n");
         listingCategoryDAO.setListingID(listingDAO);
-        System.out.println("\n-----------------------4------------------\n");
         listingCategoryRepository.save(listingCategoryDAO);
-        System.out.println("\n-----------------------5------------------\n");
-        return true;
     }
 }

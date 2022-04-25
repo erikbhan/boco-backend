@@ -13,7 +13,6 @@ public class CategoryService {
     }
 
     public CategoryDAO findCategoryDAOByName(String name){
-        System.out.println("\n\n-------------" + "Fy faen:)" + "\n\n-----------------");
         return categoryRepository.findCategoryDAOByName(name);
     }
 }

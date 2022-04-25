@@ -74,9 +74,8 @@ public class ListingController {
             //listingCategory table. 
             //Finds the categoryIDs from the category table using the categorynames. 
             for (String categoryName : listingDTO.getCategoryNames()) {
-               System.out.println(listingCategoryService.saveListingCategory(categoryService.findCategoryDAOByName(categoryName),
-                        listing));
-                System.out.println("Hei Morten:)");
+                listingCategoryService.saveListingCategory(categoryService.findCategoryDAOByName(categoryName),
+                        listing);
             }
             
             return true;
