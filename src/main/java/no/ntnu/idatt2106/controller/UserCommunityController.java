@@ -35,7 +35,7 @@ public class UserCommunityController {
     @PostMapping("/communities/{communityId}/join")
     @ApiResponse(responseCode = "200", description = "Added user to community")
     @ApiResponse(responseCode = "400", description = "Illegal operation")
-
+    @ApiResponse(responseCode = "500", description = "Unexpected error")
     public void addUserToCommunity(@PathVariable int communityId) throws StatusCodeException {
         TokenDTO token = TokenUtil.getDataJWT();
         CommunityDAO communityDAO = communityRepository.findCommunityDAOByCommunityID(communityId);
@@ -48,7 +48,10 @@ public class UserCommunityController {
         if (userCommunityService.userIsInCommunity(Integer.parseInt(token.getAccountId()),communityDAO)){
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User is already in this community");
         }
-        userCommunityService.addUserToCommunity(Integer.parseInt(token.getAccountId()), communityDAO);
+        if (!(userCommunityService.addUserToCommunity(Integer.parseInt(token.getAccountId()), communityDAO))){
+            throw new StatusCodeException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error");
+        }
+
 
     }
 
