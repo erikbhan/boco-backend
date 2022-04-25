@@ -55,6 +55,14 @@ public class UserCommunityControllerTest {
                 .andExpect(status().is2xxSuccessful());
     }
 
+    //needs to be performed after OK test at the moment
+    public void userCommunityController_addUserToCommunityWhereUserAlreadyIsInCommunity_ShouldGive4xxError() throws Exception {
+        mvc.perform(post("/addUserToCommunity")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(new UserCommunityDTO(1, 2))))
+                .andExpect(status().is4xxClientError());
+    }
+
     @Test
     public void userCommunityController_addUserToCommunity_ShouldGive4xxError() throws Exception {
         mvc.perform(post("/addUserToCommunity")

@@ -23,6 +23,9 @@ public class UserCommunityService {
         this.communityService = communityService;
     }
 
+    public boolean userIsInCommunity(UserDAO user, CommunityDAO communityDAO){
+        return (userCommunityRepository.existsByUserID(user) && userCommunityRepository.existsByCommunityID(communityDAO));
+    }
     public void addUserToCommunity(UserDAO user, CommunityDAO communityDAO){
            UserCommunityDAO userCommunity = new UserCommunityDAO(communityDAO, user, false);
            userCommunityRepository.save(userCommunity);

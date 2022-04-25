@@ -39,7 +39,13 @@ public class UserCommunityController {
         if (communityDAO == null) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Community does not exist");
         }
+        if (userCommunityService.userIsInCommunity(user,communityDAO)){
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User is already in this community");
+        }
         userCommunityService.addUserToCommunity(user, communityDAO);
+
+
+
     }
 
     @Operation(summary = "Get all communities a specific user is part of")
