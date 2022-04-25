@@ -7,6 +7,7 @@ import no.ntnu.idatt2106.repository.CommunityRepository;
 import no.ntnu.idatt2106.repository.UserCommunityRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,12 +31,14 @@ public class UserCommunityService {
            UserCommunityDAO userCommunity = new UserCommunityDAO(communityDAO, user, false);
            userCommunityRepository.save(userCommunity);
     }
-    public void getAllCommunitiesForUser(UserDAO user){
+    public ArrayList<CommunityDAO> getAllCommunitiesForUser(UserDAO user){
         List<UserCommunityDAO> communityList =  userCommunityRepository.findAllByUserID(user);
-
+        ArrayList<CommunityDAO> communityDAOList = new ArrayList<>();
         for (int i = 0; i < communityList.size(); i++) {
             CommunityDAO communityDAO = communityService.findCommunityDAOByCommunityID(communityList.get(i).getCommunityID().getCommunityID());
             System.out.println("Communities denne brukeren er med i: " + communityDAO.getName());
+            communityDAOList.add(communityDAO);
         }
+        return communityDAOList;
     }
 }

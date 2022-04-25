@@ -81,7 +81,7 @@ public class UserCommunityControllerTest {
 
     @Test
     public void userCommunityController_getCommunitiesForUser_ShouldGive200OK() throws Exception {
-        mvc.perform(get("/getCommunitiesForUser")
+        mvc.perform(get("/user/communities")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(new UserCommunityDTO(1, 2))))
                 .andExpect(status().is2xxSuccessful());
@@ -90,7 +90,7 @@ public class UserCommunityControllerTest {
 
     @Test
     public void userCommunityController_getCommunitiesForUser_ShouldGive400Error() throws Exception {
-        mvc.perform(get("/getCommunitiesForUser")
+        mvc.perform(get("/user/communities")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(new UserCommunityDTO(1000, 2))))
                 .andExpect(status().is4xxClientError());

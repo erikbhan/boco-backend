@@ -12,6 +12,9 @@ import no.ntnu.idatt2106.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @CrossOrigin
 @ApiResponse(responseCode = "200")
@@ -27,15 +30,17 @@ public class UserCommunityController {
     }
 
     @Operation(summary = "Add user to a community")
-    @PostMapping("/addUserToCommunity")
+    @PostMapping("/communities/{communityId}/join")
     @ApiResponse(responseCode = "200", description = "Added user to community")
     @ApiResponse(responseCode = "400", description = "Illegal operation")
-    public void addUserToCommunity(@RequestBody UserCommunityDTO userCommunityDTO) throws StatusCodeException {
+
+    public void addUserToCommunity(@PathVariable int communityId) throws StatusCodeException {
+        /*
         UserDAO user = userService.findUserByUserId(userCommunityDTO.getUserID());
         if (user == null) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User does not exist");
         }
-        CommunityDAO communityDAO = communityRepository.findCommunityDAOByCommunityID(userCommunityDTO.getCommunityID());
+        CommunityDAO communityDAO = communityRepository.findCommunityDAOByCommunityID(communityId);
         if (communityDAO == null) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Community does not exist");
         }
@@ -43,7 +48,7 @@ public class UserCommunityController {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User is already in this community");
         }
         userCommunityService.addUserToCommunity(user, communityDAO);
-
+*/
 
 
     }
@@ -51,13 +56,13 @@ public class UserCommunityController {
     @Operation(summary = "Get all communities a specific user is part of")
     @ApiResponse(responseCode = "200", description = "Found communities")
     @ApiResponse(responseCode = "400", description = "Illegal operation")
-    @GetMapping("/getCommunitiesForUser")
-    public void getCommunitiesForUser(@RequestBody UserCommunityDTO userCommunityDTO) throws StatusCodeException {
+    @GetMapping("/user/communities")
+    public ArrayList<CommunityDAO> getCommunitiesForUser(@RequestBody UserCommunityDTO userCommunityDTO) throws StatusCodeException {
         UserDAO user = userService.findUserByUserId(userCommunityDTO.getUserID());
         if (user == null) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User does not exist");
         }
-        userCommunityService.getAllCommunitiesForUser(user);
+        return userCommunityService.getAllCommunitiesForUser(user);
     }
 
 }
