@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class CommunityService {
     private CommunityRepository communityRepository;
+    private final CommunityRepository communityRepository;
 
     public CommunityService(CommunityRepository communityRepository) {
         this.communityRepository = communityRepository;
@@ -23,4 +24,9 @@ public class CommunityService {
         community.setVisibility(communityDTO.getVisibility());
         communityRepository.save(community);
     }
+    public CommunityDAO findCommunityDAOByCommunityID(int communityID) {
+        System.out.println("TRYING TO ACCESS A USER FROM USERID");
+        return communityRepository.findCommunityDAOByCommunityID(communityID);
+    }
+
 }
