@@ -84,4 +84,12 @@ public class RentControllerTest {
                 .andExpect(status().is4xxClientError());
     }
 
+    @Test
+    void rentController_getFullRentHistoryOfOwner_ShouldBeOk() throws Exception {
+        mockMvc.perform(get("/api/users/3034/profile/rent/userHistory/owner/all")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().isOk());
+    }
+
 }
