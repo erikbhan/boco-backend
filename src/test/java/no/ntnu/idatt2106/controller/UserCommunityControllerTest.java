@@ -8,6 +8,7 @@ import no.ntnu.idatt2106.repository.CommunityRepository;
 
 import no.ntnu.idatt2106.service.UserCommunityService;
 import no.ntnu.idatt2106.service.UserService;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,12 @@ public class UserCommunityControllerTest {
         mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
+    @Before
+    public void setUp1() throws Exception {
+            mvc.perform(post("/addUserToCommunity")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(new UserCommunityDTO(1, 3))));
+    }
     @Test
     public void userCommunityController_addUserToCommunity_ShouldGive200OK() throws Exception {
         mvc.perform(post("/addUserToCommunity")
@@ -55,11 +62,12 @@ public class UserCommunityControllerTest {
                 .andExpect(status().is2xxSuccessful());
     }
 
+    @Test
     //needs to be performed after OK test at the moment
     public void userCommunityController_addUserToCommunityWhereUserAlreadyIsInCommunity_ShouldGive4xxError() throws Exception {
         mvc.perform(post("/addUserToCommunity")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(new UserCommunityDTO(1, 2))))
+                .content(asJsonString(new UserCommunityDTO(1, 3))))
                 .andExpect(status().is4xxClientError());
     }
 
