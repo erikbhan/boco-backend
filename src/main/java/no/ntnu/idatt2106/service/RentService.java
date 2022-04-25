@@ -37,7 +37,6 @@ public class RentService {
      * @return Returns a list of rent daos containing all rent daos for this user with this status.
      */
     public List<RentDAO> findAllRentDAOWithRenterIdAndStatus(int renterId, boolean isAccepted) {
-        System.out.println(String.format("FINDING RENT HISTORY FOR USER %s WITH STATUS OF THE RENT REQUEST %s", renterId, isAccepted));
         UserDAO renter = userService.findUserByUserId(renterId);
         return rentRepository.findAllByRenterIDAndIsAccepted(renter,isAccepted);
     }
@@ -49,7 +48,6 @@ public class RentService {
      * @return Returns a list containing all rent daos with this renter id.
      */
     public List<RentDAO> findAllRentDAOWithRenterId(int renterId) {
-        System.out.println(String.format("FINDING FULL RENT HISTORY FOR USER %s", renterId));
         UserDAO renter = userService.findUserByUserId(renterId);
         return rentRepository.findAllByRenterID(renter);
     }
@@ -62,7 +60,6 @@ public class RentService {
      * or null if no items are listed with this owner id.
      */
     public List<RentDAO> findAllRentDAOWithOwnerId(int ownerId) {
-        System.out.println(String.format("FINDING ALL LISTED OBJECTS FOR OWNER WITH ID %s", ownerId));
         UserDAO owner = userService.findUserByUserId(ownerId);
         List<ListingDAO> allListedObjects = listingService.findAllListingDAOByIdOfOwner(owner);
         if(allListedObjects != null) {
@@ -120,6 +117,7 @@ public class RentService {
         Integer notificationId = rentDTO.getNotificationId();
         Integer renterId = rentDTO.getRenterId();
         Integer listingId = rentDTO.getListingId();
+        Integer rentId = rentDTO.getRentId();
         NotificationDAO notification = null;
         UserDAO renter = null;
         ListingDAO listing = null;
@@ -132,7 +130,27 @@ public class RentService {
         if(listingId != null) {
             listing = listingService.findListingByListingId(rentDTO.getListingId());
         }
-        return new RentDAO(rentDTO.getFromTime(), rentDTO.getToTime(), rentDTO.getAccepted(), listing, renter, notification);
+        if(rentId != null) {
+            RentDAO rentDAO = new RentDAO(rentDTO.getFromTime(), rentDTO.getToTime(), rentDTO.getAccepted(), listing, renter, notification);
+            rentDAO.setRentID(rentDTO.getRentId());
+            return rentDAO;
+        } else {
+            return new RentDAO(rentDTO.getFromTime(), rentDTO.getToTime(), rentDTO.getAccepted(), listing, renter, notification);
+        }
+    }
+
+    public RentDTO convertFromRentDAOToRentDTO(RentDAO rentDAO) {
+        return new RentDTO(rentDAO.getRentID(), rentDAO.getFromTime(), rentDAO.getToTime(),
+                rentDAO.getIsAccepted(), rentDAO.getListingOwnerID().getListingID(),
+                rentDAO.getRenterID().getUserID(), rentDAO.getNotificationID().getNotificationID());
+    }
+
+    public List<RentDTO> convertListOfRentDAOToListOfRentDTO(List<RentDAO> list) {
+        List<RentDTO> convertedList = new ArrayList<>();
+        for(int i = 0; i < convertedList.size(); i++) {
+            convertedList.add(convertFromRentDAOToRentDTO(list.get(i)));
+        }
+        return convertedList;
     }
 
     /**
@@ -140,8 +158,8 @@ public class RentService {
      * @param rentDAO The rent agreement, which status should be changed.
      */
     public void acceptRent(RentDAO rentDAO) {
-        System.out.println(String.format("RENT WITH ID %S ACCEPTED", rentDAO.getRentID()));
         rentDAO.setAccepted(true);
+        rentRepository.save(rentDAO);
     }
 
     /**
@@ -149,7 +167,6 @@ public class RentService {
      * @param rentId The id of the rent agreement to be deleted.
      */
     public void deleteRent(int rentId) {
-        System.out.println(String.format("RENT WITH ID %S DELETED", rentId));
         rentRepository.delete(rentRepository.findByRentID(rentId));
     }
 
@@ -159,7 +176,6 @@ public class RentService {
      * @return Returns a rent dao object with the given rentId.
      */
     public RentDAO getRentFromId(int rentId) {
-        System.out.println(String.format("GOT RENT OBJECT WITH ID %S", rentId));
         return rentRepository.findByRentID(rentId);
     }
 }

@@ -16,6 +16,7 @@ import no.ntnu.idatt2106.middleware.RequireAuth;
 import no.ntnu.idatt2106.util.TokenUtil;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,12 +44,14 @@ public class RentController {
     @GetMapping("/users/{userid}/profile/rent/userHistory")
     @Operation(summary = "Get the full list of rent objects which a user has rented")
     @ApiResponse(responseCode = "400", description = "User not found in the DB")
-    public List<RentDAO> getRentHistoryOfUser(@PathVariable() int userid) throws Exception {
+    public List<RentDTO> getRentHistoryOfUser(@PathVariable() int userid) throws Exception {
         if(userid > 0) {
-            List<RentDAO> rentHistory = rentService
+            List<RentDAO> rentHistoryDAO = rentService
                     .findAllRentDAOWithRenterIdAndStatus(userid, true);
 
-            if(rentHistory != null && rentHistory.size() > 0) {
+            if(rentHistoryDAO != null && rentHistoryDAO.size() > 0) {
+                List<RentDTO> rentHistory = rentService
+                        .convertListOfRentDAOToListOfRentDTO(rentHistoryDAO);
                 return rentHistory;
             }
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "No rent history was found for a user with this id");
@@ -66,12 +69,14 @@ public class RentController {
     @GetMapping("/users/{userid}/profile/rent/userHistory/all")
     @Operation(summary = "Get a list of all rent agreements for a user, both accepted and not.")
     @ApiResponse(responseCode = "400", description = "User not found in the DB")
-    public List<RentDAO> getFullRentHistoryOfUser(@PathVariable() int userid) throws Exception {
+    public List<RentDTO> getFullRentHistoryOfUser(@PathVariable() int userid) throws Exception {
         if(userid > 0) {
-            List<RentDAO> rentHistory = rentService
+            List<RentDAO> rentHistoryDAO = rentService
                     .findAllRentDAOWithRenterId(userid);
 
-            if(rentHistory != null && rentHistory.size() > 0) {
+            if(rentHistoryDAO != null && rentHistoryDAO.size() > 0) {
+                List<RentDTO> rentHistory = rentService
+                        .convertListOfRentDAOToListOfRentDTO(rentHistoryDAO);
                 return rentHistory;
             }
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "No rent history was found for a user with this id");
@@ -89,12 +94,14 @@ public class RentController {
     @GetMapping("/users/{userid}/profile/rent/userHistory/owner/all")
     @Operation(summary = "Get a list of all rent agreements for a user, both accepted and not.")
     @ApiResponse(responseCode = "400", description = "User not found in the DB")
-    public List<RentDAO> getFullRentHistoryOfOwner(@PathVariable() int userid) throws Exception {
+    public List<RentDTO> getFullRentHistoryOfOwner(@PathVariable() int userid) throws Exception {
         if(userid > 0) {
-            List<RentDAO> rentHistory = rentService
+            List<RentDAO> rentHistoryDAO = rentService
                     .findAllRentDAOWithOwnerId(userid);
 
-            if(rentHistory != null && rentHistory.size() > 0) {
+            if(rentHistoryDAO != null && rentHistoryDAO.size() > 0) {
+                List<RentDTO> rentHistory = rentService
+                        .convertListOfRentDAOToListOfRentDTO(rentHistoryDAO);
                 return rentHistory;
             }
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "No rent history was found for a user with this id");
@@ -111,15 +118,17 @@ public class RentController {
     @GetMapping("/users/{userid}/profile/rent/userHistory/owner")
     @Operation(summary = "Get a list of all rent agreements for a user, both accepted and not.")
     @ApiResponse(responseCode = "400", description = "User not found in the DB")
-    public List<RentDAO> getRentHistoryOfOwner(@PathVariable() int userid) throws Exception {
+    public List<RentDTO> getRentHistoryOfOwner(@PathVariable() int userid) throws Exception {
         if(userid > 0) {
             List<RentDAO> rentHistoryFull = rentService
                     .findAllRentDAOWithOwnerId(userid);
 
-            List<RentDAO> rentHistory = rentService
+            List<RentDAO> rentHistoryDAO = rentService
                     .filterAListOfRentDAOByStatusOfAgreement(rentHistoryFull,true);
 
-            if(rentHistory != null && rentHistory.size() > 0) {
+            if(rentHistoryDAO != null && rentHistoryDAO.size() > 0) {
+                List<RentDTO> rentHistory = rentService
+                        .convertListOfRentDAOToListOfRentDTO(rentHistoryDAO);
                 return rentHistory;
             }
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "No rent history was found for a user with this id");
