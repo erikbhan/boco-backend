@@ -39,8 +39,6 @@ public class LoginService {
         if (new String(hashedPassword).equals(new String(user.getHash().getBytes(StandardCharsets.UTF_8)))) {
             return true;
         }
-        System.out.println("Password entered by user: " + new String(hashedPassword));
-        System.out.println("Password in database: " + new String(user.getHash().getBytes(StandardCharsets.UTF_8)));
         return false;
     }
 
@@ -55,8 +53,6 @@ public class LoginService {
                 .withExpiresAt(new Date(System.currentTimeMillis() + 60 * 48 * 60 * 1000))
                 .sign(algorithm);
 
-
-        System.out.println("You were authenticated : " + access_token);
 
         return access_token;
     }
