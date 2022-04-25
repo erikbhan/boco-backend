@@ -90,4 +90,16 @@ public class RentService {
         ListingDAO listing = listingService.findListingByListingId(rentDTO.getListingId());
         return new RentDAO(rentDTO.getFromTime(), rentDTO.getToTime(), rentDTO.getAccepted(), listing, renter, notification);
     }
+
+    public void acceptRent(RentDAO rentDAO) {
+        rentDAO.setAccepted(true);
+    }
+
+    public void deleteRent(int rentId) {
+        rentRepository.delete(rentRepository.findByRentID(rentId));
+    }
+
+    public RentDAO getRentFromId(int rentId) {
+        return rentRepository.findByRentID(rentId);
+    }
 }

@@ -43,7 +43,7 @@ public class RentDTO {
     }
 
     public void setAccepted(Boolean accepted) {
-        isAccepted = accepted;
+        this.isAccepted = accepted;
     }
 
     public void setListingId(int listingId) {

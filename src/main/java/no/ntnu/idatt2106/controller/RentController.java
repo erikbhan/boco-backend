@@ -3,9 +3,9 @@ package no.ntnu.idatt2106.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import no.ntnu.idatt2106.exception.StatusCodeException;
+import no.ntnu.idatt2106.model.DAO.RentDAO;
 import no.ntnu.idatt2106.model.DTO.RentDTO;
 import no.ntnu.idatt2106.service.RentService;
-import no.ntnu.idatt2106.model.DAO.RentDAO;
 import no.ntnu.idatt2106.model.DTO.TokenDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -135,9 +135,9 @@ public class RentController {
     public String saveRentingAgreementForRenter(@RequestBody RentDTO rentDTO) throws StatusCodeException {
         TokenDTO userToken = TokenUtil.getDataJWT();
         Integer renterId = rentDTO.getRenterId();
-        if(renterId == null) {
+        if (renterId == null) {
             Integer tokenUserId = Integer.valueOf(userToken.getAccountId());
-            if(tokenUserId != null) {
+            if (tokenUserId != null) {
                 RentDAO agreement = rentService.convertFromRentDTOTORentDAO(rentDTO);
                 agreement.setRentID(tokenUserId);
                 String saveAns = rentService.saveNewRentAgreementToDB(agreement);
@@ -149,5 +149,37 @@ public class RentController {
             throw new StatusCodeException(HttpStatus.I_AM_A_TEAPOT, "The token is missing the account id");
         }
         throw new StatusCodeException(HttpStatus.NOT_ACCEPTABLE, "Make sure renterId is null");
+    }
+
+    /**
+     * Method for accepting a rent.
+     * @param rentId ID for rent to be accepted
+     */
+    @Operation(summary = "Accepts rent")
+    @ApiResponse(responseCode = "404", description = "Rent not found in DB")
+    @PostMapping("/renting/renter/accept")
+    public String acceptRentRequest(@PathVariable() int rentId) throws StatusCodeException {
+        RentDAO rent = rentService.getRentFromId(rentId);
+        if (rent == null) {
+            throw new StatusCodeException(HttpStatus.NOT_FOUND, "Could not find rent with ID: " + rentId);
+        }
+        rentService.acceptRent(rent);
+        return "Accepted rent";
+    }
+
+    /**
+     * Method for deleting a rent.
+     * @param rentId ID for rent to be deleted
+     */
+    @Operation(summary = "Deletes rent")
+    @ApiResponse(responseCode = "404", description = "Rent not found in DB")
+    @PostMapping("/renting/renter/delete")
+    public String deleteRent(@PathVariable() int rentId) throws StatusCodeException {
+        RentDAO rent = rentService.getRentFromId(rentId);
+        if (rent == null) {
+            throw new StatusCodeException(HttpStatus.NOT_FOUND, "Could not find rent with ID: " + rentId);
+        }
+        rentService.deleteRent(rentId);
+        return "Deleted rent";
     }
 }
