@@ -24,6 +24,8 @@ public class TokenUtil {
         }
     }
 
+
+
     public static boolean verifyToken(String token) {
         try {
             // Validate the JWT signature
@@ -46,5 +48,7 @@ public class TokenUtil {
         return new TokenDTO(JWT.decode(token).getClaims());
     }
 
-
+    public static TokenDTO getDataJWT() {
+        return TokenUtil.getDataJWT(TokenUtil.getToken());
+    }
 }
