@@ -9,7 +9,9 @@ import no.ntnu.idatt2106.repository.UserRepository;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
-
+/**
+ * Service class for handling listings
+ */
 @Service
 public class ListingService {
     private final ListingRepository listingRepository;
@@ -20,15 +22,8 @@ public class ListingService {
         this.userRepository = userRepository;
     }
 
-    public void saveListing(ListingDTO listingDTO){
-        ListingDAO listing = new ListingDAO();
-        listing.setTitle(listingDTO.getTitle());
-        listing.setDescription(listingDTO.getAddress());
-        listing.setAddress(listingDTO.getAddress());
-        listing.setPricePerDay(listingDTO.getPricePerDay());
-        listing.setUserID(userRepository.getById(listingDTO.getUserID()));
-        listingRepository.save(listing);
-        
+    public void saveListing(ListingDAO listingDAO){
+        listingRepository.save(listingDAO);
     }
 
     

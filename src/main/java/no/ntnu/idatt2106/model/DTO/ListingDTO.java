@@ -1,6 +1,5 @@
 package no.ntnu.idatt2106.model.DTO;
 
-import java.util.List;
 
 public class ListingDTO {
     private String title;
@@ -8,11 +7,20 @@ public class ListingDTO {
     private double pricePerDay;
     private String address;
     private int userID;
-    private List<String> categoryNames;
+    private String[] categoryNames;
 
     public ListingDTO() {
     }
 
+    public ListingDTO(String title, String description, double pricePerDay, String address,
+            int userID, String[] categoryNames) {
+        this.title = title;
+        this.description = description;
+        this.pricePerDay = pricePerDay;
+        this.address = address;
+        this.userID = userID;
+        this.categoryNames = categoryNames;
+    }
 
     public String getTitle() {
         return this.title;
@@ -54,12 +62,11 @@ public class ListingDTO {
         this.userID = userID;
     }
 
-
-    public List<String> getCategoryNames() {
+    public String[] getCategoryNames() {
         return this.categoryNames;
     }
 
-    public void setCategoryNames(List<String> categoryNames) {
+    public void setCategoryNames(String[] categoryNames) {
         this.categoryNames = categoryNames;
     }
 

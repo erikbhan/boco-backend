@@ -10,6 +10,9 @@ public class ListingCategoryID implements Serializable {
     private int listingID;
     private int categoryID;
 
+    public ListingCategoryID(){
+        
+    }
     public ListingCategoryID(int listingID, int categoryID){
         this.listingID = listingID;
         this.categoryID = categoryID;
