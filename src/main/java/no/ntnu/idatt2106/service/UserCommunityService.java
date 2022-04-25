@@ -24,11 +24,11 @@ public class UserCommunityService {
         this.communityService = communityService;
     }
 
-    public boolean userIsInCommunity(UserDAO user, CommunityDAO communityDAO){
-        return (userCommunityRepository.existsByUserID(user) && userCommunityRepository.existsByCommunityID(communityDAO));
+    public boolean userIsInCommunity(int user, CommunityDAO communityDAO){
+        return (userCommunityRepository.existsByUserID(userService.findUserByUserId(user)) && userCommunityRepository.existsByCommunityID(communityDAO));
     }
-    public void addUserToCommunity(UserDAO user, CommunityDAO communityDAO){
-           UserCommunityDAO userCommunity = new UserCommunityDAO(communityDAO, user, false);
+    public void addUserToCommunity(int user, CommunityDAO communityDAO){
+           UserCommunityDAO userCommunity = new UserCommunityDAO(communityDAO, userService.findUserByUserId(user), false);
            userCommunityRepository.save(userCommunity);
     }
     public ArrayList<CommunityDAO> getAllCommunitiesForUser(UserDAO user){

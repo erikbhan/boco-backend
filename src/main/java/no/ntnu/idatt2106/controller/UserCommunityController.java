@@ -7,7 +7,6 @@ import no.ntnu.idatt2106.middleware.RequireAuth;
 import no.ntnu.idatt2106.model.DAO.CommunityDAO;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
 import no.ntnu.idatt2106.model.DTO.TokenDTO;
-import no.ntnu.idatt2106.model.DTO.UserCommunityDTO;
 import no.ntnu.idatt2106.repository.CommunityRepository;
 import no.ntnu.idatt2106.service.UserCommunityService;
 import no.ntnu.idatt2106.service.UserService;
@@ -39,10 +38,6 @@ public class UserCommunityController {
 
     public void addUserToCommunity(@PathVariable int communityId) throws StatusCodeException {
         TokenDTO token = TokenUtil.getDataJWT();
-        UserDAO user = userService.findUserByUserId(Integer.parseInt(token.getAccountId()));
-        if (user == null) {
-            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User does not exist");
-        }
         CommunityDAO communityDAO = communityRepository.findCommunityDAOByCommunityID(communityId);
         if (communityDAO == null) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Community does not exist");
@@ -50,10 +45,10 @@ public class UserCommunityController {
         if(communityDAO.getVisibility()==0){
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "This community is invite only");
         }
-        if (userCommunityService.userIsInCommunity(user,communityDAO)){
+        if (userCommunityService.userIsInCommunity(Integer.parseInt(token.getAccountId()),communityDAO)){
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User is already in this community");
         }
-        userCommunityService.addUserToCommunity(user, communityDAO);
+        userCommunityService.addUserToCommunity(Integer.parseInt(token.getAccountId()), communityDAO);
 
     }
 
