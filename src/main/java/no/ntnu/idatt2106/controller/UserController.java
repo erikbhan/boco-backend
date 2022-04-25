@@ -34,7 +34,6 @@ public class UserController {
     @Operation(summary = "Get at user by the user id")
     @ApiResponse(responseCode = "404", description = "User not found in the DB")
     public UserDTO getAUserFromUserId(@PathVariable() int userid) throws StatusCodeException {
-        System.out.println("Trying to find a user");
         UserDAO user = userService.findUserByUserId(userid);
         if(user == null) {
             throw new StatusCodeException(HttpStatus.NOT_FOUND, "User not found in DB");
