@@ -85,9 +85,21 @@ public class RentService {
     }
 
     public RentDAO convertFromRentDTOTORentDAO(RentDTO rentDTO) {
-        NotificationDAO notification = notificationService.getNotificationFromNotificationId(rentDTO.getNotificationId());
-        UserDAO renter = userService.findUserByUserId(rentDTO.getRenterId());
-        ListingDAO listing = listingService.findListingByListingId(rentDTO.getListingId());
+        Integer notificationId = rentDTO.getNotificationId();
+        Integer renterId = rentDTO.getRenterId();
+        Integer listingId = rentDTO.getListingId();
+        NotificationDAO notification = null;
+        UserDAO renter = null;
+        ListingDAO listing = null;
+        if(notificationId != null) {
+            notification = notificationService.getNotificationFromNotificationId(rentDTO.getNotificationId());
+        }
+        if(renterId != null) {
+            renter = userService.findUserByUserId(rentDTO.getRenterId());
+        }
+        if(listingId != null) {
+            listing = listingService.findListingByListingId(rentDTO.getListingId());
+        }
         return new RentDAO(rentDTO.getFromTime(), rentDTO.getToTime(), rentDTO.getAccepted(), listing, renter, notification);
     }
 

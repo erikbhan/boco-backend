@@ -10,6 +10,14 @@ public class RentDTO {
     int renterId;
     int notificationId;
 
+    public RentDTO(Date fromTime, Date toTime, Boolean isAccepted, int listingId, int renterId) {
+        this.fromTime = fromTime;
+        this.toTime = toTime;
+        this.isAccepted = isAccepted;
+        this.listingId = listingId;
+        this.renterId = renterId;
+    }
+
     public Date getFromTime() {
         return fromTime;
     }

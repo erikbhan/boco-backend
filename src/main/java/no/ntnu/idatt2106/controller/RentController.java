@@ -128,27 +128,30 @@ public class RentController {
         throw new StatusCodeException(HttpStatus.NOT_FOUND, "User id is not valid");
     }
 
+    /**
+     * A method for saving a new rent agreement to the DB.
+     * Returns a string with the success message or a http status error if the method fails.
+     * @param rentDTO The format of the rent agreement.
+     * @return Returns a string with the success message or a http status error if the method fails.
+     * @throws StatusCodeException
+     */
     @PostMapping("/renting/renter/save")
     @Operation(summary = "A method for saving a new rent agreement to the DB")
-    @ApiResponse(responseCode = "406", description = "Make sure renterId is null")
-    @ApiResponse(responseCode = "418", description = "Make sure renterId is null")
+    @ApiResponse(responseCode = "406", description = "Make sure the token contains the account id")
+    @ApiResponse(responseCode = "418", description = "Make sure there is no identical entity in the DB")
     public String saveRentingAgreementForRenter(@RequestBody RentDTO rentDTO) throws StatusCodeException {
         TokenDTO userToken = TokenUtil.getDataJWT();
-        Integer renterId = rentDTO.getRenterId();
-        if (renterId == null) {
-            Integer tokenUserId = Integer.valueOf(userToken.getAccountId());
-            if (tokenUserId != null) {
-                RentDAO agreement = rentService.convertFromRentDTOTORentDAO(rentDTO);
-                agreement.setRentID(tokenUserId);
-                String saveAns = rentService.saveNewRentAgreementToDB(agreement);
-                if (saveAns != null) {
-                    return saveAns;
-                }
-                throw new StatusCodeException(HttpStatus.I_AM_A_TEAPOT, "The save did not work");
+        Integer tokenUserId = Integer.valueOf(userToken.getAccountId());
+        if (tokenUserId != null) {
+            RentDAO agreement = rentService.convertFromRentDTOTORentDAO(rentDTO);
+            agreement.setRentID(tokenUserId);
+            String saveAns = rentService.saveNewRentAgreementToDB(agreement);
+            if (saveAns != null) {
+                return saveAns;
             }
-            throw new StatusCodeException(HttpStatus.I_AM_A_TEAPOT, "The token is missing the account id");
+            throw new StatusCodeException(HttpStatus.I_AM_A_TEAPOT, "The save did not work");
         }
-        throw new StatusCodeException(HttpStatus.NOT_ACCEPTABLE, "Make sure renterId is null");
+        throw new StatusCodeException(HttpStatus.NOT_ACCEPTABLE, "The token is missing the account id");
     }
 
     /**
