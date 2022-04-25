@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
 @RestController
-@RequestMapping("/api")
 @ApiResponse(responseCode = "200")
 @CrossOrigin
 public class LoginController {

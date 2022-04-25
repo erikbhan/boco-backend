@@ -16,7 +16,6 @@ import no.ntnu.idatt2106.util.HashUtil;
  * Controller class for handling user registration
  */
 @RestController
-@RequestMapping("/api")
 @CrossOrigin
 @ApiResponse(responseCode = "200")
 public class RegisterController {
