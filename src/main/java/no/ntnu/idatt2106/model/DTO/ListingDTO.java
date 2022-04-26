@@ -1,6 +1,8 @@
 package no.ntnu.idatt2106.model.DTO;
 
-
+/**
+ * DTO class for Listing.
+ */
 public class ListingDTO {
     private String title;
     private String description;
@@ -12,7 +14,16 @@ public class ListingDTO {
 
     public ListingDTO() {
     }
-
+    /**
+     * 
+     * @param title
+     * @param description
+     * @param pricePerDay
+     * @param address
+     * @param userID
+     * @param categoryNames All the categories related to the listing
+     * @param communityIDs All the communityIDs related to the listing
+     */
     public ListingDTO(String title, String description, double pricePerDay, String address,
             int userID, String[] categoryNames, int[] communityIDs) {
         this.title = title;

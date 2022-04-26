@@ -24,6 +24,7 @@ public class ListingService {
 
     /**
      * Saves a ListingDAO to the DB
+     * 
      * @param listingDAO
      */
     public void saveListing(ListingDAO listingDAO) {
@@ -32,6 +33,7 @@ public class ListingService {
 
     /**
      * Finds all Listings in the Listing table
+     * 
      * @return All listings
      */
     public List<ListingDAO> getAllListings() {
@@ -40,6 +42,7 @@ public class ListingService {
 
     /**
      * Finds all listing posted by a user
+     * 
      * @param userDAO
      * @return All the user's listings
      */
@@ -49,18 +52,22 @@ public class ListingService {
 
     /**
      * Finds a specific listing
+     * 
      * @param listingID
      * @return An optional with a specific listing
      */
     public Optional<ListingDAO> getListingDAOByID(int listingID) {
         return listingRepository.findById(listingID);
     }
+
     /**
-     * Converts a list of ListingDAOs to ListingDTOs using the convertOneListingDAOToDTO for every Object
+     * Converts a list of ListingDAOs to ListingDTOs using the
+     * convertOneListingDAOToDTO for every Object
+     * 
      * @param listingCategoryService
      * @param communityListingService
-     * @param listingDAOs The list of DAOs that is to be converted
-     * @return A list of converted DTOs. 
+     * @param listingDAOs             The list of DAOs that is to be converted
+     * @return A list of converted DTOs.
      */
     public List<ListingDTO> convertMultipleFromListingDAOToDTO(ListingCategoryService listingCategoryService,
             CommunityListingService communityListingService, List<ListingDAO> listingDAOs) {
@@ -72,22 +79,26 @@ public class ListingService {
     }
 
     /**
-     * Method for converting a ListingDAO to a ListingDTO. 
+     * Method for converting a ListingDAO to a ListingDTO.
+     * 
      * @param listingCategoryService
      * @param communityListingService
-     * @param listingDAO The ListingDAO that is to be converted
+     * @param listingDAO              The ListingDAO that is to be converted
      * @return The converted ListingDAO, now a DTO
      */
     public ListingDTO convertOneListingDAOToDTO(ListingCategoryService listingCategoryService,
-        CommunityListingService communityListingService, ListingDAO listingDAO) {
-            //Finds all the listing's categorynames through the listingCategory junction table
-            String[] categoryNames = listingCategoryService.getCategoryNamesByListingID(listingDAO);
-            //Finds all the listing's communityIDs through the communityListing junction table
-            int[] communityIDs = communityListingService.getCommunityListingIDsByListingID(listingDAO);
-            //Creates a ListingDTO with the DAO-information, aswell as the categorynames and communityIDs.
-            ListingDTO listingDTO = new ListingDTO(listingDAO.getTitle(), listingDAO.getDescription(),
-                    listingDAO.getPricePerDay(), listingDAO.getAddress(), listingDAO.getUserID().getUserID(), categoryNames,
-                    communityIDs);
+            CommunityListingService communityListingService, ListingDAO listingDAO) {
+        // Finds all the listing's categorynames through the listingCategory junction
+        // table
+        String[] categoryNames = listingCategoryService.getCategoryNamesByListingID(listingDAO);
+        // Finds all the listing's communityIDs through the communityListing junction
+        // table
+        int[] communityIDs = communityListingService.getCommunityListingIDsByListingID(listingDAO);
+        // Creates a ListingDTO with the DAO-information, aswell as the categorynames
+        // and communityIDs.
+        ListingDTO listingDTO = new ListingDTO(listingDAO.getTitle(), listingDAO.getDescription(),
+                listingDAO.getPricePerDay(), listingDAO.getAddress(), listingDAO.getUserID().getUserID(), categoryNames,
+                communityIDs);
         return listingDTO;
     }
 }

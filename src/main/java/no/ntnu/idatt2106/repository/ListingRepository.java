@@ -8,5 +8,6 @@ import no.ntnu.idatt2106.model.DAO.ListingDAO;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
 
 public interface ListingRepository extends JpaRepository<ListingDAO, Integer> {
+    //Finds all listings of one user
     List<ListingDAO> findAllFromListingDAOByUserID(UserDAO userID);
 }

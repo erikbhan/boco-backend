@@ -108,10 +108,10 @@ public class ListingControllerTest {
         }
     }
 
-    @Test
-    public void getAllListingsShouldBeOK() throws Exception{
-        mockMvc.perform(get("/api/listing").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
-    }
+    // @Test
+    // public void getAllListingsShouldBeOK() throws Exception{
+    //     mockMvc.perform(get("/api/listing").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+    // }
 
     /**
      * Aint working

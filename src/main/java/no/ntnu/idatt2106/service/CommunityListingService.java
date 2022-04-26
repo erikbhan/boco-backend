@@ -19,6 +19,11 @@ public class CommunityListingService {
         this.communityListingRepository = communityListingRepository;
     }
 
+    /**
+     * Saves a communityListingDAO to the CommunityListing junction table
+     * @param communityDAO
+     * @param listingDAO
+     */
     public void saveCommunityListing(CommunityDAO communityDAO, ListingDAO listingDAO){
         CommunityListingDAO communityListingDAO = new CommunityListingDAO();
         communityListingDAO.setCommunityID(communityDAO);
