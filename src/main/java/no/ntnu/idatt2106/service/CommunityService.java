@@ -24,7 +24,7 @@ public class CommunityService {
         communityRepository.save(community);
     }
 
-    public CommunityDAO findCommunityDAOByID(int communityID){
-        return communityRepository.getById(communityID);
+    public CommunityDAO findCommunityDAOByCommunityID(int communityID) {
+        return communityRepository.findCommunityDAOByCommunityID(communityID);
     }
 }
