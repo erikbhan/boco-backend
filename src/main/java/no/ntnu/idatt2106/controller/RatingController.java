@@ -79,6 +79,13 @@ public class RatingController {
         } else throw new StatusCodeException(HttpStatus.OK, "User not found or had no ratings as owner");
     }
 
+    /**
+     * A method for transforming a ratingDTO into a ratingDAO, then adding
+     * this ratingDAO to the database
+     * @param ratingDTO The ratingDTO with the information to be added to the database
+     * @return true if the given DTO was accepted and added to the database as a DAO
+     *         false if a token was not received or if the owner of the token was not found
+     */
     @Operation(summary = "Saves rating to db")
     @ApiResponse(responseCode = "400", description = "User not found in DB")
     @PostMapping("/rating/save")
