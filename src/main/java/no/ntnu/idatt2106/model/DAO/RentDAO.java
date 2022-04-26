@@ -20,6 +20,8 @@ public class RentDAO{
     private Date toTime;
     @Column(name = "is_accepted")
     private boolean isAccepted;
+    @Column(name = "is_deleted")
+    private boolean isDeleted;
     @ManyToOne
     @JoinColumn(name = "listing_owner_id")
     private ListingDAO listingOwnerID;
@@ -93,4 +95,8 @@ public class RentDAO{
     public NotificationDAO getNotificationID() {return notificationID;}
 
     public void setNotificationID(NotificationDAO notificationID) {this.notificationID = notificationID;}
+
+    public boolean isDeleted() {return isDeleted;}
+
+    public void setDeleted(boolean deleted) {isDeleted = deleted;}
 }

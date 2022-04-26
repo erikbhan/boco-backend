@@ -163,11 +163,14 @@ public class RentService {
     }
 
     /**
-     * A method which deletes a rent agreement from the db.
+     * A method which changes the status of a rent dao to be true on deleted.
+     * This marks it as deleted.
      * @param rentId The id of the rent agreement to be deleted.
      */
     public void deleteRent(int rentId) {
-        rentRepository.delete(rentRepository.findByRentID(rentId));
+        RentDAO rentDAO = rentRepository.findByRentID(rentId);
+        rentDAO.setDeleted(true);
+        rentRepository.save(rentDAO);
     }
 
     /**
@@ -176,6 +179,27 @@ public class RentService {
      * @return Returns a rent dao object with the given rentId.
      */
     public RentDAO getRentFromId(int rentId) {
-        return rentRepository.findByRentID(rentId);
+        RentDAO rentDAO = rentRepository.findByRentID(rentId);
+        if(rentDAO.isDeleted()) {
+            return null;
+        } else {
+            return rentDAO;
+        }
+    }
+
+    /**
+     * A method for filtering lists of RentDAOs on deleted.
+     * This method filters out all rent daos that have been deleted.
+     * @param list The list you wnat to filter.
+     * @return Returns a list of rent daos containing only non deleted renting agreements.
+     */
+    public List<RentDAO> filterListOfRentDAOOnDeleted(List<RentDAO> list) {
+        List<RentDAO> noDeletedRentDAOs = new ArrayList<>();
+        for(int i = 0; i < list.size(); i++) {
+            if(!list.get(i).isDeleted()) {
+                noDeletedRentDAOs.add(list.get(i));
+            }
+        }
+        return noDeletedRentDAOs;
     }
 }

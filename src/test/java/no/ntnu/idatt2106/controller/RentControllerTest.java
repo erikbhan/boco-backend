@@ -147,7 +147,7 @@ public class RentControllerTest {
 
     @Test
     void rentController_deleteRent_ShouldBeOk() throws Exception{
-        mockMvc.perform(post("/renting/10001/delete")
+        mockMvc.perform(put("/renting/10001/delete")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", "Bearer " + userToken))
         .andExpect(status().isOk());
@@ -155,7 +155,7 @@ public class RentControllerTest {
 
     @Test
     void rentController_deleteNonExistingRent_ShouldBe4xx() throws Exception {
-        mockMvc.perform(post("/api/renting/10002/delete")
+        mockMvc.perform(put("/api/renting/10002/delete")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().is4xxClientError());

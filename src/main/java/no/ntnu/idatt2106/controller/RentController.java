@@ -50,6 +50,7 @@ public class RentController {
                     .findAllRentDAOWithRenterIdAndStatus(userid, true);
 
             if(rentHistoryDAO != null && rentHistoryDAO.size() > 0) {
+                rentHistoryDAO = rentService.filterListOfRentDAOOnDeleted(rentHistoryDAO);
                 List<RentDTO> rentHistory = rentService
                         .convertListOfRentDAOToListOfRentDTO(rentHistoryDAO);
                 return rentHistory;
@@ -127,6 +128,7 @@ public class RentController {
                     .filterAListOfRentDAOByStatusOfAgreement(rentHistoryFull,true);
 
             if(rentHistoryDAO != null && rentHistoryDAO.size() > 0) {
+                rentHistoryDAO = rentService.filterListOfRentDAOOnDeleted(rentHistoryDAO);
                 List<RentDTO> rentHistory = rentService
                         .convertListOfRentDAOToListOfRentDTO(rentHistoryDAO);
                 return rentHistory;
@@ -184,7 +186,7 @@ public class RentController {
      */
     @Operation(summary = "Deletes rent")
     @ApiResponse(responseCode = "400", description = "Rent not found in DB")
-    @PostMapping("/renting/{rentId}/delete")
+    @PutMapping("/renting/{rentId}/delete")
     public String deleteRent(@PathVariable() int rentId) throws StatusCodeException {
         RentDAO rent = rentService.getRentFromId(rentId);
         if (rent == null) {
