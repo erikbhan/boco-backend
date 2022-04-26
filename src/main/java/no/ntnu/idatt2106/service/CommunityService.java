@@ -41,12 +41,12 @@ public class CommunityService {
     }
 
     public List<CommunityDAO> findAllCommunityDAOWithContainingAGivenName(String name) {
-        return communityRepository.findAllByNameLike("%" + name + "%");
+        return communityRepository.findAllByNameLike(name);
     }
 
     public List<CommunityDTO> convertListCommunityDAOToListCommunityDTO(List<CommunityDAO> list) {
         List<CommunityDTO> convertedList = new ArrayList<>();
-        for(int i = 0; i < convertedList.size(); i++) {
+        for(int i = 0; i < list.size(); i++) {
             convertedList.add(new CommunityDTO(list.get(i)));
         }
         return convertedList;
