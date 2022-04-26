@@ -28,6 +28,10 @@ VALUES (4001, 'Einars MC klubb', 'vi som liker motorsykkel og heter Einar', 0, '
 INSERT INTO public.community(community_id, name, description, visibility, location, picture)
 VALUES (4002, 'Einars MC klubb', 'vi som liker motorsykkel og heter Einar', 0, 'Elgeseter gate(midt på natta)', 'bilde');
 
+
+INSERT INTO public.community(community_id, name, description, visibility, location, picture)
+VALUES (4444, 'Einars MC klubb', 'vi som liker motorsykkel og heter Einar', 0, 'Elgeseter gate(midt på natta)', 'bilde');
+
 INSERT INTO public.user_community(community_id, user_id, is_administrator)
 VALUES (4000, 2022, true);
 
@@ -42,3 +46,7 @@ VALUES (1001, 'Fisk for folk', 'Ravnkloa', 'Det regner fisk', 'imagen a place ..
 
 INSERT INTO public.user_community(community_id, user_id, is_administrator)
 VALUES (1001, 1, false);
+
+
+INSERT INTO public.user_community(community_id, user_id, is_administrator)
+VALUES (4444, 1, false);

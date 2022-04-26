@@ -4,6 +4,9 @@ import no.ntnu.idatt2106.model.DAO.UserDAO;
 import no.ntnu.idatt2106.model.DTO.UserDTO;
 import no.ntnu.idatt2106.repository.UserRepository;
 
+import java.util.Optional;
+
+
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -28,7 +31,6 @@ public class UserService {
     public UserDAO findUserByUserId(int userId) {
         return userRepository.findUserDAOByUserID(userId);
     }
-
     /**
      * A method to find a user by their email.
      * @param email The email of the user you want to find
