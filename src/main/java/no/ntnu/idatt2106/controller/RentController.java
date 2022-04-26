@@ -24,7 +24,6 @@ import java.util.List;
  */
 @RestController
 @CrossOrigin
-@ApiResponse(responseCode = "200")
 @ApiResponse(responseCode = "401", description = "Not authenticated")
 @RequireAuth
 public class RentController {
@@ -43,7 +42,8 @@ public class RentController {
      */
     @GetMapping("/users/{userid}/profile/rent/userHistory")
     @Operation(summary = "Get the full list of rent objects which a user has rented")
-    @ApiResponse(responseCode = "400", description = "User not found in the DB")
+    @ApiResponse(responseCode = "200", description = "Returns the rent history of the user, deleted items are not included")
+    @ApiResponse(responseCode = "400", description = "User or rent history not found in the DB")
     public List<RentDTO> getRentHistoryOfUser(@PathVariable() int userid) throws Exception {
         if(userid > 0) {
             List<RentDAO> rentHistoryDAO = rentService
@@ -69,7 +69,8 @@ public class RentController {
      */
     @GetMapping("/users/{userid}/profile/rent/userHistory/all")
     @Operation(summary = "Get a list of all rent agreements for a user, both accepted and not.")
-    @ApiResponse(responseCode = "400", description = "User not found in the DB")
+    @ApiResponse(responseCode = "200", description = "Returns every instance where this user has rented an item from another user")
+    @ApiResponse(responseCode = "400", description = "User or rent history not found in the DB")
     public List<RentDTO> getFullRentHistoryOfUser(@PathVariable() int userid) throws Exception {
         if(userid > 0) {
             List<RentDAO> rentHistoryDAO = rentService
@@ -94,7 +95,8 @@ public class RentController {
      */
     @GetMapping("/users/{userid}/profile/rent/userHistory/owner/all")
     @Operation(summary = "Get a list of all rent agreements for a user, both accepted and not.")
-    @ApiResponse(responseCode = "400", description = "User not found in the DB")
+    @ApiResponse(responseCode = "200", description = "Returns every instance where this owner has rented out an item")
+    @ApiResponse(responseCode = "400", description = "User or rent history not found in the DB")
     public List<RentDTO> getFullRentHistoryOfOwner(@PathVariable() int userid) throws Exception {
         if(userid > 0) {
             List<RentDAO> rentHistoryDAO = rentService
@@ -118,7 +120,8 @@ public class RentController {
      */
     @GetMapping("/users/{userid}/profile/rent/userHistory/owner")
     @Operation(summary = "Get a list of all rent agreements for a user, both accepted and not.")
-    @ApiResponse(responseCode = "400", description = "User not found in the DB")
+    @ApiResponse(responseCode = "200", description = "Returns the rented item history of this owner, deleted items are not included")
+    @ApiResponse(responseCode = "400", description = "User or rent history not found in the DB")
     public List<RentDTO> getRentHistoryOfOwner(@PathVariable() int userid) throws Exception {
         if(userid > 0) {
             List<RentDAO> rentHistoryFull = rentService
@@ -147,8 +150,9 @@ public class RentController {
      */
     @PostMapping("/renting/renter/save")
     @Operation(summary = "A method for saving a new rent agreement to the DB")
-    @ApiResponse(responseCode = "406", description = "Make sure the token contains the account id")
-    @ApiResponse(responseCode = "418", description = "Make sure there is no identical entity in the DB")
+    @ApiResponse(responseCode = "200", description = "The rent agreement was saved to the DB")
+    @ApiResponse(responseCode = "406", description = "The token does not contain the account id")
+    @ApiResponse(responseCode = "418", description = "This entry already exists in the DB")
     public String saveRentingAgreementForRenter(@RequestBody RentDTO rentDTO) throws StatusCodeException {
         TokenDTO userToken = TokenUtil.getDataJWT();
         Integer tokenUserId = Integer.valueOf(userToken.getAccountId());
@@ -169,6 +173,7 @@ public class RentController {
      * @param rentId ID for rent to be accepted
      */
     @Operation(summary = "Accepts rent")
+    @ApiResponse(responseCode = "200", description = "The status of the rent request was set to accepted")
     @ApiResponse(responseCode = "400", description = "Rent not found in DB")
     @PutMapping("/renting/{rentId}/accept")
     public String acceptRentRequest(@PathVariable() int rentId) throws StatusCodeException {
@@ -185,6 +190,7 @@ public class RentController {
      * @param rentId ID for rent to be deleted
      */
     @Operation(summary = "Deletes rent")
+    @ApiResponse(responseCode = "200", description = "The status of the rent request was set to deleted")
     @ApiResponse(responseCode = "400", description = "Rent not found in DB")
     @PutMapping("/renting/{rentId}/delete")
     public String deleteRent(@PathVariable() int rentId) throws StatusCodeException {

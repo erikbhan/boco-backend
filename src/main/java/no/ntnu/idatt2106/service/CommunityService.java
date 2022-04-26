@@ -13,7 +13,6 @@ public class CommunityService {
     }
 
     public CommunityDAO findCommunityDAOByCommunityID(int communityID) {
-        System.out.println("TRYING TO ACCESS A USER FROM USERID");
         return communityRepository.findCommunityDAOByCommunityID(communityID);
     }
 
