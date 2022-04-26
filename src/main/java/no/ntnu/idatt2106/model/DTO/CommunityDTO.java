@@ -3,6 +3,7 @@ package no.ntnu.idatt2106.model.DTO;
 import no.ntnu.idatt2106.model.DAO.CommunityDAO;
 
 public class CommunityDTO {
+    int communityId;
     private String name;
     private String description;
     private int visibility;
@@ -18,6 +19,7 @@ public class CommunityDTO {
     }
 
     public CommunityDTO(CommunityDAO communityDAO){
+        this.communityId = communityDAO.getCommunityID();
         this.name = communityDAO.getName();
         this.description = communityDAO.getDescription();
         this.visibility = communityDAO.getVisibility();
@@ -64,4 +66,8 @@ public class CommunityDTO {
     public void setPicture(String picture) {
         this.picture = picture;
     }
+
+    public int getCommunityId() {return communityId;}
+
+    public void setCommunityId(int communityId) {this.communityId = communityId;}
 }

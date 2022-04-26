@@ -16,9 +16,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin
-@ApiResponse(responseCode = "200")
 @RequireAuth
 public class CommunityController {
     private final CommunityService communityService;
@@ -45,4 +46,25 @@ public class CommunityController {
         userCommunityService.addUserToCommunity(tokenUserId, communityDAO);
     }
 
+    /**
+     * A method which shows all communities with visibility 1.
+     * @return Returns a list of all communities with visibility 1.
+     * @throws StatusCodeException
+     */
+    @Operation(summary = "Add community to database")
+    @ApiResponse(responseCode = "200", description = "Returns a list of all visible communities")
+    @ApiResponse(responseCode = "400", description = "No communities was found")
+    @PostMapping("/community/all")
+    public List<CommunityDTO> showAllCommunities() throws StatusCodeException {
+        List<CommunityDAO> listOfCommunityDAOs = communityService
+                .findAllCommunityDAOWithGivenVisibility(1);
+
+        if(listOfCommunityDAOs != null && listOfCommunityDAOs.size() > 0) {
+            List<CommunityDTO> listOfCommunities = communityService
+                    .convertListCommunityDAOToListCommunityDTO(listOfCommunityDAOs);
+
+            return listOfCommunities;
+        }
+        throw new StatusCodeException(HttpStatus.BAD_REQUEST, "No communities was found");
+    }
 }
