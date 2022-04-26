@@ -3,8 +3,12 @@ import java.sql.Date;
 
 import javax.persistence.*;
 
+/**
+ * This class functions as a representation of the table rent in the DB.
+ * All fields in the rent table is represented in this class, with access methods for everyone.
+ */
 @Entity
-@Table(name = "Rent", schema = "public")
+@Table(name = "rent", schema = "public")
 public class RentDAO{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,6 +20,8 @@ public class RentDAO{
     private Date toTime;
     @Column(name = "is_accepted")
     private boolean isAccepted;
+    @Column(name = "is_deleted")
+    private boolean isDeleted;
     @ManyToOne
     @JoinColumn(name = "listing_owner_id")
     private ListingDAO listingOwnerID;
@@ -26,17 +32,28 @@ public class RentDAO{
     @JoinColumn(name = "notification_id")
     private NotificationDAO notificationID;
 
-
-    public int getRentID() {
-        return this.rentID;
+    public RentDAO(Date fromTime, Date toTime, boolean isAccepted, ListingDAO listingOwnerID, UserDAO renterID, NotificationDAO notificationID) {
+        this.fromTime = fromTime;
+        this.toTime = toTime;
+        this.isAccepted = isAccepted;
+        this.listingOwnerID = listingOwnerID;
+        this.renterID = renterID;
+        this.notificationID = notificationID;
     }
 
-    public void setRentID(int rent_id) {
-        this.rentID = rent_id;
+    public RentDAO() {
+    }
+
+    public int getRentID() {
+        return rentID;
+    }
+
+    public void setRentID(int rentID) {
+        this.rentID = rentID;
     }
 
     public Date getFromTime() {
-        return this.fromTime;
+        return fromTime;
     }
 
     public void setFromTime(Date fromTime) {
@@ -44,23 +61,42 @@ public class RentDAO{
     }
 
     public Date getToTime() {
-        return this.toTime;
+        return toTime;
     }
 
     public void setToTime(Date toTime) {
         this.toTime = toTime;
     }
 
-    public boolean isIsAccepted() {
-        return this.isAccepted;
-    }
-
     public boolean getIsAccepted() {
-        return this.isAccepted;
+        return isAccepted;
     }
 
-    public void setIsAccepted(boolean isAccepted) {
-        this.isAccepted = isAccepted;
+    public void setAccepted(boolean accepted) {
+        isAccepted = accepted;
     }
 
+    public ListingDAO getListingOwnerID() {
+        return listingOwnerID;
+    }
+
+    public void setListingOwnerID(ListingDAO listingOwnerID) {
+        this.listingOwnerID = listingOwnerID;
+    }
+
+    public UserDAO getRenterID() {
+        return renterID;
+    }
+
+    public void setRenterID(UserDAO renterID) {
+        this.renterID = renterID;
+    }
+
+    public NotificationDAO getNotificationID() {return notificationID;}
+
+    public void setNotificationID(NotificationDAO notificationID) {this.notificationID = notificationID;}
+
+    public boolean isDeleted() {return isDeleted;}
+
+    public void setDeleted(boolean deleted) {isDeleted = deleted;}
 }

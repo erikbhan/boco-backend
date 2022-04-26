@@ -8,8 +8,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * This class functions as a representation of the table notification in the DB.
+ * All fields in the notification table is represented in this class, with access methods for everyone.
+ */
 @Entity
-@Table(name = "Notification", schema = "public")
+@Table(name = "notification", schema = "public")
 public class NotificationDAO {
 
     @Id
