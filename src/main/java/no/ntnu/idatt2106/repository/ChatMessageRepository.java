@@ -6,6 +6,6 @@ import no.ntnu.idatt2106.model.DAO.ChatMessageDAO;
 import org.springframework.data.jpa.repository.Query;
 
 public interface ChatMessageRepository extends JpaRepository<ChatMessageDAO, Integer> {
-    @Query(value = "SELECT c FROM ChatMessageDAO c WHERE c.receivingUserID = ?1 OR c.receivingUserID = ?2 OR  c.sendingUserID = ?1 OR c.sendingUserID = ?2 ORDER BY c.timeSent ASC", nativeQuery = true)
+    @Query(value = "SELECT * FROM chat_message c WHERE c.sending_user_id = ?1 OR c.receiving_user_id = ?2 OR  c.receiving_user_id = ?1 OR c.sending_user_id = ?2 ORDER BY c.time_sent ASC", nativeQuery = true)
     ChatMessageDAO[] getConversation(int accountId, int userId);
 }
