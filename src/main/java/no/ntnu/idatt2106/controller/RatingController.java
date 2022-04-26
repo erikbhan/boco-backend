@@ -38,8 +38,8 @@ public class RatingController {
     @Operation(summary = "Finds ratings for user as renter")
     @ApiResponse(responseCode = "200", description = "returns a list of rating dtos for the user")
     @ApiResponse(responseCode = "400", description = "User not found in DB")
-    @GetMapping("/rating/as_renter")
-    public List<RatingDTO> getAsRenter(@RequestParam int userID) throws StatusCodeException {
+    @GetMapping("/rating/{userID}/as_renter")
+    public List<RatingDTO> getAsRenter(@PathVariable int userID) throws StatusCodeException {
         List<RatingDTO> ratings = ratingService.findRatingsAsRenterByUserID(userID);
         if (!ratings.isEmpty()){
             return ratings;
@@ -55,8 +55,8 @@ public class RatingController {
     @Operation(summary = "Finds ratings for user as owner")
     @ApiResponse(responseCode = "200", description = "retuns a list of rating dtos for the owner")
     @ApiResponse(responseCode = "400", description = "User not found in DB")
-    @GetMapping("/rating/as_owner")
-    public List<RatingDTO> getAsOwner(@RequestParam int userID) throws StatusCodeException {
+    @GetMapping("/rating/{userID}/as_owner")
+    public List<RatingDTO> getAsOwner(@PathVariable int userID) throws StatusCodeException {
         List<RatingDTO> ratings = ratingService.findRatingsAsOwnerByUserID(userID);
         if (!ratings.isEmpty()){
             return ratings;
@@ -73,9 +73,9 @@ public class RatingController {
     @Operation(summary = "Finds average rating of user")
     @ApiResponse(responseCode = "200", description = "returns the avrage rating of the user")
     @ApiResponse(responseCode = "400", description = "User not found in DB")
-    @GetMapping("/rating/average")
+    @GetMapping("/rating/{userID}/average")
     @RequireAuth
-    public float getAverageRating(@RequestParam int userID) throws StatusCodeException {
+    public float getAverageRating(@PathVariable int userID) throws StatusCodeException {
         if (userService.findUserByUserId(userID) != null) {
             return ratingService.findAverageRating(userID);
         } else throw new StatusCodeException(HttpStatus.OK, "User not found or had no ratings as owner");
