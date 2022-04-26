@@ -6,6 +6,7 @@ import no.ntnu.idatt2106.exception.StatusCodeException;
 import no.ntnu.idatt2106.middleware.RequireAuth;
 import no.ntnu.idatt2106.model.DAO.CommunityDAO;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
+import no.ntnu.idatt2106.model.DTO.CommunityDTO;
 import no.ntnu.idatt2106.model.DTO.TokenDTO;
 import no.ntnu.idatt2106.repository.CommunityRepository;
 import no.ntnu.idatt2106.service.UserCommunityService;
@@ -55,16 +56,23 @@ public class UserCommunityController {
 
     }
 
+    public void addCommunity(){
+
+
+    }
+
     @Operation(summary = "Get all communities a specific user is part of")
     @ApiResponse(responseCode = "200", description = "Found communities")
     @ApiResponse(responseCode = "400", description = "Illegal operation")
     @GetMapping("/user/communities")
-    public ArrayList<CommunityDAO> getCommunitiesForUser() throws StatusCodeException {
+    public ArrayList<CommunityDTO> getCommunitiesForUser() throws StatusCodeException {
         TokenDTO token = TokenUtil.getDataJWT();
         UserDAO user = userService.findUserByUserId(Integer.parseInt(token.getAccountId()));
         if (user == null) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User does not exist");
         }
+        ArrayList<CommunityDTO> communityDTOS = new ArrayList<>();
+
         return userCommunityService.getAllCommunitiesForUser(user);
     }
 
