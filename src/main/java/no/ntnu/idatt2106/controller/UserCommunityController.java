@@ -61,7 +61,7 @@ public class UserCommunityController {
     @ApiResponse(responseCode = "200", description = "Removed user from community")
     @ApiResponse(responseCode = "400", description = "Illegal operation")
     @ApiResponse(responseCode = "500", description = "Unexpected error")
-    public void removeUserFromCommunity(@PathVariable int communityId) throws StatusCodeException{
+    public void leaveCommunity(@PathVariable int communityId) throws StatusCodeException{
         TokenDTO token = TokenUtil.getDataJWT();
         CommunityDAO communityDAO = communityRepository.findCommunityDAOByCommunityID(communityId);
 
