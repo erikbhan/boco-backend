@@ -75,7 +75,7 @@ public class CommunityControllerTest {
 
     @Test
     void communityController_showAllCommunities_ShouldGive2xxOK() throws Exception {
-        mockMvc.perform(get("/community/all")
+        mockMvc.perform(get("/communities")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk());
