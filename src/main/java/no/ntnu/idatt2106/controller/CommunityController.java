@@ -41,6 +41,7 @@ public class CommunityController {
         int tokenUserId = Integer.parseInt(userToken.getAccountId());
         communityService.addCommunity(communityDAO);
         userCommunityService.addUserToCommunity(tokenUserId, communityDAO);
+        throw new StatusCodeException(HttpStatus.CREATED, "Community created");
     }
 
     /**
@@ -58,7 +59,7 @@ public class CommunityController {
         }
         UserCommunityDAO userCommunityDAO = userCommunityService.getByIds(tokenUserId, communityDAO);
         if (userCommunityDAO == null) {
-            throw new StatusCodeException(HttpStatus.NOT_FOUND, "User not a part of this community");
+            throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "User not a part of this community");
         } else if (!userCommunityDAO.isAdministrator()) {
             throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "User not an admin in this community");
         }
