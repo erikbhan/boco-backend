@@ -82,31 +82,31 @@
 //     @Autowired
 //     private WebApplicationContext webApplicationContext;
 
-//     @BeforeAll
-//     static void setup(@Autowired DataSource dataSource) throws SQLException {
-//         try (Connection conn = dataSource.getConnection()) {
-//             ScriptUtils.executeSqlScript(conn, new ClassPathResource("cleanupListing.sql"));
-//             ScriptUtils.executeSqlScript(conn, new ClassPathResource("dataListing.sql"));
-//         }
-//     }
+//     // @BeforeAll
+//     // static void setup(@Autowired DataSource dataSource) throws SQLException {
+//     //     try (Connection conn = dataSource.getConnection()) {
+//     //         ScriptUtils.executeSqlScript(conn, new ClassPathResource("cleanupListing.sql"));
+//     //         ScriptUtils.executeSqlScript(conn, new ClassPathResource("dataListing.sql"));
+//     //     }
+//     // }
 
-//     @Before
-//     public void initialiseRestAssuredMockMvcWebApplicationContext() {
-//         RestAssuredMockMvc.webAppContextSetup(webApplicationContext);
-//     }
+//     // @Before
+//     // public void initialiseRestAssuredMockMvcWebApplicationContext() {
+//     //     RestAssuredMockMvc.webAppContextSetup(webApplicationContext);
+//     // }
 
-//     @BeforeEach
-//     void createListingDaos() {
-//         // listingDTO = new ListingDTO("Jekk", "Beskrivelse", 4.0, "Adresse", 2022,
-//         // categories);
-//     }
+//     // @BeforeEach
+//     // void createListingDaos() {
+//     //     // listingDTO = new ListingDTO("Jekk", "Beskrivelse", 4.0, "Adresse", 2022,
+//     //     // categories);
+//     // }
 
-//     @AfterAll
-//     static void cleanup(@Autowired DataSource dataSource) throws SQLException {
-//         try (Connection conn = dataSource.getConnection()) {
-//             ScriptUtils.executeSqlScript(conn, new ClassPathResource("cleanupListing.sql"));
-//         }
-//     }
+//     // @AfterAll
+//     // static void cleanup(@Autowired DataSource dataSource) throws SQLException {
+//     //     try (Connection conn = dataSource.getConnection()) {
+//     //         ScriptUtils.executeSqlScript(conn, new ClassPathResource("cleanupListing.sql"));
+//     //     }
+//     // }
 
 //     // @Test
 //     // public void getAllListingsShouldBeOK() throws Exception{
@@ -129,16 +129,15 @@
 
 //     @Test
 //     public void checkReality() {
-//         System.out.println(asJsonString(listingDTO));
 //         assertTrue(true);
 //     }
 
-//     public static String asJsonString(final Object obj) {
-//         try {
-//             return new ObjectMapper().writeValueAsString(obj);
-//         } catch (Exception e) {
-//             throw new RuntimeException(e);
-//         }
-//     }
+//     // public static String asJsonString(final Object obj) {
+//     //     try {
+//     //         return new ObjectMapper().writeValueAsString(obj);
+//     //     } catch (Exception e) {
+//     //         throw new RuntimeException(e);
+//     //     }
+//     // }
 
 // }

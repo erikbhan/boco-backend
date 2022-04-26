@@ -53,7 +53,7 @@ public class ListingController {
     }
 
     /**
-     * 
+     * Got all of user listings
      * @return Returns every single listing in the DB
      */
     @ApiResponse(responseCode = "200", description = "All listings returned")
