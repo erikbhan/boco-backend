@@ -9,6 +9,9 @@ public class CommunityListingID implements Serializable {
     private int communityID;
     private int listingID;
 
+    public CommunityListingID(){
+        
+    }
     public CommunityListingID(int communityID, int listingID){
         this.communityID = communityID;
         this.listingID = listingID;

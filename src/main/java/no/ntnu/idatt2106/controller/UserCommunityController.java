@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import no.ntnu.idatt2106.exception.StatusCodeException;
 import no.ntnu.idatt2106.middleware.RequireAuth;
 import no.ntnu.idatt2106.model.DAO.CommunityDAO;
+import no.ntnu.idatt2106.model.DAO.UserCommunityDAO;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
 import no.ntnu.idatt2106.model.DTO.CommunityDTO;
 import no.ntnu.idatt2106.model.DTO.TokenDTO;
@@ -52,6 +53,31 @@ public class UserCommunityController {
         if (!(userCommunityService.addUserToCommunity(token.getAccountId(), communityDAO))){
             throw new StatusCodeException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error");
         }
+
+    }
+
+    @Operation(summary = "Remove user from community")
+    @PatchMapping("/communities/{communityId}/leave")
+    @ApiResponse(responseCode = "200", description = "Removed user from community")
+    @ApiResponse(responseCode = "400", description = "Illegal operation")
+    @ApiResponse(responseCode = "500", description = "Unexpected error")
+    public void leaveCommunity(@PathVariable int communityId) throws StatusCodeException{
+        TokenDTO token = TokenUtil.getDataJWT();
+        CommunityDAO communityDAO = communityRepository.findCommunityDAOByCommunityID(communityId);
+
+        UserCommunityDAO ucd = userCommunityService.getByIds(token.getAccountId(), communityDAO );
+        if (communityDAO == null) {
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Community does not exist");
+        }
+        if (!(userCommunityService.userIsInCommunity(token.getAccountId(),communityDAO))){
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User is not in this community");
+        }
+        if(!(userCommunityService.removeUserFromCommunity(ucd))){
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Unexpected error");
+        }
+
+
+
 
     }
 
