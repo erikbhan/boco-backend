@@ -29,6 +29,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -72,7 +73,29 @@ public class CommunityControllerTest {
         }
     }
 
+    @Test
+    void communityController_showAllCommunities_ShouldGive2xxOK() throws Exception {
+        mockMvc.perform(get("/community/all")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().isOk());
+    }
 
+    @Test
+    void communityController_showAllCommunitiesMatchingSearchTerm_ShouldGive2xxOK() throws Exception {
+        mockMvc.perform(get("/search/communities/community?search_word=MC")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void communityController_showAllCommunitiesMatchingSearchTerm_ShouldGive4xxError() throws Exception {
+        mockMvc.perform(get("/search/communities/community?search_word=Oldboys")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().is4xxClientError());
+    }
 
     public static String asJsonString(final Object obj) {
         try {

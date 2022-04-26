@@ -8,7 +8,6 @@ import no.ntnu.idatt2106.model.DAO.CommunityDAO;
 import no.ntnu.idatt2106.model.DAO.UserCommunityDAO;
 import no.ntnu.idatt2106.model.DTO.CommunityDTO;
 import no.ntnu.idatt2106.model.DTO.TokenDTO;
-import no.ntnu.idatt2106.model.ID.UserCommunityID;
 import no.ntnu.idatt2106.service.CommunityService;
 import no.ntnu.idatt2106.service.UserCommunityService;
 import no.ntnu.idatt2106.util.TokenUtil;
@@ -39,7 +38,7 @@ public class CommunityController {
     public void addCommunity(@RequestBody CommunityDTO communityDTO) throws StatusCodeException {
         CommunityDAO communityDAO = communityService.turnCommunityDTOIntoCommunityDAO(communityDTO);
         TokenDTO userToken = TokenUtil.getDataJWT();
-        int tokenUserId = Integer.parseInt(userToken.getAccountId());
+        int tokenUserId = userToken.getAccountId();
         communityService.addCommunity(communityDAO);
         userCommunityService.addUserToCommunity(tokenUserId, communityDAO);
     }
@@ -49,13 +48,36 @@ public class CommunityController {
      * @return Returns a list of all communities with visibility 1.
      * @throws StatusCodeException
      */
-    @Operation(summary = "Add community to database")
+    @Operation(summary = "Show all visible communities")
     @ApiResponse(responseCode = "200", description = "Returns a list of all visible communities")
     @ApiResponse(responseCode = "400", description = "No communities was found")
-    @PostMapping("/community/all")
+    @GetMapping("/community/all")
     public List<CommunityDTO> showAllCommunities() throws StatusCodeException {
         List<CommunityDAO> listOfCommunityDAOs = communityService
                 .findAllCommunityDAOWithGivenVisibility(1);
+
+        if(listOfCommunityDAOs != null && listOfCommunityDAOs.size() > 0) {
+            List<CommunityDTO> listOfCommunities = communityService
+                    .convertListCommunityDAOToListCommunityDTO(listOfCommunityDAOs);
+
+            return listOfCommunities;
+        }
+        throw new StatusCodeException(HttpStatus.BAD_REQUEST, "No communities was found");
+    }
+
+    /**
+     * A method which searches the community table in the DB for communities with a name containing the search word.
+     * @param search_word The letter or word to search for, may be the name of the community.
+     * @return Returns a list of all communities with a name containing this search word.
+     * @throws StatusCodeException
+     */
+    @Operation(summary = "Show all communities with name containing the search word")
+    @ApiResponse(responseCode = "200", description = "Returns a list of all communities matching the search word")
+    @ApiResponse(responseCode = "400", description = "No communities was found")
+    @GetMapping("/search/communities/community")
+    public List<CommunityDTO> showAllCommunitiesMatchingSearchTerm(@RequestParam(name = "search_word") String search_word) throws StatusCodeException {
+        List<CommunityDAO> listOfCommunityDAOs = communityService
+                .findAllCommunityDAOWithContainingAGivenName(search_word);
 
         if(listOfCommunityDAOs != null && listOfCommunityDAOs.size() > 0) {
             List<CommunityDTO> listOfCommunities = communityService
@@ -74,7 +96,7 @@ public class CommunityController {
     @PostMapping("/community/{communityId}/remove")
     public void removeCommunity(@PathVariable int communityId) throws StatusCodeException {
         TokenDTO userToken = TokenUtil.getDataJWT();
-        int tokenUserId = Integer.parseInt(userToken.getAccountId());
+        int tokenUserId = userToken.getAccountId();
         CommunityDAO communityDAO = communityService.findCommunityDAOByCommunityID(communityId);
         if (communityDAO == null) {
             throw new StatusCodeException(HttpStatus.NOT_FOUND, "Community not found");
