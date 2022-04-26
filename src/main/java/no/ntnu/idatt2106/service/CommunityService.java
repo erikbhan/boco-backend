@@ -35,7 +35,7 @@ public class CommunityService {
         community.setVisibility(communityDTO.getVisibility());
         return community;
     }
-
+    
     public List<CommunityDAO> findAllCommunityDAOWithGivenVisibility(int visibilityStatus) {
         return communityRepository.findAllByVisibility(visibilityStatus);
     }
@@ -47,5 +47,14 @@ public class CommunityService {
         }
         return convertedList;
 
+    }
+
+    public boolean removeCommunity(CommunityDAO communityDAO) {
+        try{
+            communityRepository.delete(communityDAO);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
