@@ -9,3 +9,7 @@ DELETE FROM public.listing WHERE listing_id = '1236';
 DELETE FROM public.user WHERE email = 'fake@user.com';
 DELETE FROM public.user WHERE email = 'test@email.com';
 
+DELETE FROM public.user_community WHERE user_id = 1;
+
+DELETE FROM public.community WHERE community_id = 1000;
+DELETE FROM public.community WHERE community_id = 1001;

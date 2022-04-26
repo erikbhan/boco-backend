@@ -48,14 +48,12 @@ public class LoginService {
         //Making a jwt token
         String access_token = JWT.create()
                 .withClaim("email", user.getEmail())
-                .withClaim("first_name", user.getFirstName())
-                .withClaim("last_name", user.getLastName())
-                .withClaim("account_id", String.valueOf(user.getUserID()))
+                .withClaim("firstName", user.getFirstName())
+                .withClaim("lastName", user.getLastName())
+                .withClaim("accountId", String.valueOf(user.getUserID()))
                 .withExpiresAt(new Date(System.currentTimeMillis() + 60 * 48 * 60 * 1000))
                 .sign(algorithm);
-
-        System.out.println("You were authenticated : " + access_token);
-
+        System.out.println("The token: " + access_token);
         return access_token;
     }
 
