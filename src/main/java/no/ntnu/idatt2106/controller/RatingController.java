@@ -80,7 +80,7 @@ public class RatingController {
     }
 
     /**
-     * A method for transforming a ratingDTO into a ratingDAO, then adding
+     * A method that transforms a given ratingDTO into a ratingDAO, then adding
      * this ratingDAO to the database
      * @param ratingDTO The ratingDTO with the information to be added to the database
      * @return true if the given DTO was accepted and added to the database as a DAO
@@ -104,7 +104,7 @@ public class RatingController {
             dao.setComment(ratingDTO.getComment());
             dao.setScore(ratingDTO.getScore());
             dao.setRenterIsReceiverOfRating(ratingDTO.isRenterReceiverOfRating());
-            dao.setRentID(rentService.findRentByRentId(ratingDTO.getRentID()));
+            dao.setRentID(rentService.getRentFromId(ratingDTO.getRentID()));
             ratingService.saveRating(dao);
             return true;
         }
