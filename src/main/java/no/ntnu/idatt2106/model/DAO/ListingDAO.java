@@ -1,8 +1,12 @@
 package no.ntnu.idatt2106.model.DAO;
 import javax.persistence.*;
 
+/**
+ * This class functions as a representation of the table listing in the DB.
+ * All fields in the listing table is represented in this class, with access methods for everyone.
+ */
 @Entity
-@Table(name = "Listing", schema = "public")
+@Table(name = "listing", schema = "public")
 public class ListingDAO{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,4 +64,11 @@ public class ListingDAO{
         this.address = address;
     }
 
+    public UserDAO getUserID() {
+        return userID;
+    }
+
+    public void setUserID(UserDAO userID) {
+        this.userID = userID;
+    }
 }

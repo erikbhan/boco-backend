@@ -8,11 +8,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * This class functions as a representation of the table User in the DB.
- * All fields in the User table is represented in this class, with access methods for everyone.
+ * This class functions as a representation of the table user in the DB.
+ * All fields in the user table is represented in this class, with access methods for everyone.
  */
 @Entity
-@Table(name = "User", schema = "public")
+@Table(name = "user", schema = "public")
 public class UserDAO {
 
     @Id
