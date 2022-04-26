@@ -25,16 +25,6 @@ public class ListingService {
         this.listingRepository = listingRepository;
     }
     
-    public void saveListing(ListingDTO listingDTO){
-        ListingDAO listing = new ListingDAO();
-        listing.setTitle(listingDTO.getTitle());
-        listing.setDescription(listingDTO.getAddress());
-        listing.setAddress(listingDTO.getAddress());
-        listing.setPricePerDay(listingDTO.getPricePerDay());
-        //listing.setUserID(userRepository.getById(listingDTO.getUserID()));
-        listingRepository.save(listing);
-    }
-
     /**
      * Saves a ListingDAO to the DB
      * 
