@@ -139,10 +139,10 @@ public class ListingController {
             // The for-loop goes through the categories of listing, adding them to the
             // listingCategory table.
             // Finds the categoryIDs from the category table using the categorynames.
-            // for (String categoryName : listingDTO.getCategoryNames()) {
-            //     listingCategoryService.saveListingCategory(categoryService.findCategoryDAOByName(categoryName),
-            //             listing);
-            // }
+            for (String categoryName : listingDTO.getCategoryNames()) {
+                listingCategoryService.saveListingCategory(categoryService.findCategoryDAOByName(categoryName),
+                        listing);
+            }
             // The for-loop goes through the communities of listing, adding them to the
             // communityListing table.
             // Finds communities using communityIDs

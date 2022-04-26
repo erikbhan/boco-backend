@@ -87,17 +87,19 @@ public class ListingControllerTest{
         }
     }
 
-    // @Test
-    // public void getAllListingsShouldBeOK() throws Exception{
-    //     mockMvc.perform(get("/api/listing").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
-    // }
+    @Test
+    public void getAllListings_ShouldBeOK() throws Exception{
+        mockMvc.perform(get("/listing").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+    }
+
+    
 
     /**
-     * Aint working
+     * Posting listing with all vallid fields. Should be good
      * @throws Exception
      */
     @Test
-    public void createListingShouldBeOK() throws Exception {
+    public void createListing_shouldBeOK() throws Exception {
         categories = new String[] { "Fotball", "Utstyr" };
         communityIDs = new int[] {1000, 1001};
         mockMvc.perform(post("/listing")
@@ -105,6 +107,20 @@ public class ListingControllerTest{
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
+    }
+        /**
+     * Posting Listing with invalid category. Should throw erro
+     * @throws Exception
+     */
+    @Test
+    public void createListingWithNonExistingCategry_shouldThrow400error() throws Exception {
+        categories = new String[] { "Salse", "Utstyr" };
+        communityIDs = new int[] {1000, 1001};
+        mockMvc.perform(post("/listing")
+                .content(asJsonString(new ListingDTO("Jekk", "Beskrivelse", 4.0, "Adresse", 2022, categories, communityIDs)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError());
     }
 
     public static String asJsonString(final Object obj) {
