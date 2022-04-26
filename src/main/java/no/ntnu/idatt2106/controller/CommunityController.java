@@ -19,6 +19,8 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @RequireAuth
+@ApiResponse(responseCode = "401", description = "Unauthorized")
+@ApiResponse(responseCode = "200", description = "OK")
 public class CommunityController {
     private final CommunityService communityService;
     private final UserCommunityService userCommunityService;
@@ -94,7 +96,7 @@ public class CommunityController {
      * @param communityId ID of the community to be deleted
      */
     @Operation(summary = "Deletes a community from the database")
-    @PostMapping("/community/{communityId}/remove")
+    @DeleteMapping("/community/{communityId}/remove")
     public void removeCommunity(@PathVariable int communityId) throws StatusCodeException {
         TokenDTO userToken = TokenUtil.getDataJWT();
         int tokenUserId = userToken.getAccountId();
