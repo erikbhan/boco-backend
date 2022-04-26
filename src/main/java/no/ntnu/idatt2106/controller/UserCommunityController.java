@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import no.ntnu.idatt2106.exception.StatusCodeException;
 import no.ntnu.idatt2106.middleware.RequireAuth;
 import no.ntnu.idatt2106.model.DAO.CommunityDAO;
+import no.ntnu.idatt2106.model.DAO.UserCommunityDAO;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
 import no.ntnu.idatt2106.model.DTO.CommunityDTO;
 import no.ntnu.idatt2106.model.DTO.TokenDTO;
@@ -63,9 +64,19 @@ public class UserCommunityController {
     public void removeUserFromCommunity(@PathVariable int communityId) throws StatusCodeException{
         TokenDTO token = TokenUtil.getDataJWT();
         CommunityDAO communityDAO = communityRepository.findCommunityDAOByCommunityID(communityId);
+
+        UserCommunityDAO ucd = userCommunityService.getByIds(token.getAccountId(), communityDAO );
         if (communityDAO == null) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Community does not exist");
         }
+        if (!(userCommunityService.userIsInCommunity(token.getAccountId(),communityDAO))){
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User is not in this community");
+        }
+        if(!(userCommunityService.removeUserFromCommunity(ucd))){
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Unexpected error");
+        }
+
+
 
 
     }
