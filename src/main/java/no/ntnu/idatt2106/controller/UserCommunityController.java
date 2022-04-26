@@ -55,6 +55,21 @@ public class UserCommunityController {
 
     }
 
+    @Operation(summary = "Remove user from community")
+    @PostMapping("/communities/{communityId}/leave")
+    @ApiResponse(responseCode = "200", description = "Removed user from community")
+    @ApiResponse(responseCode = "400", description = "Illegal operation")
+    @ApiResponse(responseCode = "500", description = "Unexpected error")
+    public void removeUserFromCommunity(@PathVariable int communityId) throws StatusCodeException{
+        TokenDTO token = TokenUtil.getDataJWT();
+        CommunityDAO communityDAO = communityRepository.findCommunityDAOByCommunityID(communityId);
+        if (communityDAO == null) {
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Community does not exist");
+        }
+
+
+    }
+
     @Operation(summary = "Get all communities a specific user is part of")
     @ApiResponse(responseCode = "200", description = "Found communities")
     @ApiResponse(responseCode = "400", description = "Illegal operation")
