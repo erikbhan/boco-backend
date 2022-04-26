@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @CrossOrigin
 @ApiResponse(responseCode = "200")
+@RequireAuth
 public class CommunityController {
     private final CommunityService communityService;
     private final UserCommunityService userCommunityService;
