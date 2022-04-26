@@ -57,7 +57,7 @@ public class UserCommunityController {
     }
 
     @Operation(summary = "Remove user from community")
-    @PostMapping("/communities/{communityId}/leave")
+    @PatchMapping("/communities/{communityId}/leave")
     @ApiResponse(responseCode = "200", description = "Removed user from community")
     @ApiResponse(responseCode = "400", description = "Illegal operation")
     @ApiResponse(responseCode = "500", description = "Unexpected error")
