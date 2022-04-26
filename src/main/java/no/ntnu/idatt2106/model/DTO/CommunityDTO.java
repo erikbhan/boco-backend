@@ -1,5 +1,7 @@
 package no.ntnu.idatt2106.model.DTO;
 
+import no.ntnu.idatt2106.model.DAO.CommunityDAO;
+
 public class CommunityDTO {
     private String name;
     private String description;
@@ -13,6 +15,14 @@ public class CommunityDTO {
         this.visibility = visibility;
         this.location = location;
         this.picture = picture;
+    }
+
+    public CommunityDTO(CommunityDAO communityDAO){
+        this.name = communityDAO.getName();
+        this.description = communityDAO.getDescription();
+        this.visibility = communityDAO.getVisibility();
+        this.location = communityDAO.getLocation();
+        this.picture = communityDAO.getPicture();
     }
 
     public String getName() {
