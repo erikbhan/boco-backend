@@ -41,7 +41,7 @@ public class UserCommunityService {
         List<UserCommunityDAO> communityList =  userCommunityRepository.findAllByUserID(user);
         ArrayList<CommunityDAO> communityDAOList = new ArrayList<>();
         for (int i = 0; i < communityList.size(); i++) {
-            CommunityDAO communityDAO = communityService.findCommunityDAOByID(communityList.get(i).getCommunityID().getCommunityID());
+            CommunityDAO communityDAO = communityService.findCommunityDAOByCommunityID(communityList.get(i).getCommunityID().getCommunityID());
             communityDAOList.add(communityDAO);
         }
         return communityDAOList;
