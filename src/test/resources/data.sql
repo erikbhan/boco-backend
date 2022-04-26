@@ -19,3 +19,11 @@ VALUES (10000, '2001-03-04', true, '2021-03-04', 1234, null, 2022);
 INSERT INTO public.rent(rent_id, from_time, is_accepted, to_time, listing_owner_id, notification_id, renter_id)
 VALUES (10001, '2011-03-04', false, '2021-03-06', 1236, null, 2022);
 
+INSERT INTO public.community(community_id, description, location, name, picture, visibility)
+VALUES (1000, 'En hyggelig dag', 'Storvold', 'Vi som liker været', 'Nei takk', 1);
+
+INSERT INTO public.community(community_id, description, location, name, picture, visibility)
+VALUES (1001, 'Fisk for folk', 'Ravnkloa', 'Det regner fisk', 'imagen a place ...with fish', 1);
+
+INSERT INTO public.user_community(community_id, user_id, is_administrator)
+VALUES (1001, 1, false);

@@ -26,9 +26,9 @@ public class TokenDTO {
     public TokenDTO(Map<String, Claim> claims) {
         this.email = claims.get("email").asString();
         this.exp = claims.get("exp").asInt();
-        this.accountId = claims.get("account_id").asString();
-        this.firstName = claims.get("first_name").asString();
-        this.lastName = claims.get("last_name").asString();
+        this.accountId = claims.get("accountId").asString();
+        this.firstName = claims.get("firstName").asString();
+        this.lastName = claims.get("lastName").asString();
     }
 
     public String getEmail() {return email;}
