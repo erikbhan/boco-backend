@@ -28,6 +28,7 @@ public class UserCommunityService {
     public boolean userIsInCommunity(int user, CommunityDAO communityDAO){
         return (userCommunityRepository.existsByUserID(userService.findUserByUserId(user)) && userCommunityRepository.existsByCommunityID(communityDAO));
     }
+
     public boolean addUserToCommunity(int user, CommunityDAO communityDAO){
            UserCommunityDAO userCommunity = new UserCommunityDAO(communityDAO, userService.findUserByUserId(user), false);
            try {
@@ -38,6 +39,7 @@ public class UserCommunityService {
            }
            return true;
     }
+
     public ArrayList<CommunityDTO> getAllCommunitiesForUser(UserDAO user){
         List<UserCommunityDAO> communityList =  userCommunityRepository.findAllByUserID(user);
         ArrayList<CommunityDTO> communityDTOList = new ArrayList<>();
@@ -47,4 +49,5 @@ public class UserCommunityService {
         }
         return communityDTOList;
     }
+
 }

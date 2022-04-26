@@ -9,11 +9,21 @@ import org.springframework.stereotype.Service;
 public class CommunityService {
     private final CommunityRepository communityRepository;
 
+
     public CommunityService(CommunityRepository communityRepository) {
         this.communityRepository = communityRepository;
     }
 
-    public void addCommunity(CommunityDTO communityDTO) {
+    public void addCommunity(CommunityDAO community) {
+        communityRepository.save(community);
+    }
+
+    public CommunityDAO findCommunityDAOByCommunityID(int communityID) {
+        System.out.println("TRYING TO ACCESS A USER FROM USERID");
+        return communityRepository.findCommunityDAOByCommunityID(communityID);
+    }
+
+    public CommunityDAO turnCommunityDTOIntoCommunityDAO(CommunityDTO communityDTO) {
         CommunityDAO community = new CommunityDAO();
         community.setDescription(communityDTO.getDescription());
         community.setLocation(communityDTO.getLocation());
@@ -21,11 +31,7 @@ public class CommunityService {
         community.setName(communityDTO.getName());
         community.setPicture(communityDTO.getPicture());
         community.setVisibility(communityDTO.getVisibility());
-        communityRepository.save(community);
-    }
-    public CommunityDAO findCommunityDAOByCommunityID(int communityID) {
-        System.out.println("TRYING TO ACCESS A USER FROM USERID");
-        return communityRepository.findCommunityDAOByCommunityID(communityID);
+        return community;
     }
 
 }
