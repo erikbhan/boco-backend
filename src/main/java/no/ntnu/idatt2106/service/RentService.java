@@ -116,41 +116,36 @@ public class RentService {
      * @return Returns the new rent dao made from the rent dto.
      */
     public RentDAO convertFromRentDTOTORentDAO(RentDTO rentDTO) {
+        RentDAO rentDAO = new RentDAO(rentDTO);
         Integer notificationId = rentDTO.getNotificationId();
         Integer renterId = rentDTO.getRenterId();
         Integer listingId = rentDTO.getListingId();
         Integer rentId = rentDTO.getRentId();
-        NotificationDAO notification = null;
-        UserDAO renter = null;
-        ListingDAO listing = null;
+        NotificationDAO notification;
+        UserDAO renter;
+        ListingDAO listing;
         if(notificationId != null) {
             notification = notificationService.getNotificationFromNotificationId(rentDTO.getNotificationId());
+            rentDAO.setNotificationID(notification);
         }
         if(renterId != null) {
             renter = userService.findUserByUserId(rentDTO.getRenterId());
+            rentDAO.setRenterID(renter);
         }
         if(listingId != null) {
             listing = listingService.findListingByListingId(rentDTO.getListingId());
+            rentDAO.setListingOwnerID(listing);
         }
         if(rentId != null) {
-            RentDAO rentDAO = new RentDAO(rentDTO.getFromTime(), rentDTO.getToTime(), rentDTO.getAccepted(), listing, renter, notification);
             rentDAO.setRentID(rentDTO.getRentId());
-            return rentDAO;
-        } else {
-            return new RentDAO(rentDTO.getFromTime(), rentDTO.getToTime(), rentDTO.getAccepted(), listing, renter, notification);
         }
-    }
-
-    public RentDTO convertFromRentDAOToRentDTO(RentDAO rentDAO) {
-        return new RentDTO(rentDAO.getRentID(), rentDAO.getFromTime(), rentDAO.getToTime(),
-                rentDAO.getIsAccepted(), rentDAO.getListingOwnerID().getListingID(),
-                rentDAO.getRenterID().getUserID(), rentDAO.getNotificationID().getNotificationID());
+        return rentDAO;
     }
 
     public List<RentDTO> convertListOfRentDAOToListOfRentDTO(List<RentDAO> list) {
         List<RentDTO> convertedList = new ArrayList<>();
         for(int i = 0; i < convertedList.size(); i++) {
-            convertedList.add(convertFromRentDAOToRentDTO(list.get(i)));
+            convertedList.add(new RentDTO(list.get(i)));
         }
         return convertedList;
     }
