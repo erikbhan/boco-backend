@@ -5,6 +5,9 @@ import no.ntnu.idatt2106.model.DTO.CommunityDTO;
 import no.ntnu.idatt2106.repository.CommunityRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class CommunityService {
     private final CommunityRepository communityRepository;
@@ -19,7 +22,6 @@ public class CommunityService {
     }
 
     public CommunityDAO findCommunityDAOByCommunityID(int communityID) {
-        System.out.println("TRYING TO ACCESS A USER FROM USERID");
         return communityRepository.findCommunityDAOByCommunityID(communityID);
     }
 
@@ -33,5 +35,26 @@ public class CommunityService {
         community.setVisibility(communityDTO.getVisibility());
         return community;
     }
+    
+    public List<CommunityDAO> findAllCommunityDAOWithGivenVisibility(int visibilityStatus) {
+        return communityRepository.findAllByVisibility(visibilityStatus);
+    }
 
+    public List<CommunityDTO> convertListCommunityDAOToListCommunityDTO(List<CommunityDAO> list) {
+        List<CommunityDTO> convertedList = new ArrayList<>();
+        for(int i = 0; i < convertedList.size(); i++) {
+            convertedList.add(new CommunityDTO(list.get(i)));
+        }
+        return convertedList;
+
+    }
+
+    public boolean removeCommunity(CommunityDAO communityDAO) {
+        try{
+            communityRepository.delete(communityDAO);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

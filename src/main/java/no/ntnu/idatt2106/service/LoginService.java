@@ -48,9 +48,9 @@ public class LoginService {
         //Making a jwt token
         String access_token = JWT.create()
                 .withClaim("email", user.getEmail())
-                .withClaim("first_name", user.getFirstName())
-                .withClaim("last_name", user.getLastName())
-                .withClaim("account_id", String.valueOf(user.getUserID()))
+                .withClaim("firstName", user.getFirstName())
+                .withClaim("lastName", user.getLastName())
+                .withClaim("accountId", String.valueOf(user.getUserID()))
                 .withExpiresAt(new Date(System.currentTimeMillis() + 60 * 48 * 60 * 1000))
                 .sign(algorithm);
         return access_token;

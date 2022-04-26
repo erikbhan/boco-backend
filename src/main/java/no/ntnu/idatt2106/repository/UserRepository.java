@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * A class meant to access the User table in the DB.
+ * A class meant to access the user table in the DB.
  * This class contains some premade methods and some custom-made ones.
  */
 @Repository

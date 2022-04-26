@@ -4,6 +4,7 @@ import no.ntnu.idatt2106.model.DAO.CommunityDAO;
 import no.ntnu.idatt2106.model.DAO.UserCommunityDAO;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
 import no.ntnu.idatt2106.model.DTO.CommunityDTO;
+import no.ntnu.idatt2106.model.ID.UserCommunityID;
 import no.ntnu.idatt2106.repository.CommunityRepository;
 import no.ntnu.idatt2106.repository.UserCommunityRepository;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,10 @@ public class UserCommunityService {
 
     public boolean userIsInCommunity(int user, CommunityDAO communityDAO){
         return (userCommunityRepository.existsByUserID(userService.findUserByUserId(user)) && userCommunityRepository.existsByCommunityID(communityDAO));
+    }
+
+    public boolean userIsAdminInCommunity(UserCommunityDAO ucd) {
+        return ucd.isAdministrator();
     }
 
     public boolean addUserToCommunity(int user, CommunityDAO communityDAO){
@@ -64,6 +69,16 @@ public class UserCommunityService {
             communityDTOList.add(communityDTO);
         }
         return communityDTOList;
+    }
+
+    public UserCommunityDAO getByIds(int userId, CommunityDAO communityDAO) {
+        List<UserCommunityDAO> communities = userCommunityRepository.findAllByUserID(userService.findUserByUserId(userId));
+        for (UserCommunityDAO userCommunityDAO:communities) {
+            if (userCommunityDAO.getCommunityID().equals(communityDAO)) {
+                return userCommunityDAO;
+            }
+        }
+        return null;
     }
 
 }
