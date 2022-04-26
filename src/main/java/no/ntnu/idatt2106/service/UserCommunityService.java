@@ -38,6 +38,16 @@ public class UserCommunityService {
            }
            return true;
     }
+
+    public void setAdmin(UserCommunityDAO ucd){
+        if(!ucd.isAdministrator()){
+            ucd.setAdministrator(true);
+        }
+    }
+
+    public void retractAdmin(UserCommunityDAO ucd){
+        ucd.setAdministrator(false);
+    }
     public ArrayList<CommunityDTO> getAllCommunitiesForUser(UserDAO user){
         List<UserCommunityDAO> communityList =  userCommunityRepository.findAllByUserID(user);
         ArrayList<CommunityDTO> communityDTOList = new ArrayList<>();
