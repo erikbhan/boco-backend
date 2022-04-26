@@ -53,12 +53,6 @@ public class UserCommunityController {
             throw new StatusCodeException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error");
         }
 
-
-    }
-
-    public void addCommunity(){
-
-
     }
 
     @Operation(summary = "Get all communities a specific user is part of")
