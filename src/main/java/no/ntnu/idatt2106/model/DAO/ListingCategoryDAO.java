@@ -6,6 +6,7 @@ import javax.persistence.*;
 
 /**
  *Junction table for handling the many to many connection between classes Listing and Category
+Using a join primary key of the ListingDAO and CategoryDAO
  */
 @Entity
 @Table(name = "listing_category", schema = "public")
