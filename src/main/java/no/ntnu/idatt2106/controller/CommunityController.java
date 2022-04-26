@@ -39,7 +39,7 @@ public class CommunityController {
     public void addCommunity(@RequestBody CommunityDTO communityDTO) throws StatusCodeException {
         CommunityDAO communityDAO = communityService.turnCommunityDTOIntoCommunityDAO(communityDTO);
         TokenDTO userToken = TokenUtil.getDataJWT();
-        int tokenUserId = Integer.parseInt(userToken.getAccountId());
+        int tokenUserId = Integer.valueOf(userToken.getAccountId());
         communityService.addCommunity(communityDAO);
         userCommunityService.addUserToCommunity(tokenUserId, communityDAO);
         throw new StatusCodeException(HttpStatus.CREATED, "Community created");
@@ -75,7 +75,7 @@ public class CommunityController {
     @PostMapping("/community/{communityId}/remove")
     public void removeCommunity(@PathVariable int communityId) throws StatusCodeException {
         TokenDTO userToken = TokenUtil.getDataJWT();
-        int tokenUserId = Integer.parseInt(userToken.getAccountId());
+        int tokenUserId = Integer.valueOf(userToken.getAccountId());
         CommunityDAO communityDAO = communityService.findCommunityDAOByCommunityID(communityId);
         if (communityDAO == null) {
             throw new StatusCodeException(HttpStatus.NOT_FOUND, "Community not found");
