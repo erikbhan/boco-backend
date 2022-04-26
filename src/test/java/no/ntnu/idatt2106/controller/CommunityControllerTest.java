@@ -32,6 +32,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -87,7 +88,7 @@ public class CommunityControllerTest {
 
     @Test
     void communityController_deleteCommunityFromAdminUser_ShouldBeOk() throws Exception {
-        mockMvc.perform(post("/community/4000/remove")
+        mockMvc.perform(delete("/community/4000/remove")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk());
@@ -95,7 +96,7 @@ public class CommunityControllerTest {
 
     @Test
     void communityController_deleteCommunityFromNotAdminUser_ShouldBe4xx() throws Exception {
-        mockMvc.perform(post("/community/4001/remove")
+        mockMvc.perform(delete("/community/4001/remove")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().is4xxClientError());
@@ -103,7 +104,7 @@ public class CommunityControllerTest {
 
     @Test
     void communityController_deleteCommunityFromNonMemberUser_ShouldBe4xx() throws Exception {
-        mockMvc.perform(post("/community/4002/remove")
+        mockMvc.perform(delete("/community/4002/remove")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().is4xxClientError());
