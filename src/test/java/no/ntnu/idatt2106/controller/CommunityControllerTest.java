@@ -72,15 +72,6 @@ public class CommunityControllerTest {
         }
     }
 
-    @Test
-    void communityController_createNewCommunity_ShouldBeOk() throws Exception {
-        mockMvc.perform(post("/api/community/save")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(new CommunityDTO("name", "description", 0, "location", "picture")))
-                        .header("Authorization", "Bearer " + userToken))
-                .andExpect(status().isOk());
-    }
-
 
 
     public static String asJsonString(final Object obj) {

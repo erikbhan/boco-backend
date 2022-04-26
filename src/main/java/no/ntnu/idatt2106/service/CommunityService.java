@@ -19,7 +19,6 @@ public class CommunityService {
     }
 
     public CommunityDAO findCommunityDAOByCommunityID(int communityID) {
-        System.out.println("TRYING TO ACCESS A USER FROM USERID");
         return communityRepository.findCommunityDAOByCommunityID(communityID);
     }
 
@@ -32,6 +31,15 @@ public class CommunityService {
         community.setPicture(communityDTO.getPicture());
         community.setVisibility(communityDTO.getVisibility());
         return community;
+    }
+
+    public boolean removeCommunity(CommunityDAO communityDAO) {
+        try{
+            communityRepository.delete(communityDAO);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
 }
