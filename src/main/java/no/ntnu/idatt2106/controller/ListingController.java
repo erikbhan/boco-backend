@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import no.ntnu.idatt2106.exception.StatusCodeException;
+import no.ntnu.idatt2106.middleware.RequireAuth;
 import no.ntnu.idatt2106.model.DAO.ListingDAO;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
 import no.ntnu.idatt2106.model.DTO.ListingDTO;
@@ -30,7 +31,7 @@ import no.ntnu.idatt2106.service.UserService;
  */
 @RestController
 @CrossOrigin
-
+@RequireAuth
 public class ListingController {
     private final ListingService listingService;
     private final ListingCategoryService listingCategoryService;
