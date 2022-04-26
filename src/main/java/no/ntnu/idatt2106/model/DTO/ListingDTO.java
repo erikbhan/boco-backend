@@ -8,18 +8,20 @@ public class ListingDTO {
     private String address;
     private int userID;
     private String[] categoryNames;
+    private int[] communityIDs;
 
     public ListingDTO() {
     }
 
     public ListingDTO(String title, String description, double pricePerDay, String address,
-            int userID, String[] categoryNames) {
+            int userID, String[] categoryNames, int[] communityIDs) {
         this.title = title;
         this.description = description;
         this.pricePerDay = pricePerDay;
         this.address = address;
         this.userID = userID;
         this.categoryNames = categoryNames;
+        this.communityIDs = communityIDs;
     }
 
     public String getTitle() {
@@ -68,6 +70,14 @@ public class ListingDTO {
 
     public void setCategoryNames(String[] categoryNames) {
         this.categoryNames = categoryNames;
+    }
+
+    public int[] getCommunityIDs() {
+        return this.communityIDs;
+    }
+
+    public void setCommunityIDs(int[] communityIDs) {
+        this.communityIDs = communityIDs;
     }
 
 }

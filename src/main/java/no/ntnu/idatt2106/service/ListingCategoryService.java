@@ -1,5 +1,8 @@
 package no.ntnu.idatt2106.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,5 +40,15 @@ public class ListingCategoryService {
         listingCategoryDAO.setCategoryID(categoryDAO);
         listingCategoryDAO.setListingID(listingDAO);
         listingCategoryRepository.save(listingCategoryDAO);
+    }
+
+    public String[] getCategoryNamesByListingID(ListingDAO listingDAO){
+        List<ListingCategoryDAO> listingCategoryDAOs = 
+        listingCategoryRepository.findAllFromListingCategoryDAOByListingID(listingDAO);
+        String[] categoryDAOs = new String[listingCategoryDAOs.size()];
+        for (int i = 0; i < categoryDAOs.length; i++) {
+            categoryDAOs[i] = listingCategoryDAOs.get(i).getCategoryID().getName();
+        }
+        return categoryDAOs;
     }
 }

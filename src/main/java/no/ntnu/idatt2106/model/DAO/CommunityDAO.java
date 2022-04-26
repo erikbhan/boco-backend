@@ -37,4 +37,53 @@ public class CommunityDAO {
     @Column(name = "picture")
     private String picture;
     
+
+    public int getCommunityID() {
+        return this.communityID;
+    }
+
+    public void setCommunityID(int communityID) {
+        this.communityID = communityID;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getVisibility() {
+        return this.visibility;
+    }
+
+    public void setVisibility(int visibility) {
+        this.visibility = visibility;
+    }
+
+    public String getLocation() {
+        return this.location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getPicture() {
+        return this.picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
 }
