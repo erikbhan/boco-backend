@@ -15,9 +15,10 @@ import no.ntnu.idatt2106.util.TokenUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin
-@ApiResponse(responseCode = "200")
 @RequireAuth
 public class CommunityController {
     private final CommunityService communityService;
@@ -45,6 +46,28 @@ public class CommunityController {
     }
 
     /**
+     * A method which shows all communities with visibility 1.
+     * @return Returns a list of all communities with visibility 1.
+     * @throws StatusCodeException
+     */
+    @Operation(summary = "Add community to database")
+    @ApiResponse(responseCode = "200", description = "Returns a list of all visible communities")
+    @ApiResponse(responseCode = "400", description = "No communities was found")
+    @PostMapping("/community/all")
+    public List<CommunityDTO> showAllCommunities() throws StatusCodeException {
+        List<CommunityDAO> listOfCommunityDAOs = communityService
+                .findAllCommunityDAOWithGivenVisibility(1);
+
+        if(listOfCommunityDAOs != null && listOfCommunityDAOs.size() > 0) {
+            List<CommunityDTO> listOfCommunities = communityService
+                    .convertListCommunityDAOToListCommunityDTO(listOfCommunityDAOs);
+
+            return listOfCommunities;
+        }
+        throw new StatusCodeException(HttpStatus.BAD_REQUEST, "No communities was found");
+    }
+
+    /**
      * Deletes a community from the database
      * @param communityId ID of the community to be deleted
      */
@@ -65,5 +88,4 @@ public class CommunityController {
         }
         communityService.removeCommunity(communityDAO);
     }
-
 }

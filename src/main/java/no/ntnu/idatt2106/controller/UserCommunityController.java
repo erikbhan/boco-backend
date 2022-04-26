@@ -46,10 +46,10 @@ public class UserCommunityController {
         if(communityDAO.getVisibility()==0){
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "This community is invite only");
         }
-        if (userCommunityService.userIsInCommunity(Integer.parseInt(token.getAccountId()),communityDAO)){
+        if (userCommunityService.userIsInCommunity(token.getAccountId(),communityDAO)){
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User is already in this community");
         }
-        if (!(userCommunityService.addUserToCommunity(Integer.parseInt(token.getAccountId()), communityDAO))){
+        if (!(userCommunityService.addUserToCommunity(token.getAccountId(), communityDAO))){
             throw new StatusCodeException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error");
         }
 
@@ -61,7 +61,7 @@ public class UserCommunityController {
     @GetMapping("/user/communities")
     public ArrayList<CommunityDTO> getCommunitiesForUser() throws StatusCodeException {
         TokenDTO token = TokenUtil.getDataJWT();
-        UserDAO user = userService.findUserByUserId(Integer.parseInt(token.getAccountId()));
+        UserDAO user = userService.findUserByUserId(token.getAccountId());
         if (user == null) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User does not exist");
         }

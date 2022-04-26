@@ -3,7 +3,6 @@ package no.ntnu.idatt2106.service;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
 import no.ntnu.idatt2106.model.DTO.UserDTO;
 import no.ntnu.idatt2106.repository.UserRepository;
-// import no.ntnu.idatt2106.util.HashUtil;
 
 import org.springframework.stereotype.Service;
 import java.util.List;
