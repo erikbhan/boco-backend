@@ -64,21 +64,12 @@ public class ListingDAO{
         this.address = address;
     }
 
-<<<<<<< HEAD
-    public UserDAO getUserID() {
-        return userID;
-=======
 
     public UserDAO getUserID() {
         return this.userID;
->>>>>>> listingbranch
     }
 
     public void setUserID(UserDAO userID) {
         this.userID = userID;
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> listingbranch
 }
