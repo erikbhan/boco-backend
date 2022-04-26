@@ -18,7 +18,6 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@ApiResponse(responseCode = "200", description = "OK")
 public class RatingController {
     private final RatingService ratingService;
     private final RentService rentService;
@@ -37,6 +36,7 @@ public class RatingController {
      * @throws StatusCodeException if the given user is not found or has no ratings as renter
      */
     @Operation(summary = "Finds ratings for user as renter")
+    @ApiResponse(responseCode = "200", description = "returns a list of rating dtos for the user")
     @ApiResponse(responseCode = "400", description = "User not found in DB")
     @GetMapping("/rating/as_renter")
     public List<RatingDTO> getAsRenter(@RequestParam int userID) throws StatusCodeException {
@@ -53,6 +53,7 @@ public class RatingController {
      * @throws StatusCodeException if the given user is not found or has no ratings as owner
      */
     @Operation(summary = "Finds ratings for user as owner")
+    @ApiResponse(responseCode = "200", description = "retuns a list of rating dtos for the owner")
     @ApiResponse(responseCode = "400", description = "User not found in DB")
     @GetMapping("/rating/as_owner")
     public List<RatingDTO> getAsOwner(@RequestParam int userID) throws StatusCodeException {
@@ -70,6 +71,7 @@ public class RatingController {
      * @throws StatusCodeException if the given user is not found or has no ratings as renter
      */
     @Operation(summary = "Finds average rating of user")
+    @ApiResponse(responseCode = "200", description = "returns the avrage rating of the user")
     @ApiResponse(responseCode = "400", description = "User not found in DB")
     @GetMapping("/rating/average")
     @RequireAuth
@@ -87,6 +89,7 @@ public class RatingController {
      *         false if a token was not received or if the owner of the token was not found
      */
     @Operation(summary = "Saves rating to db")
+    @ApiResponse(responseCode = "200", description = "Returns true if the rating was posted and false if not")
     @ApiResponse(responseCode = "400", description = "User not found in DB")
     @PostMapping("/rating/save")
     @RequireAuth
@@ -95,7 +98,6 @@ public class RatingController {
         try {
             userToken = TokenUtil.getDataJWT();
         } catch (NullPointerException e) {
-            System.out.println("no token received");
             return false;
         }
         int tokenUserID = userToken.getAccountId();
