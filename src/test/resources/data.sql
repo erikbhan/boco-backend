@@ -20,7 +20,19 @@ INSERT INTO public.rent(rent_id, from_time, is_accepted, to_time, listing_owner_
 VALUES (10001, '2011-03-04', false, '2021-03-06', 1236, null, 2022);
 
 INSERT INTO public.community(community_id, name, description, visibility, location, picture)
-VALUES (4000, 'Einars MC klubb', 'vi som liker motorsykkel og heter Einar', 0, 'Elgeseter gate(midt på natta)', 'bilde')
+VALUES (4000, 'Einars MC klubb', 'vi som liker motorsykkel og heter Einar', 0, 'Elgeseter gate(midt på natta)', 'bilde');
+
+INSERT INTO public.community(community_id, name, description, visibility, location, picture)
+VALUES (4001, 'Einars MC klubb', 'vi som liker motorsykkel og heter Einar', 0, 'Elgeseter gate(midt på natta)', 'bilde');
+
+INSERT INTO public.community(community_id, name, description, visibility, location, picture)
+VALUES (4002, 'Einars MC klubb', 'vi som liker motorsykkel og heter Einar', 0, 'Elgeseter gate(midt på natta)', 'bilde');
+
+INSERT INTO public.user_community(community_id, user_id, is_administrator)
+VALUES (4000, 2022, true);
+
+INSERT INTO public.user_community(community_id, user_id, is_administrator)
+VALUES (4001, 2022, false);
 
 INSERT INTO public.community(community_id, description, location, name, picture, visibility)
 VALUES (1000, 'En hyggelig dag', 'Storvold', 'Vi som liker været', 'Nei takk', 1);

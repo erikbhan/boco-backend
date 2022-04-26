@@ -39,9 +39,10 @@ public class CommunityController {
     public void addCommunity(@RequestBody CommunityDTO communityDTO) throws StatusCodeException {
         CommunityDAO communityDAO = communityService.turnCommunityDTOIntoCommunityDAO(communityDTO);
         TokenDTO userToken = TokenUtil.getDataJWT();
-        int tokenUserId = Integer.parseInt(userToken.getAccountId());
+        int tokenUserId = Integer.valueOf(userToken.getAccountId());
         communityService.addCommunity(communityDAO);
         userCommunityService.addUserToCommunity(tokenUserId, communityDAO);
+        throw new StatusCodeException(HttpStatus.CREATED, "Community created");
     }
 
     /**
@@ -74,14 +75,14 @@ public class CommunityController {
     @PostMapping("/community/{communityId}/remove")
     public void removeCommunity(@PathVariable int communityId) throws StatusCodeException {
         TokenDTO userToken = TokenUtil.getDataJWT();
-        int tokenUserId = Integer.parseInt(userToken.getAccountId());
+        int tokenUserId = Integer.valueOf(userToken.getAccountId());
         CommunityDAO communityDAO = communityService.findCommunityDAOByCommunityID(communityId);
         if (communityDAO == null) {
             throw new StatusCodeException(HttpStatus.NOT_FOUND, "Community not found");
         }
         UserCommunityDAO userCommunityDAO = userCommunityService.getByIds(tokenUserId, communityDAO);
         if (userCommunityDAO == null) {
-            throw new StatusCodeException(HttpStatus.NOT_FOUND, "User not a part of this community");
+            throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "User not a part of this community");
         } else if (!userCommunityDAO.isAdministrator()) {
             throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "User not an admin in this community");
         }
