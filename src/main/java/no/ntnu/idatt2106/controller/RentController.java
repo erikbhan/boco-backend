@@ -40,7 +40,7 @@ public class RentController {
      * @return Returns a list of all objects rented by the user.
      * @throws Exception
      */
-    @GetMapping("/users/{userid}/profile/rent/userHistory")
+    @GetMapping("/users/{userid}/profile/rent/history")
     @Operation(summary = "Get the full list of rent objects which a user has rented")
     @ApiResponse(responseCode = "200", description = "Returns the rent history of the user, deleted items are not included")
     @ApiResponse(responseCode = "400", description = "User or rent history not found in the DB")
@@ -67,7 +67,7 @@ public class RentController {
      * @return Returns a list of all rent objects for the user.
      * @throws Exception
      */
-    @GetMapping("/users/{userid}/profile/rent/userHistory/all")
+    @GetMapping("/users/{userid}/profile/rent/history/all")
     @Operation(summary = "Get a list of all rent agreements for a user, both accepted and not.")
     @ApiResponse(responseCode = "200", description = "Returns every instance where this user has rented an item from another user")
     @ApiResponse(responseCode = "400", description = "User or rent history not found in the DB")
@@ -93,7 +93,7 @@ public class RentController {
      * @return Returns a list of all rent objects listed by the user.
      * @throws Exception
      */
-    @GetMapping("/users/{userid}/profile/rent/userHistory/owner/all")
+    @GetMapping("/users/{userid}/profile/rent/history/owner/all")
     @Operation(summary = "Get a list of all rent agreements for a user, both accepted and not.")
     @ApiResponse(responseCode = "200", description = "Returns every instance where this owner has rented out an item")
     @ApiResponse(responseCode = "400", description = "User or rent history not found in the DB")
@@ -118,7 +118,7 @@ public class RentController {
      * @return Returns a list of all rented objects listed by the owner which has also been rented by someone.
      * @throws Exception
      */
-    @GetMapping("/users/{userid}/profile/rent/userHistory/owner")
+    @GetMapping("/users/{userid}/profile/rent/history/owner")
     @Operation(summary = "Get a list of all rent agreements for a user, both accepted and not.")
     @ApiResponse(responseCode = "200", description = "Returns the rented item history of this owner, deleted items are not included")
     @ApiResponse(responseCode = "400", description = "User or rent history not found in the DB")
