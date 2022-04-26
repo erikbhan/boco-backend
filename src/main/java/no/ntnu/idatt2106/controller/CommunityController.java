@@ -51,7 +51,7 @@ public class CommunityController {
     @Operation(summary = "Show all visible communities")
     @ApiResponse(responseCode = "200", description = "Returns a list of all visible communities")
     @ApiResponse(responseCode = "400", description = "No communities was found")
-    @GetMapping("/community/all")
+    @GetMapping("/communities")
     public List<CommunityDTO> showAllCommunities() throws StatusCodeException {
         List<CommunityDAO> listOfCommunityDAOs = communityService
                 .findAllCommunityDAOWithGivenVisibility(1);
