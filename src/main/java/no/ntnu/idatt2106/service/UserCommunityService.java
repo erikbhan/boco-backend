@@ -40,6 +40,13 @@ public class UserCommunityService {
            return true;
     }
 
+
+    public void removeUserFromCommunity(UserCommunityDAO ucd){
+        if(userIsInCommunity(ucd.getUserID().getUserID(), ucd.getCommunityID())){
+            userCommunityRepository.delete(ucd);
+        }
+    }
+
     public void setAdmin(UserCommunityDAO ucd){
         if(!ucd.isAdministrator()){
             ucd.setAdministrator(true);
