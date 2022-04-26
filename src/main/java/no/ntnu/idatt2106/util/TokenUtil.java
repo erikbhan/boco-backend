@@ -48,6 +48,11 @@ public class TokenUtil {
         return new TokenDTO(JWT.decode(token).getClaims());
     }
 
+    /**
+     * A method which combines the {@link #getDataJWT(String) getDataJWT(String)}
+     * method with the {@link #getToken() getToken()} method.
+     * @return Returns a TokenDTO object containing the information stored in the token.
+     */
     public static TokenDTO getDataJWT() {
         return TokenUtil.getDataJWT(TokenUtil.getToken());
     }

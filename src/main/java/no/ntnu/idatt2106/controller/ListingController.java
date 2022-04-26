@@ -148,7 +148,7 @@ public class ListingController {
             // communityListing table.
             // Finds communities using communityIDs
             for (int communityID : listingDTO.getCommunityIDs()) {
-                communityListingService.saveCommunityListing(communityService.findCommunityDAOByID(communityID),
+                communityListingService.saveCommunityListing(communityService.findCommunityDAOByCommunityID(communityID),
                         listing);
             }
 

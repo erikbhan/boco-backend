@@ -1,5 +1,10 @@
 package no.ntnu.idatt2106.model.DTO;
 
+/**
+ * A class representing the user object.
+ * This class shall be returned to the frontend instead of the user dao.
+ * This class contains necessary access-methods for the data it contains.
+ */
 public class UserDTO {
     String userId;
     String email;
@@ -57,6 +62,11 @@ public class UserDTO {
         this.picture = picture;
     }
 
+    /**
+     * A getter for the user id.
+     * This method coverts the user id into a integer since it is stored as a string.
+     * @return Returns a integer made from the value of the string user id.
+     */
     public int getUserId() {return Integer.valueOf(userId);}
 
     public void setUserId(String userId) {
