@@ -127,7 +127,7 @@ public class ListingController {
             // Creates a ListingDAO with the information from the DTO.
             ListingDAO listing = new ListingDAO();
             listing.setTitle(listingDTO.getTitle());
-            listing.setDescription(listingDTO.getAddress());
+            listing.setDescription(listingDTO.getDescription());
             listing.setAddress(listingDTO.getAddress());
             listing.setPricePerDay(listingDTO.getPricePerDay());
             listing.setUserID(userService.findUserByUserId(listingDTO.getUserID()));
