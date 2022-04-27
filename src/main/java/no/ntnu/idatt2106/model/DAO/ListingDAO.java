@@ -64,8 +64,9 @@ public class ListingDAO{
         this.address = address;
     }
 
+
     public UserDAO getUserID() {
-        return userID;
+        return this.userID;
     }
 
     public void setUserID(UserDAO userID) {

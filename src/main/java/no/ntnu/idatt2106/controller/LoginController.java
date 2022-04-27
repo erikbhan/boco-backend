@@ -42,6 +42,4 @@ public class LoginController {
 
             e.printStackTrace();
             throw new StatusCodeException(HttpStatus.INTERNAL_SERVER_ERROR, "How did you get here");
-
-
     }}}

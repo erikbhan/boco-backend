@@ -1,5 +1,7 @@
 package no.ntnu.idatt2106.model.DTO;
 
+import no.ntnu.idatt2106.model.DAO.RentDAO;
+
 import java.sql.Date;
 
 /**
@@ -32,6 +34,16 @@ public class RentDTO {
         this.listingId = listingId;
         this.renterId = renterId;
         this.notificationId = notificationId;
+    }
+
+    public RentDTO(RentDAO rentDAO) {
+        this.rentId = rentDAO.getRentID();
+        this.fromTime = rentDAO.getFromTime();
+        this.toTime = rentDAO.getToTime();
+        this.isAccepted = rentDAO.getIsAccepted();
+        this.listingId = rentDAO.getListingOwnerID().getListingID();
+        this.renterId = rentDAO.getRenterID().getUserID();
+        this.notificationId = rentDAO.getNotificationID().getNotificationID();
     }
 
     public RentDTO() {}
