@@ -28,10 +28,12 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -80,8 +82,8 @@ public class CommunityControllerTest {
         mockMvc.perform(get("/communities")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
-                .andExpect(status().isOk());
-                //.andExpect(content().contentType());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].*", hasSize(6)));
     }
 
     @Test
@@ -89,7 +91,8 @@ public class CommunityControllerTest {
         mockMvc.perform(get("/search/communities/community?search_word=MC")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].*", hasSize(6)));
     }
 
     @Test
