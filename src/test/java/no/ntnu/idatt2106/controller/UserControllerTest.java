@@ -25,8 +25,9 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("test")
@@ -52,7 +53,9 @@ public class UserControllerTest {
     @BeforeAll
     static void setup(@Autowired DataSource dataSource) throws SQLException {
         try (Connection conn = dataSource.getConnection()) {
+            ScriptUtils.executeSqlScript(conn, new ClassPathResource("cleanup.sql"));
             ScriptUtils.executeSqlScript(conn, new ClassPathResource("data.sql"));
+
         }
     }
 
@@ -74,10 +77,12 @@ public class UserControllerTest {
 
     @Test
     void userController_getAUserFromUserId_ShouldBeOk() throws Exception {
+        String expectedJson = "{\"userId\":2022,\"email\":\"test@email.com\",\"firstName\":\"test\",\"lastName\":\"user\",\"address\":\"gløshaugen\",\"picture\":\"ok\"}";
         mockMvc.perform(get("/users/2022/profile")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().json(expectedJson));
     }
 
     @Test

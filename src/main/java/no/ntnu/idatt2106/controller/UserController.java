@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @CrossOrigin
-@ApiResponse(responseCode = "200")
 @ApiResponse(responseCode = "401", description = "Not authenticated")
 @RequireAuth
 public class UserController {
@@ -32,12 +31,13 @@ public class UserController {
      */
     @GetMapping("/users/{userid}/profile")
     @Operation(summary = "Get at user by the user id")
+    @ApiResponse(responseCode = "200", description = "Returns a user with the given user id")
     @ApiResponse(responseCode = "404", description = "User not found in the DB")
     public UserDTO getAUserFromUserId(@PathVariable() int userid) throws StatusCodeException {
         UserDAO user = userService.findUserByUserId(userid);
         if(user == null) {
             throw new StatusCodeException(HttpStatus.NOT_FOUND, "User not found in DB");
         }
-        return userService.convertUserDAOIntoUserDTO(user);
+        return new UserDTO(user);
     }
 }

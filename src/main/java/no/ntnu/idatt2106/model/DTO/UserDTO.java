@@ -1,5 +1,7 @@
 package no.ntnu.idatt2106.model.DTO;
 
+import no.ntnu.idatt2106.model.DAO.UserDAO;
+
 /**
  * A class representing the user object.
  * This class shall be returned to the frontend instead of the user dao.
@@ -20,6 +22,18 @@ public class UserDTO {
         this.lastName = lastName;
         this.address = address;
         this.picture = picture;
+    }
+
+    public UserDTO(UserDAO userDAO) {
+        this.userId = String.valueOf(userDAO.getUserID());
+        this.email = userDAO.getEmail();
+        this.firstName = userDAO.getFirstName();
+        this.lastName = userDAO.getLastName();
+        this.address = userDAO.getAddress();
+        this.picture = userDAO.getPicture();
+    }
+
+    public UserDTO() {
     }
 
     public String getEmail() {

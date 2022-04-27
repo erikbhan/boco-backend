@@ -28,10 +28,12 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -58,7 +60,8 @@ public class CommunityControllerTest {
     @BeforeAll
     static void setup(@Autowired DataSource dataSource) throws SQLException {
         try (Connection conn = dataSource.getConnection()) {
-            ScriptUtils.executeSqlScript(conn, new ClassPathResource("data.sql"));
+            ScriptUtils.executeSqlScript(conn, new ClassPathResource("communityCleanup.sql"));
+            ScriptUtils.executeSqlScript(conn, new ClassPathResource("communityData.sql"));
         }
     }
 
@@ -71,7 +74,7 @@ public class CommunityControllerTest {
     @AfterAll
     static void cleanup(@Autowired DataSource dataSource) throws SQLException {
         try (Connection conn = dataSource.getConnection()) {
-            ScriptUtils.executeSqlScript(conn, new ClassPathResource("cleanup.sql"));
+            ScriptUtils.executeSqlScript(conn, new ClassPathResource("communityCleanup.sql"));
         }
     }
 
@@ -80,8 +83,8 @@ public class CommunityControllerTest {
         mockMvc.perform(get("/communities")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
-                .andExpect(status().isOk());
-                //.andExpect(content().contentType());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].*", hasSize(6)));
     }
 
     @Test
@@ -89,14 +92,15 @@ public class CommunityControllerTest {
         mockMvc.perform(get("/communities/search?search_word=MC")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].*", hasSize(6)));
     }
 
     @Test
     void communityController_saveNewCommunity_ShouldBeCreated() throws Exception {
         mockMvc.perform(post("/communities/create")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(new CommunityDTO("MCklubb", "veldig kul klubb", 1, "Gløs", "picture")))
+                        .content(asJsonString(new CommunityDTO(5070,"MCklubb", "kul klubb", 0, "Opp og ned elgeseter gate midt på natten hele fukin tiden", "bilde")))
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isCreated());
     }
