@@ -30,7 +30,7 @@ import no.ntnu.idatt2106.service.UserService;
  */
 @RestController
 @CrossOrigin
-// @RequireAuth
+@RequireAuth
 public class ListingController {
     private final ListingService listingService;
     private final ListingCategoryService listingCategoryService;
