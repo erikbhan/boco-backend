@@ -153,7 +153,7 @@ public class ListingController {
 
             return true;
         } catch (Exception e) {
-            throw new StatusCodeException(HttpStatus.INTERNAL_SERVER_ERROR, "Uff da");
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Uff da");
         }
     }
 }
