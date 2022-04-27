@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 @RestController
 @CrossOrigin
-@ApiResponse(responseCode = "200")
+@ApiResponse(responseCode = "401", description = "Unauthorized")
 @RequireAuth
 public class UserCommunityController {
     private final UserCommunityService userCommunityService;
@@ -81,7 +81,7 @@ public class UserCommunityController {
 
     }
 
-    @Operation(summary = "Get all communities a specific user is part of")
+    @Operation(summary = "Get all communities the logged in user is part of")
     @ApiResponse(responseCode = "200", description = "Found communities")
     @ApiResponse(responseCode = "400", description = "Illegal operation")
     @GetMapping("/user/communities")
@@ -91,9 +91,7 @@ public class UserCommunityController {
         if (user == null) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User does not exist");
         }
-        ArrayList<CommunityDTO> communityDTOS = new ArrayList<>();
 
         return userCommunityService.getAllCommunitiesForUser(user);
     }
-
 }

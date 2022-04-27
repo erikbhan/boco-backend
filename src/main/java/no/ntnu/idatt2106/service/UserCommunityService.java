@@ -65,10 +65,13 @@ public class UserCommunityService {
     public void retractAdmin(UserCommunityDAO ucd){
         ucd.setAdministrator(false);
     }
+
     public ArrayList<CommunityDTO> getAllCommunitiesForUser(UserDAO user){
         List<UserCommunityDAO> communityList =  userCommunityRepository.findAllByUserID(user);
         ArrayList<CommunityDTO> communityDTOList = new ArrayList<>();
-        for (int i = 0; i < communityList.size(); i++) { CommunityDAO communityDAO = communityRepository.findCommunityDAOByCommunityID(communityList.get(i).getCommunityID().getCommunityID());
+        for (int i = 0; i < communityList.size(); i++) {
+            CommunityDAO communityDAO = communityRepository
+                    .findCommunityDAOByCommunityID(communityList.get(i).getCommunityID().getCommunityID());
             CommunityDTO communityDTO = new CommunityDTO(communityDAO);
             communityDTOList.add(communityDTO);
         }
