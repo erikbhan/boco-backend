@@ -81,6 +81,28 @@ public class RatingController {
         } else throw new StatusCodeException(HttpStatus.OK, "User not found or had no ratings as owner");
     }
 
+    @Operation(summary = "Finds average rating of user as owner")
+    @ApiResponse(responseCode = "200", description = "returns the avrage rating of the user")
+    @ApiResponse(responseCode = "400", description = "User not found in DB")
+    @GetMapping("/rating/{userID}/average_as_owner")
+    @RequireAuth
+    public float getAverageRatingAsOwner(@PathVariable int userID) throws StatusCodeException {
+        if (userService.findUserByUserId(userID) != null) {
+            return ratingService.findAverageRatingAsOwner(userID);
+        } else throw new StatusCodeException(HttpStatus.OK, "User not found or had no ratings as owner");
+    }
+
+    @Operation(summary = "Finds average rating of user as owner")
+    @ApiResponse(responseCode = "200", description = "returns the avrage rating of the user")
+    @ApiResponse(responseCode = "400", description = "User not found in DB")
+    @GetMapping("/rating/{userID}/average_as_renter")
+    @RequireAuth
+    public float getAverageRatingAsRenter(@PathVariable int userID) throws StatusCodeException {
+        if (userService.findUserByUserId(userID) != null) {
+            return ratingService.findAverageRatingAsRenter(userID);
+        } else throw new StatusCodeException(HttpStatus.OK, "User not found or had no ratings as owner");
+    }
+
     /**
      * A method that transforms a given ratingDTO into a ratingDAO, then adding
      * this ratingDAO to the database

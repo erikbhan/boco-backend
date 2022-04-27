@@ -2,6 +2,9 @@ package no.ntnu.idatt2106.model.DAO;
 import no.ntnu.idatt2106.model.DTO.RentDTO;
 
 import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 
 import javax.persistence.*;
 
@@ -20,6 +23,8 @@ public class RentDAO{
     private Date fromTime;
     @Column(name = "to_time")
     private Date toTime;
+    @Column (name = "from_thyme")
+    private long fromThyme;
     @Column(name = "is_accepted")
     private boolean isAccepted;
     @Column(name = "is_deleted")
@@ -41,6 +46,16 @@ public class RentDAO{
         this.listingOwnerID = listingOwnerID;
         this.renterID = renterID;
         this.notificationID = notificationID;
+    }
+
+    //delete this :))))
+    public RentDAO(Date fromTime, Date toTime, long fromThyme, boolean isAccepted, ListingDAO listingOwnerID, UserDAO renterID) {
+        this.fromTime = fromTime;
+        this.toTime = toTime;
+        this.fromThyme = fromThyme;
+        this.isAccepted = isAccepted;
+        this.listingOwnerID = listingOwnerID;
+        this.renterID = renterID;
     }
 
     public RentDAO(RentDTO rentDTO) {
@@ -107,4 +122,12 @@ public class RentDAO{
     public boolean isDeleted() {return isDeleted;}
 
     public void setDeleted(boolean deleted) {isDeleted = deleted;}
+
+    public long getFromThyme() {
+        return fromThyme;
+    }
+
+    public void setFromThyme(long fromThyme) {
+        this.fromThyme = fromThyme;
+    }
 }

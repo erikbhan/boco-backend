@@ -10,6 +10,7 @@ import no.ntnu.idatt2106.service.UserService;
 import no.ntnu.idatt2106.service.ListingService;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -117,17 +118,12 @@ public class RentService {
      */
     public RentDAO convertFromRentDTOTORentDAO(RentDTO rentDTO) {
         RentDAO rentDAO = new RentDAO(rentDTO);
-        Integer notificationId = rentDTO.getNotificationId();
         Integer renterId = rentDTO.getRenterId();
         Integer listingId = rentDTO.getListingId();
         Integer rentId = rentDTO.getRentId();
         NotificationDAO notification;
         UserDAO renter;
         ListingDAO listing;
-        if(notificationId != null) {
-            notification = notificationService.getNotificationFromNotificationId(rentDTO.getNotificationId());
-            rentDAO.setNotificationID(notification);
-        }
         if(renterId != null) {
             renter = userService.findUserByUserId(rentDTO.getRenterId());
             rentDAO.setRenterID(renter);
@@ -177,11 +173,11 @@ public class RentService {
      */
     public RentDAO getRentFromId(int rentId) {
         RentDAO rentDAO = rentRepository.findByRentID(rentId);
-        if(rentDAO.isDeleted()) {
+        /*if(rentDAO.isDeleted()) {
             return null;
-        } else {
+        } else {*/
             return rentDAO;
-        }
+        //}
     }
 
     /**

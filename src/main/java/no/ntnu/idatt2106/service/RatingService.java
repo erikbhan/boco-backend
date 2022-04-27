@@ -106,4 +106,24 @@ public class RatingService {
         averageRating /= (ratingAsOwner.size() + ratingsAsRenter.size());
         return averageRating;
     }
+
+    public float findAverageRatingAsOwner(int userID){
+        float averageRating = 0;
+        List<RatingDTO> ratingAsOwner = findRatingsAsOwnerByUserID(userID);
+        for (RatingDTO asOwner: ratingAsOwner){
+            averageRating += asOwner.getScore();
+        }
+        averageRating /= ratingAsOwner.size();
+        return averageRating;
+    }
+
+    public float findAverageRatingAsRenter(int userID){
+        float averageRating = 0;
+        List<RatingDTO> ratingsAsRenter = findRatingsAsRenterByUserID(userID);
+        for (RatingDTO asRenter: ratingsAsRenter){
+            averageRating += asRenter.getScore();
+        }
+        averageRating /= ratingsAsRenter.size();
+        return averageRating;
+    }
 }

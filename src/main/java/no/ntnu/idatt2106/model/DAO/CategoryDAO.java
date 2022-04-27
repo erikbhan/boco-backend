@@ -21,10 +21,7 @@ public class CategoryDAO {
         this.name = name;
     }
     public CategoryDAO() {
-
     }
-
-
 
     public long getCategoryID() {
         return this.categoryID;
