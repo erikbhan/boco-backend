@@ -13,7 +13,7 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessageDAO, Int
     ChatMessageDAO getLastMessage(int accountId, int userId);
 
 
-    @Query(value = " SELECT DISTINCT userid FROM (SELECT DISTINCT sending_user_id AS userid FROM chat_message cm WHERE cm.receiving_user_id = 1 UNION SELECT DISTINCT receiving_user_id AS userid FROM chat_message cmd WHERE cmd.sending_user_id = 1) AS joinedList", nativeQuery = true)
+    @Query(value = " SELECT DISTINCT userid FROM (SELECT DISTINCT sending_user_id AS userid FROM chat_message cm WHERE cm.receiving_user_id = ?1 UNION SELECT DISTINCT receiving_user_id AS userid FROM chat_message cmd WHERE cmd.sending_user_id = ?1) AS joinedList", nativeQuery = true)
     int[] getConversationUsers(int accountId);
 
 
