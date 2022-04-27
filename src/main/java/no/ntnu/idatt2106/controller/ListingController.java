@@ -30,7 +30,7 @@ import no.ntnu.idatt2106.service.UserService;
  */
 @RestController
 @CrossOrigin
-@RequireAuth
+// @RequireAuth
 public class ListingController {
     private final ListingService listingService;
     private final ListingCategoryService listingCategoryService;
@@ -155,5 +155,15 @@ public class ListingController {
         } catch (Exception e) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Uff da");
         }
+    }
+
+    /**
+     * Gets every listing with title containing requested phrase
+     * @param title
+     * @return List of DTOs
+     */
+    @GetMapping("/listing/title/{title}")
+    public List<ListingDTO> searchForListingsByTitle(@PathVariable String title){
+        return listingService.getListingDTOByTitle(title, listingCategoryService, communityListingService);
     }
 }

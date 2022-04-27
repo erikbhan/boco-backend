@@ -3,6 +3,8 @@ package no.ntnu.idatt2106.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import no.ntnu.idatt2106.model.DAO.ListingDAO;
@@ -19,5 +21,8 @@ public interface ListingRepository extends JpaRepository<ListingDAO, Integer> {
     List<ListingDAO> findAllFromListingDAOByUserID(UserDAO userID);
     ListingDAO findListingDAOByListingID(int listingId);
     List<ListingDAO> findAllByUserID(UserDAO userId);
-    List<ListingDAO> findListingDAOSByUserID(UserDAO user);;
+    List<ListingDAO> findListingDAOSByUserID(UserDAO user);
+
+    @Query("SELECT m FROM ListingDAO m WHERE m.title LIKE %:title%")     
+    List<ListingDAO> findAllByTitleLike(@Param("title") String title);
 }

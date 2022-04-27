@@ -11,6 +11,7 @@ import no.ntnu.idatt2106.repository.ListingRepository;
 import no.ntnu.idatt2106.repository.UserRepository;
 import no.ntnu.idatt2106.service.*;
 import org.junit.Assert;
+import org.junit.Test;
 import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,6 +119,12 @@ public class ListingControllerTest{
                 .andExpect(status().is4xxClientError());
     }
 
+    @Test
+    public void searchForListingWithExistingTitleInDB_ShouldBeOK() throws Exception{
+        mockMvc.perform(get("/listing/title/Fisking").contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk());
+    }
+    
     public static String asJsonString(final Object obj) {
         try {
             return new ObjectMapper().writeValueAsString(obj);
