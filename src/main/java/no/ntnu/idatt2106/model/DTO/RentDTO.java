@@ -11,14 +11,13 @@ import java.sql.Date;
  */
 public class RentDTO {
     int rentId;
-    Date fromTime;
-    Date toTime;
+    long fromTime;
+    long toTime;
     Boolean isAccepted;
     int listingId;
     int renterId;
-    int notificationId;
 
-    public RentDTO(Date fromTime, Date toTime, Boolean isAccepted, int listingId, int renterId) {
+    public RentDTO(long fromTime, long toTime, Boolean isAccepted, int listingId, int renterId) {
         this.fromTime = fromTime;
         this.toTime = toTime;
         this.isAccepted = isAccepted;
@@ -26,14 +25,13 @@ public class RentDTO {
         this.renterId = renterId;
     }
 
-    public RentDTO(int rentId, Date fromTime, Date toTime, Boolean isAccepted, int listingId, int renterId, int notificationId) {
+    public RentDTO(int rentId, long fromTime, long toTime, Boolean isAccepted, int listingId, int renterId) {
         this.rentId = rentId;
         this.fromTime = fromTime;
         this.toTime = toTime;
         this.isAccepted = isAccepted;
         this.listingId = listingId;
         this.renterId = renterId;
-        this.notificationId = notificationId;
     }
 
     public RentDTO(RentDAO rentDAO) {
@@ -43,20 +41,17 @@ public class RentDTO {
         this.isAccepted = rentDAO.getIsAccepted();
         this.listingId = rentDAO.getListingOwnerID().getListingID();
         this.renterId = rentDAO.getRenterID().getUserID();
-        if(rentDAO.getNotificationID() != null) {
-            this.notificationId = rentDAO.getNotificationID().getNotificationID();
-        }
     }
 
     public RentDTO() {}
 
     public int getRentId() {return rentId;}
 
-    public Date getFromTime() {
+    public long getFromTime() {
         return fromTime;
     }
 
-    public Date getToTime() {
+    public long getToTime() {
         return toTime;
     }
 
@@ -78,11 +73,11 @@ public class RentDTO {
 
     public void setRentId(int rentId) {this.rentId = rentId;}
 
-    public void setFromTime(Date fromTime) {
+    public void setFromTime(long fromTime) {
         this.fromTime = fromTime;
     }
 
-    public void setToTime(Date toTime) {
+    public void setToTime(long toTime) {
         this.toTime = toTime;
     }
 
@@ -96,9 +91,5 @@ public class RentDTO {
 
     public void setRenterId(int renterId) {
         this.renterId = renterId;
-    }
-
-    public void setNotificationId(int notificationId) {
-        this.notificationId = notificationId;
     }
 }

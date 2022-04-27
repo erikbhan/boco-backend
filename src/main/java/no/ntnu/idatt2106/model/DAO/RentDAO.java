@@ -20,11 +20,9 @@ public class RentDAO{
     @Column(name = "rent_id")
     private int rentID;
     @Column(name = "from_time")
-    private Date fromTime;
+    private long fromTime;
     @Column(name = "to_time")
-    private Date toTime;
-    @Column (name = "from_thyme")
-    private long fromThyme;
+    private long toTime;
     @Column(name = "is_accepted")
     private boolean isAccepted;
     @Column(name = "is_deleted")
@@ -35,21 +33,8 @@ public class RentDAO{
     @ManyToOne
     @JoinColumn(name = "renter_id")
     private UserDAO renterID;
-    @ManyToOne
-    @JoinColumn(name = "notification_id")
-    private NotificationDAO notificationID;
 
-    public RentDAO(Date fromTime, Date toTime, boolean isAccepted, ListingDAO listingOwnerID, UserDAO renterID, NotificationDAO notificationID) {
-        this.fromTime = fromTime;
-        this.toTime = toTime;
-        this.isAccepted = isAccepted;
-        this.listingOwnerID = listingOwnerID;
-        this.renterID = renterID;
-        this.notificationID = notificationID;
-    }
-
-    //delete this :))))
-    public RentDAO(Date fromTime, Date toTime, long fromThyme, boolean isAccepted, ListingDAO listingOwnerID, UserDAO renterID) {
+    public RentDAO(long fromTime, long toTime, boolean isAccepted, ListingDAO listingOwnerID, UserDAO renterID) {
         this.fromTime = fromTime;
         this.toTime = toTime;
         this.fromThyme = fromThyme;
@@ -75,19 +60,19 @@ public class RentDAO{
         this.rentID = rentID;
     }
 
-    public Date getFromTime() {
+    public long getFromTime() {
         return fromTime;
     }
 
-    public void setFromTime(Date fromTime) {
+    public void setFromTime(long fromTime) {
         this.fromTime = fromTime;
     }
 
-    public Date getToTime() {
+    public long getToTime() {
         return toTime;
     }
 
-    public void setToTime(Date toTime) {
+    public void setToTime(long toTime) {
         this.toTime = toTime;
     }
 
@@ -114,10 +99,6 @@ public class RentDAO{
     public void setRenterID(UserDAO renterID) {
         this.renterID = renterID;
     }
-
-    public NotificationDAO getNotificationID() {return notificationID;}
-
-    public void setNotificationID(NotificationDAO notificationID) {this.notificationID = notificationID;}
 
     public boolean isDeleted() {return isDeleted;}
 

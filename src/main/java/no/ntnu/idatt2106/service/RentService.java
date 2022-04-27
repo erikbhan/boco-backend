@@ -6,11 +6,10 @@ import no.ntnu.idatt2106.model.DAO.NotificationDAO;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
 import no.ntnu.idatt2106.model.DTO.RentDTO;
 import no.ntnu.idatt2106.repository.RentRepository;
-import no.ntnu.idatt2106.service.UserService;
-import no.ntnu.idatt2106.service.ListingService;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -172,19 +171,14 @@ public class RentService {
      * @return Returns a rent dao object with the given rentId.
      */
     public RentDAO getRentFromId(int rentId) {
-        RentDAO rentDAO = rentRepository.findByRentID(rentId);
-        /*if(rentDAO.isDeleted()) {
-            return null;
-        } else {*/
-            return rentDAO;
-        //}
+        return rentRepository.findByRentID(rentId);
     }
 
     /**
      * A method for filtering lists of RentDAOs on deleted.
-     * This method filters out all rent daos that have been deleted.
-     * @param list The list you wnat to filter.
-     * @return Returns a list of rent daos containing only non deleted renting agreements.
+     * This method filters out all rent DAOs that have been deleted.
+     * @param list The list you want to filter.
+     * @return Returns a list of rent DAOs containing only non deleted renting agreements.
      */
     public List<RentDAO> filterListOfRentDAOOnDeleted(List<RentDAO> list) {
         List<RentDAO> noDeletedRentDAOs = new ArrayList<>();
@@ -196,7 +190,35 @@ public class RentService {
         return noDeletedRentDAOs;
     }
 
-    public List<RentDAO> findRentByUserID(UserDAO user){
+    public List<RentDAO> findRentByRenterID(UserDAO user){
         return rentRepository.findRentDAOSByRenterID(user);
+    }
+
+    /**
+     * Converts a LocalDateTime objet into a long of the milliseconds counting  from midnight 1.1.1970
+     * @param ldt LocalDateTime of the date and time you want to convert
+     * @return a long of the converted LocalDateTime
+     */
+    public long fromLocalDateTimeToMillis(LocalDateTime ldt){
+        return ldt.atZone(ZoneId.of("UTC")).toInstant().toEpochMilli();
+    }
+
+    /**
+     * Finds all the intervals where the listing with the given listingID
+     * is unavailable.
+     * @param listingID The listingId of the listing you want to check
+     * @return A list containing lists of rent start times and their
+     *         corresponding ending times
+     */
+    public List<List<Long>> getNonAvailableTimes(int listingID){
+        List<RentDAO> rentDAOs= rentRepository.findRentDAOSByListingOwnerID(listingService.getListingDAOByID(listingID));
+        ArrayList<List<Long>> nonAvailableTimes = new ArrayList<>();
+        for(RentDAO rentDAO:rentDAOs) {
+            ArrayList<Long> addThis = new ArrayList<>();
+            addThis.add(rentDAO.getFromTime());
+            addThis.add(rentDAO.getToTime());
+            nonAvailableTimes.add(addThis.subList(0,2));
+        }
+        return nonAvailableTimes.subList(0,nonAvailableTimes.size());
     }
 }

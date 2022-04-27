@@ -18,10 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import no.ntnu.idatt2106.middleware.RequireAuth;
 import no.ntnu.idatt2106.util.TokenUtil;
 import org.springframework.web.bind.annotation.*;
-
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.List;
 
 /**
@@ -38,12 +34,6 @@ public class RentController {
     NotificationService notificationService;
     UserService userService;
 
-//    //keep this
-//    public RentController(RentService rentService) {
-//        this.rentService = rentService;
-//    }
-
-    //delete this when done
     public RentController(RentService rentService, ListingService listingService, NotificationService notificationService, UserService userService) {
         this.rentService = rentService;
         this.listingService = listingService;
@@ -77,20 +67,6 @@ public class RentController {
         }
         throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User id is not valid");
     }
-
-    @GetMapping("/users/{userid}/profile/rent/test")
-    @Operation(summary = "Get the full list of rent objects which a user has rented")
-    @ApiResponse(responseCode = "200", description = "Returns the rent history of the user, deleted items are not included")
-    @ApiResponse(responseCode = "400", description = "User or rent history not found in the DB")
-    public long teeest(@PathVariable() int userid) throws Exception {
-        LocalDateTime ldt = LocalDateTime.of(1990,10,12,12,56,9);
-        long heeeelp = ldt.atZone(ZoneId.of("UTC")).toInstant().toEpochMilli();
-        RentDAO dao = new RentDAO(new java.sql.Date(2323323), new java.sql.Date(233223), heeeelp, false, listingService.findListingByListingId(1), userService.findUserByUserId(1));
-        dao.setRentID(676767);
-        rentService.saveNewRentAgreementToDB(dao);
-        return rentService.getRentFromId(10011).getFromThyme();
-    }
-
 
     /**
      * A method to get the full rent history for a user.

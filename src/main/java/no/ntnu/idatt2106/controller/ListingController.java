@@ -100,14 +100,14 @@ public class ListingController {
     @ApiResponse(responseCode = "400", description = "Item doesnt exist")
     @GetMapping("/listing/{listingID}")
     public ListingDTO getListingDAOByID(@PathVariable int listingID) throws StatusCodeException {
-        Optional<ListingDAO> listingDAO = listingService.getListingDAOByID(listingID);
+        ListingDAO listingDAO = listingService.getListingDAOByID(listingID);
         //Checks if the listing exists
-        if (!listingDAO.isPresent()) {
+        if (listingDAO == null) {
             //If the listing does not exist an exception is thrown
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Item doesnt exist");
         }
         //If the listing exists it is converted to a DTO and returned
-        return listingService.convertOneListingDAOToDTO(listingCategoryService, communityListingService, listingDAO.get());
+        return listingService.convertOneListingDAOToDTO(listingCategoryService, communityListingService, listingDAO);
     }
 
     /**
@@ -155,5 +155,24 @@ public class ListingController {
         } catch (Exception e) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Uff da");
         }
+    }
+
+    /**
+     * Gets all the intervals where the listing with the given listingID
+     * is unavailable.
+     * @param listingID The listingId of the listing you want to check
+     * @return A list containing lists of rent start times and their
+     *         corresponding ending times
+     * @throws StatusCodeException when the given listingID doesn't match up with anything in the db
+     */
+    @ApiResponse(responseCode = "200", description = "Listing found")
+    @ApiResponse(responseCode = "400", description = "Item doesnt exist")
+    @GetMapping("/listing/{listingID}/availability")
+    @Operation(summary = "Returns a list representing availability of a listing")
+    public List<List<Long>> getAvailabilityByListingID(@PathVariable int listingID) throws StatusCodeException {
+        if (listingService.findListingByListingId(listingID) == null){
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Listing was not found");
+        }
+        return rentService.getNonAvailableTimes(listingID);
     }
 }

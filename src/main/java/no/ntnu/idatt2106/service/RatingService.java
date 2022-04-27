@@ -50,7 +50,7 @@ public class RatingService {
     public List<RatingDTO> findRatingsAsRenterByUserID(int userID){
         UserDAO userDAO = userService.findUserByUserId(userID);
         ArrayList<RatingDTO> ratings = new ArrayList<>();
-        List<RentDAO> rented = rentService.findRentByUserID(userDAO);
+        List<RentDAO> rented = rentService.findRentByRenterID(userDAO);
         for (RentDAO rentDAO : rented) {
             System.out.println(rentDAO.toString());
             List<RatingDAO> ratingsByRent = ratingRepository.findByRentIDAndRenterIsReceiverOfRatingFalse(rentDAO);

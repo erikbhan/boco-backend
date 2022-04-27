@@ -59,8 +59,8 @@ public class ListingService {
      * @param listingID
      * @return An optional with a specific listing
      */
-    public Optional<ListingDAO> getListingDAOByID(int listingID) {
-        return listingRepository.findById(listingID);
+    public ListingDAO getListingDAOByID(int listingID) {
+        return listingRepository.findListingDAOByListingID(listingID);
     }
 
     /**
