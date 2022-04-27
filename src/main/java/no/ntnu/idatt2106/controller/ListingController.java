@@ -3,6 +3,7 @@ package no.ntnu.idatt2106.controller;
 import java.util.List;
 import java.util.Optional;
 
+import no.ntnu.idatt2106.service.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,12 +19,6 @@ import no.ntnu.idatt2106.middleware.RequireAuth;
 import no.ntnu.idatt2106.model.DAO.ListingDAO;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
 import no.ntnu.idatt2106.model.DTO.ListingDTO;
-import no.ntnu.idatt2106.service.CategoryService;
-import no.ntnu.idatt2106.service.CommunityListingService;
-import no.ntnu.idatt2106.service.CommunityService;
-import no.ntnu.idatt2106.service.ListingCategoryService;
-import no.ntnu.idatt2106.service.ListingService;
-import no.ntnu.idatt2106.service.UserService;
 
 /**
  * The controller for handling api request related to Listings
@@ -38,17 +33,20 @@ public class ListingController {
     private final CategoryService categoryService;
     private final CommunityListingService communityListingService;
     private final CommunityService communityService;
+    private final RentService rentService;
 
     public ListingController(ListingService listingService, ListingCategoryService listingCategoryService,
             UserService userService,
             CategoryService categoryService, CommunityListingService communityListingService,
-            CommunityService communityService) {
+            CommunityService communityService,
+            RentService rentService) {
         this.listingService = listingService;
         this.listingCategoryService = listingCategoryService;
         this.userService = userService;
         this.categoryService = categoryService;
         this.communityListingService = communityListingService;
         this.communityService = communityService;
+        this.rentService = rentService;
     }
 
     /**

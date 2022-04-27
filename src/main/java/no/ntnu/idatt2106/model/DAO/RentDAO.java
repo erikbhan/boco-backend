@@ -37,7 +37,6 @@ public class RentDAO{
     public RentDAO(long fromTime, long toTime, boolean isAccepted, ListingDAO listingOwnerID, UserDAO renterID) {
         this.fromTime = fromTime;
         this.toTime = toTime;
-        this.fromThyme = fromThyme;
         this.isAccepted = isAccepted;
         this.listingOwnerID = listingOwnerID;
         this.renterID = renterID;
@@ -103,12 +102,4 @@ public class RentDAO{
     public boolean isDeleted() {return isDeleted;}
 
     public void setDeleted(boolean deleted) {isDeleted = deleted;}
-
-    public long getFromThyme() {
-        return fromThyme;
-    }
-
-    public void setFromThyme(long fromThyme) {
-        this.fromThyme = fromThyme;
-    }
 }

@@ -67,10 +67,6 @@ public class RentDTO {
         return renterId;
     }
 
-    public int getNotificationId() {
-        return notificationId;
-    }
-
     public void setRentId(int rentId) {this.rentId = rentId;}
 
     public void setFromTime(long fromTime) {
