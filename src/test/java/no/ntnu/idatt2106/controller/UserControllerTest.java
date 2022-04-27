@@ -25,7 +25,9 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -54,6 +56,7 @@ public class UserControllerTest {
         try (Connection conn = dataSource.getConnection()) {
             ScriptUtils.executeSqlScript(conn, new ClassPathResource("cleanup.sql"));
             ScriptUtils.executeSqlScript(conn, new ClassPathResource("data.sql"));
+
         }
     }
 
@@ -79,6 +82,7 @@ public class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk());
+                //.andExpect(jsonPath("$[0].*", hasSize(6)));
     }
 
     @Test

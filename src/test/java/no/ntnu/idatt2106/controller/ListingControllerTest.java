@@ -11,7 +11,6 @@ import no.ntnu.idatt2106.repository.ListingRepository;
 import no.ntnu.idatt2106.repository.UserRepository;
 import no.ntnu.idatt2106.service.*;
 import org.junit.Assert;
-import org.junit.Test;
 import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,15 +70,15 @@ public class ListingControllerTest{
     @BeforeAll
     static void setup(@Autowired DataSource dataSource) throws SQLException {
         try (Connection conn = dataSource.getConnection()) {
-            ScriptUtils.executeSqlScript(conn, new ClassPathResource("cleanup.sql"));
-            ScriptUtils.executeSqlScript(conn, new ClassPathResource("data.sql"));
+            ScriptUtils.executeSqlScript(conn, new ClassPathResource("listingCleanup.sql"));
+            ScriptUtils.executeSqlScript(conn, new ClassPathResource("listingData.sql"));
         }
     }
     
     @AfterAll
     static void cleanup(@Autowired DataSource dataSource) throws SQLException {
         try (Connection conn = dataSource.getConnection()) {
-            ScriptUtils.executeSqlScript(conn, new ClassPathResource("cleanup.sql"));
+            ScriptUtils.executeSqlScript(conn, new ClassPathResource("listingCleanup.sql"));
         }
     }
 
@@ -96,10 +95,10 @@ public class ListingControllerTest{
      */
     @Test
     public void createListing_shouldBeOK() throws Exception {
-        categories = new String[] { "Fotball", "Utstyr" };
-        communityIDs = new int[] {1000, 1001};
+        categories = new String[] { "Fussball", "Utstyr" };
+        communityIDs = new int[] {100001, 100002};
         mockMvc.perform(post("/listing")
-                .content(asJsonString(new ListingDTO("Jekk", "Beskrivelse", 4.0, "Adresse", 2022, categories, communityIDs)))
+                .content(asJsonString(new ListingDTO("Jekk", "Beskrivelse", 4.0, "Adresse", 666666, categories, communityIDs)))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -113,7 +112,7 @@ public class ListingControllerTest{
         categories = new String[] { "Salse", "Utstyr" };
         communityIDs = new int[] {1000, 1001};
         mockMvc.perform(post("/listing")
-                .content(asJsonString(new ListingDTO("Jekk", "Beskrivelse", 4.0, "Adresse", 2022, categories, communityIDs)))
+                .content(asJsonString(new ListingDTO("Jekk", "Beskrivelse", 4.0, "Adresse", 666666, categories, communityIDs)))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError());
