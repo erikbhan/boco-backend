@@ -91,9 +91,7 @@ public class UserCommunityController {
         if (user == null) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User does not exist");
         }
-        ArrayList<CommunityDTO> communityDTOS = new ArrayList<>();
 
         return userCommunityService.getAllCommunitiesForUser(user);
     }
-
 }
