@@ -62,7 +62,7 @@ public class UserCommunityControllerTest {
     @BeforeAll
     static void setup(@Autowired DataSource dataSource) throws SQLException {
         try (Connection conn = dataSource.getConnection()) {
-
+            ScriptUtils.executeSqlScript(conn, new ClassPathResource("communityCleanup.sql"));
             ScriptUtils.executeSqlScript(conn, new ClassPathResource("communityData.sql"));
         }
     }

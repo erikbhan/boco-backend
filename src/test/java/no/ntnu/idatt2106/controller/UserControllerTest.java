@@ -53,7 +53,9 @@ public class UserControllerTest {
     @BeforeAll
     static void setup(@Autowired DataSource dataSource) throws SQLException {
         try (Connection conn = dataSource.getConnection()) {
+            ScriptUtils.executeSqlScript(conn, new ClassPathResource("cleanup.sql"));
             ScriptUtils.executeSqlScript(conn, new ClassPathResource("data.sql"));
+
         }
     }
 

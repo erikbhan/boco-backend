@@ -81,7 +81,7 @@ public class UserCommunityController {
 
     }
 
-    @Operation(summary = "Get all communities a specific user is part of")
+    @Operation(summary = "Get all communities the logged in user is part of")
     @ApiResponse(responseCode = "200", description = "Found communities")
     @ApiResponse(responseCode = "400", description = "Illegal operation")
     @GetMapping("/user/communities")
