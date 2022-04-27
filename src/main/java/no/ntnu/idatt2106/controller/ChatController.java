@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
+@CrossOrigin
 public class ChatController {
 
     private SimpMessagingTemplate simpMessagingTemplate;
@@ -72,7 +73,7 @@ public class ChatController {
     @ApiResponse(responseCode = "401", description = "Missing authentication access.")
     @Operation(summary = "Creates a new message in a conversation", tags = {"Chat"})
     public void sendMessage(@PathVariable int userId, @RequestBody NewMessageDTO newMessageDTO) throws Exception {
-        TokenDTO tokenDTO = TokenUtil.getDataJWT(TokenUtil.getToken(););
+        TokenDTO tokenDTO = TokenUtil.getDataJWT(TokenUtil.getToken());
 
         UserDAO userDAO = userService.findUserByUserId(userId);
         if(userDAO == null) throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User does not exist");

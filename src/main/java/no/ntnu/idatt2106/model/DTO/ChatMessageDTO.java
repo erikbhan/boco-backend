@@ -24,7 +24,7 @@ public class ChatMessageDTO {
         this.content = chatMessageDAO.getText();
         this.timestamp = chatMessageDAO.getTimeSent();
         this.from = chatMessageDAO.getSendingUserID().getUserID();
-        this.to = chatMessageDAO.getSendingUserID().getUserID();
+        this.to = chatMessageDAO.getReceivingUserID().getUserID();
     }
 
     public long getId() {
