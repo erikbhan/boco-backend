@@ -112,7 +112,7 @@ public class ListingController {
     }
 
     /**
-     * The method to post a listing
+     * The method to post a listing.
      * 
      * @param listingDTO Object
      * @throws StatusCodeException
