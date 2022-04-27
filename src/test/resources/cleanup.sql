@@ -15,6 +15,7 @@ DELETE FROM public.community WHERE community_id = '4444';
 DELETE FROM public.community WHERE community_id = '5070';
 DELETE FROM public.community WHERE community_id = 1000;
 DELETE FROM public.community WHERE community_id = 1001;
+DELETE FROM public.community WHERE name = 'MCklubb';
 
 DELETE FROM public.listing WHERE listing_id = '1234';
 DELETE FROM public.listing WHERE listing_id = '1235';

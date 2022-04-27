@@ -81,7 +81,7 @@ public class CommunityControllerTest {
     void communityController_saveNewCommunity_ShouldBeCreated() throws Exception {
         mockMvc.perform(post("/community/save")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(new CommunityDTO(5070,"MCklubb", "kul klubb", 0, "Opp og ned elgeseter gate midt på natten hele fukin tiden", "bilde")))
+                        .content(asJsonString(new CommunityDTO("MCklubb", "veldig kul klubb", 1, "Gløs", "picture")))
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isCreated());
     }
