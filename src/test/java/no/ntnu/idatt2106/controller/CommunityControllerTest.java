@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -80,6 +81,7 @@ public class CommunityControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk());
+                //.andExpect(content().contentType());
     }
 
     @Test
