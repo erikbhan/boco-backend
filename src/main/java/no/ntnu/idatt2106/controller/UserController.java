@@ -38,6 +38,6 @@ public class UserController {
         if(user == null) {
             throw new StatusCodeException(HttpStatus.NOT_FOUND, "User not found in DB");
         }
-        return userService.convertUserDAOIntoUserDTO(user);
+        return new UserDTO(user);
     }
 }

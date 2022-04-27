@@ -1,1 +1,0 @@
-DELETE FROM public.user_community WHERE user_id = 1;

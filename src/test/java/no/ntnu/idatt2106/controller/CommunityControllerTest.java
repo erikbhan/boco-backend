@@ -60,9 +60,7 @@ public class CommunityControllerTest {
     @BeforeAll
     static void setup(@Autowired DataSource dataSource) throws SQLException {
         try (Connection conn = dataSource.getConnection()) {
-            ScriptUtils.executeSqlScript(conn, new ClassPathResource("data.sql"));
             ScriptUtils.executeSqlScript(conn, new ClassPathResource("communityData.sql"));
-            ScriptUtils.executeSqlScript(conn, new ClassPathResource("userCommunityData.sql"));
         }
     }
 
@@ -75,9 +73,7 @@ public class CommunityControllerTest {
     @AfterAll
     static void cleanup(@Autowired DataSource dataSource) throws SQLException {
         try (Connection conn = dataSource.getConnection()) {
-            ScriptUtils.executeSqlScript(conn, new ClassPathResource("cleanup.sql"));
             ScriptUtils.executeSqlScript(conn, new ClassPathResource("communityCleanup.sql"));
-            ScriptUtils.executeSqlScript(conn, new ClassPathResource("userCommunityCleanup.sql"));
         }
     }
 
