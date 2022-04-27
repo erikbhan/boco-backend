@@ -51,7 +51,7 @@ public class ChatController {
     @Operation(summary = "Get all messages in a conversation.", tags = {"Chat"})
     public ChatMessageDTO[] getChatMessages(@PathVariable int userId) throws Exception {
         TokenDTO tokenDTO = TokenUtil.getDataJWT(TokenUtil.getToken());
-        return chatService.getConversation(Integer.parseInt(tokenDTO.getAccountId()), userId);
+        return chatService.getConversation(tokenDTO.getAccountId(), userId);
     }
 
     @GetMapping("/chats/users")
@@ -61,7 +61,7 @@ public class ChatController {
     @Operation(summary = "Get all conversations.", tags = {"Chat"})
     public ConversationDTO[] getAllConversations() throws Exception {
         TokenDTO tokenDTO = TokenUtil.getDataJWT(TokenUtil.getToken());
-        return chatService.getAllConversations(Integer.parseInt(tokenDTO.getAccountId()));
+        return chatService.getAllConversations(tokenDTO.getAccountId());
     }
 
     @PostMapping("/chats/users/{userId}/messages")
@@ -77,7 +77,7 @@ public class ChatController {
 
         chatService.createMessage(
                 userDAO,
-                userService.findUserByUserId(Integer.parseInt(tokenDTO.getAccountId())),
+                userService.findUserByUserId(tokenDTO.getAccountId()),
                 newMessageDTO);
     }
 }
