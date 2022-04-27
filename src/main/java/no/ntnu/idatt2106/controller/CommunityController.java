@@ -6,10 +6,13 @@ import no.ntnu.idatt2106.exception.StatusCodeException;
 import no.ntnu.idatt2106.middleware.RequireAuth;
 import no.ntnu.idatt2106.model.DAO.CommunityDAO;
 import no.ntnu.idatt2106.model.DAO.UserCommunityDAO;
+import no.ntnu.idatt2106.model.DAO.UserDAO;
 import no.ntnu.idatt2106.model.DTO.CommunityDTO;
 import no.ntnu.idatt2106.model.DTO.TokenDTO;
+import no.ntnu.idatt2106.model.DTO.UserDTO;
 import no.ntnu.idatt2106.service.CommunityService;
 import no.ntnu.idatt2106.service.UserCommunityService;
+import no.ntnu.idatt2106.service.UserService;
 import no.ntnu.idatt2106.util.TokenUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -24,10 +27,13 @@ import java.util.List;
 public class CommunityController {
     private final CommunityService communityService;
     private final UserCommunityService userCommunityService;
+    private final UserService userService;
 
-    public CommunityController(CommunityService communityService, UserCommunityService userCommunityService) {
+    public CommunityController(CommunityService communityService,
+                               UserCommunityService userCommunityService, UserService userService) {
         this.communityService = communityService;
         this.userCommunityService = userCommunityService;
+        this.userService = userService;
     }
 
     /**
@@ -111,5 +117,41 @@ public class CommunityController {
             throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "User not an admin in this community");
         }
         communityService.removeCommunity(communityDAO);
+    }
+
+    /**
+     * A method to get all members in a community.
+     * @param communityId The id of the community to search for.
+     * @return Returns a list of all the members in the given community.
+     * @throws StatusCodeException
+     */
+    @Operation(summary = "Returns all members in a community")
+    @ApiResponse(responseCode = "200", description = "Returns a list of all communities matching the search word")
+    @ApiResponse(responseCode = "400", description = "No communities was found, or no users in given community")
+    @ApiResponse(responseCode = "417", description = "No members in members list")
+    @GetMapping("/community/{communityId}/members")
+    public List<UserDTO> getMembersInCommunity(@PathVariable int communityId) throws StatusCodeException {
+        CommunityDAO communityDAO = communityService.findCommunityDAOByCommunityID(communityId);
+        if (communityDAO == null) {
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Community not found");
+        }
+        List<UserCommunityDAO> userCommunityDAOs = userCommunityService
+                .findAllMembersInACommunityByCommunity(communityDAO);
+
+        if(userCommunityDAOs != null) {
+            try {
+                List<UserDAO> membersDAO = userCommunityService
+                        .makeListOfAllMembersInACommunity(userCommunityDAOs);
+
+                List<UserDTO> membersList = userService.convertListUserDAOToListUserDTO(membersDAO);
+                if(membersList != null) {
+                    return membersList;
+                }
+                throw new StatusCodeException(HttpStatus.EXPECTATION_FAILED, "Member list is empty");
+            } catch (Exception e) {
+                throw new StatusCodeException(HttpStatus.EXPECTATION_FAILED, "Member list is empty");
+            }
+        }
+        throw new StatusCodeException(HttpStatus.BAD_REQUEST, "No users in this community");
     }
 }
