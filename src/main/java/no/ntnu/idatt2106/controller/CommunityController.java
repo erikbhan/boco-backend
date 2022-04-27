@@ -23,7 +23,6 @@ import java.util.List;
 @CrossOrigin
 @RequireAuth
 @ApiResponse(responseCode = "401", description = "Unauthorized")
-@ApiResponse(responseCode = "200", description = "OK")
 public class CommunityController {
     private final CommunityService communityService;
     private final UserCommunityService userCommunityService;
