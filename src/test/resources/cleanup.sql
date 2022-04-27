@@ -20,5 +20,13 @@ DELETE FROM public.listing WHERE listing_id = 1234;
 DELETE FROM public.listing WHERE listing_id = 1235;
 DELETE FROM public.listing WHERE listing_id = 1236;
 
+
+
+DELETE FROM public.User WHERE email = 'erna@solberg.no';
+DELETE FROM public.user WHERE email = 'fake@user.com';
+DELETE FROM public.user WHERE email = 'test@email.com';
+
+DELETE FROM public.user_community WHERE user_id = 1;
+
 DELETE FROM public.user WHERE email = 'fake@user.com';
 DELETE FROM public.user WHERE email = 'test@email.com';
