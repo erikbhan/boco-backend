@@ -30,8 +30,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
@@ -90,7 +89,6 @@ public class UserCommunityControllerTest {
     }
 
     @Test
-    //needs to be performed after OK test at the moment
     public void userCommunityController_addUserToCommunityWhereUserAlreadyIsInCommunity_ShouldGive4xxError() throws Exception {
         mvc.perform(post("/communities/1001/join")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -114,14 +112,21 @@ public class UserCommunityControllerTest {
                 .andExpect(status().is2xxSuccessful());
     }
 
-    /*
     @Test
-    public void userCommunityController_getCommunitiesForUser_ShouldGive400Error() throws Exception {
-        mvc.perform(get("/user/communities")
+    public void userCommunityController_removeUserFromCommunity_ShouldGive200OK() throws Exception {
+        mvc.perform(patch("/communities/4444/leave")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(new UserCommunityDTO(1000, 2))))
+                .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void userCommunityController_removeUserFromCommunity_ShouldGive4xxError() throws Exception {
+        mvc.perform(patch("/communities/8000/leave")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().is4xxClientError());
-    } */
+    }
 
     public static String asJsonString(final Object obj) {
         try {

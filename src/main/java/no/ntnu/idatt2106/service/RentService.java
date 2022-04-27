@@ -140,7 +140,7 @@ public class RentService {
 
     public List<RentDTO> convertListOfRentDAOToListOfRentDTO(List<RentDAO> list) {
         List<RentDTO> convertedList = new ArrayList<>();
-        for(int i = 0; i < convertedList.size(); i++) {
+        for(int i = 0; i < list.size(); i++) {
             convertedList.add(new RentDTO(list.get(i)));
         }
         return convertedList;
