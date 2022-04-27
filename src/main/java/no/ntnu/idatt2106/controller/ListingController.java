@@ -30,6 +30,7 @@ import no.ntnu.idatt2106.service.UserService;
  */
 @RestController
 @CrossOrigin
+@ApiResponse(responseCode = "401", description = "Unauthorized")
 @RequireAuth
 public class ListingController {
     private final ListingService listingService;
@@ -153,7 +154,7 @@ public class ListingController {
 
             return true;
         } catch (Exception e) {
-            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Uff da");
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "An exception occurred");
         }
     }
 }

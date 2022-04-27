@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 @RestController
 @CrossOrigin
-@ApiResponse(responseCode = "200")
+@ApiResponse(responseCode = "401", description = "Unauthorized")
 @RequireAuth
 public class UserCommunityController {
     private final UserCommunityService userCommunityService;

@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
 @RestController
-@ApiResponse(responseCode = "200")
+@ApiResponse(responseCode = "401", description = "Unauthorized")
 @CrossOrigin
 public class LoginController {
     private final UserService userService;
