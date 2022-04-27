@@ -125,7 +125,7 @@ public class ListingController {
             // Creates a ListingDAO with the information from the DTO.
             ListingDAO listing = new ListingDAO();
             listing.setTitle(listingDTO.getTitle());
-            listing.setDescription(listingDTO.getAddress());
+            listing.setDescription(listingDTO.getDescription());
             listing.setAddress(listingDTO.getAddress());
             listing.setPricePerDay(listingDTO.getPricePerDay());
             listing.setUserID(userService.findUserByUserId(listingDTO.getUserID()));
@@ -135,7 +135,7 @@ public class ListingController {
             // Saves the DAO to the DB
             listingService.saveListing(listing);
             // The for-loop goes through the categories of listing, adding them to the
-            // listingCategory table.
+            // listingCategory table.   
             // Finds the categoryIDs from the category table using the categorynames.
             for (String categoryName : listingDTO.getCategoryNames()) {
                 listingCategoryService.saveListingCategory(categoryService.findCategoryDAOByName(categoryName),

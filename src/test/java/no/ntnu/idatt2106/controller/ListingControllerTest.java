@@ -70,20 +70,15 @@ public class ListingControllerTest{
     @BeforeAll
     static void setup(@Autowired DataSource dataSource) throws SQLException {
         try (Connection conn = dataSource.getConnection()) {
-            // ScriptUtils.executeSqlScript(conn, new ClassPathResource("cleanup.sql"));
-            ScriptUtils.executeSqlScript(conn, new ClassPathResource("data.sql"));
+            ScriptUtils.executeSqlScript(conn, new ClassPathResource("listingCleanup.sql"));
+            ScriptUtils.executeSqlScript(conn, new ClassPathResource("listingData.sql"));
         }
     }
-
-    // @Before
-    // public void initialiseRestAssuredMockMvcWebApplicationContext() {
-    //     RestAssuredMockMvc.webAppContextSetup(webApplicationContext);
-    // }
 
     @AfterAll
     static void cleanup(@Autowired DataSource dataSource) throws SQLException {
         try (Connection conn = dataSource.getConnection()) {
-            ScriptUtils.executeSqlScript(conn, new ClassPathResource("cleanup.sql"));
+            ScriptUtils.executeSqlScript(conn, new ClassPathResource("listingCleanup.sql"));
         }
     }
 
@@ -92,7 +87,7 @@ public class ListingControllerTest{
         mockMvc.perform(get("/listing").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
     }
 
-    
+
 
     /**
      * Posting listing with all vallid fields. Should be good
@@ -100,10 +95,10 @@ public class ListingControllerTest{
      */
     @Test
     public void createListing_shouldBeOK() throws Exception {
-        categories = new String[] { "Fotball", "Utstyr" };
-        communityIDs = new int[] {1000, 1001};
+        categories = new String[] { "Fussball", "Utstyr" };
+        communityIDs = new int[] {100001, 100002};
         mockMvc.perform(post("/listing")
-                .content(asJsonString(new ListingDTO("Jekk", "Beskrivelse", 4.0, "Adresse", 2022, categories, communityIDs)))
+                .content(asJsonString(new ListingDTO("Jekk", "Beskrivelse", 4.0, "Adresse", 666666, categories, communityIDs)))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -122,6 +117,20 @@ public class ListingControllerTest{
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError());
     }
+        /**
+     * Posting Listing with invalid category. Should throw erro
+     * @throws Exception
+     */
+    @Test
+    public void createListingWithNonExistingCategry_shouldThrow400error() throws Exception {
+        categories = new String[] { "Salse", "Utstyr" };
+        communityIDs = new int[] {1000, 1001};
+        mockMvc.perform(post("/listing")
+                .content(asJsonString(new ListingDTO("Jekk", "Beskrivelse", 4.0, "Adresse", 666666, categories, communityIDs)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError());
+    }
 
     public static String asJsonString(final Object obj) {
         try {
@@ -130,5 +139,3 @@ public class ListingControllerTest{
             throw new RuntimeException(e);
         }
     }
-
-}

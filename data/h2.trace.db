@@ -1,0 +1,12 @@
+2022-04-27 11:50:03 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "DELETE FROM PUBLIC.COMMUNITY_LISTING WHERE COMMUNITY_ID = 100001 DELETE[*] FROM PUBLIC.COMMUNITY_LISTING WHERE COMMUNITY_ID = COMMUNITY_ID = 100002"; SQL statement:
+DELETE FROM public.community_listing WHERE community_id = 100001 DELETE FROM public.community_listing WHERE community_id = community_id = 100002 [42000-200]
+2022-04-27 11:50:03 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "DELETE FROM PUBLIC.COMMUNITY_LISTING WHERE COMMUNITY_ID = 100001 DELETE[*] FROM PUBLIC.COMMUNITY_LISTING WHERE COMMUNITY_ID = COMMUNITY_ID = 100002"; SQL statement:
+DELETE FROM public.community_listing WHERE community_id = 100001 DELETE FROM public.community_listing WHERE community_id = community_id = 100002 [42000-200]
+2022-04-27 11:50:46 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "DELETE FROM PUBLIC.COMMUNITY_LISTING WHERE COMMUNITY_ID = 100001 DELETE[*] FROM PUBLIC.COMMUNITY_LISTING WHERE COMMUNITY_ID = COMMUNITY_ID = 100002"; SQL statement:
+DELETE FROM public.community_listing WHERE community_id = 100001 DELETE FROM public.community_listing WHERE community_id = community_id = 100002 [42000-200]
+2022-04-27 11:50:46 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "DELETE FROM PUBLIC.COMMUNITY_LISTING WHERE COMMUNITY_ID = 100001 DELETE[*] FROM PUBLIC.COMMUNITY_LISTING WHERE COMMUNITY_ID = COMMUNITY_ID = 100002"; SQL statement:
+DELETE FROM public.community_listing WHERE community_id = 100001 DELETE FROM public.community_listing WHERE community_id = community_id = 100002 [42000-200]
