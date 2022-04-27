@@ -38,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = BocoApplication.class)
 @AutoConfigureMockMvc
-public class ListingControllerTest{
+public class ListingControllerTest {
 
     ListingDTO listingDTO;
     String[] categories;
@@ -83,53 +83,51 @@ public class ListingControllerTest{
     }
 
     @Test
-    public void getAllListings_ShouldBeOK() throws Exception{
+    public void getAllListings_ShouldBeOK() throws Exception {
         mockMvc.perform(get("/listing").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
     }
 
 
-
     /**
      * Posting listing with all vallid fields. Should be good
+     *
      * @throws Exception
      */
     @Test
     public void createListing_shouldBeOK() throws Exception {
-        categories = new String[] { "Fussball", "Utstyr" };
-        communityIDs = new int[] {100001, 100002};
+        categories = new String[]{"Fussball", "Utstyr"};
+        communityIDs = new int[]{100001, 100002};
         mockMvc.perform(post("/listing")
-                .content(asJsonString(new ListingDTO("Jekk", "Beskrivelse", 4.0, "Adresse", 666666, categories, communityIDs)))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+                        .content(asJsonString(new ListingDTO("Jekk", "Beskrivelse", 4.0, "Adresse", 4321, categories, communityIDs)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
-        /**
+
+    /**
      * Posting Listing with invalid category. Should throw erro
+     *
      * @throws Exception
      */
     @Test
     public void createListingWithNonExistingCategry_shouldThrow400error() throws Exception {
-        categories = new String[] { "Salse", "Utstyr" };
-        communityIDs = new int[] {1000, 1001};
+        categories = new String[]{"Salse", "Utstyr"};
+        communityIDs = new int[]{1000, 1001};
         mockMvc.perform(post("/listing")
-                .content(asJsonString(new ListingDTO("Jekk", "Beskrivelse", 4.0, "Adresse", 2022, categories, communityIDs)))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+                        .content(asJsonString(new ListingDTO("Jekk", "Beskrivelse", 4.0, "Adresse", 2022, categories, communityIDs)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError());
     }
-        /**
-     * Posting Listing with invalid category. Should throw erro
-     * @throws Exception
-     */
+
     @Test
-    public void createListingWithNonExistingCategry_shouldThrow400error() throws Exception {
-        categories = new String[] { "Salse", "Utstyr" };
-        communityIDs = new int[] {1000, 1001};
-        mockMvc.perform(post("/listing")
-                .content(asJsonString(new ListingDTO("Jekk", "Beskrivelse", 4.0, "Adresse", 666666, categories, communityIDs)))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().is4xxClientError());
+    public void getAvailabilityOfListing() throws Exception {
+        mockMvc.perform(get("/listing/1234/availability").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+    }
+
+    @Test
+    public void getAvailabilityOfNonExistingListing() throws Exception {
+        mockMvc.perform(get("/listing/987654321987654321/availability").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
     }
 
     public static String asJsonString(final Object obj) {
@@ -139,3 +137,4 @@ public class ListingControllerTest{
             throw new RuntimeException(e);
         }
     }
+}

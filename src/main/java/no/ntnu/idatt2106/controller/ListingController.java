@@ -164,7 +164,7 @@ public class ListingController {
      * @throws StatusCodeException when the given listingID doesn't match up with anything in the db
      */
     @ApiResponse(responseCode = "200", description = "Listing found")
-    @ApiResponse(responseCode = "400", description = "Item doesnt exist")
+    @ApiResponse(responseCode = "400", description = "Listing doesnt exist")
     @GetMapping("/listing/{listingID}/availability")
     @Operation(summary = "Returns a list representing availability of a listing")
     public List<List<Long>> getAvailabilityByListingID(@PathVariable int listingID) throws StatusCodeException {
