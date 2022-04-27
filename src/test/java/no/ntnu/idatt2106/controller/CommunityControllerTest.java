@@ -86,7 +86,7 @@ public class CommunityControllerTest {
 
     @Test
     void communityController_showAllCommunitiesMatchingSearchTerm_ShouldGive2xxOK() throws Exception {
-        mockMvc.perform(get("/search/communities/community?search_word=MC")
+        mockMvc.perform(get("/communities/search?search_word=MC")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk());
@@ -94,7 +94,7 @@ public class CommunityControllerTest {
 
     @Test
     void communityController_saveNewCommunity_ShouldBeCreated() throws Exception {
-        mockMvc.perform(post("/community/save")
+        mockMvc.perform(post("/communities/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(new CommunityDTO(5070,"MCklubb", "kul klubb", 0, "Opp og ned elgeseter gate midt på natten hele fukin tiden", "bilde")))
                         .header("Authorization", "Bearer " + userToken))
@@ -103,7 +103,7 @@ public class CommunityControllerTest {
 
     @Test
     void communityController_deleteCommunityFromAdminUser_ShouldBeOk() throws Exception {
-        mockMvc.perform(delete("/community/4000/remove")
+        mockMvc.perform(delete("/communities/4000/remove")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk());
@@ -111,7 +111,7 @@ public class CommunityControllerTest {
 
     @Test
     void communityController_showAllCommunitiesMatchingSearchTerm_ShouldGive4xxError() throws Exception {
-        mockMvc.perform(get("/search/communities/community?search_word=Oldboys")
+        mockMvc.perform(get("/communities/search/?search_word=Oldboys")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().is4xxClientError());
@@ -119,7 +119,7 @@ public class CommunityControllerTest {
 
     @Test
     void communityController_deleteCommunityFromNotAdminUser_ShouldBe4xx() throws Exception {
-        mockMvc.perform(delete("/community/4001/remove")
+        mockMvc.perform(delete("/communities/4001/remove")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().is4xxClientError());
@@ -127,7 +127,7 @@ public class CommunityControllerTest {
 
     @Test
     void communityController_deleteCommunityFromNonMemberUser_ShouldBe4xx() throws Exception {
-        mockMvc.perform(delete("/community/4002/remove")
+        mockMvc.perform(delete("/communities/4002/remove")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().is4xxClientError());

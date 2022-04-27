@@ -35,7 +35,7 @@ public class CommunityController {
      * @param communityDTO community transfer object for community to add.
      */
     @Operation(summary = "Add community to database")
-    @PostMapping("/community/save")
+    @PostMapping("/communities/create")
     @ApiResponse(responseCode = "201", description = "Community created")
     public void addCommunity(@RequestBody CommunityDTO communityDTO) throws StatusCodeException {
         CommunityDAO communityDAO = communityService.turnCommunityDTOIntoCommunityDAO(communityDTO);
@@ -77,7 +77,7 @@ public class CommunityController {
     @Operation(summary = "Show all communities with name containing the search word")
     @ApiResponse(responseCode = "200", description = "Returns a list of all communities matching the search word")
     @ApiResponse(responseCode = "400", description = "No communities was found")
-    @GetMapping("/search/communities/community")
+    @GetMapping("/communities/search")
     public List<CommunityDTO> showAllCommunitiesMatchingSearchTerm(@RequestParam(name = "search_word") String search_word) throws StatusCodeException {
         List<CommunityDAO> listOfCommunityDAOs = communityService
                 .findAllCommunityDAOWithContainingAGivenName(search_word);
@@ -96,7 +96,7 @@ public class CommunityController {
      * @param communityId ID of the community to be deleted
      */
     @Operation(summary = "Deletes a community from the database")
-    @DeleteMapping("/community/{communityId}/remove")
+    @DeleteMapping("/communities/{communityId}/remove")
     public void removeCommunity(@PathVariable int communityId) throws StatusCodeException {
         TokenDTO userToken = TokenUtil.getDataJWT();
         int tokenUserId = userToken.getAccountId();
