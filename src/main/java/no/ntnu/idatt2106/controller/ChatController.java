@@ -8,10 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import no.ntnu.idatt2106.exception.StatusCodeException;
 import no.ntnu.idatt2106.middleware.RequireAuth;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
-import no.ntnu.idatt2106.model.DTO.ChatMessageDTO;
-import no.ntnu.idatt2106.model.DTO.ChatStatusDTO;
-import no.ntnu.idatt2106.model.DTO.NewMessageDTO;
-import no.ntnu.idatt2106.model.DTO.TokenDTO;
+import no.ntnu.idatt2106.model.DTO.*;
 import no.ntnu.idatt2106.service.ChatService;
 import no.ntnu.idatt2106.service.UserService;
 import no.ntnu.idatt2106.util.TokenUtil;
@@ -62,9 +59,9 @@ public class ChatController {
     @ApiResponse(responseCode = "200", description = "Returns all conversations.")
     @ApiResponse(responseCode = "401", description = "Unauthorized access.")
     @Operation(summary = "Get all conversations.", tags = {"Chat"})
-    public void getAllConversations() throws Exception {
+    public ConversationDTO[] getAllConversations() throws Exception {
         TokenDTO tokenDTO = TokenUtil.getDataJWT(TokenUtil.getToken());
-        chatService.getAllConversations(Integer.parseInt(tokenDTO.getAccountId()));
+        return chatService.getAllConversations(Integer.parseInt(tokenDTO.getAccountId()));
     }
 
     @PostMapping("/chats/users/{userId}/messages")

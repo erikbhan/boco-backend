@@ -3,6 +3,7 @@ package no.ntnu.idatt2106.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import no.ntnu.idatt2106.model.DAO.UserDAO;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,4 +19,7 @@ public interface UserRepository extends JpaRepository<UserDAO, Integer> {
     UserDAO findUserDAOByUserID(int userId);
 
     List<UserDAO> findUserDAOByFirstNameAndLastName(String firstName, String lastName);
+
+    @Query(value = "SELECT * FROM public.user WHERE user_id IN ?1", nativeQuery = true)
+    UserDAO[] findAllByUserIds(int[] userids);
 }
