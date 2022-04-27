@@ -77,7 +77,7 @@ public class UserControllerTest {
 
     @Test
     void userController_getAUserFromUserId_ShouldBeOk() throws Exception {
-        String expectedJson = "{\"userId\":2022,\"email\":\"test@email.com\",\"firstName\":\"test\",\"lastName\":\"user\",\"address\":\"glÃ¸shaugen\",\"picture\":\"ok\"}";
+        String expectedJson = "{\"userId\":2022,\"email\":\"test@email.com\",\"firstName\":\"test\",\"lastName\":\"user\",\"address\":\"gløshaugen\",\"picture\":\"ok\"}";
         mockMvc.perform(get("/users/2022/profile")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
