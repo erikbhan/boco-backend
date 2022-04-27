@@ -1,0 +1,1 @@
+DELETE FROM public.user WHERE email = 'test@email.com';

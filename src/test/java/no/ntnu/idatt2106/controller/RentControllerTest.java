@@ -21,6 +21,7 @@ import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import javax.servlet.ServletException;
 import javax.sql.DataSource;
@@ -30,7 +31,10 @@ import java.sql.Date;
 import java.sql.SQLException;
 
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -77,7 +81,8 @@ public class RentControllerTest {
         mockMvc.perform(get("/users/2022/profile/rent/history")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].*", hasSize(7)));
     }
 
     @Test
@@ -93,7 +98,8 @@ public class RentControllerTest {
         mockMvc.perform(get("/users/3034/profile/rent/history/owner/all")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].*", hasSize(7)));
     }
 
     @Test
@@ -109,7 +115,8 @@ public class RentControllerTest {
         mockMvc.perform(get("/users/2022/profile/rent/history/all")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].*", hasSize(7)));
     }
 
     @Test
@@ -125,7 +132,8 @@ public class RentControllerTest {
         mockMvc.perform(get("/users/3034/profile/rent/history/owner")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].*", hasSize(7)));
     }
 
     @Test
@@ -148,9 +156,9 @@ public class RentControllerTest {
     @Test
     void rentController_deleteRent_ShouldBeOk() throws Exception{
         mockMvc.perform(put("/renting/10001/delete")
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Bearer " + userToken))
-        .andExpect(status().isOk());
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -163,20 +171,15 @@ public class RentControllerTest {
 
     @Test
     void rentController_acceptRent_ShouldBeOk() throws Exception {
-        mockMvc.perform(put("/renting/10000/accept")
+        MvcResult result = mockMvc.perform(put("/renting/10000/accept")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andReturn();
+        String ans = result.getResponse().getContentAsString();
+        assert(ans.contentEquals("Accepted rent"));
     }
 
-    @Test
-    void rentController_saveRentingAgreementForRenter_ShouldGive4xx() throws Exception {
-        mockMvc.perform(post("/renting/renter/save")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(new RentDTO(new Date(2013,8,23),new Date(2016,6,4),false,1235,2022)))
-                        .header("Authorization", "Bearer " + userToken))
-                .andExpect(status().isOk());
-    }
     @Test
     void rentController_acceptNonExistingRent_ShouldBe4xx() throws  Exception {
         mockMvc.perform(post("/api/renting/10002/accept")
@@ -184,7 +187,6 @@ public class RentControllerTest {
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().is4xxClientError());
     }
-
 
     public static String asJsonString(final Object obj) {
         try {
