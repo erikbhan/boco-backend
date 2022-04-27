@@ -43,7 +43,9 @@ public class RentDTO {
         this.isAccepted = rentDAO.getIsAccepted();
         this.listingId = rentDAO.getListingOwnerID().getListingID();
         this.renterId = rentDAO.getRenterID().getUserID();
-        this.notificationId = rentDAO.getNotificationID().getNotificationID();
+        if(rentDAO.getNotificationID() != null) {
+            this.notificationId = rentDAO.getNotificationID().getNotificationID();
+        }
     }
 
     public RentDTO() {}
