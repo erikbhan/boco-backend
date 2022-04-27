@@ -3,6 +3,8 @@ package no.ntnu.idatt2106.service;
 import no.ntnu.idatt2106.model.DAO.CommunityDAO;
 import no.ntnu.idatt2106.model.DAO.UserCommunityDAO;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
+import no.ntnu.idatt2106.model.DTO.CommunityDTO;
+import no.ntnu.idatt2106.model.ID.UserCommunityID;
 import no.ntnu.idatt2106.repository.CommunityRepository;
 import no.ntnu.idatt2106.repository.UserCommunityRepository;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,11 @@ public class UserCommunityService {
     public boolean userIsInCommunity(int user, CommunityDAO communityDAO){
         return (userCommunityRepository.existsByUserID(userService.findUserByUserId(user)) && userCommunityRepository.existsByCommunityID(communityDAO));
     }
+
+    public boolean userIsAdminInCommunity(UserCommunityDAO ucd) {
+        return ucd.isAdministrator();
+    }
+
     public boolean addUserToCommunity(int user, CommunityDAO communityDAO){
            UserCommunityDAO userCommunity = new UserCommunityDAO(communityDAO, userService.findUserByUserId(user), false);
            try {
@@ -37,13 +44,44 @@ public class UserCommunityService {
            }
            return true;
     }
-    public ArrayList<CommunityDAO> getAllCommunitiesForUser(UserDAO user){
-        List<UserCommunityDAO> communityList =  userCommunityRepository.findAllByUserID(user);
-        ArrayList<CommunityDAO> communityDAOList = new ArrayList<>();
-        for (int i = 0; i < communityList.size(); i++) {
-            CommunityDAO communityDAO = communityService.findCommunityDAOByCommunityID(communityList.get(i).getCommunityID().getCommunityID());
-            communityDAOList.add(communityDAO);
+
+
+    public boolean removeUserFromCommunity(UserCommunityDAO ucd){
+        if(userIsInCommunity(ucd.getUserID().getUserID(), ucd.getCommunityID())){
+
+            userCommunityRepository.delete(ucd);
+            return true;
         }
-        return communityDAOList;
+        return false;
     }
+
+    public void setAdmin(UserCommunityDAO ucd){
+        if(!ucd.isAdministrator()){
+            ucd.setAdministrator(true);
+        }
+    }
+
+    public void retractAdmin(UserCommunityDAO ucd){
+        ucd.setAdministrator(false);
+    }
+    public ArrayList<CommunityDTO> getAllCommunitiesForUser(UserDAO user){
+        List<UserCommunityDAO> communityList =  userCommunityRepository.findAllByUserID(user);
+        ArrayList<CommunityDTO> communityDTOList = new ArrayList<>();
+        for (int i = 0; i < communityList.size(); i++) { CommunityDAO communityDAO = communityRepository.findCommunityDAOByCommunityID(communityList.get(i).getCommunityID().getCommunityID());
+            CommunityDTO communityDTO = new CommunityDTO(communityDAO);
+            communityDTOList.add(communityDTO);
+        }
+        return communityDTOList;
+    }
+
+    public UserCommunityDAO getByIds(int userId, CommunityDAO communityDAO) {
+        List<UserCommunityDAO> communities = userCommunityRepository.findAllByUserID(userService.findUserByUserId(userId));
+        for (UserCommunityDAO userCommunityDAO:communities) {
+            if (userCommunityDAO.getCommunityID().equals(communityDAO)) {
+                return userCommunityDAO;
+            }
+        }
+        return null;
+    }
+
 }

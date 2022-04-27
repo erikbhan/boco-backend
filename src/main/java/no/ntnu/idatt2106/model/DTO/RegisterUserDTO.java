@@ -1,11 +1,23 @@
 package no.ntnu.idatt2106.model.DTO;
 
+/**
+ * A class containing the necessary information for registering a user.
+ * This class should be used when passing register information from the frontend to the backend.
+ */
 public class RegisterUserDTO {
     String email;
     String password;
     String firstName;
     String lastName;
     String address;
+
+    public RegisterUserDTO(String email, String password, String firstName, String lastName, String address) {
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+    }
 
     public String getEmail() {
         return this.email;

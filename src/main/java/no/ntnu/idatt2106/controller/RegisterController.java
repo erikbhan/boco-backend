@@ -5,6 +5,7 @@ import java.util.Base64;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import no.ntnu.idatt2106.exception.StatusCodeException;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
@@ -17,7 +18,6 @@ import no.ntnu.idatt2106.util.HashUtil;
  */
 @RestController
 @CrossOrigin
-@ApiResponse(responseCode = "200")
 public class RegisterController {
 
     private final UserService userService;
@@ -32,7 +32,9 @@ public class RegisterController {
      * @throws StatusCodeException if e-mail is already in use in the DB.
      */
     @PostMapping("/register")
+@ApiResponse(responseCode = "200", description = "User registered successfully")
     @ApiResponse(responseCode = "400", description = "Bad Request; e-mail in use")
+    @Operation(summary = "Register a new user with the given information")
     public void registerNewUserAccount(@RequestBody RegisterUserDTO regInfo) throws StatusCodeException {
         if (userService.findUserByEmail(regInfo.getEmail()) != null) throw new StatusCodeException(HttpStatus.BAD_REQUEST, "E-mail in use");
         
