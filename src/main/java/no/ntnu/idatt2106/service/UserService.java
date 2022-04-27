@@ -1,9 +1,11 @@
 package no.ntnu.idatt2106.service;
 
 import no.ntnu.idatt2106.model.DAO.UserDAO;
+import no.ntnu.idatt2106.model.DTO.CommunityDTO;
 import no.ntnu.idatt2106.model.DTO.UserDTO;
 import no.ntnu.idatt2106.repository.UserRepository;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 
@@ -73,9 +75,11 @@ public class UserService {
         return userRepository.findUserDAOByFirstNameAndLastName(firstName, lastName);
     }
 
-    public UserDTO convertUserDAOIntoUserDTO(UserDAO userDAO) {
-        return new UserDTO(String.valueOf(userDAO.getUserID()), userDAO.getEmail(),
-                userDAO.getFirstName(), userDAO.getLastName(), userDAO.getAddress(),
-                userDAO.getPicture());
+    public List<UserDTO> convertListUserDAOToListUserDTO(List<UserDAO> list) {
+        List<UserDTO> convertedList = new ArrayList<>();
+        for(int i = 0; i < list.size(); i++) {
+            convertedList.add(new UserDTO(list.get(i)));
+        }
+        return convertedList;
     }
 }

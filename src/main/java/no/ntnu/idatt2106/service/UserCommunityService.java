@@ -4,6 +4,7 @@ import no.ntnu.idatt2106.model.DAO.CommunityDAO;
 import no.ntnu.idatt2106.model.DAO.UserCommunityDAO;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
 import no.ntnu.idatt2106.model.DTO.CommunityDTO;
+import no.ntnu.idatt2106.model.DTO.UserDTO;
 import no.ntnu.idatt2106.model.ID.UserCommunityID;
 import no.ntnu.idatt2106.repository.CommunityRepository;
 import no.ntnu.idatt2106.repository.UserCommunityRepository;
@@ -84,4 +85,15 @@ public class UserCommunityService {
         return null;
     }
 
+    public List<UserCommunityDAO> findAllMembersInACommunityByCommunity(CommunityDAO community) {
+        return userCommunityRepository.findAllByCommunityID(community);
+    }
+
+    public List<UserDAO> makeListOfAllMembersInACommunity(List<UserCommunityDAO> list) {
+        List<UserDAO> members = new ArrayList<>();
+        for(int i = 0; i < list.size(); i++) {
+            members.add(list.get(i).getUserID());
+        }
+        return members;
+    }
 }

@@ -12,4 +12,6 @@ public interface UserCommunityRepository extends JpaRepository<UserCommunityDAO,
     boolean existsByUserID(UserDAO user);
     boolean existsByCommunityID(CommunityDAO communityDAO);
     List<UserCommunityDAO> findAllByUserID(UserDAO user);
+
+    List<UserCommunityDAO> findAllByCommunityID(CommunityDAO communityDAO);
 }

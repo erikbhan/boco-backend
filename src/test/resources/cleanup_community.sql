@@ -1,3 +1,5 @@
+DELETE FROM public.user_community WHERE user_id = 2022;
+
 DELETE FROM public.community WHERE community_id = 4000;
 DELETE FROM public.community WHERE community_id = 4001;
 DELETE FROM public.community WHERE community_id = 4002;

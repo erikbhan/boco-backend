@@ -18,3 +18,9 @@ VALUES (1000, 'En hyggelig dag', 'Storvold', 'Vi som liker været', 'Nei takk', 
 
 INSERT INTO public.community(community_id, description, location, name, picture, visibility)
 VALUES (1001, 'Fisk for folk', 'Ravnkloa', 'Det regner fisk', 'imagen a place ...with fish', 1);
+
+INSERT INTO public.user_community(community_id, user_id, is_administrator)
+VALUES (4000, 2022, true);
+
+INSERT INTO public.user_community(community_id, user_id, is_administrator)
+VALUES (4001, 2022, false);
