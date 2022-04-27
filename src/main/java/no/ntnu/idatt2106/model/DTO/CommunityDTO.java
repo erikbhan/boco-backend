@@ -33,6 +33,7 @@ public class CommunityDTO {
         this.visibility = communityDAO.getVisibility();
         this.location = communityDAO.getLocation();
         this.picture = communityDAO.getPicture();
+        this.communityId = communityDAO.getCommunityID();
     }
 
     public CommunityDTO() {

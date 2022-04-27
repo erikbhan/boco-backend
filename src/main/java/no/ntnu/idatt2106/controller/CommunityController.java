@@ -23,7 +23,6 @@ import java.util.List;
 @CrossOrigin
 @RequireAuth
 @ApiResponse(responseCode = "401", description = "Unauthorized")
-@ApiResponse(responseCode = "200", description = "OK")
 public class CommunityController {
     private final CommunityService communityService;
     private final UserCommunityService userCommunityService;
@@ -103,6 +102,7 @@ public class CommunityController {
      */
     @Operation(summary = "Deletes a community from the database")
     @DeleteMapping("/communities/{communityId}/remove")
+    @ApiResponse(responseCode = "404", description = "Community not found")
     public void removeCommunity(@PathVariable int communityId) throws StatusCodeException {
         TokenDTO userToken = TokenUtil.getDataJWT();
         int tokenUserId = userToken.getAccountId();
@@ -126,7 +126,7 @@ public class CommunityController {
      * @throws StatusCodeException
      */
     @Operation(summary = "Returns all members in a community")
-    @ApiResponse(responseCode = "200", description = "Returns a list of all member in a community")
+    @ApiResponse(responseCode = "200", description = "Returns a list of all members in the community")
     @ApiResponse(responseCode = "400", description = "No communities was found, or no users in given community")
     @ApiResponse(responseCode = "417", description = "No members in members list")
     @GetMapping("/community/{communityId}/members")
