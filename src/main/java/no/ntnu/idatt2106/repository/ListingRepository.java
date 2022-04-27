@@ -23,6 +23,9 @@ public interface ListingRepository extends JpaRepository<ListingDAO, Integer> {
     List<ListingDAO> findAllByUserID(UserDAO userId);
     List<ListingDAO> findListingDAOSByUserID(UserDAO user);
 
+
+    //Finds all listings with title containing a phrase
     @Query("SELECT m FROM ListingDAO m WHERE m.title LIKE %:title%")     
     List<ListingDAO> findAllByTitleLike(@Param("title") String title);
+
 }

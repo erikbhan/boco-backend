@@ -30,7 +30,6 @@ import no.ntnu.idatt2106.service.UserService;
  */
 @RestController
 @CrossOrigin
-@RequireAuth
 public class ListingController {
     private final ListingService listingService;
     private final ListingCategoryService listingCategoryService;
@@ -166,4 +165,5 @@ public class ListingController {
     public List<ListingDTO> searchForListingsByTitle(@PathVariable String title){
         return listingService.getListingDTOByTitle(title, listingCategoryService, communityListingService);
     }
+    
 }
