@@ -70,7 +70,6 @@ public class ListingControllerTest{
     @BeforeAll
     static void setup(@Autowired DataSource dataSource) throws SQLException {
         try (Connection conn = dataSource.getConnection()) {
-            ScriptUtils.executeSqlScript(conn, new ClassPathResource("listingCleanup.sql"));
             ScriptUtils.executeSqlScript(conn, new ClassPathResource("listingData.sql"));
         }
     }
@@ -78,7 +77,7 @@ public class ListingControllerTest{
     @AfterAll
     static void cleanup(@Autowired DataSource dataSource) throws SQLException {
         try (Connection conn = dataSource.getConnection()) {
-            ScriptUtils.executeSqlScript(conn, new ClassPathResource("listingCleanup.sql"));
+            ScriptUtils.executeSqlScript(conn, new ClassPathResource("cleanup.sql"));
         }
     }
 

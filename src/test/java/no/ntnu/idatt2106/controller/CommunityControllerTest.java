@@ -58,7 +58,6 @@ public class CommunityControllerTest {
     @BeforeAll
     static void setup(@Autowired DataSource dataSource) throws SQLException {
         try (Connection conn = dataSource.getConnection()) {
-            ScriptUtils.executeSqlScript(conn, new ClassPathResource("communityCleanup.sql"));
             ScriptUtils.executeSqlScript(conn, new ClassPathResource("communityData.sql"));
         }
     }
@@ -72,7 +71,7 @@ public class CommunityControllerTest {
     @AfterAll
     static void cleanup(@Autowired DataSource dataSource) throws SQLException {
         try (Connection conn = dataSource.getConnection()) {
-            ScriptUtils.executeSqlScript(conn, new ClassPathResource("communityCleanup.sql"));
+            ScriptUtils.executeSqlScript(conn, new ClassPathResource("cleanup.sql"));
         }
     }
 
@@ -131,7 +130,7 @@ public class CommunityControllerTest {
 
     @Test
     void communityController_getAllListingsInACommunity_ShouldGiveOk() throws Exception {
-        mockMvc.perform(get("/community/4040/listings")
+        mockMvc.perform(get("/community/4444/listings")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk())
