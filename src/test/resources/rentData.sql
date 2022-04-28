@@ -16,5 +16,8 @@ VALUES (1236, 'kjopmansgata', 'yo', 21, 'get over here', 3034);
 INSERT INTO public.rent(rent_id, from_time, is_accepted, to_time, listing_owner_id, renter_id, is_deleted)
 VALUES (10000, 1609329600000, true, 1609358400000, 1234, 2022, false);
 
-INSERT INTO public.rent(rent_id, from_time, is_accepted, to_time, listing_owner_id, notification_id, renter_id, is_deleted)
-VALUES (10001, '2011-03-04', false, '2021-03-06', 1236, null, 2022, false);
+INSERT INTO public.rent(rent_id, from_time, is_accepted, to_time, listing_owner_id, renter_id, is_deleted)
+VALUES (10001, 1610456400000, false, 1610467200000, 1234, 2022, false);
+
+INSERT INTO public.rent(rent_id, from_time, is_accepted, to_time, listing_owner_id, renter_id, is_deleted)
+VALUES (10001, 1610456400000, false, 1610467200000, 1236, 2022, false);

@@ -60,7 +60,6 @@ public class CommunityControllerTest {
     @BeforeAll
     static void setup(@Autowired DataSource dataSource) throws SQLException {
         try (Connection conn = dataSource.getConnection()) {
-            ScriptUtils.executeSqlScript(conn, new ClassPathResource("communityCleanup.sql"));
             ScriptUtils.executeSqlScript(conn, new ClassPathResource("communityData.sql"));
         }
     }
@@ -74,7 +73,6 @@ public class CommunityControllerTest {
     @AfterAll
     static void cleanup(@Autowired DataSource dataSource) throws SQLException {
         try (Connection conn = dataSource.getConnection()) {
-            ScriptUtils.executeSqlScript(conn, new ClassPathResource("communityCleanup.sql"));
         }
     }
 
@@ -100,7 +98,7 @@ public class CommunityControllerTest {
     void communityController_saveNewCommunity_ShouldBeCreated() throws Exception {
         mockMvc.perform(post("/communities/create")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(new CommunityDTO(5070,"MCklubb", "kul klubb", 0, "Opp og ned elgeseter gate midt på natten hele fukin tiden", "bilde")))
+                        .content(asJsonString(new CommunityDTO("MCklubbssssss", "kul klubb", 0, "Opp og ned elgeseter gate midt på natten hele fukin tiden", "bilde")))
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isCreated());
     }

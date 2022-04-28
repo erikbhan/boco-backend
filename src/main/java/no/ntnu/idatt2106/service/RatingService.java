@@ -42,6 +42,10 @@ public class RatingService {
         ratingRepository.save(rating);
     }
 
+    public RatingDAO findByID(int id){
+        return ratingRepository.findRatingDAOSByRatingID(id);
+    }
+
     /**
      * A method to find all ratings of a user as the renter
      * @param userID The userID of the user we want to find the ratings of

@@ -2,10 +2,37 @@ package no.ntnu.idatt2106.model.DTO;
 
 public class RatingDTO {
 
-    int score;
+    private int ratingID;
+    private int score;
     String comment;
     boolean renterIsReceiverOfRating;
-    int rentID;
+    private int rentID;
+
+    public RatingDTO() {
+    }
+
+    public RatingDTO(int score, String comment, boolean renterIsReceiverOfRating, int rentID) {
+        this.score = score;
+        this.comment = comment;
+        this.renterIsReceiverOfRating = renterIsReceiverOfRating;
+        this.rentID = rentID;
+    }
+
+    public RatingDTO(int ratingID, int score, String comment, boolean renterIsReceiverOfRating, int rentID) {
+        this.ratingID = ratingID;
+        this.score = score;
+        this.comment = comment;
+        this.renterIsReceiverOfRating = renterIsReceiverOfRating;
+        this.rentID = rentID;
+    }
+
+    public int getRatingID() {
+        return ratingID;
+    }
+
+    public void setRatingID(int ratingID) {
+        this.ratingID = ratingID;
+    }
 
     public int getScore() {
         return score;

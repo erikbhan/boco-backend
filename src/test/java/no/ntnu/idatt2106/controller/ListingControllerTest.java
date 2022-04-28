@@ -127,7 +127,7 @@ public class ListingControllerTest {
 
     @Test
     public void getAvailabilityOfNonExistingListing() throws Exception {
-        mockMvc.perform(get("/listing/987654321987654321/availability").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
+        mockMvc.perform(get("/listing/987654321/availability").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
     }
 
     public static String asJsonString(final Object obj) {
