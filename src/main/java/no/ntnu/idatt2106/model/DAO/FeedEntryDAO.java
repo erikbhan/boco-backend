@@ -21,10 +21,10 @@ public class FeedEntryDAO {
     @Column(name = "time_posted")
     private Date timePosted;
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private UserDAO userID;
     @ManyToOne
-    @JoinColumn(name = "community_Id")
+    @JoinColumn(name = "community_Id", nullable = false)
     private CommunityDAO communityID;
     @ManyToOne
     @JoinColumn(name = "notification_id")

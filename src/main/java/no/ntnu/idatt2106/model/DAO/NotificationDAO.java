@@ -1,12 +1,7 @@
 package no.ntnu.idatt2106.model.DAO;
 
 import java.sql.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * This class functions as a representation of the table notification in the DB.
@@ -24,32 +19,39 @@ public class NotificationDAO {
     private boolean isSeen;
     @Column(name= "created_time")
     private Date createdTime;
+    @ManyToOne
+    @JoinColumn(name = "group_request", nullable = false)
+    private FeedEntryDAO groupRequestID;
 
     public int getNotificationID() {
-        return this.notificationID;
+        return notificationID;
     }
 
     public void setNotificationID(int notificationID) {
         this.notificationID = notificationID;
     }
 
-    public boolean isIsSeen() {
-        return this.isSeen;
+    public boolean isSeen() {
+        return isSeen;
     }
 
-    public boolean getIsSeen() {
-        return this.isSeen;
-    }
-
-    public void setIsSeen(boolean isSeen) {
-        this.isSeen = isSeen;
+    public void setSeen(boolean seen) {
+        isSeen = seen;
     }
 
     public Date getCreatedTime() {
-        return this.createdTime;
+        return createdTime;
     }
 
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
+    }
+
+    public FeedEntryDAO getGroupRequestID() {
+        return groupRequestID;
+    }
+
+    public void setGroupRequestID(FeedEntryDAO groupRequestID) {
+        this.groupRequestID = groupRequestID;
     }
 }

@@ -16,11 +16,8 @@ public class CommunityRequestDAO {
     @JoinColumn(name = "user_id")
     private UserDAO userID;
     @ManyToOne
-    @JoinColumn(name = "community_id")
+    @JoinColumn(name = "community_id", nullable = false)
     private CommunityDAO communityID;
-    @ManyToOne
-    @JoinColumn(name = "notification_id")
-    private NotificationDAO notificationID;
 
     public int getCommunityRequestID() {
         return communityRequestID;
@@ -44,14 +41,6 @@ public class CommunityRequestDAO {
 
     public void setCommunityID(CommunityDAO communityID) {
         this.communityID = communityID;
-    }
-
-    public NotificationDAO getNotificationID() {
-        return notificationID;
-    }
-
-    public void setNotificationID(NotificationDAO notificationID) {
-        this.notificationID = notificationID;
     }
 
     public String getText() {

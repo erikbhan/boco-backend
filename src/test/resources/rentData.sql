@@ -14,10 +14,7 @@ INSERT INTO public.listing(listing_id, address, description, price_per_day, titl
 VALUES (1236, 'kjopmansgata', 'yo', 21, 'get over here', 3034);
 
 INSERT INTO public.rent(rent_id, from_time, is_accepted, to_time, listing_owner_id, renter_id, is_deleted)
-VALUES (10000, 1609329600000, true, 1609358400000, 1234, 2022, false);
-
-INSERT INTO public.rent(rent_id, from_time, is_accepted, to_time, listing_owner_id, renter_id, is_deleted)
-VALUES (10001, 1610456400000, false, 1610467200000, 1234, 2022, false);
+VALUES (10000, 1610456400000, true, 1610467200000, 1234, 2022, false);
 
 INSERT INTO public.rent(rent_id, from_time, is_accepted, to_time, listing_owner_id, renter_id, is_deleted)
 VALUES (10001, 1610456400000, false, 1610467200000, 1236, 2022, false);

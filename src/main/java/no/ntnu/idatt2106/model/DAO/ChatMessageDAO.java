@@ -26,10 +26,10 @@ public class ChatMessageDAO {
     @Column(name = "is_read")
     private Boolean isRead;
     @ManyToOne
-    @JoinColumn(name = "sending_user_id")
+    @JoinColumn(name = "sending_user_id", nullable = false)
     private UserDAO sendingUserID;
     @ManyToOne
-    @JoinColumn(name = "receiving_user_id")
+    @JoinColumn(name = "receiving_user_id", nullable = false)
     private UserDAO receivingUserID;
 
     public long getMessageID() {

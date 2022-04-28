@@ -13,7 +13,7 @@ public class CommentDAO {
     @Column(name= "text")
     private String text;
     @ManyToOne
-    @JoinColumn(name = "feed_entry_Id")
+    @JoinColumn(name = "feed_entry_Id", nullable = false)
     private FeedEntryDAO feedEntryID;
 
     public int getCommentID() {

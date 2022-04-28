@@ -28,10 +28,10 @@ public class RentDAO{
     @Column(name = "is_deleted")
     private boolean isDeleted;
     @ManyToOne
-    @JoinColumn(name = "listing_owner_id")
+    @JoinColumn(name = "listing_owner_id", nullable = false)
     private ListingDAO listingOwnerID;
     @ManyToOne
-    @JoinColumn(name = "renter_id")
+    @JoinColumn(name = "renter_id", nullable = false)
     private UserDAO renterID;
 
     public RentDAO(long fromTime, long toTime, boolean isAccepted, ListingDAO listingOwnerID, UserDAO renterID) {

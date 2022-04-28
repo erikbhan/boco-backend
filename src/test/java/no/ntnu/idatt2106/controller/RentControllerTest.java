@@ -135,7 +135,7 @@ public class RentControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].*", hasSize(7)));
+                .andExpect(jsonPath("$[0].*", hasSize(6)));
     }
 
     @Test
