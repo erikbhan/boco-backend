@@ -149,7 +149,7 @@ public class ListingService {
         //Converts all the DAOs to DTOs
         List<ListingDTO> listingDTOs = 
         convertMultipleFromListingDAOToDTO(listingCategoryService, communityListingService, listingDAOs);
-        return listingDTOs;
+        return listingDTOs;}
 
     public List<ListingDAO> getAllListingsInACommunity(CommunityDAO communityDAO) {
         List<ListingDAO> listings = new ArrayList<>();
