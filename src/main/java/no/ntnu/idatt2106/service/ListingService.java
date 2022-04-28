@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+
 import org.springframework.stereotype.Service;
 
 /**
@@ -132,6 +134,22 @@ public class ListingService {
     public List<ListingDAO> findListingsByUserDAO(UserDAO user) {
         return listingRepository.findListingDAOSByUserID(user);
     }
+
+    /**
+     * Returns a list of ListingDTOs with title containing requested phrase. 
+     * @param title
+     * @param listingCategoryService
+     * @param communityListingService
+     * @return
+     */
+    public List<ListingDTO> getListingDTOByTitle(String title, ListingCategoryService listingCategoryService,
+    CommunityListingService communityListingService){
+        //Gets all lisitngDAOs with the requested title
+        List<ListingDAO> listingDAOs = listingRepository.findAllByTitleLike(title);
+        //Converts all the DAOs to DTOs
+        List<ListingDTO> listingDTOs = 
+        convertMultipleFromListingDAOToDTO(listingCategoryService, communityListingService, listingDAOs);
+        return listingDTOs;}
 
     public List<ListingDAO> getAllListingsInACommunity(CommunityDAO communityDAO) {
         List<ListingDAO> listings = new ArrayList<>();

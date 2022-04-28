@@ -114,7 +114,7 @@ public class ListingController {
     }
 
     /**
-     * The method to post a listing
+     * The method to post a listing.
      * 
      * @param listingDTO Object
      * @throws StatusCodeException
@@ -159,4 +159,15 @@ public class ListingController {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "An exception occurred");
         }
     }
+
+    /**
+     * Gets every listing with title containing requested phrase
+     * @param title
+     * @return List of DTOs
+     */
+    @GetMapping("/listing/title/{title}")
+    public List<ListingDTO> searchForListingsByTitle(@PathVariable String title){
+        return listingService.getListingDTOByTitle(title, listingCategoryService, communityListingService);
+    }
+    
 }

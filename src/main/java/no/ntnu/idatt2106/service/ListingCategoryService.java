@@ -15,7 +15,6 @@ import no.ntnu.idatt2106.repository.ListingCategoryRepository;
  * Service class for handling the junction between Listing and Category
  */
 @Service
-@Transactional
 public class ListingCategoryService {
     @Autowired
     private final ListingCategoryRepository listingCategoryRepository;
