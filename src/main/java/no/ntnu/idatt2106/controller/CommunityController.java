@@ -24,7 +24,6 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequireAuth
 @ApiResponse(responseCode = "401", description = "Unauthorized")
 public class CommunityController {
     private final CommunityService communityService;
@@ -45,6 +44,7 @@ public class CommunityController {
      * Adds community to database
      * @param communityDTO community transfer object for community to add.
      */
+    @RequireAuth
     @Operation(summary = "Add community to database")
     @PostMapping("/communities/create")
     @ApiResponse(responseCode = "201", description = "Community created")
@@ -85,6 +85,7 @@ public class CommunityController {
      * @return Returns a list of all communities with a name containing this search word.
      * @throws StatusCodeException
      */
+    @RequireAuth
     @Operation(summary = "Show all communities with name containing the search word")
     @ApiResponse(responseCode = "200", description = "Returns a list of all communities matching the search word")
     @ApiResponse(responseCode = "400", description = "No communities was found")
@@ -109,6 +110,7 @@ public class CommunityController {
     @Operation(summary = "Deletes a community from the database")
     @DeleteMapping("/communities/{communityId}/remove")
     @ApiResponse(responseCode = "404", description = "Community not found")
+    @RequireAuth
     public void removeCommunity(@PathVariable int communityId) throws StatusCodeException {
         TokenDTO userToken = TokenUtil.getDataJWT();
         int tokenUserId = userToken.getAccountId();
@@ -136,6 +138,7 @@ public class CommunityController {
     @ApiResponse(responseCode = "400", description = "No communities was found, or no users in given community")
     @ApiResponse(responseCode = "417", description = "No members in members list")
     @GetMapping("/community/{communityId}/members")
+    @RequireAuth
     public List<UserDTO> getMembersInCommunity(@PathVariable int communityId) throws StatusCodeException {
         CommunityDAO communityDAO = communityService.findCommunityDAOByCommunityID(communityId);
         if (communityDAO == null) {
@@ -167,6 +170,7 @@ public class CommunityController {
      * @return Returns a community if it is found or an error message if not.
      * @throws StatusCodeException
      */
+    @RequireAuth
     @Operation(summary = "Returns a community with the correct id")
     @ApiResponse(responseCode = "200", description = "Returns the community")
     @ApiResponse(responseCode = "400", description = "No communities was found")
@@ -186,6 +190,7 @@ public class CommunityController {
      * @return Returns a list of all listings in the community.
      * @throws StatusCodeException
      */
+    @RequireAuth
     @Operation(summary = "Returns a community with the correct id")
     @ApiResponse(responseCode = "200", description = "Returns the community")
     @ApiResponse(responseCode = "400", description = "No communities was found")

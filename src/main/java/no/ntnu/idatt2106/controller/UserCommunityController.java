@@ -56,6 +56,15 @@ public class UserCommunityController {
 
     }
 
+    @Operation(summary = "Get info about if the user is in community")
+    @GetMapping("/communities/{communityId}/user/status")
+    @ApiResponse(responseCode = "200")
+    public boolean checkIfUserIsInCommunity(@PathVariable int communityId){
+        TokenDTO token = TokenUtil.getDataJWT();
+        CommunityDAO communityDAO = communityRepository.findCommunityDAOByCommunityID(communityId);
+        return userCommunityService.userIsInCommunity(token.getAccountId(),communityDAO);
+    }
+
     @Operation(summary = "Remove user from community")
     @PatchMapping("/communities/{communityId}/leave")
     @ApiResponse(responseCode = "200", description = "Removed user from community")
