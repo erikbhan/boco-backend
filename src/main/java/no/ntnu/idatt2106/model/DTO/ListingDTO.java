@@ -7,6 +7,7 @@ import no.ntnu.idatt2106.model.DAO.ListingDAO;
  */
 
 public class ListingDTO {
+    private int listingID;
     private String title;
     private String description;
     private double pricePerDay;
@@ -39,6 +40,7 @@ public class ListingDTO {
     }
 
     public ListingDTO(ListingDAO listingDAO) {
+        this.listingID = listingDAO.getListingID();
         this.title = listingDAO.getTitle();
         this.description = listingDAO.getDescription();
         this.pricePerDay = listingDAO.getPricePerDay();
@@ -100,5 +102,11 @@ public class ListingDTO {
 
     public void setCommunityIDs(int[] communityIDs) {
         this.communityIDs = communityIDs;
+    }
+
+    public int getListingID() {return listingID;}
+
+    public void setListingID(int listingID) {
+        this.listingID = listingID;
     }
 }

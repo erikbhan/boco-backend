@@ -135,7 +135,7 @@ public class CommunityControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].*", hasSize(7)));
+                .andExpect(jsonPath("$[0].*", hasSize(8)));
     }
 
     @Test
