@@ -5,12 +5,15 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import no.ntnu.idatt2106.exception.StatusCodeException;
 import no.ntnu.idatt2106.middleware.RequireAuth;
 import no.ntnu.idatt2106.model.DAO.CommunityDAO;
+import no.ntnu.idatt2106.model.DAO.ListingDAO;
 import no.ntnu.idatt2106.model.DAO.UserCommunityDAO;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
 import no.ntnu.idatt2106.model.DTO.CommunityDTO;
+import no.ntnu.idatt2106.model.DTO.ListingDTO;
 import no.ntnu.idatt2106.model.DTO.TokenDTO;
 import no.ntnu.idatt2106.model.DTO.UserDTO;
 import no.ntnu.idatt2106.service.CommunityService;
+import no.ntnu.idatt2106.service.ListingService;
 import no.ntnu.idatt2106.service.UserCommunityService;
 import no.ntnu.idatt2106.service.UserService;
 import no.ntnu.idatt2106.util.TokenUtil;
@@ -27,12 +30,15 @@ public class CommunityController {
     private final CommunityService communityService;
     private final UserCommunityService userCommunityService;
     private final UserService userService;
+    private final ListingService listingService;
 
     public CommunityController(CommunityService communityService,
-                               UserCommunityService userCommunityService, UserService userService) {
+                               UserCommunityService userCommunityService, UserService userService,
+                               ListingService listingService) {
         this.communityService = communityService;
         this.userCommunityService = userCommunityService;
         this.userService = userService;
+        this.listingService = listingService;
     }
 
     /**
@@ -153,5 +159,51 @@ public class CommunityController {
             }
         }
         throw new StatusCodeException(HttpStatus.BAD_REQUEST, "No users in this community");
+    }
+
+    /**
+     * A method for returning a community by community id.
+     * @param communityId The id of the community
+     * @return Returns a community if it is found or an error message if not.
+     * @throws StatusCodeException
+     */
+    @Operation(summary = "Returns a community with the correct id")
+    @ApiResponse(responseCode = "200", description = "Returns the community")
+    @ApiResponse(responseCode = "400", description = "No communities was found")
+    @GetMapping("/community/{communityId}")
+    public CommunityDTO getCommunity(@PathVariable int communityId) throws StatusCodeException {
+        CommunityDAO communityDAO = communityService.findCommunityDAOByCommunityID(communityId);
+        if (communityDAO == null) {
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Community not found");
+        }
+
+        return new CommunityDTO(communityDAO);
+    }
+
+    /**
+     * A method for getting all listings in a community.
+     * @param communityId The id of the community
+     * @return Returns a list of all listings in the community.
+     * @throws StatusCodeException
+     */
+    @Operation(summary = "Returns a community with the correct id")
+    @ApiResponse(responseCode = "200", description = "Returns the community")
+    @ApiResponse(responseCode = "400", description = "No communities was found")
+    @ApiResponse(responseCode = "417", description = "No listings in the community")
+    @GetMapping("/community/{communityId}/listings")
+    public List<ListingDTO> getAllListingsInACommunity(@PathVariable int communityId) throws StatusCodeException {
+        CommunityDAO communityDAO = communityService.findCommunityDAOByCommunityID(communityId);
+        if (communityDAO == null) {
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Community not found");
+        }
+        List<ListingDAO> listingDAOS = listingService.getAllListingsInACommunity(communityDAO);
+
+        List<ListingDTO> listings = listingService
+                .convertListOfListingDAOToListOfListingDTO(listingDAOS);
+
+        if(listings == null) {
+            throw new StatusCodeException(HttpStatus.EXPECTATION_FAILED, "No listings in the community");
+        }
+        return listings;
     }
 }

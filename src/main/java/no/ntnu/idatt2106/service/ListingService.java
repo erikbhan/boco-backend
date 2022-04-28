@@ -1,10 +1,12 @@
 package no.ntnu.idatt2106.service;
 
+import no.ntnu.idatt2106.model.DAO.CommunityDAO;
+import no.ntnu.idatt2106.model.DAO.CommunityListingDAO;
 import no.ntnu.idatt2106.model.DAO.ListingDAO;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
+import no.ntnu.idatt2106.model.DTO.CommunityDTO;
 import no.ntnu.idatt2106.model.DTO.ListingDTO;
 import no.ntnu.idatt2106.repository.ListingRepository;
-import no.ntnu.idatt2106.repository.UserRepository;
 
 
 import java.util.ArrayList;
@@ -22,9 +24,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class ListingService {
     private final ListingRepository listingRepository;
+    private final CommunityListingService communityListingService;
     
-    public ListingService(ListingRepository listingRepository) {
+    public ListingService(ListingRepository listingRepository,
+                          CommunityListingService communityListingService) {
         this.listingRepository = listingRepository;
+        this.communityListingService = communityListingService;
     }
     
     /**
@@ -144,6 +149,26 @@ public class ListingService {
         //Converts all the DAOs to DTOs
         List<ListingDTO> listingDTOs = 
         convertMultipleFromListingDAOToDTO(listingCategoryService, communityListingService, listingDAOs);
-        return listingDTOs;
+        return listingDTOs;}
+
+    public List<ListingDAO> getAllListingsInACommunity(CommunityDAO communityDAO) {
+        List<ListingDAO> listings = new ArrayList<>();
+        List<CommunityListingDAO> communityListings = communityListingService
+                .getAllCommunityListingForCommunity(communityDAO);
+
+        if(communityListings != null) {
+            for(int i = 0; i < communityListings.size(); i++) {
+                listings.add(communityListings.get(i).getListingID());
+            }
+        }
+        return listings;
+    }
+
+    public List<ListingDTO> convertListOfListingDAOToListOfListingDTO(List<ListingDAO> list) {
+        List<ListingDTO> convertedList = new ArrayList<>();
+        for(int i = 0; i < list.size(); i++) {
+            convertedList.add(new ListingDTO(list.get(i)));
+        }
+        return convertedList;
     }
 }
