@@ -163,7 +163,7 @@ public class ListingController {
     /**
      * Gets every listing with title containing requested phrase
      * @param title
-     * @return List of DTOs
+     * @return List of DTOs containing the requested title in title 
      */
     @GetMapping("/listing/title/{title}")
     public List<ListingDTO> searchForListingsByTitle(@PathVariable String title){
