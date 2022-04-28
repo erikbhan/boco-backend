@@ -1,6 +1,7 @@
 package no.ntnu.idatt2106.model.DAO;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "Rating", schema = "public")

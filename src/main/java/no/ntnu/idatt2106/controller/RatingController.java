@@ -11,6 +11,7 @@ import no.ntnu.idatt2106.service.RatingService;
 import no.ntnu.idatt2106.service.RentService;
 import no.ntnu.idatt2106.service.UserService;
 import no.ntnu.idatt2106.util.TokenUtil;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -126,13 +127,17 @@ public class RatingController {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "No token found");
         }
         int tokenUserID = userToken.getAccountId();
-        if (userService.findUserByUserId(tokenUserID) != null && rentService.getRentFromId(ratingDTO.getRentID()) == null){
+        if (userService.findUserByUserId(tokenUserID) != null){
             RatingDAO dao = new RatingDAO();
             dao.setComment(ratingDTO.getComment());
             dao.setScore(ratingDTO.getScore());
             dao.setRenterIsReceiverOfRating(ratingDTO.isRenterReceiverOfRating());
             dao.setRentID(rentService.getRentFromId(ratingDTO.getRentID()));
-            ratingService.saveRating(dao);
+            try {
+                ratingService.saveRating(dao);
+            } catch (DataIntegrityViolationException e){
+                throw new StatusCodeException(HttpStatus.BAD_REQUEST, "rentID not found");
+            }
             throw new StatusCodeException(HttpStatus.CREATED, "wooptidoo!");
         }
         throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Could not find user");
