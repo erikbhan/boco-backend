@@ -48,14 +48,14 @@ public class RentController {
      * @return Returns a list of all objects rented by the user.
      * @throws Exception
      */
-    @GetMapping("/users/{userid}/profile/rent/history")
+    @GetMapping("/users/{userID}/profile/rent/history")
     @Operation(summary = "Get the full list of rent objects which a user has rented")
     @ApiResponse(responseCode = "200", description = "Returns the rent history of the user, deleted items are not included")
     @ApiResponse(responseCode = "400", description = "User or rent history not found in the DB")
     public List<RentDTO> getRentHistoryOfUser(@PathVariable() int userID) throws Exception {
         if(userService.findUserByUserId(userID) != null) {
             List<RentDAO> rentHistoryDAO = rentService
-                    .findAllRentDAOWithRenterIdAndStatus(userid, true);
+                    .findAllRentDAOWithRenterIdAndStatus(userID, true);
 
             if(rentHistoryDAO != null && rentHistoryDAO.size() > 0) {
                 rentHistoryDAO = rentService.filterListOfRentDAOOnDeleted(rentHistoryDAO);
@@ -142,11 +142,6 @@ public class RentController {
                 rentHistoryDAO = rentService.filterListOfRentDAOOnDeleted(rentHistoryDAO);
                 List<RentDTO> rentHistory = rentService
                         .convertListOfRentDAOToListOfRentDTO(rentHistoryDAO);
-                System.out.println("EEEEEEEEEEEEEEEEEEEEEE\n\n\n\n\n\n\n\n\n\n\n\n");
-                for (RentDTO rentDTO: rentHistory){
-                    System.out.println(rentDTO.getRentId());
-                }
-                System.out.println("EEEEEEEEEEEEEEEEEEEEEE\n\n\n\n\n\n\n\n\n\n\n\n");
                 return rentHistory;
             }
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "No rent history was found for a user with this id");
