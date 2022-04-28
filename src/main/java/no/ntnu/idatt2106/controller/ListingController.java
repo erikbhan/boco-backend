@@ -3,6 +3,8 @@ package no.ntnu.idatt2106.controller;
 import java.util.List;
 import java.util.Optional;
 
+import no.ntnu.idatt2106.model.DAO.CommunityDAO;
+import no.ntnu.idatt2106.model.DTO.CommunityDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;

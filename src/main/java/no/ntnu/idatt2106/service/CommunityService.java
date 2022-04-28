@@ -12,7 +12,6 @@ import java.util.List;
 public class CommunityService {
     private final CommunityRepository communityRepository;
 
-
     public CommunityService(CommunityRepository communityRepository) {
         this.communityRepository = communityRepository;
     }
@@ -35,7 +34,7 @@ public class CommunityService {
         community.setVisibility(communityDTO.getVisibility());
         return community;
     }
-    
+
     public List<CommunityDAO> findAllCommunityDAOWithGivenVisibility(int visibilityStatus) {
         return communityRepository.findAllByVisibility(visibilityStatus);
     }

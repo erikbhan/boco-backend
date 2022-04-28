@@ -11,4 +11,6 @@ import no.ntnu.idatt2106.model.DAO.ListingDAO;
 @Repository
 public interface CommunityListingRepository extends JpaRepository<CommunityListingDAO, Long> {
     List<CommunityListingDAO> findAllFromCommunityListingDAOByListingID(ListingDAO listingID);
+
+    List<CommunityListingDAO> findAllByCommunityID(CommunityDAO communityDAO);
 }
