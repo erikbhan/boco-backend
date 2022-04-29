@@ -21,6 +21,7 @@ import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -118,6 +119,97 @@ public class UserCommunityControllerTest {
     @Test
     public void userCommunityController_removeUserFromCommunity_ShouldGive200OK() throws Exception {
         mvc.perform(patch("/communities/4444/leave")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().isOk());
+    }
+
+
+    @Test
+    public void userCommunityController_checkIfUserIsAdmin_ShouldGiveTrue() throws Exception {
+        MvcResult mvcResult = mvc.perform(get("/communities/4000/user/admin")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + userToken))
+                .andReturn();
+
+        boolean isAdmin = Boolean.parseBoolean(mvcResult.getResponse().getContentAsString());
+
+        assert(isAdmin);
+
+    }
+
+
+    @Test
+    public void userCommunityController_checkIfUserIsAdmin_ShouldGiveFalse() throws Exception {
+        MvcResult mvcResult = mvc.perform(get("/communities/1001/user/admin")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + userToken))
+                .andReturn();
+
+        boolean isAdmin = Boolean.parseBoolean(mvcResult.getResponse().getContentAsString());
+
+        assert(!isAdmin);
+
+    }
+
+    @Test
+    public void userCommunityController_checkIfUserIsInCommunity_ShouldGiveTrue() throws Exception {
+        MvcResult mvcResult = mvc.perform(get("/communities/4000/user/status")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + userToken))
+                .andReturn();
+
+        boolean isInCommunity = Boolean.parseBoolean(mvcResult.getResponse().getContentAsString());
+
+        assert(isInCommunity);
+
+    }
+
+    @Test
+    public void userCommunityController_checkIfUserIsInCommunity_ShouldGiveFalse() throws Exception {
+        MvcResult mvcResult = mvc.perform(get("/communities/4002/user/status")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + userToken))
+                .andReturn();
+
+        boolean isInCommunity = Boolean.parseBoolean(mvcResult.getResponse().getContentAsString());
+
+        assert(!isInCommunity);
+
+    }
+
+    //leave a community you're not in (400)
+
+    @Test
+    public void userCommunityController_removeUserFromCommunity_WhenNotIn_ShouldGive4xxError() throws Exception {
+        mvc.perform(patch("/communities/8888/leave")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().is4xxClientError());
+    }
+
+
+    @Test
+    public void userCommunityController_addUserToPrivateCommunity_ShouldGive4xxError() throws Exception {
+        mvc.perform(post("/communities/8888/join")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().is4xxClientError());
+    }
+
+
+
+    @Test
+    public void userCommunityController_removeUserFromCommunity_WhenAdmin_ShouldGive4xxError() throws Exception {
+        mvc.perform(patch("/communities/4000/leave")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    public void userCommunityController_removeUserFromCommunity_WhenAdmin_ShouldGive200Ok() throws Exception {
+        mvc.perform(patch("/communities/4001/leave")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk());

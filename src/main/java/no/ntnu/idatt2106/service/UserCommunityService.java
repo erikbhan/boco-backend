@@ -28,7 +28,7 @@ public class UserCommunityService {
     }
 
     public boolean userIsInCommunity(int user, CommunityDAO communityDAO){
-        return (userCommunityRepository.existsByUserID(userService.findUserByUserId(user)) && userCommunityRepository.existsByCommunityID(communityDAO));
+        return (userCommunityRepository.isUser(user, communityDAO.getCommunityID()) == 1);
     }
 
     public boolean userIsAdminInCommunity(UserCommunityDAO ucd) {
@@ -88,6 +88,9 @@ public class UserCommunityService {
         return null;
     }
 
+    public int getAdminsSize(int communityID){
+        return userCommunityRepository.countAdmins(communityID);
+    }
     public List<UserCommunityDAO> findAllMembersInACommunityByCommunity(CommunityDAO community) {
         return userCommunityRepository.findAllByCommunityID(community);
     }

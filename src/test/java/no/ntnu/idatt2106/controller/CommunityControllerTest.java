@@ -104,7 +104,7 @@ public class CommunityControllerTest {
 
     @Test
     void communityController_deleteCommunityFromAdminUser_ShouldBeOk() throws Exception {
-        mockMvc.perform(delete("/communities/4000/remove")
+        mockMvc.perform(delete("/communities/9999/remove")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk());
