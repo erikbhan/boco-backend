@@ -2,15 +2,11 @@ package no.ntnu.idatt2106.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import no.ntnu.idatt2106.BocoApplication;
-import no.ntnu.idatt2106.model.DAO.UserDAO;
 import no.ntnu.idatt2106.model.DTO.ListingDTO;
-import no.ntnu.idatt2106.model.DTO.UserDTO;
 import no.ntnu.idatt2106.repository.CategoryRepository;
 import no.ntnu.idatt2106.repository.ListingCategoryRepository;
 import no.ntnu.idatt2106.repository.ListingRepository;
-import no.ntnu.idatt2106.repository.UserRepository;
 import no.ntnu.idatt2106.service.*;
-import org.junit.Assert;
 import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
-import javax.servlet.ServletException;
 import javax.sql.DataSource;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -70,7 +64,6 @@ public class ListingControllerTest {
     @BeforeAll
     static void setup(@Autowired DataSource dataSource) throws SQLException {
         try (Connection conn = dataSource.getConnection()) {
-            ScriptUtils.executeSqlScript(conn, new ClassPathResource("listingCleanup.sql"));
             ScriptUtils.executeSqlScript(conn, new ClassPathResource("listingData.sql"));
         }
     }
@@ -78,7 +71,7 @@ public class ListingControllerTest {
     @AfterAll
     static void cleanup(@Autowired DataSource dataSource) throws SQLException {
         try (Connection conn = dataSource.getConnection()) {
-            ScriptUtils.executeSqlScript(conn, new ClassPathResource("listingCleanup.sql"));
+            ScriptUtils.executeSqlScript(conn, new ClassPathResource("cleanup.sql"));
         }
     }
 
@@ -95,17 +88,17 @@ public class ListingControllerTest {
      */
     @Test
     public void createListing_shouldBeOK() throws Exception {
-        categories = new String[]{"Fussball", "Utstyr"};
-        communityIDs = new int[]{100001, 100002};
+        categories = new String[] { "Fussball", "Utstyr" };
+        communityIDs = new int[] {100001, 100002};
         mockMvc.perform(post("/listing")
-                        .content(asJsonString(new ListingDTO("Jekk", "Beskrivelse", 4.0, "Adresse", 4321, categories, communityIDs)))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+                .content(asJsonString(new ListingDTO("Jekk", "Beskrivelse", 4.0, "Adresse", 4321, categories, communityIDs)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     /**
-     * Posting Listing with invalid category. Should throw erro
+     * Posting Listing with invalid category. Should throw error
      *
      * @throws Exception
      */
@@ -114,7 +107,7 @@ public class ListingControllerTest {
         categories = new String[]{"Salse", "Utstyr"};
         communityIDs = new int[]{1000, 1001};
         mockMvc.perform(post("/listing")
-                        .content(asJsonString(new ListingDTO("Jekk", "Beskrivelse", 4.0, "Adresse", 2022, categories, communityIDs)))
+                        .content(asJsonString(new ListingDTO("Jekk", "Beskrivelse", 4.0, "Adresse", 4321, categories, communityIDs)))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError());
@@ -130,6 +123,11 @@ public class ListingControllerTest {
         mockMvc.perform(get("/listing/987654321/availability").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
     }
 
+    public void searchForListingWithExistingTitleInDB_ShouldBeOK() throws Exception{
+        mockMvc.perform(get("/listing/title/Fisking").contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk());
+    }
+    
     public static String asJsonString(final Object obj) {
         try {
             return new ObjectMapper().writeValueAsString(obj);

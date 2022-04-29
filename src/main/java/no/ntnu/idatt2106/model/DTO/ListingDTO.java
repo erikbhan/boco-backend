@@ -1,15 +1,17 @@
 package no.ntnu.idatt2106.model.DTO;
 
+import no.ntnu.idatt2106.model.DAO.ListingDAO;
+
 /**
  * DTO class for Listing.
  */
 
 public class ListingDTO {
+    private int listingID;
     private String title;
     private String description;
     private double pricePerDay;
     private String address;
-
     private int userID;
     private String[] categoryNames;
     private int[] communityIDs;
@@ -35,6 +37,15 @@ public class ListingDTO {
         this.userID = userID;
         this.categoryNames = categoryNames;
         this.communityIDs = communityIDs;
+    }
+
+    public ListingDTO(ListingDAO listingDAO) {
+        this.listingID = listingDAO.getListingID();
+        this.title = listingDAO.getTitle();
+        this.description = listingDAO.getDescription();
+        this.pricePerDay = listingDAO.getPricePerDay();
+        this.address = listingDAO.getAddress();
+        this.userID = listingDAO.getUserID().getUserID();
     }
 
     public String getTitle() {
@@ -91,5 +102,11 @@ public class ListingDTO {
 
     public void setCommunityIDs(int[] communityIDs) {
         this.communityIDs = communityIDs;
+    }
+
+    public int getListingID() {return listingID;}
+
+    public void setListingID(int listingID) {
+        this.listingID = listingID;
     }
 }

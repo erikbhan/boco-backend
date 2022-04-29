@@ -76,6 +76,7 @@ public class RatingController {
     @Operation(summary = "Finds average rating of user")
     @ApiResponse(responseCode = "200", description = "returns the avrage rating of the user")
     @ApiResponse(responseCode = "400", description = "User not found in DB")
+    @ApiResponse(responseCode = "401", description = "Unauthorized")
     @GetMapping("/rating/{userID}/average")
     @RequireAuth
     public float getAverageRating(@PathVariable int userID) throws StatusCodeException {

@@ -1,7 +1,6 @@
 package no.ntnu.idatt2106.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import no.ntnu.idatt2106.service.*;
 import org.springframework.http.HttpStatus;
@@ -25,6 +24,7 @@ import no.ntnu.idatt2106.model.DTO.ListingDTO;
  */
 @RestController
 @CrossOrigin
+@ApiResponse(responseCode = "401", description = "Unauthorized")
 @RequireAuth
 public class ListingController {
     private final ListingService listingService;
@@ -109,7 +109,7 @@ public class ListingController {
     }
 
     /**
-     * The method to post a listing
+     * The method to post a listing.
      * 
      * @param listingDTO Object
      * @throws StatusCodeException
@@ -151,7 +151,7 @@ public class ListingController {
 
             return true;
         } catch (Exception e) {
-            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Uff da");
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "An exception occurred");
         }
     }
 
@@ -172,5 +172,14 @@ public class ListingController {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Listing was not found");
         }
         return rentService.getNonAvailableTimes(listingID);
+    }
+    /**
+     * Gets every listing with title containing requested phrase
+     * @param title
+     * @return List of DTOs containing the requested title in title 
+     */
+    @GetMapping("/listing/title/{title}")
+    public List<ListingDTO> searchForListingsByTitle(@PathVariable String title){
+        return listingService.getListingDTOByTitle(title, listingCategoryService, communityListingService);
     }
 }

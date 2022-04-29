@@ -110,7 +110,7 @@ public class RatingControllerTest {
         userToken = loginService.successfulAuthentication(user);
         mockMvc.perform(post("/rating/save")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(new RatingDTO(696969,1, "work bro????", false, 10005)))
+                        .content(asJsonString(new RatingDTO(696969,1, "work bro????", false, 10001)))
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isCreated());
     }

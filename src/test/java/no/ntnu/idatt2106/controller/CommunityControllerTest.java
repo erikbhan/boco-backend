@@ -29,12 +29,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("test")
@@ -73,6 +71,7 @@ public class CommunityControllerTest {
     @AfterAll
     static void cleanup(@Autowired DataSource dataSource) throws SQLException {
         try (Connection conn = dataSource.getConnection()) {
+            ScriptUtils.executeSqlScript(conn, new ClassPathResource("cleanup.sql"));
         }
     }
 
@@ -109,6 +108,41 @@ public class CommunityControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void communityController_getCommunity_ShouldBeOk() throws Exception {
+        String expectedJson = "{\"communityId\":1001,\"name\":\"Det regner fisk\",\"description\":\"Fisk for folk\",\"visibility\":1,\"location\":\"Ravnkloa\",\"picture\":\"imagen a place ...with fish\"}";
+        mockMvc.perform(get("/community/1001")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().isOk())
+                .andExpect(content().json(expectedJson));
+    }
+
+    @Test
+    void communityController_getCommunity_ShouldGive4xxerror() throws Exception {
+        mockMvc.perform(get("/community/99999")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    void communityController_getAllListingsInACommunity_ShouldGiveOk() throws Exception {
+        mockMvc.perform(get("/community/4444/listings")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].*", hasSize(8)));
+    }
+
+    @Test
+    void communityController_getAllListingsInACommunity_ShouldGive4xxerror() throws Exception {
+        mockMvc.perform(get("/community/99999/listings")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().is4xxClientError());
     }
 
     @Test

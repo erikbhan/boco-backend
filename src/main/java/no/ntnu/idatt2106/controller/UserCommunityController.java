@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 @RestController
 @CrossOrigin
-@ApiResponse(responseCode = "200")
+@ApiResponse(responseCode = "401", description = "Unauthorized")
 @RequireAuth
 public class UserCommunityController {
     private final UserCommunityService userCommunityService;
@@ -56,6 +56,15 @@ public class UserCommunityController {
 
     }
 
+    @Operation(summary = "Get info about if the user is in community")
+    @GetMapping("/communities/{communityId}/user/status")
+    @ApiResponse(responseCode = "200")
+    public boolean checkIfUserIsInCommunity(@PathVariable int communityId){
+        TokenDTO token = TokenUtil.getDataJWT();
+        CommunityDAO communityDAO = communityRepository.findCommunityDAOByCommunityID(communityId);
+        return userCommunityService.userIsInCommunity(token.getAccountId(),communityDAO);
+    }
+
     @Operation(summary = "Remove user from community")
     @PatchMapping("/communities/{communityId}/leave")
     @ApiResponse(responseCode = "200", description = "Removed user from community")
@@ -81,7 +90,7 @@ public class UserCommunityController {
 
     }
 
-    @Operation(summary = "Get all communities a specific user is part of")
+    @Operation(summary = "Get all communities the logged in user is part of")
     @ApiResponse(responseCode = "200", description = "Found communities")
     @ApiResponse(responseCode = "400", description = "Illegal operation")
     @GetMapping("/user/communities")
@@ -91,9 +100,7 @@ public class UserCommunityController {
         if (user == null) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User does not exist");
         }
-        ArrayList<CommunityDTO> communityDTOS = new ArrayList<>();
 
         return userCommunityService.getAllCommunitiesForUser(user);
     }
-
 }

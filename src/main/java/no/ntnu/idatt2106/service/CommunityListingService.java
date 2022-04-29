@@ -44,5 +44,9 @@ public class CommunityListingService {
             communityIDs[i] = communityDAOs.get(i).getCommunityID().getCommunityID();
         }
         return communityIDs;
-    } 
+    }
+
+    public List<CommunityListingDAO> getAllCommunityListingForCommunity(CommunityDAO communityDAO) {
+        return communityListingRepository.findAllByCommunityID(communityDAO);
+    }
 }

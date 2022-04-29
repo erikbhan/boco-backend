@@ -56,7 +56,6 @@ public class RegisterControllerTest {
     void setup(@Autowired DataSource dataSource) throws SQLException {
         mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         try (Connection conn = dataSource.getConnection()) {
-            ScriptUtils.executeSqlScript(conn, new ClassPathResource("data.sql"));
             ScriptUtils.executeSqlScript(conn, new ClassPathResource("registerData.sql"));
         }
     }
@@ -65,7 +64,6 @@ public class RegisterControllerTest {
     void teardown(@Autowired DataSource dataSource) throws SQLException {
         try (Connection conn = dataSource.getConnection()) {
             ScriptUtils.executeSqlScript(conn, new ClassPathResource("cleanup.sql"));
-            ScriptUtils.executeSqlScript(conn, new ClassPathResource("registerCleanup.sql"));
         }
     }
 
