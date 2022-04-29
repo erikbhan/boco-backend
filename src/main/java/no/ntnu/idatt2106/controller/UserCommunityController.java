@@ -61,7 +61,6 @@ public class UserCommunityController {
     }
 
 
-    //needs tests
     @Operation(summary = "Get info about if the user is in community")
     @GetMapping("/communities/{communityId}/user/status")
     @ApiResponse(responseCode = "200")
