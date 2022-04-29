@@ -29,7 +29,6 @@ public class UserCommunityService {
 
     public boolean userIsInCommunity(int user, CommunityDAO communityDAO){
         return (userCommunityRepository.isUser(user, communityDAO.getCommunityID()) == 1);
-        //return (userCommunityRepository.existsByUserID(userService.findUserByUserId(user)) && userCommunityRepository.existsByCommunityID(communityDAO));
     }
 
     public boolean userIsAdminInCommunity(UserCommunityDAO ucd) {
