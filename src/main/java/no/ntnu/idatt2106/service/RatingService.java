@@ -42,6 +42,10 @@ public class RatingService {
         ratingRepository.save(rating);
     }
 
+    public RatingDAO findByID(int id){
+        return ratingRepository.findRatingDAOSByRatingID(id);
+    }
+
     /**
      * A method to find all ratings of a user as the renter
      * @param userID The userID of the user we want to find the ratings of
@@ -50,7 +54,7 @@ public class RatingService {
     public List<RatingDTO> findRatingsAsRenterByUserID(int userID){
         UserDAO userDAO = userService.findUserByUserId(userID);
         ArrayList<RatingDTO> ratings = new ArrayList<>();
-        List<RentDAO> rented = rentService.findRentByUserID(userDAO);
+        List<RentDAO> rented = rentService.findRentByRenterID(userDAO);
         for (RentDAO rentDAO : rented) {
             System.out.println(rentDAO.toString());
             List<RatingDAO> ratingsByRent = ratingRepository.findByRentIDAndRenterIsReceiverOfRatingFalse(rentDAO);
@@ -104,6 +108,26 @@ public class RatingService {
             averageRating += asOwner.getScore();
         }
         averageRating /= (ratingAsOwner.size() + ratingsAsRenter.size());
+        return averageRating;
+    }
+
+    public float findAverageRatingAsOwner(int userID){
+        float averageRating = 0;
+        List<RatingDTO> ratingAsOwner = findRatingsAsOwnerByUserID(userID);
+        for (RatingDTO asOwner: ratingAsOwner){
+            averageRating += asOwner.getScore();
+        }
+        averageRating /= ratingAsOwner.size();
+        return averageRating;
+    }
+
+    public float findAverageRatingAsRenter(int userID){
+        float averageRating = 0;
+        List<RatingDTO> ratingsAsRenter = findRatingsAsRenterByUserID(userID);
+        for (RatingDTO asRenter: ratingsAsRenter){
+            averageRating += asRenter.getScore();
+        }
+        averageRating /= ratingsAsRenter.size();
         return averageRating;
     }
 }

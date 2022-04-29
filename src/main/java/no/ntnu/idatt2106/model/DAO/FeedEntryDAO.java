@@ -21,14 +21,11 @@ public class FeedEntryDAO {
     @Column(name = "time_posted")
     private Date timePosted;
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private UserDAO userID;
     @ManyToOne
-    @JoinColumn(name = "community_Id")
+    @JoinColumn(name = "community_Id", nullable = false)
     private CommunityDAO communityID;
-    @ManyToOne
-    @JoinColumn(name = "notification_id")
-    private NotificationDAO notificationID;
 
     public int getFeedEntryID() {
         return this.feedEntryID;
@@ -98,11 +95,4 @@ public class FeedEntryDAO {
         this.communityID = communityID;
     }
 
-    public NotificationDAO getNotificationID() {
-        return notificationID;
-    }
-
-    public void setNotificationID(NotificationDAO notificationID) {
-        this.notificationID = notificationID;
-    }
 }

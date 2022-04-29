@@ -13,7 +13,7 @@ public class ListingPictureDAO {
     @Column(name= "picture")
     private String picture;
     @ManyToOne
-    @JoinColumn(name = "listing_id")
+    @JoinColumn(name = "listing_id", nullable = false)
     private ListingDAO listingID;
 
     public int getListingPicureID() {
