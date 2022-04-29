@@ -30,9 +30,10 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("test")
@@ -122,6 +123,21 @@ public class ListingControllerTest{
     public void searchForListingWithExistingTitleInDB_ShouldBeOK() throws Exception{
         mockMvc.perform(get("/listing/title/Fisking").contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk());
+    }
+
+    @Test
+    void listingController_getAllPicturesForAListing_ShouldGiveOk() throws Exception {
+        mockMvc.perform(get("/listing/4040/pictures")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].*", hasSize(2)));
+    }
+
+    @Test
+    void listingController_getAllPicturesForAListing_ShouldGiveError() throws Exception {
+        mockMvc.perform(get("/listing/0/pictures")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError());
     }
     
     public static String asJsonString(final Object obj) {
