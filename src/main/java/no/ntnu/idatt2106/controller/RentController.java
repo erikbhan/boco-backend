@@ -4,8 +4,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import no.ntnu.idatt2106.exception.StatusCodeException;
 import no.ntnu.idatt2106.model.DAO.RentDAO;
+import no.ntnu.idatt2106.model.DAO.UserDAO;
 import no.ntnu.idatt2106.model.DTO.RentDTO;
 import no.ntnu.idatt2106.service.RentService;
+import no.ntnu.idatt2106.service.UserService;
 import no.ntnu.idatt2106.model.DTO.TokenDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -25,12 +27,14 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @ApiResponse(responseCode = "401", description = "Not authenticated")
-@RequireAuth
+// @RequireAuth
 public class RentController {
     private final RentService rentService;
+    private final UserService userService;
 
-    public RentController(RentService rentService) {
+    public RentController(RentService rentService, UserService userService) {
         this.rentService = rentService;
+        this.userService = userService;
     }
 
     /**
@@ -158,7 +162,8 @@ public class RentController {
         Integer tokenUserId = Integer.valueOf(userToken.getAccountId());
         if (tokenUserId != null) {
             RentDAO agreement = rentService.convertFromRentDTOTORentDAO(rentDTO);
-            agreement.setRentID(tokenUserId);
+            UserDAO userDAO = userService.findUserByUserId(tokenUserId);
+            agreement.setRenterID(userDAO);
             String saveAns = rentService.saveNewRentAgreementToDB(agreement);
             if (saveAns != null) {
                 return saveAns;

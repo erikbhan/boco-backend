@@ -49,56 +49,66 @@ public class RentDTO {
     }
 
     public RentDTO() {}
+   
 
-    public int getRentId() {return rentId;}
+    public int getRentId() {
+        return this.rentId;
+    }
+
+    public void setRentId(int rentId) {
+        this.rentId = rentId;
+    }
 
     public Date getFromTime() {
-        return fromTime;
+        return this.fromTime;
     }
-
-    public Date getToTime() {
-        return toTime;
-    }
-
-    public Boolean getAccepted() {
-        return isAccepted;
-    }
-
-    public int getListingId() {
-        return listingId;
-    }
-
-    public int getRenterId() {
-        return renterId;
-    }
-
-    public int getNotificationId() {
-        return notificationId;
-    }
-
-    public void setRentId(int rentId) {this.rentId = rentId;}
 
     public void setFromTime(Date fromTime) {
         this.fromTime = fromTime;
+    }
+
+    public Date getToTime() {
+        return this.toTime;
     }
 
     public void setToTime(Date toTime) {
         this.toTime = toTime;
     }
 
-    public void setAccepted(Boolean accepted) {
-        this.isAccepted = accepted;
+    public Boolean isIsAccepted() {
+        return this.isAccepted;
+    }
+
+    public Boolean getIsAccepted() {
+        return this.isAccepted;
+    }
+
+    public void setIsAccepted(Boolean isAccepted) {
+        this.isAccepted = isAccepted;
+    }
+
+    public int getListingId() {
+        return this.listingId;
     }
 
     public void setListingId(int listingId) {
         this.listingId = listingId;
     }
 
+    public int getRenterId() {
+        return this.renterId;
+    }
+
     public void setRenterId(int renterId) {
         this.renterId = renterId;
+    }
+
+    public int getNotificationId() {
+        return this.notificationId;
     }
 
     public void setNotificationId(int notificationId) {
         this.notificationId = notificationId;
     }
+
 }

@@ -46,7 +46,7 @@ public class RentDAO{
     public RentDAO(RentDTO rentDTO) {
         this.fromTime = rentDTO.getFromTime();
         this.toTime = rentDTO.getToTime();
-        this.isAccepted = rentDTO.getAccepted();
+        this.isAccepted = rentDTO.getIsAccepted();
     }
 
     public RentDAO() {
