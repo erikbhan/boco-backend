@@ -21,7 +21,7 @@ public class ListingDAO{
     @Column(name = "address")
     private String address;
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "userId", nullable = false)
     private UserDAO userID;
 
     public int getListingID() {

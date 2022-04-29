@@ -1,12 +1,7 @@
 package no.ntnu.idatt2106.model.DAO;
 
 import java.sql.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * This class functions as a representation of the table notification in the DB.
@@ -23,33 +18,40 @@ public class NotificationDAO {
     @Column(name= "is_seen")
     private boolean isSeen;
     @Column(name= "created_time")
-    private Date createdTime;
+    private long createdTime;
+    @ManyToOne
+    @JoinColumn(name = "community_request", nullable = false)
+    private CommunityRequestDAO communityRequest;
 
     public int getNotificationID() {
-        return this.notificationID;
+        return notificationID;
     }
 
     public void setNotificationID(int notificationID) {
         this.notificationID = notificationID;
     }
 
-    public boolean isIsSeen() {
-        return this.isSeen;
+    public boolean isSeen() {
+        return isSeen;
     }
 
-    public boolean getIsSeen() {
-        return this.isSeen;
+    public void setSeen(boolean seen) {
+        isSeen = seen;
     }
 
-    public void setIsSeen(boolean isSeen) {
-        this.isSeen = isSeen;
+    public long getCreatedTime() {
+        return createdTime;
     }
 
-    public Date getCreatedTime() {
-        return this.createdTime;
-    }
-
-    public void setCreatedTime(Date createdTime) {
+    public void setCreatedTime(long createdTime) {
         this.createdTime = createdTime;
+    }
+
+    public CommunityRequestDAO getCommunityRequest() {
+        return communityRequest;
+    }
+
+    public void setCommunityRequest(CommunityRequestDAO communityRequest) {
+        this.communityRequest = communityRequest;
     }
 }
