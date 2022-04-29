@@ -18,10 +18,10 @@ public class NotificationDAO {
     @Column(name= "is_seen")
     private boolean isSeen;
     @Column(name= "created_time")
-    private Date createdTime;
+    private long createdTime;
     @ManyToOne
-    @JoinColumn(name = "group_request", nullable = false)
-    private FeedEntryDAO groupRequestID;
+    @JoinColumn(name = "community_request", nullable = false)
+    private CommunityRequestDAO communityRequest;
 
     public int getNotificationID() {
         return notificationID;
@@ -39,19 +39,19 @@ public class NotificationDAO {
         isSeen = seen;
     }
 
-    public Date getCreatedTime() {
+    public long getCreatedTime() {
         return createdTime;
     }
 
-    public void setCreatedTime(Date createdTime) {
+    public void setCreatedTime(long createdTime) {
         this.createdTime = createdTime;
     }
 
-    public FeedEntryDAO getGroupRequestID() {
-        return groupRequestID;
+    public CommunityRequestDAO getCommunityRequest() {
+        return communityRequest;
     }
 
-    public void setGroupRequestID(FeedEntryDAO groupRequestID) {
-        this.groupRequestID = groupRequestID;
+    public void setCommunityRequest(CommunityRequestDAO communityRequest) {
+        this.communityRequest = communityRequest;
     }
 }
