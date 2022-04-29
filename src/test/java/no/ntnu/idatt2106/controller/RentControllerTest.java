@@ -73,7 +73,7 @@ public class RentControllerTest {
     @AfterAll
     static void cleanup(@Autowired DataSource dataSource) throws SQLException {
         try (Connection conn = dataSource.getConnection()) {
-            ScriptUtils.executeSqlScript(conn, new ClassPathResource("rentCleanup.sql"));
+            ScriptUtils.executeSqlScript(conn, new ClassPathResource("cleanup.sql"));
         }
     }
 

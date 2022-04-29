@@ -1,26 +1,16 @@
-DELETE FROM public.rent WHERE listing_owner_id = '1234';
-DELETE FROM public.rent WHERE listing_owner_id = '1235';
-DELETE FROM public.rent WHERE listing_owner_id = '1236';
-
-DELETE FROM public.user_community WHERE community_id = 4000;
-DELETE FROM public.user_community WHERE community_id = 4001;
-DELETE FROM public.user_community WHERE community_id= 4444;
-DELETE FROM public.user_community WHERE user_id = 2022;
-DELETE FROM public.user_community WHERE user_id = 3034;
-
-DELETE FROM public.community WHERE community_id = 4000;
-DELETE FROM public.community WHERE community_id = 4001;
-DELETE FROM public.community WHERE community_id = 4002;
-DELETE FROM public.community WHERE community_id = 4444;
-DELETE FROM public.community WHERE community_id = 1000;
-DELETE FROM public.community WHERE community_id = 1001;
-DELETE FROM public.community WHERE description = 'kul klubb';
-DELETE FROM public.community WHERE name = 'MCklubb';
-
-DELETE FROM public.listing WHERE listing_id = 1234;
-DELETE FROM public.listing WHERE listing_id = 1235;
-DELETE FROM public.listing WHERE listing_id = 1236;
-
-Delete from public.user WHERE email = 'erna@solberg.com';
-DELETE FROM public.user WHERE email = 'fake@user.com';
-DELETE FROM public.user WHERE email = 'test@email.com';
+DELETE FROM public.listing_category;
+DELETE FROM public.category;
+DELETE FROM public.chat_message;
+DELETE FROM public.comment;
+DELETE FROM public.community_listing;
+DELETE FROM public.user_community;
+DELETE FROM public.community;
+DELETE FROM public.community_request;
+DELETE FROM public.feed_entry;
+DELETE FROM public.feed_entry_picture;
+DELETE FROM public.rent;
+DELETE FROM public.listing;
+DELETE FROM public.listing_picture;
+DELETE FROM public.notification;
+DELETE FROM public.rating;
+DELETE FROM public.user;

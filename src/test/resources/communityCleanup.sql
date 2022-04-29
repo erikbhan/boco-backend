@@ -1,3 +1,11 @@
+
+
+DELETE  FROM public.community_listing WHERE community_id=4444;
+Delete from public.listing WHERE listing_id=5000;
+
+
+
+
 DELETE FROM public.user_community WHERE user_id = 1;
 DELETE FROM public.user_community WHERE community_id = 4000;
 DELETE FROM public.user_community WHERE community_id = 4001;
