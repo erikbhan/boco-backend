@@ -11,6 +11,9 @@ INSERT INTO public.community(community_id, description, location, name, picture,
 VALUES (1000, 'En hyggelig dag', 'Storvold', 'Vi som liker været', 'Nei takk', 1);
 
 INSERT INTO public.community(community_id, description, location, name, picture, visibility)
+VALUES (9999, 'En hyggelig dag', 'Storvold', 'Vi som liker været', 'Nei takk', 1);
+
+INSERT INTO public.community(community_id, description, location, name, picture, visibility)
 VALUES (8888, 'En hyggelig dag', 'Storvold', 'Vi som liker været', 'Nei takk', 0);
 
 INSERT INTO public.community(community_id, description, location, name, picture, visibility)
@@ -37,6 +40,9 @@ VALUES (4000, 'Einars MC klubb', 'vi som liker motorsykkel og heter Einar', 0, '
 
 INSERT INTO public.user_community(community_id, user_id, is_administrator)
 VALUES (4000, 1, true);
+
+INSERT INTO public.user_community(community_id, user_id, is_administrator)
+VALUES (9999, 2022, true);
 
 INSERT INTO public.user_community(community_id, user_id, is_administrator)
 VALUES (4000, 2022, false);
