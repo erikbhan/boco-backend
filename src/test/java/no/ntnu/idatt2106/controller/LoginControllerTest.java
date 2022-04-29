@@ -64,7 +64,7 @@ public class LoginControllerTest {
     @BeforeAll
     static void setup(@Autowired DataSource dataSource) throws SQLException {
         try (Connection conn = dataSource.getConnection()) {
-            ScriptUtils.executeSqlScript(conn, new ClassPathResource("loginData.sql"));
+            ScriptUtils.executeSqlScript(conn, new ClassPathResource("data.sql"));
         }
     }
 

@@ -11,5 +11,9 @@ public class CommunityRequestService {
         this.communityRequestRepository = communityRequestRepository;
     }
 
+    public void addNewRequest() {
+
+    }
+
 
 }
