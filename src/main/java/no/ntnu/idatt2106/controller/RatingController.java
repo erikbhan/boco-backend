@@ -77,7 +77,6 @@ public class RatingController {
     @ApiResponse(responseCode = "200", description = "returns the average rating of the user")
     @ApiResponse(responseCode = "400", description = "User not found in database")
     @GetMapping("/rating/{userID}/average")
-    @RequireAuth
     public float getAverageRating(@PathVariable int userID) throws StatusCodeException {
         if (userService.findUserByUserId(userID) != null) {
             return ratingService.findAverageRating(userID);
@@ -88,7 +87,6 @@ public class RatingController {
     @ApiResponse(responseCode = "200", description = "returns the average rating of the user as owner")
     @ApiResponse(responseCode = "400", description = "User not found in database")
     @GetMapping("/rating/{userID}/average_as_owner")
-    @RequireAuth
     public float getAverageRatingAsOwner(@PathVariable int userID) throws StatusCodeException {
         if (userService.findUserByUserId(userID) != null) {
             return ratingService.findAverageRatingAsOwner(userID);
@@ -99,7 +97,6 @@ public class RatingController {
     @ApiResponse(responseCode = "200", description = "returns the average rating of the user as renter")
     @ApiResponse(responseCode = "400", description = "User not found in database")
     @GetMapping("/rating/{userID}/average_as_renter")
-    @RequireAuth
     public float getAverageRatingAsRenter(@PathVariable int userID) throws StatusCodeException {
         if (userService.findUserByUserId(userID) != null) {
             return ratingService.findAverageRatingAsRenter(userID);
