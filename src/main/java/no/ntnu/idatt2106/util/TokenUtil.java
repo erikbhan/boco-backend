@@ -18,6 +18,7 @@ public class TokenUtil {
         String token = request.getHeader("Authorization");
         if(token == null) return null;
         try {
+            System.out.println(token);
             return token.split(" ")[1];
         } catch (IndexOutOfBoundsException e) {
             return null;

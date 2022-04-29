@@ -174,7 +174,7 @@ public class ListingController {
      */
     @Operation(summary = "Get all pictures for a listing")
     @ApiResponse(responseCode = "200", description = "All pictures are sent")
-    @ApiResponse(responseCode = "400", description = "Listing id is invalid, not pictures found or an exception occures")
+    @ApiResponse(responseCode = "400", description = "Listing id is invalid, pictureDAO list is null or an exception occures")
     @GetMapping("/listing/{listingid}/pictures")
     public List<ListingPictureDTO> getAllPicturesForAListing(@PathVariable int listingid) throws StatusCodeException {
         if(listingid > 0) {
@@ -187,7 +187,7 @@ public class ListingController {
                 }
                 throw new StatusCodeException(HttpStatus.BAD_REQUEST, "An exception occurred");
             }
-            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "No pictures found for this listing");
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "PictureDAOs list is null");
         }
         throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Listing id must be larger than 0");
     }
