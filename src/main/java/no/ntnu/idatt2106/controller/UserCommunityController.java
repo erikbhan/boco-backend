@@ -33,6 +33,7 @@ public class UserCommunityController {
         this.communityRepository = communityRepository;
     }
 
+
     @Operation(summary = "Add user to a community")
     @PostMapping("/communities/{communityId}/join")
     @ApiResponse(responseCode = "200", description = "Added user to community")
@@ -56,6 +57,8 @@ public class UserCommunityController {
 
     }
 
+
+    //needs tests
     @Operation(summary = "Get info about if the user is in community")
     @GetMapping("/communities/{communityId}/user/status")
     @ApiResponse(responseCode = "200")
@@ -65,6 +68,20 @@ public class UserCommunityController {
         return userCommunityService.userIsInCommunity(token.getAccountId(),communityDAO);
     }
 
+    //admin check
+
+    @Operation(summary = "Get info about if the user is admin in community")
+    @GetMapping("/communities/{communityId}/user/admin")
+    @ApiResponse(responseCode = "200")
+    public boolean checkIfUserIsAdmin(@PathVariable int communityId){
+        TokenDTO token = TokenUtil.getDataJWT();
+        CommunityDAO communityDAO = communityRepository.findCommunityDAOByCommunityID(communityId);
+        UserCommunityDAO ucd = userCommunityService.getByIds(token.getAccountId(), communityDAO );
+        return ucd.isAdministrator();
+    }
+
+
+    //Check if user is admin
     @Operation(summary = "Remove user from community")
     @PatchMapping("/communities/{communityId}/leave")
     @ApiResponse(responseCode = "200", description = "Removed user from community")
@@ -75,6 +92,9 @@ public class UserCommunityController {
         CommunityDAO communityDAO = communityRepository.findCommunityDAOByCommunityID(communityId);
 
         UserCommunityDAO ucd = userCommunityService.getByIds(token.getAccountId(), communityDAO );
+
+        if(ucd.isAdministrator())
+
         if (communityDAO == null) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Community does not exist");
         }
