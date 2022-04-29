@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 
 
 import static org.hamcrest.Matchers.hasSize;
@@ -83,7 +84,7 @@ public class RentControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].*", hasSize(7)));
+                .andExpect(jsonPath("$[0].*", hasSize(6)));
     }
 
     @Test
@@ -100,7 +101,7 @@ public class RentControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].*", hasSize(7)));
+                .andExpect(jsonPath("$[0].*", hasSize(6)));
     }
 
     @Test
@@ -117,7 +118,7 @@ public class RentControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].*", hasSize(7)));
+                .andExpect(jsonPath("$[0].*", hasSize(6)));
     }
 
     @Test
@@ -134,7 +135,7 @@ public class RentControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].*", hasSize(7)));
+                .andExpect(jsonPath("$[0].*", hasSize(6)));
     }
 
     @Test
@@ -147,9 +148,10 @@ public class RentControllerTest {
 
     @Test
     void rentController_saveRentingAgreementForRenter_ShouldBeOk() throws Exception {
+        LocalDateTime ldt = LocalDateTime.of(1997,12,13,12,12,12);
         mockMvc.perform(post("/renting/renter/save")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(new RentDTO(new Date(2013,8,23),new Date(2016,6,4),false,1235,2022)))
+                        .content(asJsonString(new RentDTO(rentService.fromLocalDateTimeToMillis(ldt), rentService.fromLocalDateTimeToMillis(ldt), false,1235,2022)))
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk());
     }
