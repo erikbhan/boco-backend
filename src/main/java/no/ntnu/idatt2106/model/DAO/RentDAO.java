@@ -27,6 +27,8 @@ public class RentDAO{
     private boolean isAccepted;
     @Column(name = "is_deleted")
     private boolean isDeleted;
+    @Column(name = "message")
+    private String message;
     @ManyToOne
     @JoinColumn(name = "listing_owner_id", nullable = false)
     private ListingDAO listingOwnerID;
@@ -102,4 +104,18 @@ public class RentDAO{
     public boolean isDeleted() {return isDeleted;}
 
     public void setDeleted(boolean deleted) {isDeleted = deleted;}
+
+    @Override
+    public String toString() {
+        return "RentDAO{" +
+                "rentID=" + rentID +
+                ", fromTime=" + fromTime +
+                ", toTime=" + toTime +
+                ", isAccepted=" + isAccepted +
+                ", isDeleted=" + isDeleted +
+                ", message='" + message + '\'' +
+                ", listingOwnerID=" + listingOwnerID +
+                ", renterID=" + renterID +
+                '}';
+    }
 }

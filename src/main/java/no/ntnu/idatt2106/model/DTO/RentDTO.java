@@ -16,6 +16,7 @@ public class RentDTO {
     Boolean isAccepted;
     int listingId;
     int renterId;
+    String message;
 
     public RentDTO(long fromTime, long toTime, Boolean isAccepted, int listingId, int renterId) {
         this.fromTime = fromTime;
@@ -41,6 +42,15 @@ public class RentDTO {
         this.isAccepted = rentDAO.getIsAccepted();
         this.listingId = rentDAO.getListingOwnerID().getListingID();
         this.renterId = rentDAO.getRenterID().getUserID();
+    }
+
+    public RentDTO(long fromTime, long toTime, Boolean isAccepted, int listingId, int renterId, String message) {
+        this.fromTime = fromTime;
+        this.toTime = toTime;
+        this.isAccepted = isAccepted;
+        this.listingId = listingId;
+        this.renterId = renterId;
+        this.message = message;
     }
 
     public RentDTO() {}

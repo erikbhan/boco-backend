@@ -2,6 +2,8 @@ package no.ntnu.idatt2106.controller;
 
 import java.util.List;
 
+import no.ntnu.idatt2106.model.DAO.RentDAO;
+import no.ntnu.idatt2106.model.DTO.ListingWithUnavailabilityDTO;
 import no.ntnu.idatt2106.service.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -116,43 +118,73 @@ public class ListingController {
      */
     @ApiResponse(responseCode = "200", description = "Listing posted")
     @ApiResponse(responseCode = "400", description = "User not found")
-    @ApiResponse(responseCode = "500", description = "Something went wrong")
     @PostMapping("/listing")
     @Operation(summary = "Post Listing and adding all the listing's categories to the ListingCategory junction table")
-
     public boolean postListing(@RequestBody ListingDTO listingDTO) throws StatusCodeException {
-        try {
-            // Creates a ListingDAO with the information from the DTO.
-            ListingDAO listing = new ListingDAO();
-            listing.setTitle(listingDTO.getTitle());
-            listing.setDescription(listingDTO.getDescription());
-            listing.setAddress(listingDTO.getAddress());
-            listing.setPricePerDay(listingDTO.getPricePerDay());
-            listing.setUserID(userService.findUserByUserId(listingDTO.getUserID()));
-            if (listing.getUserID() == null) {
-                throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User not found");
-            }
-            // Saves the DAO to the DB
-            listingService.saveListing(listing);
-            // The for-loop goes through the categories of listing, adding them to the
-            // listingCategory table.   
-            // Finds the categoryIDs from the category table using the categorynames.
-            for (String categoryName : listingDTO.getCategoryNames()) {
-                listingCategoryService.saveListingCategory(categoryService.findCategoryDAOByName(categoryName),
-                        listing);
-            }
-            // The for-loop goes through the communities of listing, adding them to the
-            // communityListing table.
-            // Finds communities using communityIDs
-            for (int communityID : listingDTO.getCommunityIDs()) {
-                communityListingService.saveCommunityListing(communityService.findCommunityDAOByCommunityID(communityID),
-                        listing);
-            }
-
-            return true;
-        } catch (Exception e) {
-            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "An exception occurred");
+        // Creates a ListingDAO with the information from the DTO.
+        ListingDAO listing = new ListingDAO();
+        listing.setTitle(listingDTO.getTitle());
+        listing.setDescription(listingDTO.getDescription());
+        listing.setAddress(listingDTO.getAddress());
+        listing.setPricePerDay(listingDTO.getPricePerDay());
+        listing.setUserID(userService.findUserByUserId(listingDTO.getUserID()));
+        if (listing.getUserID() == null) {
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User not found");
         }
+        // Saves the DAO to the DB
+        listingService.saveListing(listing);
+        // The for-loop goes through the categories of listing, adding them to the
+        // listingCategory table.
+        // Finds the categoryIDs from the category table using the categorynames.
+        for (String categoryName : listingDTO.getCategoryNames()) {
+            listingCategoryService.saveListingCategory(categoryService.findCategoryDAOByName(categoryName),
+                    listing);
+        }
+        // The for-loop goes through the communities of listing, adding them to the
+        // communityListing table.
+        // Finds communities using communityIDs
+        for (int communityID : listingDTO.getCommunityIDs()) {
+            communityListingService.saveCommunityListing(communityService.findCommunityDAOByCommunityID(communityID),
+                    listing);
+        }
+        return true;
+    }
+
+    /**
+     *
+     * A method to post a listing with given availability
+     * @param listingDTO
+     * @throws StatusCodeException
+     */
+    @ApiResponse(responseCode = "200", description = "Listing created, unavailable times added")
+    @ApiResponse(responseCode = "400", description = "User not found")
+    @PostMapping("/listing/dates")
+    @Operation(summary = "Post Listing and adding all the listing's categories to the ListingCategory junction table")
+    public void postListingWithDate(@RequestBody ListingWithUnavailabilityDTO listingDTO) throws StatusCodeException {
+        ListingDAO listing = new ListingDAO();
+        listing.setTitle(listingDTO.getTitle());
+        listing.setDescription(listingDTO.getDescription());
+        listing.setAddress(listingDTO.getAddress());
+        listing.setPricePerDay(listingDTO.getPricePerDay());
+        listing.setUserID(userService.findUserByUserId(listingDTO.getUserID()));
+        if (listing.getUserID() == null) {
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User not found");
+        }
+        listingService.saveListing(listing);
+        for (String categoryName : listingDTO.getCategoryNames()) {
+            listingCategoryService.saveListingCategory(categoryService.findCategoryDAOByName(categoryName),
+                    listing);
+        }
+        for (int communityID : listingDTO.getCommunityIDs()) {
+            communityListingService.saveCommunityListing(communityService.findCommunityDAOByCommunityID(communityID),
+                        listing);
+        }
+        List<RentDAO> rents = rentService.turnListingWithUnavailabilityDTOIntoRentDAO(listingDTO);
+        for (RentDAO rent : rents){
+            rent.setListingOwnerID(listing);
+            rentService.saveNewRentAgreementToDB(rent);
+        }
+        throw new StatusCodeException(HttpStatus.OK, "listing created, unavailable times added");
     }
 
     /**
