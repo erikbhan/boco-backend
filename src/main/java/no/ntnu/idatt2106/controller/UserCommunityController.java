@@ -10,6 +10,7 @@ import no.ntnu.idatt2106.model.DAO.UserDAO;
 import no.ntnu.idatt2106.model.DTO.CommunityDTO;
 import no.ntnu.idatt2106.model.DTO.TokenDTO;
 import no.ntnu.idatt2106.repository.CommunityRepository;
+import no.ntnu.idatt2106.service.CommunityService;
 import no.ntnu.idatt2106.service.UserCommunityService;
 import no.ntnu.idatt2106.service.UserService;
 import no.ntnu.idatt2106.util.TokenUtil;
@@ -26,11 +27,13 @@ public class UserCommunityController {
     private final UserCommunityService userCommunityService;
     private final UserService userService;
     private final CommunityRepository communityRepository;
+    private final CommunityService communityService;
 
-    public UserCommunityController(UserCommunityService userCommunityService, UserService userService, CommunityRepository communityRepository) {
+    public UserCommunityController(UserCommunityService userCommunityService, UserService userService, CommunityRepository communityRepository, CommunityService communityService) {
         this.userCommunityService = userCommunityService;
         this.userService = userService;
         this.communityRepository = communityRepository;
+        this.communityService = communityService;
     }
 
 
@@ -68,7 +71,6 @@ public class UserCommunityController {
         return userCommunityService.userIsInCommunity(token.getAccountId(),communityDAO);
     }
 
-    //admin check
 
     @Operation(summary = "Get info about if the user is admin in community")
     @GetMapping("/communities/{communityId}/user/admin")
@@ -81,7 +83,7 @@ public class UserCommunityController {
     }
 
 
-    //Check if user is admin
+
     @Operation(summary = "Remove user from community")
     @PatchMapping("/communities/{communityId}/leave")
     @ApiResponse(responseCode = "200", description = "Removed user from community")
@@ -93,7 +95,20 @@ public class UserCommunityController {
 
         UserCommunityDAO ucd = userCommunityService.getByIds(token.getAccountId(), communityDAO );
 
-        if(ucd.isAdministrator())
+        //Prevents admin from leaving group if there are no other admins, removes community if admin is the only one in the community
+        if(ucd != null){
+        if(ucd.isAdministrator() && (userCommunityService.findAllMembersInACommunityByCommunity(communityDAO).size()>=2)){
+            if(userCommunityService.getAdminsSize(communityId)<=1){
+                throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Can not leave community, needs a new admin");
+            }
+        }
+        else if (ucd.isAdministrator()){
+            if(!communityService.removeCommunity(communityDAO)){
+                throw new StatusCodeException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected server error");
+            }
+        }
+
+        }
 
         if (communityDAO == null) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Community does not exist");
@@ -117,10 +132,6 @@ public class UserCommunityController {
     public ArrayList<CommunityDTO> getCommunitiesForUser() throws StatusCodeException {
         TokenDTO token = TokenUtil.getDataJWT();
         UserDAO user = userService.findUserByUserId(token.getAccountId());
-        if (user == null) {
-            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User does not exist");
-        }
-
         return userCommunityService.getAllCommunitiesForUser(user);
     }
 }
