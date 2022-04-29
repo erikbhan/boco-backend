@@ -6,9 +6,12 @@ import no.ntnu.idatt2106.exception.StatusCodeException;
 import no.ntnu.idatt2106.model.DAO.RentDAO;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
 import no.ntnu.idatt2106.model.DTO.RentDTO;
+import no.ntnu.idatt2106.service.ListingService;
+import no.ntnu.idatt2106.service.NotificationService;
 import no.ntnu.idatt2106.service.RentService;
 import no.ntnu.idatt2106.service.UserService;
 import no.ntnu.idatt2106.model.DTO.TokenDTO;
+import no.ntnu.idatt2106.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,8 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import no.ntnu.idatt2106.middleware.RequireAuth;
 import no.ntnu.idatt2106.util.TokenUtil;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,26 +33,31 @@ public class RentController {
     private final RentService rentService;
     private final UserService userService;
 
-    public RentController(RentService rentService, UserService userService) {
+    ListingService listingService;
+    NotificationService notificationService;
+
+    public RentController(RentService rentService, ListingService listingService, NotificationService notificationService, UserService userService) {
         this.rentService = rentService;
+        this.listingService = listingService;
+        this.notificationService = notificationService;
         this.userService = userService;
     }
 
     /**
      * A method to get all rented objects for a user.
      * This method returns a list of all objects rented by the user.
-     * @param userid The user id of the user you want the rent history for
+     * @param userID The user id of the user you want the rent history for
      * @return Returns a list of all objects rented by the user.
      * @throws Exception
      */
-    @GetMapping("/users/{userid}/profile/rent/history")
+    @GetMapping("/users/{userID}/profile/rent/history")
     @Operation(summary = "Get the full list of rent objects which a user has rented")
     @ApiResponse(responseCode = "200", description = "Returns the rent history of the user, deleted items are not included")
     @ApiResponse(responseCode = "400", description = "User or rent history not found in the DB")
-    public List<RentDTO> getRentHistoryOfUser(@PathVariable() int userid) throws Exception {
-        if(userid > 0) {
+    public List<RentDTO> getRentHistoryOfUser(@PathVariable() int userID) throws Exception {
+        if(userService.findUserByUserId(userID) != null) {
             List<RentDAO> rentHistoryDAO = rentService
-                    .findAllRentDAOWithRenterIdAndStatus(userid, true);
+                    .findAllRentDAOWithRenterIdAndStatus(userID, true);
 
             if(rentHistoryDAO != null && rentHistoryDAO.size() > 0) {
                 rentHistoryDAO = rentService.filterListOfRentDAOOnDeleted(rentHistoryDAO);
@@ -67,18 +73,18 @@ public class RentController {
     /**
      * A method to get the full rent history for a user.
      * This method returns a list of all rent objects for the user.
-     * @param userid The user id of the user you want the rent history for
+     * @param userID The user id of the user you want the rent history for
      * @return Returns a list of all rent objects for the user.
      * @throws Exception
      */
-    @GetMapping("/users/{userid}/profile/rent/history/all")
+    @GetMapping("/users/{userID}/profile/rent/history/all")
     @Operation(summary = "Get a list of all rent agreements for a user, both accepted and not.")
     @ApiResponse(responseCode = "200", description = "Returns every instance where this user has rented an item from another user")
     @ApiResponse(responseCode = "400", description = "User or rent history not found in the DB")
-    public List<RentDTO> getFullRentHistoryOfUser(@PathVariable() int userid) throws Exception {
-        if(userid > 0) {
+    public List<RentDTO> getFullRentHistoryOfUser(@PathVariable() int userID) throws Exception {
+        if(userService.findUserByUserId(userID) != null) {
             List<RentDAO> rentHistoryDAO = rentService
-                    .findAllRentDAOWithRenterId(userid);
+                    .findAllRentDAOWithRenterId(userID);
 
             if(rentHistoryDAO != null && rentHistoryDAO.size() > 0) {
                 List<RentDTO> rentHistory = rentService
@@ -93,18 +99,18 @@ public class RentController {
     /**
      * A method to get the full rent history for a owner.
      * This method returns a list of all rent objects listed by the owner.
-     * @param userid The user id of the owner you want the rent history for
+     * @param userID The user id of the owner you want the rent history for
      * @return Returns a list of all rent objects listed by the user.
      * @throws Exception
      */
-    @GetMapping("/users/{userid}/profile/rent/history/owner/all")
+    @GetMapping("/users/{userID}/profile/rent/history/owner/all")
     @Operation(summary = "Get a list of all rent agreements for a user, both accepted and not.")
     @ApiResponse(responseCode = "200", description = "Returns every instance where this owner has rented out an item")
     @ApiResponse(responseCode = "400", description = "User or rent history not found in the DB")
-    public List<RentDTO> getFullRentHistoryOfOwner(@PathVariable() int userid) throws Exception {
-        if(userid > 0) {
+    public List<RentDTO> getFullRentHistoryOfOwner(@PathVariable() int userID) throws Exception {
+        if(userService.findUserByUserId(userID) != null) {
             List<RentDAO> rentHistoryDAO = rentService
-                    .findAllRentDAOWithOwnerId(userid);
+                    .findAllRentDAOWithOwnerId(userID);
 
             if(rentHistoryDAO != null && rentHistoryDAO.size() > 0) {
                 List<RentDTO> rentHistory = rentService
@@ -118,18 +124,18 @@ public class RentController {
 
     /**
      * A method to get the full rent history of all rented objects belonging to the owner.
-     * @param userid The user id of the owner you want the rent history for
+     * @param userID The user id of the owner you want the rent history for
      * @return Returns a list of all rented objects listed by the owner which has also been rented by someone.
      * @throws Exception
      */
-    @GetMapping("/users/{userid}/profile/rent/history/owner")
+    @GetMapping("/users/{userID}/profile/rent/history/owner")
     @Operation(summary = "Get a list of all rent agreements for a user, both accepted and not.")
     @ApiResponse(responseCode = "200", description = "Returns the rented item history of this owner, deleted items are not included")
     @ApiResponse(responseCode = "400", description = "User or rent history not found in the DB")
-    public List<RentDTO> getRentHistoryOfOwner(@PathVariable() int userid) throws Exception {
-        if(userid > 0) {
+    public List<RentDTO> getRentHistoryOfOwner(@PathVariable() int userID) throws Exception {
+        if(userService.findUserByUserId(userID) != null) {
             List<RentDAO> rentHistoryFull = rentService
-                    .findAllRentDAOWithOwnerId(userid);
+                    .findAllRentDAOWithOwnerId(userID);
 
             List<RentDAO> rentHistoryDAO = rentService
                     .filterAListOfRentDAOByStatusOfAgreement(rentHistoryFull,true);

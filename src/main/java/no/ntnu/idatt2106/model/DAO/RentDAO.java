@@ -2,6 +2,9 @@ package no.ntnu.idatt2106.model.DAO;
 import no.ntnu.idatt2106.model.DTO.RentDTO;
 
 import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 
 import javax.persistence.*;
 
@@ -17,30 +20,28 @@ public class RentDAO{
     @Column(name = "rent_id")
     private int rentID;
     @Column(name = "from_time")
-    private Date fromTime;
+    private long fromTime;
     @Column(name = "to_time")
-    private Date toTime;
+    private long toTime;
     @Column(name = "is_accepted")
     private boolean isAccepted;
     @Column(name = "is_deleted")
     private boolean isDeleted;
+    @Column(name = "message")
+    private String message;
     @ManyToOne
-    @JoinColumn(name = "listing_owner_id")
+    @JoinColumn(name = "listing_owner_id", nullable = false)
     private ListingDAO listingOwnerID;
     @ManyToOne
-    @JoinColumn(name = "renter_id")
+    @JoinColumn(name = "renter_id", nullable = false)
     private UserDAO renterID;
-    @ManyToOne
-    @JoinColumn(name = "notification_id")
-    private NotificationDAO notificationID;
 
-    public RentDAO(Date fromTime, Date toTime, boolean isAccepted, ListingDAO listingOwnerID, UserDAO renterID, NotificationDAO notificationID) {
+    public RentDAO(long fromTime, long toTime, boolean isAccepted, ListingDAO listingOwnerID, UserDAO renterID) {
         this.fromTime = fromTime;
         this.toTime = toTime;
         this.isAccepted = isAccepted;
         this.listingOwnerID = listingOwnerID;
         this.renterID = renterID;
-        this.notificationID = notificationID;
     }
 
     public RentDAO(RentDTO rentDTO) {
@@ -60,19 +61,19 @@ public class RentDAO{
         this.rentID = rentID;
     }
 
-    public Date getFromTime() {
+    public long getFromTime() {
         return fromTime;
     }
 
-    public void setFromTime(Date fromTime) {
+    public void setFromTime(long fromTime) {
         this.fromTime = fromTime;
     }
 
-    public Date getToTime() {
+    public long getToTime() {
         return toTime;
     }
 
-    public void setToTime(Date toTime) {
+    public void setToTime(long toTime) {
         this.toTime = toTime;
     }
 
@@ -100,11 +101,21 @@ public class RentDAO{
         this.renterID = renterID;
     }
 
-    public NotificationDAO getNotificationID() {return notificationID;}
-
-    public void setNotificationID(NotificationDAO notificationID) {this.notificationID = notificationID;}
-
     public boolean isDeleted() {return isDeleted;}
 
     public void setDeleted(boolean deleted) {isDeleted = deleted;}
+
+    @Override
+    public String toString() {
+        return "RentDAO{" +
+                "rentID=" + rentID +
+                ", fromTime=" + fromTime +
+                ", toTime=" + toTime +
+                ", isAccepted=" + isAccepted +
+                ", isDeleted=" + isDeleted +
+                ", message='" + message + '\'' +
+                ", listingOwnerID=" + listingOwnerID +
+                ", renterID=" + renterID +
+                '}';
+    }
 }
