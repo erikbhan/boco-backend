@@ -4,6 +4,7 @@ import no.ntnu.idatt2106.model.DAO.RentDAO;
 import no.ntnu.idatt2106.model.DAO.ListingDAO;
 import no.ntnu.idatt2106.model.DAO.NotificationDAO;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
+import no.ntnu.idatt2106.model.DTO.ListingWithUnavailabilityDTO;
 import no.ntnu.idatt2106.model.DTO.RentDTO;
 import no.ntnu.idatt2106.repository.RentRepository;
 import org.springframework.stereotype.Service;
@@ -220,5 +221,20 @@ public class RentService {
             nonAvailableTimes.add(addThis.subList(0,2));
         }
         return nonAvailableTimes.subList(0,nonAvailableTimes.size());
+    }
+
+    public List<RentDAO> turnListingWithUnavailabilityDTOIntoRentDAO(ListingWithUnavailabilityDTO dto) {
+        ArrayList<RentDAO> unavailabilityRents = new ArrayList<>();
+        for (List<Long> dates : dto.getUnavailabilityDates()){
+            RentDAO rentDAO = new RentDAO();
+            rentDAO.setFromTime(dates.get(0));
+            rentDAO.setToTime(dates.get(1));
+            rentDAO.setListingOwnerID(listingService.findListingByListingId(dto.getListingID()));
+            rentDAO.setRenterID(userService.findUserByUserId(dto.getUserID()));
+            rentDAO.setDeleted(false);
+            rentDAO.setAccepted(true);
+            unavailabilityRents.add(rentDAO);
+        }
+        return unavailabilityRents;
     }
 }
