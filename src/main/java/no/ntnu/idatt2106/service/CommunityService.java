@@ -59,4 +59,8 @@ public class CommunityService {
             return false;
         }
     }
+
+    public List<CommunityDAO> findAll() {
+        return communityRepository.findAll();
+    }
 }
