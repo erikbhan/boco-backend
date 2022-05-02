@@ -57,7 +57,7 @@ public class CommunityRequestController {
         communityRequestService.addNewRequest(communityDAO,userService.findUserByUserId(token.getAccountId()), communityRequestDTO.getMessage());
     }
 
-    //Add accept communityrequest
+
     @Operation(summary = "Accepts a users request to join a community")
     @PostMapping("/communities/{communityId}/requests")
     @ApiResponse(responseCode = "200", description = "Accepted request")
@@ -109,7 +109,7 @@ public class CommunityRequestController {
         }
 
     }
-    //add remove communityrequest
+
 
 
 }
