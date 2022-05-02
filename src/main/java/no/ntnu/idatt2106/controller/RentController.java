@@ -28,7 +28,7 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @ApiResponse(responseCode = "401", description = "Not authenticated")
-// @RequireAuth
+@RequireAuth
 public class RentController {
     private final RentService rentService;
     private final UserService userService;
@@ -203,7 +203,7 @@ public class RentController {
     @Operation(summary = "Deletes rent")
     @ApiResponse(responseCode = "200", description = "The status of the rent request was set to deleted")
     @ApiResponse(responseCode = "400", description = "Rent not found in DB")
-    @PutMapping("/renting/{rentId}/delete")
+    @DeleteMapping("/renting/{rentId}/delete")
     public String deleteRent(@PathVariable() int rentId) throws StatusCodeException {
         RentDAO rent = rentService.getRentFromId(rentId);
         if (rent == null) {
