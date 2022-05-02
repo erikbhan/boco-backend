@@ -31,4 +31,12 @@ public class ListingPictureDAO {
     public void setPicture(String picture) {
         this.picture = picture;
     }
+
+    public ListingDAO getListingID() {
+        return listingID;
+    }
+
+    public void setListingID(ListingDAO listingID) {
+        this.listingID = listingID;
+    }
 }
