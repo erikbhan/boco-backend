@@ -33,8 +33,8 @@ public class CommunityRequestService {
 
     public void removeRequest(int user_id, int community_id){
         int reqNr = findRequest(user_id, community_id);
-
-        communityRequestRepository.delete(reqNr);
+        CommunityRequestDAO communityRequestDAO = communityRequestRepository.getById(reqNr);
+        communityRequestRepository.delete(communityRequestDAO);
     }
 
     public void acceptRequest(UserDAO userDAO, CommunityDAO communityDAO){
