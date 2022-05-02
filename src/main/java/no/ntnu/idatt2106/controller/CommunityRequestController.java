@@ -8,6 +8,8 @@ import no.ntnu.idatt2106.middleware.RequireAuth;
 import no.ntnu.idatt2106.model.DAO.CommunityDAO;
 import no.ntnu.idatt2106.model.DAO.CommunityRequestDAO;
 import no.ntnu.idatt2106.model.DAO.UserCommunityDAO;
+import no.ntnu.idatt2106.model.DAO.UserDAO;
+import no.ntnu.idatt2106.model.DTO.CommunityRequestDTO;
 import no.ntnu.idatt2106.model.DTO.TokenDTO;
 import no.ntnu.idatt2106.repository.CommunityRepository;
 import no.ntnu.idatt2106.service.CommunityRequestService;
@@ -39,7 +41,7 @@ public class CommunityRequestController {
     @ApiResponse(responseCode = "200", description = "Sent request")
     @ApiResponse(responseCode = "400", description = "Illegal operation")
     @ApiResponse(responseCode = "500", description = "Unexpected error")
-    public void joinPrivateCommunity(@PathVariable int communityId, @RequestBody String message) throws StatusCodeException {
+    public void joinPrivateCommunity(@PathVariable int communityId, @RequestBody CommunityRequestDTO communityRequestDTO) throws StatusCodeException {
         TokenDTO token = TokenUtil.getDataJWT();
         CommunityDAO communityDAO = communityRepository.findCommunityDAOByCommunityID(communityId);
         if (communityDAO == null) {
@@ -52,21 +54,28 @@ public class CommunityRequestController {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User is already in this community");
         }
 
-        communityRequestService.addNewRequest(communityDAO,userService.findUserByUserId(token.getAccountId()), message);
+        communityRequestService.addNewRequest(communityDAO,userService.findUserByUserId(token.getAccountId()), communityRequestDTO.getMessage());
     }
 
     //Add accept communityrequest
+    @Operation(summary = "Accepts a users request to join a community")
     @PostMapping("/communities/{communityId}/requests")
-    public void acceptCommunityRequest(@PathVariable int communityId, @RequestBody int userId){
+    @ApiResponse(responseCode = "200", description = "Accepted request")
+    @ApiResponse(responseCode = "400", description = "Illegal operation")
+    public void acceptCommunityRequest(@PathVariable int communityId, @RequestParam int userId) throws StatusCodeException {
         TokenDTO token = TokenUtil.getDataJWT();
         CommunityDAO communityDAO = communityRepository.findCommunityDAOByCommunityID(communityId);
-        UserCommunityDAO ucd = userCommunityService.getByIds(token.getAccountId(), communityDAO );
-        boolean adminStatus = ucd.isAdministrator();
-        if (adminStatus){
+        UserCommunityDAO ucdForAdmin = userCommunityService.getByIds(token.getAccountId(), communityDAO );
+        boolean adminStatus = ucdForAdmin.isAdministrator();
 
-            //communityRequestService.accept();
-            //check if user id is in community requests, then accept
+        if (adminStatus){
+            if(communityRequestService.findRequest(userId, communityId)==1){
+                UserDAO userDAO = userService.findUserByUserId(userId);
+                communityRequestService.acceptRequest(userDAO, communityDAO);
+                communityRequestService.removeRequest(userId, communityId);
+            }
         }
+        else throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Needs admin status to perform this operation");
     }
 
     @Operation(summary = "Removes own request to join a community")
@@ -87,7 +96,7 @@ public class CommunityRequestController {
     @PatchMapping("/communitites/{communityId}/requests/reject")
     @ApiResponse(responseCode = "200", description = "Removed request")
     @ApiResponse(responseCode = "400", description = "Illegal operation")
-    public void rejectCommunityRequest(@PathVariable int communityId, @RequestBody int userId) throws StatusCodeException {
+    public void rejectCommunityRequest(@PathVariable int communityId, @RequestParam int userId) throws StatusCodeException {
         TokenDTO token = TokenUtil.getDataJWT();
         CommunityDAO communityDAO = communityRepository.findCommunityDAOByCommunityID(communityId);
         if(communityDAO==null){

@@ -2,6 +2,7 @@ package no.ntnu.idatt2106.service;
 
 import no.ntnu.idatt2106.model.DAO.CommunityDAO;
 import no.ntnu.idatt2106.model.DAO.CommunityRequestDAO;
+import no.ntnu.idatt2106.model.DAO.UserCommunityDAO;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
 import no.ntnu.idatt2106.repository.CommunityRequestRepository;
 import no.ntnu.idatt2106.repository.UserCommunityRepository;
@@ -10,10 +11,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class CommunityRequestService {
     private final CommunityRequestRepository communityRequestRepository;
+    private final UserCommunityRepository userCommunityRepository;
     CommunityRequestDAO communityRequestDAO = new CommunityRequestDAO();
 
-    public CommunityRequestService(CommunityRequestRepository communityRequestRepository) {
+    public CommunityRequestService(CommunityRequestRepository communityRequestRepository, UserCommunityRepository userCommunityRepository) {
         this.communityRequestRepository = communityRequestRepository;
+        this.userCommunityRepository = userCommunityRepository;
     }
 
     public void addNewRequest(CommunityDAO communityDAO, UserDAO userDAO, String message) {
@@ -34,6 +37,10 @@ public class CommunityRequestService {
         communityRequestRepository.delete(reqNr);
     }
 
+    public void acceptRequest(UserDAO userDAO, CommunityDAO communityDAO){
+        UserCommunityDAO userCommunityDAO = new UserCommunityDAO(communityDAO,userDAO, false);
+        userCommunityRepository.save(userCommunityDAO);
+    }
 
 
 }
