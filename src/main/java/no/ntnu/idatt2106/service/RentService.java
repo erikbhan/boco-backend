@@ -1,5 +1,6 @@
 package no.ntnu.idatt2106.service;
 
+import antlr.Token;
 import no.ntnu.idatt2106.model.DAO.RentDAO;
 import no.ntnu.idatt2106.model.DAO.ListingDAO;
 import no.ntnu.idatt2106.model.DAO.NotificationDAO;
@@ -7,6 +8,7 @@ import no.ntnu.idatt2106.model.DAO.UserDAO;
 import no.ntnu.idatt2106.model.DTO.ListingWithUnavailabilityDTO;
 import no.ntnu.idatt2106.model.DTO.RentDTO;
 import no.ntnu.idatt2106.repository.RentRepository;
+import no.ntnu.idatt2106.util.TokenUtil;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -236,5 +238,16 @@ public class RentService {
             unavailabilityRents.add(rentDAO);
         }
         return unavailabilityRents;
+    }
+
+    public RentDTO[] getAllRents() {
+        // Get accountId
+        UserDAO account = userService.findUserByUserId(TokenUtil.getDataJWT(TokenUtil.getToken()).getAccountId());
+        List<RentDAO> rentDAOs = rentRepository.findAllByRenterIDOrListingOwnerID_UserID(account, account);
+        RentDTO[] rentDTOs = new RentDTO[rentDAOs.size()];
+        for (int i = 0; i < rentDAOs.size(); i++) {
+            rentDTOs[i] = new RentDTO(rentDAOs.get(i));
+        }
+        return rentDTOs;
     }
 }

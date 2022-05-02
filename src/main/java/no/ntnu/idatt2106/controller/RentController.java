@@ -212,4 +212,11 @@ public class RentController {
         rentService.deleteRent(rentId);
         return "Deleted rent";
     }
+
+    @Operation(summary = "Returns all rents where the user is either a renter or a owner")
+    @ApiResponse(responseCode = "200", description = "Returns all rents")
+    @GetMapping("/renting/all")
+    public RentDTO[] getAllRents() {
+        return rentService.getAllRents();
+    }
 }
