@@ -136,11 +136,11 @@ public class UserCommunityController {
 
         UserCommunityDAO userToBeKicked = userCommunityService.getByIds(userId, communityDAO);
         if(ucd!=null && userToBeKicked != null){
-            if(ucd.isAdministrator()){
+            if(ucd.isAdministrator() && (!userToBeKicked.isAdministrator())){
                 userCommunityService.removeUserFromCommunity(userToBeKicked);
             }
             else {
-                throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Need admin status to kick user from community");
+                throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Need admin status to kick user from community / can not kick admin");
             }
         }
         else {
