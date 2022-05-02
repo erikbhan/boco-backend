@@ -11,6 +11,7 @@ import no.ntnu.idatt2106.model.DAO.UserCommunityDAO;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
 import no.ntnu.idatt2106.model.DTO.CommunityRequestDTO;
 import no.ntnu.idatt2106.model.DTO.TokenDTO;
+import no.ntnu.idatt2106.model.DTO.UserDTO;
 import no.ntnu.idatt2106.repository.CommunityRepository;
 import no.ntnu.idatt2106.service.CommunityRequestService;
 import no.ntnu.idatt2106.service.UserCommunityService;
@@ -18,6 +19,9 @@ import no.ntnu.idatt2106.service.UserService;
 import no.ntnu.idatt2106.util.TokenUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -36,7 +40,7 @@ public class CommunityRequestController {
         this.userService = userService;
     }
 
-    @Operation(summary = "Sends request to add user to a community")
+    @Operation(summary = "Sends request to join a community")
     @PostMapping("/communities/{communityId}/private/join")
     @ApiResponse(responseCode = "200", description = "Sent request")
     @ApiResponse(responseCode = "400", description = "Illegal operation")
@@ -110,6 +114,21 @@ public class CommunityRequestController {
 
     }
 
+    @Operation(summary = "Gets all requests in a community")
+    @GetMapping("/communities/{communityId}/requests")
+    @ApiResponse(responseCode = "200", description = "Found users")
+    @ApiResponse(responseCode = "400", description = "Illegal operation")
+    public List<UserDTO> getRequests(@PathVariable int communityId) throws StatusCodeException {
+        TokenDTO token = TokenUtil.getDataJWT();
+        CommunityDAO communityDAO = communityRepository.findCommunityDAOByCommunityID(communityId);
+        UserCommunityDAO ucd = userCommunityService.getByIds(token.getAccountId(), communityDAO );
+        boolean adminStatus = ucd.isAdministrator();
+
+        if(ucd!=null && adminStatus){
+            return communityRequestService.getRequestsForCommunity(communityId);
+        }
+       else throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Needs admin status to see requests");
+    }
 
 
 }
