@@ -20,7 +20,7 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessageDAO, Int
     @Query(value = " SELECT DISTINCT userid FROM (SELECT DISTINCT sending_user_id AS userid FROM chat_message cm WHERE cm.receiving_user_id = ?1 UNION SELECT DISTINCT receiving_user_id AS userid FROM chat_message cmd WHERE cmd.sending_user_id = ?1) AS joinedList", nativeQuery = true)
     int[] getConversationUsers(int accountId);
 
-    List<ChatMessageDAO> findByReceivingUserIDAndIsReadFalse(UserDAO receiver);
+    List<ChatMessageDAO> findByReceivingUserAndIsReadFalse(UserDAO receiver);
 
     @Query(value = "SELECT * FROM public.chat_message WHERE ((message_id IN ( SELECT MAX(message_id) FROM chat_message GROUP BY sending_user_id, receiving_user_id)) AND receiving_user_id = ?1)", nativeQuery = true)
     List<ChatMessageDAO> getLastReceivedFromDistinct(int receiverID);

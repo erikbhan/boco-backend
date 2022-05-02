@@ -20,19 +20,19 @@ public class CommunityListingDAO {
     @JoinColumn(name = "listing_id")
     private ListingDAO listingID;
 
-    public CommunityDAO getCommunityID() {
+    public CommunityDAO getCommunity() {
         return communityID;
     }
 
-    public void setCommunityID(CommunityDAO communityID) {
+    public void setCommunity(CommunityDAO communityID) {
         this.communityID = communityID;
     }
 
-    public ListingDAO getListingID() {
+    public ListingDAO getListing() {
         return listingID;
     }
 
-    public void setListingID(ListingDAO listingID) {
+    public void setListing(ListingDAO listingID) {
         this.listingID = listingID;
     }
 }

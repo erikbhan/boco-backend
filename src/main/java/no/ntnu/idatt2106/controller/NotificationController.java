@@ -9,7 +9,6 @@ import no.ntnu.idatt2106.model.DTO.ChatMessageDTO;
 import no.ntnu.idatt2106.model.DTO.NotificationDTO;
 import no.ntnu.idatt2106.model.DTO.TokenDTO;
 import no.ntnu.idatt2106.service.NotificationService;
-import no.ntnu.idatt2106.service.UserService;
 import no.ntnu.idatt2106.util.TokenUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -167,8 +166,8 @@ public class NotificationController {
         }
 
         //Checks if the user who is making the request is the owner of the notification.
-        if (notificationDAO.getChatMessageDAO().getReceivingUserID().getUserID() == tokenUserId ||
-                notificationDAO.getCommunityRequestDAO().getUserID().getUserID() == tokenUserId) {
+        if (notificationDAO.getChatMessage().getReceivingUser().getUserID() == tokenUserId ||
+                notificationDAO.getCommunityRequest().getUser().getUserID() == tokenUserId) {
             notificationService.getNotificationFromNotificationId(notificationID).setSeen(true);
         } else {
             throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "User not authorized to change this notification");

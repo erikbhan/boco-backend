@@ -22,7 +22,7 @@ public class ListingDAO{
     private String address;
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
-    private UserDAO userID;
+    private UserDAO user;
 
     public int getListingID() {
         return this.listingID;
@@ -65,11 +65,11 @@ public class ListingDAO{
     }
 
 
-    public UserDAO getUserID() {
-        return this.userID;
+    public UserDAO getUser() {
+        return this.user;
     }
 
-    public void setUserID(UserDAO userID) {
-        this.userID = userID;
+    public void setUser(UserDAO userID) {
+        this.user = userID;
     }
 }

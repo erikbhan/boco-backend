@@ -127,8 +127,8 @@ public class ListingController {
         listing.setDescription(listingDTO.getDescription());
         listing.setAddress(listingDTO.getAddress());
         listing.setPricePerDay(listingDTO.getPricePerDay());
-        listing.setUserID(userService.findUserByUserId(listingDTO.getUserID()));
-        if (listing.getUserID() == null) {
+        listing.setUser(userService.findUserByUserId(listingDTO.getUserID()));
+        if (listing.getUser() == null) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User not found");
         }
         // Saves the DAO to the DB
@@ -166,8 +166,8 @@ public class ListingController {
         listing.setDescription(listingDTO.getDescription());
         listing.setAddress(listingDTO.getAddress());
         listing.setPricePerDay(listingDTO.getPricePerDay());
-        listing.setUserID(userService.findUserByUserId(listingDTO.getUserID()));
-        if (listing.getUserID() == null) {
+        listing.setUser(userService.findUserByUserId(listingDTO.getUserID()));
+        if (listing.getUser() == null) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User not found");
         }
         listingService.saveListing(listing);
@@ -181,7 +181,7 @@ public class ListingController {
         }
         List<RentDAO> rents = rentService.turnListingWithUnavailabilityDTOIntoRentDAO(listingDTO);
         for (RentDAO rent : rents){
-            rent.setListingOwnerID(listing);
+            rent.setListing(listing);
             rentService.saveNewRentAgreementToDB(rent);
         }
         throw new StatusCodeException(HttpStatus.OK, "listing created, unavailable times added");

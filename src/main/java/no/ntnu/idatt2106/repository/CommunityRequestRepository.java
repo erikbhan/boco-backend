@@ -8,6 +8,6 @@ import no.ntnu.idatt2106.model.DAO.CommunityRequestDAO;
 import java.util.List;
 
 public interface CommunityRequestRepository extends JpaRepository<CommunityRequestDAO, Integer> {
-    List<CommunityRequestDAO> findCommunityRequestDAOSByCommunityID(CommunityDAO community);
+    List<CommunityRequestDAO> findCommunityRequestDAOSByCommunity(CommunityDAO community);
     CommunityRequestDAO findByCommunityRequestID(int communityRequestId);
 }

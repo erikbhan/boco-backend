@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.sql.Date;
 import java.util.List;
 
 @Service
@@ -50,8 +49,8 @@ public class ChatService {
 
     public void createMessage(UserDAO sender, UserDAO receiver, NewMessageDTO newMessageDTO) {
         no.ntnu.idatt2106.model.DAO.ChatMessageDAO chatMessageDAO = new no.ntnu.idatt2106.model.DAO.ChatMessageDAO();
-        chatMessageDAO.setSendingUserID(sender);
-        chatMessageDAO.setReceivingUserID(receiver);
+        chatMessageDAO.setSendingUser(sender);
+        chatMessageDAO.setReceivingUser(receiver);
         chatMessageDAO.setText(newMessageDTO.getMessage());
         chatMessageDAO.setTimeSent(System.currentTimeMillis());
         _chatMessageRepository.save(chatMessageDAO);
@@ -59,7 +58,7 @@ public class ChatService {
 
     public int getUnreadMessages(int userID){
         UserDAO user = _userRepository.findUserDAOByUserID(userID);
-        return _chatMessageRepository.findByReceivingUserIDAndIsReadFalse(user).size();
+        return _chatMessageRepository.findByReceivingUserAndIsReadFalse(user).size();
     }
 
     public List<ChatMessageDTO> getLastReceivedMessagesFromDistinctSenders(int userID){

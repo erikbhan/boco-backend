@@ -44,8 +44,8 @@ public class NotificationService {
         for (CommunityDAO community : adminCommunities){
             List<CommunityRequestDAO> requests = communityRequestService.getRequestsByCommunity(community);
             for (CommunityRequestDAO request : requests){
-                NotificationDAO dao = notificationRepository.findNotificationDAOByCommunityRequestDAO(request);
-                NotificationDTO dto = new NotificationDTO(false, dao.getCreatedTime(), dao.getCommunityRequestDAO().getCommunityRequestID());
+                NotificationDAO dao = notificationRepository.findNotificationDAOByCommunityRequest(request);
+                NotificationDTO dto = new NotificationDTO(false, dao.getCreatedTime(), dao.getCommunityRequest().getCommunityRequestID());
                 notifications.add(dto);
             }
         }
@@ -70,8 +70,8 @@ public class NotificationService {
 
     public NotificationDAO turnDTOIntoDAO(NotificationDTO notificationDTO) {
         NotificationDAO notificationDAO = new NotificationDAO();
-        notificationDAO.setChatMessageDAO(chatService.getById(notificationDTO.getChatMessageID()));
-        notificationDAO.setCommunityRequestDAO(communityRequestService.getById(notificationDTO.getCommunityRequestID()));
+        notificationDAO.setChatMessage(chatService.getById(notificationDTO.getChatMessageID()));
+        notificationDAO.setCommunityRequest(communityRequestService.getById(notificationDTO.getCommunityRequestID()));
         notificationDAO.setSeen(notificationDTO.isSeen());
         notificationDAO.setCreatedTime(notificationDTO.getCreatedTime());
         return notificationDAO;

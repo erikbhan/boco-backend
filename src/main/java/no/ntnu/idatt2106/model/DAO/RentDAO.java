@@ -1,11 +1,6 @@
 package no.ntnu.idatt2106.model.DAO;
 import no.ntnu.idatt2106.model.DTO.RentDTO;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-
 import javax.persistence.*;
 
 /**
@@ -31,17 +26,17 @@ public class RentDAO{
     private String message;
     @ManyToOne
     @JoinColumn(name = "listing_owner_id", nullable = false)
-    private ListingDAO listingOwnerID;
+    private ListingDAO listing;
     @ManyToOne
     @JoinColumn(name = "renter_id", nullable = false)
-    private UserDAO renterID;
+    private UserDAO renter;
 
-    public RentDAO(long fromTime, long toTime, boolean isAccepted, ListingDAO listingOwnerID, UserDAO renterID) {
+    public RentDAO(long fromTime, long toTime, boolean isAccepted, ListingDAO listing, UserDAO renter) {
         this.fromTime = fromTime;
         this.toTime = toTime;
         this.isAccepted = isAccepted;
-        this.listingOwnerID = listingOwnerID;
-        this.renterID = renterID;
+        this.listing = listing;
+        this.renter = renter;
     }
 
     public RentDAO(RentDTO rentDTO) {
@@ -85,20 +80,20 @@ public class RentDAO{
         isAccepted = accepted;
     }
 
-    public ListingDAO getListingOwnerID() {
-        return listingOwnerID;
+    public ListingDAO getListing() {
+        return listing;
     }
 
-    public void setListingOwnerID(ListingDAO listingOwnerID) {
-        this.listingOwnerID = listingOwnerID;
+    public void setListing(ListingDAO listingOwnerID) {
+        this.listing = listingOwnerID;
     }
 
-    public UserDAO getRenterID() {
-        return renterID;
+    public UserDAO getRenter() {
+        return renter;
     }
 
-    public void setRenterID(UserDAO renterID) {
-        this.renterID = renterID;
+    public void setRenter(UserDAO renterID) {
+        this.renter = renterID;
     }
 
     public boolean isDeleted() {return isDeleted;}
@@ -114,8 +109,8 @@ public class RentDAO{
                 ", isAccepted=" + isAccepted +
                 ", isDeleted=" + isDeleted +
                 ", message='" + message + '\'' +
-                ", listingOwnerID=" + listingOwnerID +
-                ", renterID=" + renterID +
+                ", listingOwnerID=" + listing +
+                ", renterID=" + renter +
                 '}';
     }
 }

@@ -21,19 +21,19 @@ public class ListingCategoryDAO {
     @JoinColumn(name = "category_id")
     private CategoryDAO categoryID;
 
-    public ListingDAO getListingID() {
+    public ListingDAO getListing() {
         return listingID;
     }
 
-    public void setListingID(ListingDAO listingID) {
+    public void setListing(ListingDAO listingID) {
         this.listingID = listingID;
     }
 
-    public CategoryDAO getCategoryID() {
+    public CategoryDAO getCategory() {
         return categoryID;
     }
 
-    public void setCategoryID(CategoryDAO categoryID) {
+    public void setCategory(CategoryDAO categoryID) {
         this.categoryID = categoryID;
     }
 }

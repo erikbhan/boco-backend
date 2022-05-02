@@ -2,8 +2,6 @@ package no.ntnu.idatt2106.model.DTO;
 
 import no.ntnu.idatt2106.model.DAO.ChatMessageDAO;
 
-import java.util.Date;
-
 public class ChatMessageDTO {
     private int id;
     private String content;
@@ -23,8 +21,8 @@ public class ChatMessageDTO {
         this.id = chatMessageDAO.getMessageID();
         this.content = chatMessageDAO.getText();
         this.timestamp = chatMessageDAO.getTimeSent();
-        this.from = chatMessageDAO.getSendingUserID().getUserID();
-        this.to = chatMessageDAO.getReceivingUserID().getUserID();
+        this.from = chatMessageDAO.getSendingUser().getUserID();
+        this.to = chatMessageDAO.getReceivingUser().getUserID();
     }
 
     public long getId() {

@@ -137,7 +137,7 @@ public class RatingController {
             dao.setComment(ratingDTO.getComment());
             dao.setScore(ratingDTO.getScore());
             dao.setRenterIsReceiverOfRating(ratingDTO.isRenterReceiverOfRating());
-            dao.setRentID(rentService.getRentFromId(ratingDTO.getRentID()));
+            dao.setRent(rentService.getRentFromId(ratingDTO.getRentID()));
             try {
                 ratingService.saveRating(dao);
             } catch (DataIntegrityViolationException e){

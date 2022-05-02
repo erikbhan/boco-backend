@@ -2,8 +2,6 @@ package no.ntnu.idatt2106.model.DTO;
 
 import no.ntnu.idatt2106.model.DAO.RentDAO;
 
-import java.sql.Date;
-
 /**
  * A class representing the rent agreement object.
  * This class shall be returned to the frontend instead of the rent dao.
@@ -40,8 +38,8 @@ public class RentDTO {
         this.fromTime = rentDAO.getFromTime();
         this.toTime = rentDAO.getToTime();
         this.isAccepted = rentDAO.getIsAccepted();
-        this.listingId = rentDAO.getListingOwnerID().getListingID();
-        this.renterId = rentDAO.getRenterID().getUserID();
+        this.listingId = rentDAO.getListing().getListingID();
+        this.renterId = rentDAO.getRenter().getUserID();
     }
 
     public RentDTO(long fromTime, long toTime, Boolean isAccepted, int listingId, int renterId, String message) {

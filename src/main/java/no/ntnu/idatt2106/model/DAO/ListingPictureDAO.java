@@ -14,7 +14,7 @@ public class ListingPictureDAO {
     private String picture;
     @ManyToOne
     @JoinColumn(name = "listing_id", nullable = false)
-    private ListingDAO listingID;
+    private ListingDAO listing;
 
     public int getListingPicureID() {
         return this.listingPicureID;

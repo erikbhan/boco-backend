@@ -16,7 +16,7 @@ public class CommunityRequestService {
     }
 
     public List<CommunityRequestDAO> getRequestsByCommunity(CommunityDAO community){
-        return communityRequestRepository.findCommunityRequestDAOSByCommunityID(community);
+        return communityRequestRepository.findCommunityRequestDAOSByCommunity(community);
     }
 
     public CommunityRequestDAO getById(int id){

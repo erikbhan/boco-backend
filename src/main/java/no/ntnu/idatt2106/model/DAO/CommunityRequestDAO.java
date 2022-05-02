@@ -14,10 +14,10 @@ public class CommunityRequestDAO {
     private String text;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private UserDAO userID;
+    private UserDAO user;
     @ManyToOne
     @JoinColumn(name = "community_id", nullable = false)
-    private CommunityDAO communityID;
+    private CommunityDAO community;
 
     public int getCommunityRequestID() {
         return communityRequestID;
@@ -27,20 +27,20 @@ public class CommunityRequestDAO {
         this.communityRequestID = communityRequestID;
     }
 
-    public UserDAO getUserID() {
-        return userID;
+    public UserDAO getUser() {
+        return user;
     }
 
-    public void setUserID(UserDAO userID) {
-        this.userID = userID;
+    public void setUser(UserDAO userID) {
+        this.user = userID;
     }
 
-    public CommunityDAO getCommunityID() {
-        return communityID;
+    public CommunityDAO getCommunity() {
+        return community;
     }
 
-    public void setCommunityID(CommunityDAO communityID) {
-        this.communityID = communityID;
+    public void setCommunity(CommunityDAO communityID) {
+        this.community = communityID;
     }
 
     public String getText() {
