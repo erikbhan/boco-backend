@@ -1,6 +1,8 @@
 package no.ntnu.idatt2106.model.DAO;
 
-import java.sql.Date;
+import no.ntnu.idatt2106.model.DTO.ChatMessageDTO;
+import no.ntnu.idatt2106.model.DTO.NotificationDTO;
+
 import javax.persistence.*;
 
 /**
@@ -20,8 +22,15 @@ public class NotificationDAO {
     @Column(name= "created_time")
     private long createdTime;
     @ManyToOne
-    @JoinColumn(name = "community_request", nullable = false)
-    private CommunityRequestDAO communityRequest;
+    @JoinColumn(name = "chat_message", nullable = true)
+    private ChatMessageDAO chatMessageDAO;
+    @ManyToOne
+    @JoinColumn(name = "community_request", nullable = true)
+    private CommunityRequestDAO communityRequestDAO;
+
+    public NotificationDAO() {
+
+    }
 
     public int getNotificationID() {
         return notificationID;
@@ -47,11 +56,19 @@ public class NotificationDAO {
         this.createdTime = createdTime;
     }
 
-    public CommunityRequestDAO getCommunityRequest() {
-        return communityRequest;
+    public CommunityRequestDAO getCommunityRequestDAO() {
+        return communityRequestDAO;
     }
 
-    public void setCommunityRequest(CommunityRequestDAO communityRequest) {
-        this.communityRequest = communityRequest;
+    public void setCommunityRequestDAO(CommunityRequestDAO communityRequest) {
+        this.communityRequestDAO = communityRequest;
+    }
+
+    public ChatMessageDAO getChatMessageDAO() {
+        return chatMessageDAO;
+    }
+
+    public void setChatMessageDAO(ChatMessageDAO chatMessageDAO) {
+        this.chatMessageDAO = chatMessageDAO;
     }
 }

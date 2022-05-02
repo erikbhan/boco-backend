@@ -22,7 +22,7 @@ public class ChatMessageDAO {
     @Column(name = "text")
     private String text;
     @Column(name = "time_sent")
-    private Date timeSent;
+    private long timeSent;
     @Column(name = "is_read")
     private Boolean isRead;
     @ManyToOne
@@ -32,7 +32,7 @@ public class ChatMessageDAO {
     @JoinColumn(name = "receiving_user_id", nullable = false)
     private UserDAO receivingUserID;
 
-    public long getMessageID() {
+    public int getMessageID() {
         return this.messageID;
     }
 
@@ -48,11 +48,11 @@ public class ChatMessageDAO {
         this.text = text;
     }
 
-    public Date getTimeSent() {
+    public long getTimeSent() {
         return this.timeSent;
     }
 
-    public void setTimeSent(Date timeSent) {
+    public void setTimeSent(long timeSent) {
         this.timeSent = timeSent;
     }
 

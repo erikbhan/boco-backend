@@ -112,7 +112,7 @@ public class RatingController {
      */
     @Operation(summary = "Saves rating to db")
     @ApiResponse(responseCode = "201", description = "Returns true if the rating was posted")
-    @ApiResponse(responseCode = "400", description = "Token not found")
+    @ApiResponse(responseCode = "401", description = "Token not found")
     @ApiResponse(responseCode = "400", description = "User not found in database")
     @PostMapping("/rating/save")
     @RequireAuth
@@ -121,7 +121,7 @@ public class RatingController {
         try {
             userToken = TokenUtil.getDataJWT();
         } catch (NullPointerException e) {
-            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "No token found");
+            throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "No token found");
         }
         int tokenUserID = userToken.getAccountId();
         if (userService.findUserByUserId(tokenUserID) != null){

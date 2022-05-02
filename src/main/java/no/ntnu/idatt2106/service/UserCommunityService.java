@@ -31,8 +31,8 @@ public class UserCommunityService {
         return (userCommunityRepository.isUser(user, communityDAO.getCommunityID()) == 1);
     }
 
-    public boolean userIsAdminInCommunity(UserCommunityDAO ucd) {
-        return ucd.isAdministrator();
+    public boolean userIsAdminInCommunity(int userID, int communityID) {
+        return userCommunityRepository.isAdmin(userID,communityID);
     }
 
     public boolean addUserToCommunity(int user, CommunityDAO communityDAO){
@@ -101,5 +101,14 @@ public class UserCommunityService {
             members.add(list.get(i).getUserID());
         }
         return members;
+    }
+
+    public List<CommunityDAO> getListOfAllAdminCommunities(int userID){
+        List<CommunityDAO> communities = new ArrayList<>();
+        List<Integer> adminCommunityIDs = userCommunityRepository.getAdminCommunityIDs(userID);
+        for (int communityID : adminCommunityIDs){
+            communities.add(communityService.findCommunityDAOByCommunityID(communityID));
+        }
+        return communities;
     }
 }
