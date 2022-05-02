@@ -56,8 +56,7 @@ public class RatingService {
         ArrayList<RatingDTO> ratings = new ArrayList<>();
         List<RentDAO> rented = rentService.findRentByRenterID(userDAO);
         for (RentDAO rentDAO : rented) {
-            System.out.println(rentDAO.toString());
-            List<RatingDAO> ratingsByRent = ratingRepository.findByRentIDAndRenterIsReceiverOfRatingFalse(rentDAO);
+            List<RatingDAO> ratingsByRent = ratingRepository.findByRentIDAndRenterIsReceiverOfRatingTrue(rentDAO);
             for (RatingDAO dao : ratingsByRent){
                 RatingDTO dto = new RatingDTO();
                 dto.setComment(dao.getComment());
@@ -80,7 +79,7 @@ public class RatingService {
         for (ListingDAO listingDAO : listings){
             List<RentDAO> rents = rentRepository.findRentDAOSByListingOwnerID(listingDAO);
             for (RentDAO rentDAO : rents){
-                List<RatingDAO> ratingsByRent = ratingRepository.findByRentIDAndRenterIsReceiverOfRatingTrue(rentDAO);
+                List<RatingDAO> ratingsByRent = ratingRepository.findByRentIDAndRenterIsReceiverOfRatingFalse(rentDAO);
                 for (RatingDAO dao : ratingsByRent){
                     RatingDTO dto = new RatingDTO();
                     dto.setComment(dao.getComment());

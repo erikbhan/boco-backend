@@ -89,7 +89,11 @@ public class RatingController {
     @GetMapping("/rating/{userID}/average_as_owner")
     public float getAverageRatingAsOwner(@PathVariable int userID) throws StatusCodeException {
         if (userService.findUserByUserId(userID) != null) {
-            return ratingService.findAverageRatingAsOwner(userID);
+            try{
+                return ratingService.findAverageRatingAsOwner(userID);
+            }catch (Exception e){
+                throw new StatusCodeException(HttpStatus.OK, "No ratings found");
+            }
         } else throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User not found");
     }
 
@@ -99,7 +103,11 @@ public class RatingController {
     @GetMapping("/rating/{userID}/average_as_renter")
     public float getAverageRatingAsRenter(@PathVariable int userID) throws StatusCodeException {
         if (userService.findUserByUserId(userID) != null) {
-            return ratingService.findAverageRatingAsRenter(userID);
+            try {
+                return ratingService.findAverageRatingAsRenter(userID);
+            } catch (Exception e){
+                throw new StatusCodeException(HttpStatus.OK, "No ratings found");
+            }
         } else throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User not found");
     }
 
