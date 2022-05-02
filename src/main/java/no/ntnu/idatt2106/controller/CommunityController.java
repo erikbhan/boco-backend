@@ -68,7 +68,7 @@ public class CommunityController {
     @GetMapping("/communities")
     public List<CommunityDTO> showAllCommunities() throws StatusCodeException {
         List<CommunityDAO> listOfCommunityDAOs = communityService
-                .findAllCommunityDAOWithGivenVisibility(1);
+                .findAll();
 
         if(listOfCommunityDAOs != null && listOfCommunityDAOs.size() > 0) {
             List<CommunityDTO> listOfCommunities = communityService
