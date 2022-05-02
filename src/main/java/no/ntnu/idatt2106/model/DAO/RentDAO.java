@@ -36,18 +36,20 @@ public class RentDAO{
     @JoinColumn(name = "renter_id", nullable = false)
     private UserDAO renterID;
 
-    public RentDAO(long fromTime, long toTime, boolean isAccepted, ListingDAO listingOwnerID, UserDAO renterID) {
+    public RentDAO(long fromTime, long toTime, boolean isAccepted, ListingDAO listingOwnerID, String message, UserDAO renterID) {
         this.fromTime = fromTime;
         this.toTime = toTime;
         this.isAccepted = isAccepted;
         this.listingOwnerID = listingOwnerID;
         this.renterID = renterID;
+        this.message = message;
     }
 
     public RentDAO(RentDTO rentDTO) {
         this.fromTime = rentDTO.getFromTime();
         this.toTime = rentDTO.getToTime();
-        this.isAccepted = rentDTO.getAccepted();
+        this.isAccepted = rentDTO.getIsAccepted();
+        this.message = rentDTO.getMessage();
     }
 
     public RentDAO() {
@@ -104,6 +106,35 @@ public class RentDAO{
     public boolean isDeleted() {return isDeleted;}
 
     public void setDeleted(boolean deleted) {isDeleted = deleted;}
+
+
+    public boolean isIsAccepted() {
+        return this.isAccepted;
+    }
+    public void setIsAccepted(boolean isAccepted) {
+        this.isAccepted = isAccepted;
+    }
+
+    public boolean isIsDeleted() {
+        return this.isDeleted;
+    }
+
+    public boolean getIsDeleted() {
+        return this.isDeleted;
+    }
+
+    public void setIsDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
+    public String getMessage() {
+        return this.message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
 
     @Override
     public String toString() {
