@@ -124,6 +124,30 @@ public class UserCommunityController {
 
     }
 
+    @Operation(summary = "Kicks a user from a community")
+    @ApiResponse(responseCode = "200", description = "Kicked user")
+    @ApiResponse(responseCode = "400", description = "Illegal operation")
+    @PatchMapping("/communities/{communityId}/kick")
+    public void kickUserFromCommunity(@PathVariable int communityId, @RequestParam int userId) throws StatusCodeException {
+        TokenDTO token = TokenUtil.getDataJWT();
+        CommunityDAO communityDAO = communityRepository.findCommunityDAOByCommunityID(communityId);
+
+        UserCommunityDAO ucd = userCommunityService.getByIds(token.getAccountId(), communityDAO );
+
+        UserCommunityDAO userToBeKicked = userCommunityService.getByIds(userId, communityDAO);
+        if(ucd!=null && userToBeKicked != null){
+            if(ucd.isAdministrator() && (!userToBeKicked.isAdministrator())){
+                userCommunityService.removeUserFromCommunity(userToBeKicked);
+            }
+            else {
+                throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Need admin status to kick user from community / can not kick admin");
+            }
+        }
+        else {
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Something went wrong");
+        }
+    }
+
     @Operation(summary = "Get all communities the logged in user is part of")
     @ApiResponse(responseCode = "200", description = "Found communities")
     @ApiResponse(responseCode = "400", description = "Illegal operation")
