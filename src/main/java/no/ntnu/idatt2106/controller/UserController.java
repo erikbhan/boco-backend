@@ -64,6 +64,7 @@ public class UserController {
         Integer tokenUserId = Integer.valueOf(userToken.getAccountId());
         UserDAO userDAO = userService.findUserByUserId(tokenUserId);
         if(userDAO != null) {
+            password = password.substring(13, password.length()-2);
             UserDAO changedUser = userService.changePasswordForUser(userDAO, password);
             return loginService.successfulAuthentication(changedUser);
         }
