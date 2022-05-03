@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import no.ntnu.idatt2106.exception.StatusCodeException;
 import no.ntnu.idatt2106.middleware.RequireAuth;
 import no.ntnu.idatt2106.model.DAO.RatingDAO;
+import no.ntnu.idatt2106.model.DAO.RentDAO;
 import no.ntnu.idatt2106.model.DTO.RatingDTO;
 import no.ntnu.idatt2106.model.DTO.TokenDTO;
 import no.ntnu.idatt2106.service.RatingService;
@@ -146,5 +147,33 @@ public class RatingController {
             throw new StatusCodeException(HttpStatus.CREATED, "Rating posted!");
         }
         throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Could not find user");
+    }
+
+    @Operation(summary = "Checks to see if the current user has given a rating to the owner/renter of a rent")
+    @ApiResponse(responseCode = "200", description = "User has given a rating to the rent")
+    @ApiResponse(responseCode = "404", description = "Rent not found")
+    @ApiResponse(responseCode = "404", description = "Rating not found")
+    @GetMapping("rating/{rentid}/israted")
+    public boolean ratingIsGivenByCurrentUser(@PathVariable int rentid) throws StatusCodeException {
+        TokenDTO userToken;
+        try {
+            userToken = TokenUtil.getDataJWT();
+        } catch (NullPointerException e) {
+            throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "No token found");
+        }
+        int tokenUserID = userToken.getAccountId();
+
+        RentDAO rentDAO;
+        try{
+            rentDAO = rentService.getRentFromId(rentid);
+        } catch (Exception e) {
+            throw new StatusCodeException(HttpStatus.NOT_FOUND, "Rent not found");
+        }
+        
+        if (ratingService.userHasGivenRating(userService.findUserByUserId(tokenUserID), rentid)) {
+            throw new StatusCodeException(HttpStatus.OK, "Rating given by user");
+        }
+        throw new StatusCodeException(HttpStatus.NOT_FOUND, "Rating not found");
+
     }
 }

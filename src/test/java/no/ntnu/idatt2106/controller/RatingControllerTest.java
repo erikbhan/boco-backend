@@ -128,6 +128,26 @@ public class RatingControllerTest {
                 .andExpect(status().is4xxClientError());
     }
 
+    @Test
+    public void seeIfUserHasGivenRatingWhenUserHasGivenRating_ShouldBeOK() throws Exception {
+        user = new UserDAO(2022,"test@email.com", "test", "user", "gløshaugen", "ok", "l/hjdIHi9Us2uJZ7MP/urY6ALjISdukPrN5sjpD7wTMEV+DnQkWzOF3qfnO6r2PnIQM6zP7ZcdEYh0Gdok8nFQ==", "Ge7Y9frKWdgKcAysHdYCIoOOsAcn9We3f2+C74xlc6kWQZn2scBE8sEf4iZezwsmG/KdeeEuspZD9Q4Ojt27Hg==");
+        userToken = loginService.successfulAuthentication(user);
+        mockMvc.perform(get("/rating/10002/israted")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void seeIfUserHasGivenRatingWhenUserHasNotGivenRating_ShouldBe4xx() throws Exception {
+        user = new UserDAO(2022,"test@email.com", "test", "user", "gløshaugen", "ok", "l/hjdIHi9Us2uJZ7MP/urY6ALjISdukPrN5sjpD7wTMEV+DnQkWzOF3qfnO6r2PnIQM6zP7ZcdEYh0Gdok8nFQ==", "Ge7Y9frKWdgKcAysHdYCIoOOsAcn9We3f2+C74xlc6kWQZn2scBE8sEf4iZezwsmG/KdeeEuspZD9Q4Ojt27Hg==");
+        userToken = loginService.successfulAuthentication(user);
+        mockMvc.perform(get("/rating/10000/israted")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().is4xxClientError());
+    }
+
     public static String asJsonString(final Object obj) {
         try {
             return new ObjectMapper().writeValueAsString(obj);
