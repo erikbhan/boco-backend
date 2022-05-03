@@ -1,8 +1,5 @@
 package no.ntnu.idatt2106.controller;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.interfaces.Claim;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import no.ntnu.idatt2106.exception.StatusCodeException;
@@ -15,10 +12,8 @@ import no.ntnu.idatt2106.util.TokenUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.simp.SimpMessagingTemplate;import org.springframework.stereotype.Controller;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 @CrossOrigin

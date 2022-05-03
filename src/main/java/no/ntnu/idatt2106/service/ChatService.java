@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.sql.Date;
+import java.util.List;
 
 @Service
 public class ChatService {
@@ -22,6 +22,9 @@ public class ChatService {
         _userRepository = userRepository;
     }
 
+    public ChatMessageDAO getById(int id){
+        return _chatMessageRepository.findByMessageID(id);
+    }
 
     public ChatMessageDTO[] getConversation(int accountId, int userId) {
         return Arrays.stream(_chatMessageRepository.getConversation(accountId, userId))
@@ -36,7 +39,7 @@ public class ChatService {
         // Get last message for each user
         for (int i = 0; i < users.length; i++) {
             UserDAO user = users[i];
-            ChatMessageDAO chatMessageDAO = _chatMessageRepository.getLastMessage(accountId, user.getUserID());
+            no.ntnu.idatt2106.model.DAO.ChatMessageDAO chatMessageDAO = _chatMessageRepository.getLastMessage(accountId, user.getUserID());
             ChatMessageDTO chatMessageDTO = new ChatMessageDTO(chatMessageDAO);
             conversations[i] = new ConversationDTO(chatMessageDTO, new PublicUserDTO(user));
         }
@@ -45,11 +48,25 @@ public class ChatService {
     }
 
     public void createMessage(UserDAO sender, UserDAO receiver, NewMessageDTO newMessageDTO) {
-        ChatMessageDAO chatMessageDAO = new ChatMessageDAO();
-        chatMessageDAO.setSendingUserID(sender);
-        chatMessageDAO.setReceivingUserID(receiver);
+        no.ntnu.idatt2106.model.DAO.ChatMessageDAO chatMessageDAO = new no.ntnu.idatt2106.model.DAO.ChatMessageDAO();
+        chatMessageDAO.setSendingUser(sender);
+        chatMessageDAO.setReceivingUser(receiver);
         chatMessageDAO.setText(newMessageDTO.getMessage());
-        chatMessageDAO.setTimeSent(new Date(System.currentTimeMillis()));
+        chatMessageDAO.setTimeSent(System.currentTimeMillis());
         _chatMessageRepository.save(chatMessageDAO);
+    }
+
+    public int getUnreadMessages(int userID){
+        UserDAO user = _userRepository.findUserDAOByUserID(userID);
+        return _chatMessageRepository.findByReceivingUserAndIsReadFalse(user).size();
+    }
+
+    public List<ChatMessageDTO> getLastReceivedMessagesFromDistinctSenders(int userID){
+        List<ChatMessageDAO> lastMessages = _chatMessageRepository.getLastReceivedFromDistinct(userID);
+        List<ChatMessageDTO> dtos = new ArrayList<>();
+        for (ChatMessageDAO messageDAO : lastMessages){
+            dtos.add(new ChatMessageDTO(messageDAO));
+        }
+        return dtos;
     }
 }

@@ -23,7 +23,7 @@ public class CategoryDAO {
     public CategoryDAO() {
     }
 
-    public long getCategoryID() {
+    public int getCategoryID() {
         return this.categoryID;
     }
 

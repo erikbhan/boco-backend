@@ -18,10 +18,10 @@ import no.ntnu.idatt2106.model.DAO.UserDAO;
 @Repository
 public interface ListingRepository extends JpaRepository<ListingDAO, Integer> {
     //Finds all listings of one user
-    List<ListingDAO> findAllFromListingDAOByUserID(UserDAO userID);
+    List<ListingDAO> findAllFromListingDAOByUser(UserDAO userID);
     ListingDAO findListingDAOByListingID(int listingId);
-    List<ListingDAO> findAllByUserID(UserDAO userId);
-    List<ListingDAO> findListingDAOSByUserID(UserDAO user);
+    List<ListingDAO> findAllByUser(UserDAO userId);
+    List<ListingDAO> findListingDAOSByUser(UserDAO user);
 
 
     //Finds all listings with title containing a phrase

@@ -89,7 +89,11 @@ public class RatingController {
     @GetMapping("/rating/{userID}/average_as_owner")
     public float getAverageRatingAsOwner(@PathVariable int userID) throws StatusCodeException {
         if (userService.findUserByUserId(userID) != null) {
-            return ratingService.findAverageRatingAsOwner(userID);
+            try{
+                return ratingService.findAverageRatingAsOwner(userID);
+            }catch (Exception e){
+                throw new StatusCodeException(HttpStatus.OK, "No ratings found");
+            }
         } else throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User not found");
     }
 
@@ -99,7 +103,11 @@ public class RatingController {
     @GetMapping("/rating/{userID}/average_as_renter")
     public float getAverageRatingAsRenter(@PathVariable int userID) throws StatusCodeException {
         if (userService.findUserByUserId(userID) != null) {
-            return ratingService.findAverageRatingAsRenter(userID);
+            try {
+                return ratingService.findAverageRatingAsRenter(userID);
+            } catch (Exception e){
+                throw new StatusCodeException(HttpStatus.OK, "No ratings found");
+            }
         } else throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User not found");
     }
 
@@ -112,7 +120,7 @@ public class RatingController {
      */
     @Operation(summary = "Saves rating to db")
     @ApiResponse(responseCode = "201", description = "Returns true if the rating was posted")
-    @ApiResponse(responseCode = "400", description = "Token not found")
+    @ApiResponse(responseCode = "401", description = "Token not found")
     @ApiResponse(responseCode = "400", description = "User not found in database")
     @PostMapping("/rating/save")
     @RequireAuth
@@ -121,7 +129,7 @@ public class RatingController {
         try {
             userToken = TokenUtil.getDataJWT();
         } catch (NullPointerException e) {
-            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "No token found");
+            throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "No token found");
         }
         int tokenUserID = userToken.getAccountId();
         if (userService.findUserByUserId(tokenUserID) != null){
@@ -129,7 +137,7 @@ public class RatingController {
             dao.setComment(ratingDTO.getComment());
             dao.setScore(ratingDTO.getScore());
             dao.setRenterIsReceiverOfRating(ratingDTO.isRenterReceiverOfRating());
-            dao.setRentID(rentService.getRentFromId(ratingDTO.getRentID()));
+            dao.setRent(rentService.getRentFromId(ratingDTO.getRentID()));
             try {
                 ratingService.saveRating(dao);
             } catch (DataIntegrityViolationException e){

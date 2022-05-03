@@ -23,28 +23,28 @@ public class UserCommunityDAO {
      @Column(name = "is_administrator")
      private boolean isAdministrator;
 
-     public UserCommunityDAO(CommunityDAO communityID, UserDAO userID, boolean isAdministrator) {
-          this.communityID = communityID;
-          this.userID = userID;
+     public UserCommunityDAO(CommunityDAO community, UserDAO user, boolean isAdministrator) {
+          this.communityID = community;
+          this.userID = user;
           this.isAdministrator = isAdministrator;
      }
 
      public UserCommunityDAO() {
      }
 
-     public CommunityDAO getCommunityID() {
+     public CommunityDAO getCommunity() {
           return communityID;
      }
 
-     public void setCommunityID(CommunityDAO communityID) {
+     public void setCommunity(CommunityDAO communityID) {
           this.communityID = communityID;
      }
 
-     public UserDAO getUserID() {
+     public UserDAO getUser() {
           return userID;
      }
 
-     public void setUserID(UserDAO userID) {
+     public void setUser(UserDAO userID) {
           this.userID = userID;
      }
 

@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface RatingRepository extends JpaRepository<RatingDAO, Integer> {
     RatingDAO findRatingDAOSByRatingID(int id);
-    List<RatingDAO> findByRentIDAndRenterIsReceiverOfRatingTrue(RentDAO rentDAO);
-    List<RatingDAO> findByRentIDAndRenterIsReceiverOfRatingFalse(RentDAO rentDAO);
+    List<RatingDAO> findByRentAndRenterIsReceiverOfRatingTrue(RentDAO rentDAO);
+    List<RatingDAO> findByRentAndRenterIsReceiverOfRatingFalse(RentDAO rentDAO);
 }

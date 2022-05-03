@@ -16,6 +16,12 @@ public interface UserCommunityRepository extends JpaRepository<UserCommunityDAO,
     @Query(value = "SELECT COUNT(*) FROM public.user_community WHERE user_id=?1 and community_id=?2", nativeQuery = true)
     int isUser ( int user_id, int community_id);
 
+    @Query(value = "SELECT is_administrator FROM public.user_community WHERE user_id=?1 AND community_id=?2", nativeQuery = true)
+    boolean isAdmin ( int user_id, int community_id );
+
+    @Query(value = "SELECT community_id FROM public.user_community WHERE user_id=?1 AND is_administrator = true", nativeQuery = true)
+    List<Integer> getAdminCommunityIDs (int userID);
+
     boolean existsByUserID(UserDAO user);
     boolean existsByCommunityID(CommunityDAO communityDAO);
     List<UserCommunityDAO> findAllByUserID(UserDAO user);

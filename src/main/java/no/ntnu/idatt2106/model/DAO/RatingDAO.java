@@ -1,7 +1,6 @@
 package no.ntnu.idatt2106.model.DAO;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "Rating", schema = "public")
@@ -19,7 +18,7 @@ public class RatingDAO {
     private boolean renterIsReceiverOfRating;
     @ManyToOne
     @JoinColumn(name = "rent_id", nullable = false)
-    private RentDAO rentID;
+    private RentDAO rent;
 
     public int getRatingID() {
         return this.ratingID;
@@ -53,11 +52,11 @@ public class RatingDAO {
         this.renterIsReceiverOfRating = renterIsReceiverOfRating;
     }
 
-    public RentDAO getRentID() {
-        return rentID;
+    public RentDAO getRent() {
+        return rent;
     }
 
-    public void setRentID(RentDAO rentID) {
-        this.rentID = rentID;
+    public void setRent(RentDAO rent) {
+        this.rent = rent;
     }
 }

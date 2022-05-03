@@ -1,6 +1,7 @@
 package no.ntnu.idatt2106.model.DAO;
 
-import java.sql.Date;
+import org.hibernate.annotations.Check;
+
 import javax.persistence.*;
 
 /**
@@ -20,8 +21,15 @@ public class NotificationDAO {
     @Column(name= "created_time")
     private long createdTime;
     @ManyToOne
-    @JoinColumn(name = "community_request", nullable = false)
+    @JoinColumn(name = "chat_message", nullable = true)
+    private ChatMessageDAO chatMessage;
+    @ManyToOne
+    @JoinColumn(name = "community_request", nullable = true)
     private CommunityRequestDAO communityRequest;
+
+    public NotificationDAO() {
+
+    }
 
     public int getNotificationID() {
         return notificationID;
@@ -53,5 +61,13 @@ public class NotificationDAO {
 
     public void setCommunityRequest(CommunityRequestDAO communityRequest) {
         this.communityRequest = communityRequest;
+    }
+
+    public ChatMessageDAO getChatMessage() {
+        return chatMessage;
+    }
+
+    public void setChatMessage(ChatMessageDAO chatMessageDAO) {
+        this.chatMessage = chatMessageDAO;
     }
 }

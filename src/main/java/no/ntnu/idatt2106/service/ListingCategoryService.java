@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import no.ntnu.idatt2106.model.DAO.CategoryDAO;
 import no.ntnu.idatt2106.model.DAO.ListingCategoryDAO;
@@ -36,8 +35,8 @@ public class ListingCategoryService {
      */
     public void saveListingCategory(CategoryDAO categoryDAO, ListingDAO listingDAO) {
         ListingCategoryDAO listingCategoryDAO = new ListingCategoryDAO();
-        listingCategoryDAO.setCategoryID(categoryDAO);
-        listingCategoryDAO.setListingID(listingDAO);
+        listingCategoryDAO.setCategory(categoryDAO);
+        listingCategoryDAO.setListing(listingDAO);
         listingCategoryRepository.save(listingCategoryDAO);
     }
 
@@ -56,7 +55,7 @@ public class ListingCategoryService {
         // categoryNames array.
         for (int i = 0; i < categoryNames.length; i++) {
             //
-            categoryNames[i] = listingCategoryDAOs.get(i).getCategoryID().getName();
+            categoryNames[i] = listingCategoryDAOs.get(i).getCategory().getName();
         }
         return categoryNames;
     }

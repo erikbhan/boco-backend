@@ -9,19 +9,19 @@ public class ListingPictureDAO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "listing_picture_id")
-    private int listingPicureID;
+    private int listingPictureID;
     @Column(name= "picture")
     private String picture;
     @ManyToOne
     @JoinColumn(name = "listing_id", nullable = false)
-    private ListingDAO listingID;
+    private ListingDAO listing;
 
-    public int getListingPicureID() {
-        return this.listingPicureID;
+    public int getListingPictureID() {
+        return this.listingPictureID;
     }
 
-    public void setListingPicureID(int listingPicureID) {
-        this.listingPicureID = listingPicureID;
+    public void setListingPictureID(int listingPicureID) {
+        this.listingPictureID = listingPicureID;
     }
 
     public String getPicture() {
@@ -32,11 +32,11 @@ public class ListingPictureDAO {
         this.picture = picture;
     }
 
-    public ListingDAO getListingID() {
-        return listingID;
+    public ListingDAO getListing() {
+        return listing;
     }
 
-    public void setListingID(ListingDAO listingID) {
-        this.listingID = listingID;
+    public void setListing(ListingDAO listing) {
+        this.listing = listing;
     }
 }

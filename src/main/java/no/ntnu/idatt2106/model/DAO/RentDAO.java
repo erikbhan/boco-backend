@@ -31,18 +31,17 @@ public class RentDAO{
     private String message;
     @ManyToOne
     @JoinColumn(name = "listing_owner_id", nullable = false)
-    private ListingDAO listingOwnerID;
+    private ListingDAO listing;
     @ManyToOne
     @JoinColumn(name = "renter_id", nullable = false)
-    private UserDAO renterID;
+    private UserDAO renter;
 
-    public RentDAO(long fromTime, long toTime, boolean isAccepted, ListingDAO listingOwnerID, String message, UserDAO renterID) {
+    public RentDAO(long fromTime, long toTime, boolean isAccepted, ListingDAO listing, UserDAO renter) {
         this.fromTime = fromTime;
         this.toTime = toTime;
         this.isAccepted = isAccepted;
-        this.listingOwnerID = listingOwnerID;
-        this.renterID = renterID;
-        this.message = message;
+        this.listing = listing;
+        this.renter = renter;
     }
 
     public RentDAO(RentDTO rentDTO) {
@@ -87,54 +86,25 @@ public class RentDAO{
         isAccepted = accepted;
     }
 
-    public ListingDAO getListingOwnerID() {
-        return listingOwnerID;
+    public ListingDAO getListing() {
+        return listing;
     }
 
-    public void setListingOwnerID(ListingDAO listingOwnerID) {
-        this.listingOwnerID = listingOwnerID;
+    public void setListing(ListingDAO listingOwner) {
+        this.listing = listingOwner;
     }
 
-    public UserDAO getRenterID() {
-        return renterID;
+    public UserDAO getRenter() {
+        return renter;
     }
 
-    public void setRenterID(UserDAO renterID) {
-        this.renterID = renterID;
+    public void setRenter(UserDAO renter) {
+        this.renter = renter;
     }
 
     public boolean isDeleted() {return isDeleted;}
 
     public void setDeleted(boolean deleted) {isDeleted = deleted;}
-
-
-    public boolean isIsAccepted() {
-        return this.isAccepted;
-    }
-    public void setIsAccepted(boolean isAccepted) {
-        this.isAccepted = isAccepted;
-    }
-
-    public boolean isIsDeleted() {
-        return this.isDeleted;
-    }
-
-    public boolean getIsDeleted() {
-        return this.isDeleted;
-    }
-
-    public void setIsDeleted(boolean isDeleted) {
-        this.isDeleted = isDeleted;
-    }
-
-    public String getMessage() {
-        return this.message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
 
     @Override
     public String toString() {
@@ -145,8 +115,8 @@ public class RentDAO{
                 ", isAccepted=" + isAccepted +
                 ", isDeleted=" + isDeleted +
                 ", message='" + message + '\'' +
-                ", listingOwnerID=" + listingOwnerID +
-                ", renterID=" + renterID +
+                ", listingOwnerID=" + listing +
+                ", renterID=" + renter +
                 '}';
     }
 }
