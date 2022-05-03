@@ -68,7 +68,7 @@ public class NotificationController {
      */
     @Operation(summary = "Gets community request notifications for the authenticated user")
     @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
-    @GetMapping("notification/getcommunityrequest")
+    @GetMapping("notifications/communities/joinrequests")
     public List<NotificationDTO> getCommunityRequestNotification() throws StatusCodeException {
         int tokenUserId;
         try{
