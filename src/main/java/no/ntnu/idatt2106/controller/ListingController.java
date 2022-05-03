@@ -6,7 +6,10 @@ import no.ntnu.idatt2106.model.DAO.ListingPictureDAO;
 import no.ntnu.idatt2106.model.DTO.ListingPictureDTO;
 import no.ntnu.idatt2106.model.DAO.RentDAO;
 import no.ntnu.idatt2106.model.DTO.ListingWithUnavailabilityDTO;
+import no.ntnu.idatt2106.model.DTO.TokenDTO;
 import no.ntnu.idatt2106.service.*;
+import no.ntnu.idatt2106.util.TokenUtil;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -76,9 +79,11 @@ public class ListingController {
      */
     @ApiResponse(responseCode = "200", description = "All of a user's listings")
     @ApiResponse(responseCode = "400", description = "User doesnt exist")
-    @GetMapping("/listing/userListings/{userID}")
-    public List<ListingDTO> getAllOfAUsersListings(@PathVariable int userID) throws StatusCodeException {
-        UserDAO user = userService.findUserByUserId(userID);
+    @GetMapping("/listing/userListings")
+    public List<ListingDTO> getAllOfAUsersListings() throws StatusCodeException {
+        TokenDTO userToken = TokenUtil.getDataJWT();
+        Integer tokenUserId = Integer.valueOf(userToken.getAccountId());
+        UserDAO user = userService.findUserByUserId(tokenUserId);
         // Checks if the user exist
         if (user == null) {
             //Exception is thrown if the user does not exist
@@ -88,7 +93,7 @@ public class ListingController {
         List<ListingDAO> listingDAOs = listingService.getAllOfUsersListings(user);
         //Converts all the DAOs to DTO, to include categories and communities.
         List<ListingDTO> listingDTOs = 
-        listingService.convertMultipleFromListingDAOToDTO(listingCategoryService, communityListingService, listingDAOs);
+        listingService.convertListOfListingDAOToListOfListingDTO(listingDAOs);
         return listingDTOs;
     }
 
