@@ -25,6 +25,7 @@ public class LoginController {
         this.userService = userService;
         this.loginService = loginService;
     }
+
     @Operation(summary = "Log in the user")
     @ApiResponse(responseCode = "200", description = "Login successful")
     @ApiResponse(responseCode = "400", description = "Login failed")

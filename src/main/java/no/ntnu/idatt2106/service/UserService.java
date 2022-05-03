@@ -5,6 +5,9 @@ import no.ntnu.idatt2106.model.DTO.CommunityDTO;
 import no.ntnu.idatt2106.model.DTO.UserDTO;
 import no.ntnu.idatt2106.repository.UserRepository;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Optional;
@@ -95,5 +98,19 @@ public class UserService {
 
         saveUser(userDAO);
         return userDAO;
+    }
+
+    public boolean attemptAuthenticationOfPassword(UserDAO user, String password) throws NoSuchAlgorithmException {
+        if (user == null) {
+            return false;
+        }
+        MessageDigest md = MessageDigest.getInstance("SHA-512");
+        md.update(Base64.getDecoder().decode(user.getSalt()));
+        byte[] hashedPassword = Base64.getEncoder().encode(md.digest(password.getBytes(StandardCharsets.UTF_8)));
+
+        if (new String(hashedPassword).equals(new String(user.getHash().getBytes(StandardCharsets.UTF_8)))) {
+            return true;
+        }
+        return false;
     }
 }

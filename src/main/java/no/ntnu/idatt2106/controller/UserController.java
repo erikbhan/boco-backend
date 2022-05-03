@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * The main controller for the api requests related to the user.
@@ -69,5 +70,24 @@ public class UserController {
             return loginService.successfulAuthentication(changedUser);
         }
         throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User not found in DB");
+    }
+
+    @Operation(summary = "Checks to see if the password for the user is the correct password")
+    @ApiResponse(responseCode = "200", description = "Password is a match")
+    @ApiResponse(responseCode = "400", description = "The password provided did not match the password of the user")
+    @ApiResponse(responseCode = "500", description = "Unexpected server error")
+    @PostMapping("/login/authentication")
+    public String checkPassword(@RequestBody String password) throws StatusCodeException {
+        try {
+            TokenDTO userToken = TokenUtil.getDataJWT();
+            Integer tokenUserId = Integer.valueOf(userToken.getAccountId());
+            UserDAO userDAO = userService.findUserByUserId(tokenUserId);
+            if (!userService.attemptAuthenticationOfPassword(userDAO, password))
+                throw new StatusCodeException(HttpStatus.BAD_REQUEST, "The password did not match");
+            return "Password is a match";
+        } catch (NoSuchAlgorithmException | StatusCodeException e) {
+            e.printStackTrace();
+            throw new StatusCodeException(HttpStatus.INTERNAL_SERVER_ERROR, "How did you get here");
+        }
     }
 }
