@@ -1,5 +1,6 @@
 package no.ntnu.idatt2106.model.DTO;
 
+import no.ntnu.idatt2106.model.DAO.ListingDAO;
 import no.ntnu.idatt2106.model.DAO.RentDAO;
 
 import java.sql.Date;
@@ -15,6 +16,7 @@ public class RentDTO {
     long toTime;
     Boolean isAccepted;
     int listingId;
+    ListingDTO listing;
     int renterId;
     String message;
 
@@ -41,6 +43,7 @@ public class RentDTO {
         this.toTime = rentDAO.getToTime();
         this.isAccepted = rentDAO.getIsAccepted();
         this.listingId = rentDAO.getListingOwnerID().getListingID();
+        this.listing = new ListingDTO(rentDAO.getListingOwnerID());
         this.renterId = rentDAO.getRenterID().getUserID();
     }
 
@@ -114,5 +117,12 @@ public class RentDTO {
     public void setMessage(String message) {
         this.message = message;
     }
- 
+
+    public ListingDTO getListing() {
+        return listing;
+    }
+
+    public void setListing(ListingDTO listing) {
+        this.listing = listing;
+    }
 }
