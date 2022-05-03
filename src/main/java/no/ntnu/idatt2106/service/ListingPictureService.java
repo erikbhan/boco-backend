@@ -21,7 +21,7 @@ public class ListingPictureService {
 
     public List<ListingPictureDAO> findAllPicturesWithListingId(int listingId) {
         ListingDAO listing = listingService.findListingByListingId(listingId);
-        return listingPictureRepository.findAllByListingID(listing);
+        return listingPictureRepository.findAllByListing(listing);
     }
 
     public List<ListingPictureDTO> convertListOfListingPictureDAOToListOfListingPictureDTO(List<ListingPictureDAO> list) {

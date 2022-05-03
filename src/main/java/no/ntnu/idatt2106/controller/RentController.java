@@ -169,7 +169,7 @@ public class RentController {
         if (tokenUserId != null) {
             RentDAO agreement = rentService.convertFromRentDTOTORentDAO(rentDTO);
             UserDAO userDAO = userService.findUserByUserId(tokenUserId);
-            agreement.setRenterID(userDAO);
+            agreement.setRenter(userDAO);
             String saveAns = rentService.saveNewRentAgreementToDB(agreement);
             if (saveAns != null) {
                 return saveAns;

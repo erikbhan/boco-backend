@@ -90,16 +90,16 @@ public class RentDAO{
         return listing;
     }
 
-    public void setListing(ListingDAO listingOwnerID) {
-        this.listing = listingOwnerID;
+    public void setListing(ListingDAO listingOwner) {
+        this.listing = listingOwner;
     }
 
     public UserDAO getRenter() {
         return renter;
     }
 
-    public void setRenter(UserDAO renterID) {
-        this.renter = renterID;
+    public void setRenter(UserDAO renter) {
+        this.renter = renter;
     }
 
     public boolean isDeleted() {return isDeleted;}

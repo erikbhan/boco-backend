@@ -15,7 +15,7 @@ public class ListingPictureDTO {
     }
 
     public ListingPictureDTO(ListingPictureDAO listingPictureDAO) {
-        this.listingID = listingPictureDAO.getListingPicureID();
+        this.listingID = listingPictureDAO.getListingPictureID();
         this.picture = listingPictureDAO.getPicture();
     }
 

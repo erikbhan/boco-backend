@@ -31,8 +31,8 @@ public class CommunityRequestService {
     }
 
     public void addNewRequest(CommunityDAO communityDAO, UserDAO userDAO, String message) {
-        communityRequestDAO.setCommunityID(communityDAO);
-        communityRequestDAO.setUserID(userDAO);
+        communityRequestDAO.setCommunity(communityDAO);
+        communityRequestDAO.setUser(userDAO);
         communityRequestDAO.setText(message);
 
         communityRequestRepository.save(communityRequestDAO);
@@ -55,10 +55,10 @@ public class CommunityRequestService {
 
     public List<UserDTO> getRequestsForCommunity(int communityId){
         CommunityDAO communityDAO = communityRepository.findCommunityDAOByCommunityID(communityId);
-        List<CommunityRequestDAO> communityRequestDAOS = communityRequestRepository.findAllByCommunityID(communityDAO);
+        List<CommunityRequestDAO> communityRequestDAOS = communityRequestRepository.findAllByCommunity(communityDAO);
         ArrayList<UserDTO> userDTOS = new ArrayList<>();
         for (int i = 0; i < communityRequestDAOS.size(); i++) {
-           UserDTO userDTO = new UserDTO(communityRequestDAOS.get(i).getUserID());
+           UserDTO userDTO = new UserDTO(communityRequestDAOS.get(i).getUser());
             userDTOS.add(userDTO);
         }
         return userDTOS;

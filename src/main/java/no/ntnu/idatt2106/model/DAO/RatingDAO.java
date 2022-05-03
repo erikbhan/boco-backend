@@ -56,7 +56,7 @@ public class RatingDAO {
         return rent;
     }
 
-    public void setRent(RentDAO rentID) {
-        this.rent = rentID;
+    public void setRent(RentDAO rent) {
+        this.rent = rent;
     }
 }

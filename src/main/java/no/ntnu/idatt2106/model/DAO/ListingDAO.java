@@ -69,7 +69,7 @@ public class ListingDAO{
         return this.user;
     }
 
-    public void setUser(UserDAO userID) {
-        this.user = userID;
+    public void setUser(UserDAO user) {
+        this.user = user;
     }
 }

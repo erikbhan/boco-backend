@@ -14,5 +14,5 @@ public interface CommunityRequestRepository extends JpaRepository<CommunityReque
     CommunityRequestDAO findByCommunityRequestID(int communityRequestId);
     @Query(value = "SELECT DISTINCT community_request_id FROM public.community_request WHERE user_id=?1 and community_id=?2", nativeQuery = true)
     int findId (int user_id, int community_id);
-    List<CommunityRequestDAO> findAllByCommunityID(CommunityDAO communityDAO);
+    List<CommunityRequestDAO> findAllByCommunity(CommunityDAO communityDAO);
 }
