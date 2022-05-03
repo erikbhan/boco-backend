@@ -5,10 +5,16 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import no.ntnu.idatt2106.exception.StatusCodeException;
 import no.ntnu.idatt2106.middleware.RequireAuth;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
+import no.ntnu.idatt2106.model.DTO.TokenDTO;
 import no.ntnu.idatt2106.model.DTO.UserDTO;
+import no.ntnu.idatt2106.service.LoginService;
 import no.ntnu.idatt2106.service.UserService;
+import no.ntnu.idatt2106.util.TokenUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.ServletException;
+import java.io.IOException;
 
 /**
  * The main controller for the api requests related to the user.
@@ -19,9 +25,11 @@ import org.springframework.web.bind.annotation.*;
 @RequireAuth
 public class UserController {
     private final UserService userService;
+    private final LoginService loginService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, LoginService loginService) {
         this.userService = userService;
+        this.loginService = loginService;
     }
 
     /**
@@ -39,5 +47,26 @@ public class UserController {
             throw new StatusCodeException(HttpStatus.NOT_FOUND, "User not found in DB");
         }
         return new UserDTO(user);
+    }
+
+    /**
+     * A method for changing the password of a user.
+     * @param password The password you want to change into.
+     * @return Returns a new token for the changed user.
+     * @throws StatusCodeException
+     */
+    @PutMapping("/user/profile/password")
+    @Operation(summary = "Change the password of the user with the given user token")
+    @ApiResponse(responseCode = "200", description = "Returns a new token for the changed user")
+    @ApiResponse(responseCode = "400", description = "User not found in the DB")
+    public String changePasswordOfUser(@RequestBody String password) throws StatusCodeException, ServletException, IOException {
+        TokenDTO userToken = TokenUtil.getDataJWT();
+        Integer tokenUserId = Integer.valueOf(userToken.getAccountId());
+        UserDAO userDAO = userService.findUserByUserId(tokenUserId);
+        if(userDAO != null) {
+            UserDAO changedUser = userService.changePasswordForUser(userDAO, password);
+            return loginService.successfulAuthentication(changedUser);
+        }
+        throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User not found in DB");
     }
 }

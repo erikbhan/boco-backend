@@ -6,9 +6,11 @@ import no.ntnu.idatt2106.model.DTO.UserDTO;
 import no.ntnu.idatt2106.repository.UserRepository;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Optional;
 
 
+import no.ntnu.idatt2106.util.HashUtil;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -81,5 +83,17 @@ public class UserService {
             convertedList.add(new UserDTO(list.get(i)));
         }
         return convertedList;
+    }
+
+    public UserDAO changePasswordForUser(UserDAO userDAO, String password) {
+        HashUtil hashUtil = new HashUtil();
+        byte[] salt = hashUtil.getRandomSalt();
+        byte[] hashedPassword = hashUtil.getHashedPassword(password, salt);
+
+        userDAO.setSalt(Base64.getEncoder().encodeToString(salt));
+        userDAO.setHash(Base64.getEncoder().encodeToString(hashedPassword));
+
+        saveUser(userDAO);
+        return userDAO;
     }
 }
