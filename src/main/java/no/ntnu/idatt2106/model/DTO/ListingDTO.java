@@ -45,7 +45,7 @@ public class ListingDTO {
         this.description = listingDAO.getDescription();
         this.pricePerDay = listingDAO.getPricePerDay();
         this.address = listingDAO.getAddress();
-        this.userID = listingDAO.getUserID().getUserID();
+        this.userID = listingDAO.getUser().getUserID();
     }
 
     public String getTitle() {

@@ -17,19 +17,19 @@ public class UserCommunityID implements Serializable {
     public UserCommunityID() {
     }
 
-    public int getUserID() {
+    public int getUser() {
         return userID;
     }
 
-    public void setUserID(int userID) {
+    public void setUser(int userID) {
         this.userID = userID;
     }
 
-    public int getCommunityID() {
+    public int getCommunity() {
         return communityID;
     }
 
-    public void setCommunityID(int communityID) {
+    public void setCommunity(int communityID) {
         this.communityID = communityID;
     }
 }

@@ -18,19 +18,19 @@ public class ListingCategoryID implements Serializable {
         this.categoryID = categoryID;
     }
 
-    public int getListingID() {
+    public int getListing() {
         return listingID;
     }
 
-    public int getCategoryID() {
+    public int getCategory() {
         return categoryID;
     }
 
-    public void setCategoryID(int categoryID) {
+    public void setCategory(int categoryID) {
         this.categoryID = categoryID;
     }
 
-    public void setListingID(int listingID) {
+    public void setListing(int listingID) {
         this.listingID = listingID;
     }
 }

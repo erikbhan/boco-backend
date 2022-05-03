@@ -1,5 +1,3 @@
-
-
 DELETE  FROM public.community_listing WHERE community_id=4444;
 Delete from public.listing WHERE listing_id=5000;
 

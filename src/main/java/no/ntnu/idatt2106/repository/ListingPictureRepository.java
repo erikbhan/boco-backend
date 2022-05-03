@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;;import java.util.List;
 
 @Repository
 public interface ListingPictureRepository extends JpaRepository<ListingPictureDAO, Integer> {
-    List<ListingPictureDAO> findAllByListingID(ListingDAO listing);
+    List<ListingPictureDAO> findAllByListing(ListingDAO listing);
 }

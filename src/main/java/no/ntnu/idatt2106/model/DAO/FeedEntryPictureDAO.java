@@ -14,7 +14,7 @@ public class FeedEntryPictureDAO {
     private String picture;
     @ManyToOne
     @JoinColumn(name = "feed_entry_Id", nullable = false)
-    private FeedEntryDAO feedEntryID;
+    private FeedEntryDAO feedEntry;
 
     public int getFeedPictureID() {
         return this.feedPictureID;
@@ -32,11 +32,11 @@ public class FeedEntryPictureDAO {
         this.picture = picture;
     }
 
-    public FeedEntryDAO getFeedEntryID() {
-        return feedEntryID;
+    public FeedEntryDAO getFeedEntry() {
+        return feedEntry;
     }
 
-    public void setFeedEntryID(FeedEntryDAO feedEntryID) {
-        this.feedEntryID = feedEntryID;
+    public void setFeedEntry(FeedEntryDAO feedEntryID) {
+        this.feedEntry = feedEntryID;
     }
 }

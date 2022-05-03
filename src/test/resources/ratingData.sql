@@ -13,8 +13,14 @@ VALUES (10000, 1609329600000, true, 1609358400000, 1234, 4321, false);
 INSERT INTO public.rent(rent_id, from_time, is_accepted, to_time, listing_owner_id, renter_id, is_deleted)
 VALUES (10001, 1610456400000, false, 1610467200000, 1234, 4321, false);
 
+INSERT INTO public.rent(rent_id, from_time, is_accepted, to_time, listing_owner_id, renter_id, is_deleted)
+VALUES (10002, 1610456400000, false, 1610467200000, 1234, 2022, false);
+
 INSERT INTO public.rating(rating_id, score, comment, renter_is_receiver_of_rating, rent_id)
 VALUES (9876, 5, 'fy dævven, detta var sykt bra ass my dude!', true, 10000);
 
 INSERT INTO public.rating(rating_id, score, comment, renter_is_receiver_of_rating, rent_id)
 VALUES (9877, 1, 'fy dævven, detta var sykt dårlig ass my dude!', true, 10001);
+
+INSERT INTO public.rating(rating_id, score, comment, renter_is_receiver_of_rating, rent_id)
+VALUES (9878, 1, 'Fint støvsuger!', false, 10002);

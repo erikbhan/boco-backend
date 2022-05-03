@@ -41,7 +41,7 @@ public class RentService {
      */
     public List<RentDAO> findAllRentDAOWithRenterIdAndStatus(int renterId, boolean isAccepted) {
         UserDAO renter = userService.findUserByUserId(renterId);
-        return rentRepository.findAllByRenterIDAndIsAccepted(renter,isAccepted);
+        return rentRepository.findAllByRenterAndIsAccepted(renter,isAccepted);
     }
 
     /**
@@ -52,7 +52,7 @@ public class RentService {
      */
     public List<RentDAO> findAllRentDAOWithRenterId(int renterId) {
         UserDAO renter = userService.findUserByUserId(renterId);
-        return rentRepository.findAllByRenterID(renter);
+        return rentRepository.findAllByRenter(renter);
     }
 
     /**
@@ -69,7 +69,7 @@ public class RentService {
             List<RentDAO> listOfAllAgreements = new ArrayList<>();
             for(int i = 0; i < allListedObjects.size(); i++) {
                 List<RentDAO> allAgreementsForThisItem = rentRepository
-                        .findAllByListingOwnerID(allListedObjects.get(i));
+                        .findAllByListing(allListedObjects.get(i));
                 if(allAgreementsForThisItem != null) {
                     for(int l = 0; l < allAgreementsForThisItem.size(); l++) {
                         listOfAllAgreements.add(allAgreementsForThisItem.get(l));
@@ -126,11 +126,11 @@ public class RentService {
         ListingDAO listing;
         if(renterId != null) {
             renter = userService.findUserByUserId(rentDTO.getRenterId());
-            rentDAO.setRenterID(renter);
+            rentDAO.setRenter(renter);
         }
         if(listingId != null) {
             listing = listingService.findListingByListingId(rentDTO.getListingId());
-            rentDAO.setListingOwnerID(listing);
+            rentDAO.setListing(listing);
         }
         if(rentId != null) {
             rentDAO.setRentID(rentDTO.getRentId());
@@ -192,7 +192,7 @@ public class RentService {
     }
 
     public List<RentDAO> findRentByRenterID(UserDAO user){
-        return rentRepository.findRentDAOSByRenterID(user);
+        return rentRepository.findRentDAOSByRenter(user);
     }
 
     /**
@@ -212,7 +212,7 @@ public class RentService {
      *         corresponding ending times
      */
     public List<List<Long>> getNonAvailableTimes(int listingID){
-        List<RentDAO> rentDAOs= rentRepository.findRentDAOSByListingOwnerID(listingService.getListingDAOByID(listingID));
+        List<RentDAO> rentDAOs= rentRepository.findRentDAOSByListing(listingService.getListingDAOByID(listingID));
         ArrayList<List<Long>> nonAvailableTimes = new ArrayList<>();
         for(RentDAO rentDAO:rentDAOs) {
             ArrayList<Long> addThis = new ArrayList<>();
@@ -229,8 +229,8 @@ public class RentService {
             RentDAO rentDAO = new RentDAO();
             rentDAO.setFromTime(dates.get(0));
             rentDAO.setToTime(dates.get(1));
-            rentDAO.setListingOwnerID(listingService.findListingByListingId(dto.getListingID()));
-            rentDAO.setRenterID(userService.findUserByUserId(dto.getUserID()));
+            rentDAO.setListing(listingService.findListingByListingId(dto.getListingID()));
+            rentDAO.setRenter(userService.findUserByUserId(dto.getUserID()));
             rentDAO.setDeleted(false);
             rentDAO.setAccepted(true);
             unavailabilityRents.add(rentDAO);

@@ -17,19 +17,19 @@ public class CommunityListingID implements Serializable {
         this.listingID = listingID;
     }
 
-    public long getCommunityID() {
+    public long getCommunity() {
         return communityID;
     }
 
-    public long getListingID() {
+    public long getListing() {
         return listingID;
     }
 
-    public void setListingID(int listingID) {
+    public void setListing(int listingID) {
         this.listingID = listingID;
     }
 
-    public void setCommunityID(int communityID) {
+    public void setCommunity(int communityID) {
         this.communityID = communityID;
     }
 }

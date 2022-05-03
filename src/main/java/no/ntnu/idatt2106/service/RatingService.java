@@ -46,6 +46,13 @@ public class RatingService {
         return ratingRepository.findRatingDAOSByRatingID(id);
     }
 
+
+    public boolean userIsRenter(UserDAO user, RentDAO rent) {
+        if (rent.getRenter() == user){
+            return true;
+        } else return false;
+    }
+
     /**
      * A method to find all ratings of a user as the renter
      * @param userID The userID of the user we want to find the ratings of
@@ -56,8 +63,7 @@ public class RatingService {
         ArrayList<RatingDTO> ratings = new ArrayList<>();
         List<RentDAO> rented = rentService.findRentByRenterID(userDAO);
         for (RentDAO rentDAO : rented) {
-            System.out.println(rentDAO.toString());
-            List<RatingDAO> ratingsByRent = ratingRepository.findByRentIDAndRenterIsReceiverOfRatingFalse(rentDAO);
+            List<RatingDAO> ratingsByRent = ratingRepository.findByRentAndRenterIsReceiverOfRatingTrue(rentDAO);
             for (RatingDAO dao : ratingsByRent){
                 RatingDTO dto = new RatingDTO();
                 dto.setComment(dao.getComment());
@@ -78,9 +84,9 @@ public class RatingService {
         ArrayList<RatingDTO> ratings = new ArrayList<>();
         List<ListingDAO> listings = listingService.findListingsByUserDAO(userDAO);
         for (ListingDAO listingDAO : listings){
-            List<RentDAO> rents = rentRepository.findRentDAOSByListingOwnerID(listingDAO);
+            List<RentDAO> rents = rentRepository.findRentDAOSByListing(listingDAO);
             for (RentDAO rentDAO : rents){
-                List<RatingDAO> ratingsByRent = ratingRepository.findByRentIDAndRenterIsReceiverOfRatingTrue(rentDAO);
+                List<RatingDAO> ratingsByRent = ratingRepository.findByRentAndRenterIsReceiverOfRatingFalse(rentDAO);
                 for (RatingDAO dao : ratingsByRent){
                     RatingDTO dto = new RatingDTO();
                     dto.setComment(dao.getComment());
@@ -90,6 +96,40 @@ public class RatingService {
             }
         }
         return ratings.subList(0,ratings.size());
+    }
+
+    /**
+     * Finds all ratings for a Rent by providing RentID
+     * @param rentID ID for rent to find ratings
+     * @return A list of all ratings for a Rent
+     */
+    public List<RatingDAO> findRatingsByRentID(int rentID) {
+        RentDAO rentDAO = rentService.getRentFromId(rentID);
+        return ratingRepository.findByRent(rentDAO);
+    }
+
+    /**
+     * Checks if a user has given a rating
+     * @param userDAO
+     * @param rentID
+     * @return
+     */
+    public boolean userHasGivenRating(UserDAO userDAO, int rentID) {
+        List<RatingDAO> ratings = findRatingsByRentID(rentID);
+        RentDAO rent = rentRepository.findByRentID(rentID);
+
+        //If user is not a part of rent or listing return false
+        if (!rent.getRenter().equals(userDAO) && !rent.getListing().getUser().equals(userDAO)) {
+            return false;
+        }
+
+        for (RatingDAO rating:ratings) {
+            if ((rating.isRenterIsReceiverOfRating() && !rent.getRenter().equals(userDAO)) ||
+                    (!rating.isRenterIsReceiverOfRating() && rent.getRenter().equals(userDAO))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

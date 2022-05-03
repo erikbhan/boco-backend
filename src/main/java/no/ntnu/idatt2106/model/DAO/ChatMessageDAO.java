@@ -1,7 +1,5 @@
 package no.ntnu.idatt2106.model.DAO;
 
-import java.sql.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,17 +20,17 @@ public class ChatMessageDAO {
     @Column(name = "text")
     private String text;
     @Column(name = "time_sent")
-    private Date timeSent;
+    private long timeSent;
     @Column(name = "is_read")
     private Boolean isRead;
     @ManyToOne
     @JoinColumn(name = "sending_user_id", nullable = false)
-    private UserDAO sendingUserID;
+    private UserDAO sendingUser;
     @ManyToOne
     @JoinColumn(name = "receiving_user_id", nullable = false)
-    private UserDAO receivingUserID;
+    private UserDAO receivingUser;
 
-    public long getMessageID() {
+    public int getMessageID() {
         return this.messageID;
     }
 
@@ -48,11 +46,11 @@ public class ChatMessageDAO {
         this.text = text;
     }
 
-    public Date getTimeSent() {
+    public long getTimeSent() {
         return this.timeSent;
     }
 
-    public void setTimeSent(Date timeSent) {
+    public void setTimeSent(long timeSent) {
         this.timeSent = timeSent;
     }
 
@@ -76,19 +74,19 @@ public class ChatMessageDAO {
         isRead = read;
     }
 
-    public UserDAO getSendingUserID() {
-        return sendingUserID;
+    public UserDAO getSendingUser() {
+        return sendingUser;
     }
 
-    public void setSendingUserID(UserDAO sendingUserID) {
-        this.sendingUserID = sendingUserID;
+    public void setSendingUser(UserDAO sendingUser) {
+        this.sendingUser = sendingUser;
     }
 
-    public UserDAO getReceivingUserID() {
-        return receivingUserID;
+    public UserDAO getReceivingUser() {
+        return receivingUser;
     }
 
-    public void setReceivingUserID(UserDAO receivingUserID) {
-        this.receivingUserID = receivingUserID;
+    public void setReceivingUser(UserDAO receivingUser) {
+        this.receivingUser = receivingUser;
     }
 }

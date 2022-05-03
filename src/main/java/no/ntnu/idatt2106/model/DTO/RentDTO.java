@@ -42,9 +42,9 @@ public class RentDTO {
         this.fromTime = rentDAO.getFromTime();
         this.toTime = rentDAO.getToTime();
         this.isAccepted = rentDAO.getIsAccepted();
-        this.listingId = rentDAO.getListingOwnerID().getListingID();
-        this.listing = new ListingDTO(rentDAO.getListingOwnerID());
-        this.renterId = rentDAO.getRenterID().getUserID();
+        this.listing = new ListingDTO(rentDAO.getListing());
+        this.listingId = rentDAO.getListing().getListingID();
+        this.renterId = rentDAO.getRenter().getUserID();
     }
 
     public RentDTO(long fromTime, long toTime, Boolean isAccepted, int listingId, int renterId, String message) {

@@ -26,8 +26,8 @@ public class CommunityListingService {
      */
     public void saveCommunityListing(CommunityDAO communityDAO, ListingDAO listingDAO){
         CommunityListingDAO communityListingDAO = new CommunityListingDAO();
-        communityListingDAO.setCommunityID(communityDAO);
-        communityListingDAO.setListingID(listingDAO);
+        communityListingDAO.setCommunity(communityDAO);
+        communityListingDAO.setListing(listingDAO);
         communityListingRepository.save(communityListingDAO);
     }
     /**
@@ -41,7 +41,7 @@ public class CommunityListingService {
         int[] communityIDs = new int[communityDAOs.size()];
         //Loops through to find the communityIDs
         for (int i = 0; i < communityIDs.length; i++) {
-            communityIDs[i] = communityDAOs.get(i).getCommunityID().getCommunityID();
+            communityIDs[i] = communityDAOs.get(i).getCommunity().getCommunityID();
         }
         return communityIDs;
     }

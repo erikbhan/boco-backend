@@ -4,16 +4,12 @@ import no.ntnu.idatt2106.model.DAO.CommunityDAO;
 import no.ntnu.idatt2106.model.DAO.CommunityListingDAO;
 import no.ntnu.idatt2106.model.DAO.ListingDAO;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
-import no.ntnu.idatt2106.model.DTO.CommunityDTO;
 import no.ntnu.idatt2106.model.DTO.ListingDTO;
 import no.ntnu.idatt2106.repository.ListingRepository;
 
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
-import javax.persistence.EntityManager;
 
 import org.springframework.stereotype.Service;
 
@@ -57,7 +53,7 @@ public class ListingService {
      * @return All the user's listings
      */
     public List<ListingDAO> getAllOfUsersListings(UserDAO userDAO) {
-        return listingRepository.findAllFromListingDAOByUserID(userDAO);
+        return listingRepository.findAllFromListingDAOByUser(userDAO);
     }
 
     /**
@@ -107,7 +103,7 @@ public class ListingService {
         // Creates a ListingDTO with the DAO-information, aswell as the categorynames
         // and communityIDs.
         ListingDTO listingDTO = new ListingDTO(listingDAO.getTitle(), listingDAO.getDescription(),
-                listingDAO.getPricePerDay(), listingDAO.getAddress(), listingDAO.getUserID().getUserID(), categoryNames,
+                listingDAO.getPricePerDay(), listingDAO.getAddress(), listingDAO.getUser().getUserID(), categoryNames,
                 communityIDs);
         return listingDTO;
     }
@@ -128,11 +124,11 @@ public class ListingService {
      * @return Returns a list of all listing daos in the db with this owner dao.
      */
     public List<ListingDAO> findAllListingDAOByIdOfOwner(UserDAO ownerId) {
-        return listingRepository.findAllByUserID(ownerId);
+        return listingRepository.findAllByUser(ownerId);
     }
 
     public List<ListingDAO> findListingsByUserDAO(UserDAO user) {
-        return listingRepository.findListingDAOSByUserID(user);
+        return listingRepository.findListingDAOSByUser(user);
     }
 
     /**
@@ -158,7 +154,7 @@ public class ListingService {
 
         if(communityListings != null) {
             for(int i = 0; i < communityListings.size(); i++) {
-                listings.add(communityListings.get(i).getListingID());
+                listings.add(communityListings.get(i).getListing());
             }
         }
         return listings;

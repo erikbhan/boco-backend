@@ -4,8 +4,6 @@ import no.ntnu.idatt2106.model.DAO.CommunityDAO;
 import no.ntnu.idatt2106.model.DAO.UserCommunityDAO;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
 import no.ntnu.idatt2106.model.DTO.CommunityDTO;
-import no.ntnu.idatt2106.model.DTO.UserDTO;
-import no.ntnu.idatt2106.model.ID.UserCommunityID;
 import no.ntnu.idatt2106.repository.CommunityRepository;
 import no.ntnu.idatt2106.repository.UserCommunityRepository;
 import org.springframework.stereotype.Service;
@@ -31,8 +29,8 @@ public class UserCommunityService {
         return (userCommunityRepository.isUser(user, communityDAO.getCommunityID()) == 1);
     }
 
-    public boolean userIsAdminInCommunity(UserCommunityDAO ucd) {
-        return ucd.isAdministrator();
+    public boolean userIsAdminInCommunity(int userID, int communityID) {
+        return userCommunityRepository.isAdmin(userID,communityID);
     }
 
     public boolean addUserToCommunity(int user, CommunityDAO communityDAO){
@@ -48,7 +46,7 @@ public class UserCommunityService {
 
 
     public boolean removeUserFromCommunity(UserCommunityDAO ucd){
-        if(userIsInCommunity(ucd.getUserID().getUserID(), ucd.getCommunityID())){
+        if(userIsInCommunity(ucd.getUser().getUserID(), ucd.getCommunity())){
 
             userCommunityRepository.delete(ucd);
             return true;
@@ -71,7 +69,7 @@ public class UserCommunityService {
         ArrayList<CommunityDTO> communityDTOList = new ArrayList<>();
         for (int i = 0; i < communityList.size(); i++) {
             CommunityDAO communityDAO = communityRepository
-                    .findCommunityDAOByCommunityID(communityList.get(i).getCommunityID().getCommunityID());
+                    .findCommunityDAOByCommunityID(communityList.get(i).getCommunity().getCommunityID());
             CommunityDTO communityDTO = new CommunityDTO(communityDAO);
             communityDTOList.add(communityDTO);
         }
@@ -81,7 +79,7 @@ public class UserCommunityService {
     public UserCommunityDAO getByIds(int userId, CommunityDAO communityDAO) {
         List<UserCommunityDAO> communities = userCommunityRepository.findAllByUserID(userService.findUserByUserId(userId));
         for (UserCommunityDAO userCommunityDAO:communities) {
-            if (userCommunityDAO.getCommunityID().equals(communityDAO)) {
+            if (userCommunityDAO.getCommunity().equals(communityDAO)) {
                 return userCommunityDAO;
             }
         }
@@ -98,8 +96,17 @@ public class UserCommunityService {
     public List<UserDAO> makeListOfAllMembersInACommunity(List<UserCommunityDAO> list) {
         List<UserDAO> members = new ArrayList<>();
         for(int i = 0; i < list.size(); i++) {
-            members.add(list.get(i).getUserID());
+            members.add(list.get(i).getUser());
         }
         return members;
+    }
+
+    public List<CommunityDAO> getListOfAllAdminCommunities(int userID){
+        List<CommunityDAO> communities = new ArrayList<>();
+        List<Integer> adminCommunityIDs = userCommunityRepository.getAdminCommunityIDs(userID);
+        for (int communityID : adminCommunityIDs){
+            communities.add(communityService.findCommunityDAOByCommunityID(communityID));
+        }
+        return communities;
     }
 }
