@@ -2,6 +2,8 @@ package no.ntnu.idatt2106.controller;
 
 import java.util.List;
 
+import no.ntnu.idatt2106.model.DAO.ListingPictureDAO;
+import no.ntnu.idatt2106.model.DTO.ListingPictureDTO;
 import no.ntnu.idatt2106.model.DAO.RentDAO;
 import no.ntnu.idatt2106.model.DTO.ListingWithUnavailabilityDTO;
 import no.ntnu.idatt2106.service.*;
@@ -35,19 +37,20 @@ public class ListingController {
     private final CategoryService categoryService;
     private final CommunityListingService communityListingService;
     private final CommunityService communityService;
+    private final ListingPictureService listingPictureService;
     private final RentService rentService;
 
     public ListingController(ListingService listingService, ListingCategoryService listingCategoryService,
-            UserService userService,
-            CategoryService categoryService, CommunityListingService communityListingService,
-            CommunityService communityService,
-            RentService rentService) {
+                             UserService userService, CategoryService categoryService,
+                             CommunityListingService communityListingService, CommunityService communityService,
+                             ListingPictureService listingPictureService, RentService rentService) {
         this.listingService = listingService;
         this.listingCategoryService = listingCategoryService;
         this.userService = userService;
         this.categoryService = categoryService;
         this.communityListingService = communityListingService;
         this.communityService = communityService;
+        this.listingPictureService = listingPictureService;
         this.rentService = rentService;
     }
 
@@ -116,10 +119,10 @@ public class ListingController {
      * @param listingDTO Object
      * @throws StatusCodeException
      */
+    @Operation(summary = "Post Listing and adding all the listing's categories to the ListingCategory junction table")
     @ApiResponse(responseCode = "200", description = "Listing posted")
     @ApiResponse(responseCode = "400", description = "User not found")
     @PostMapping("/listing")
-    @Operation(summary = "Post Listing and adding all the listing's categories to the ListingCategory junction table")
     public boolean postListing(@RequestBody ListingDTO listingDTO) throws StatusCodeException {
         // Creates a ListingDAO with the information from the DTO.
         ListingDAO listing = new ListingDAO();
@@ -214,5 +217,31 @@ public class ListingController {
     @GetMapping("/listing/title/{title}")
     public List<ListingDTO> searchForListingsByTitle(@PathVariable String title){
         return listingService.getListingDTOByTitle(title, listingCategoryService, communityListingService);
+    }
+
+    /**
+     * A method for gettig all pictures for a listing from the DB.
+     * @param listingid The id of the listing
+     * @return Returns a list of all pictures or an http status error code.
+     * @throws StatusCodeException
+     */
+    @Operation(summary = "Get all pictures for a listing")
+    @ApiResponse(responseCode = "200", description = "All pictures are sent")
+    @ApiResponse(responseCode = "400", description = "Listing id is invalid, pictureDAO list is null or an exception occures")
+    @GetMapping("/listing/{listingid}/pictures")
+    public List<ListingPictureDTO> getAllPicturesForAListing(@PathVariable int listingid) throws StatusCodeException {
+        if(listingid > 0) {
+            List<ListingPictureDAO> pictureDAOs = listingPictureService.findAllPicturesWithListingId(listingid);
+            if(pictureDAOs != null) {
+                List<ListingPictureDTO> listOfPictures = listingPictureService
+                        .convertListOfListingPictureDAOToListOfListingPictureDTO(pictureDAOs);
+                if(listOfPictures != null) {
+                    return listOfPictures;
+                }
+                throw new StatusCodeException(HttpStatus.BAD_REQUEST, "An exception occurred");
+            }
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "PictureDAOs list is null");
+        }
+        throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Listing id must be larger than 0");
     }
 }

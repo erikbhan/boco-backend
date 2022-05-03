@@ -84,7 +84,7 @@ public class RentControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].*", hasSize(6)));
+                .andExpect(jsonPath("$[0].*", hasSize(7)));
     }
 
     @Test
@@ -101,7 +101,7 @@ public class RentControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].*", hasSize(6)));
+                .andExpect(jsonPath("$[0].*", hasSize(7)));
     }
 
     @Test
@@ -118,7 +118,7 @@ public class RentControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].*", hasSize(6)));
+                .andExpect(jsonPath("$[0].*", hasSize(7)));
     }
 
     @Test
@@ -135,7 +135,7 @@ public class RentControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].*", hasSize(6)));
+                .andExpect(jsonPath("$[0].*", hasSize(7)));
     }
 
     @Test

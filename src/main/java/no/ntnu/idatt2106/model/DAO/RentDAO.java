@@ -1,6 +1,11 @@
 package no.ntnu.idatt2106.model.DAO;
 import no.ntnu.idatt2106.model.DTO.RentDTO;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+
 import javax.persistence.*;
 
 /**
@@ -42,7 +47,8 @@ public class RentDAO{
     public RentDAO(RentDTO rentDTO) {
         this.fromTime = rentDTO.getFromTime();
         this.toTime = rentDTO.getToTime();
-        this.isAccepted = rentDTO.getAccepted();
+        this.isAccepted = rentDTO.getIsAccepted();
+        this.message = rentDTO.getMessage();
     }
 
     public RentDAO() {

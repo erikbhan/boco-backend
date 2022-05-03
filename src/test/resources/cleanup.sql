@@ -1,3 +1,4 @@
+DELETE FROM public.listing_picture;
 DELETE FROM public.listing_category;
 DELETE FROM public.category;
 DELETE FROM public.notification;
