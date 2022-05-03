@@ -135,11 +135,16 @@ public class ListingController {
         listingService.saveListing(listing);
         // The for-loop goes through the categories of listing, adding them to the
         // listingCategory table.
-        // Finds the categoryIDs from the category table using the categorynames.
-        for (String categoryName : listingDTO.getCategoryNames()) {
-            listingCategoryService.saveListingCategory(categoryService.findCategoryDAOByName(categoryName),
-                    listing);
-        }
+        try {
+            for (String categoryName : listingDTO.getCategoryNames()) {
+//                try {
+                    listingCategoryService.saveListingCategory(categoryService.findCategoryDAOByName(categoryName),
+                            listing);
+//                } catch (Exception e) {
+//                    throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Could not find category");
+//                }
+            }
+        }catch (Exception e){throw new StatusCodeException(HttpStatus.BAD_REQUEST, "could not find category");}
         // The for-loop goes through the communities of listing, adding them to the
         // communityListing table.
         // Finds communities using communityIDs
