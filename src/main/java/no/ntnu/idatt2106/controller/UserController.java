@@ -56,36 +56,27 @@ public class UserController {
      * @return Returns a new token for the changed user.
      * @throws StatusCodeException
      */
-    @PutMapping("/user/profile/password")
+    @PutMapping("/user/password/change")
     @Operation(summary = "Change the password of the user with the given user token")
     @ApiResponse(responseCode = "200", description = "Returns a new token for the changed user")
     @ApiResponse(responseCode = "400", description = "User not found in the DB")
     public String changePasswordOfUser(@RequestBody String password) throws StatusCodeException, ServletException, IOException {
-        TokenDTO userToken = TokenUtil.getDataJWT();
-        Integer tokenUserId = Integer.valueOf(userToken.getAccountId());
-        UserDAO userDAO = userService.findUserByUserId(tokenUserId);
-        if(userDAO != null) {
-            password = password.substring(13, password.length()-2);
-            UserDAO changedUser = userService.changePasswordForUser(userDAO, password);
-            return loginService.successfulAuthentication(changedUser);
-        }
-        throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User not found in DB");
-    }
-
-    @Operation(summary = "Checks to see if the password for the user is the correct password")
-    @ApiResponse(responseCode = "200", description = "Password is a match")
-    @ApiResponse(responseCode = "400", description = "The password provided did not match the password of the user")
-    @ApiResponse(responseCode = "500", description = "Unexpected server error")
-    @PostMapping("/login/authentication")
-    public String checkPassword(@RequestBody String password) throws StatusCodeException {
         try {
             TokenDTO userToken = TokenUtil.getDataJWT();
             Integer tokenUserId = Integer.valueOf(userToken.getAccountId());
             UserDAO userDAO = userService.findUserByUserId(tokenUserId);
-            if (!userService.attemptAuthenticationOfPassword(userDAO, password))
+
+            //Changes the password json string back into the two passwords
+            String trimmedPassword = password.substring(28, password.length()-3);
+            String[] twoPasswords = trimmedPassword.split("\",\"");
+            String newPassword = twoPasswords[0];
+            String oldPassword = twoPasswords[1].substring(14);
+
+            if (!userService.attemptAuthenticationOfPassword(userDAO, oldPassword))
                 throw new StatusCodeException(HttpStatus.BAD_REQUEST, "The password did not match");
-            return "Password is a match";
-        } catch (NoSuchAlgorithmException | StatusCodeException e) {
+            UserDAO changedUser = userService.changePasswordForUser(userDAO, newPassword);
+            return loginService.successfulAuthentication(changedUser);
+        } catch (NoSuchAlgorithmException | IOException | ServletException e) {
             e.printStackTrace();
             throw new StatusCodeException(HttpStatus.INTERNAL_SERVER_ERROR, "How did you get here");
         }
