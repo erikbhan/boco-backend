@@ -137,12 +137,8 @@ public class ListingController {
         // listingCategory table.
         try {
             for (String categoryName : listingDTO.getCategoryNames()) {
-//                try {
-                    listingCategoryService.saveListingCategory(categoryService.findCategoryDAOByName(categoryName),
-                            listing);
-//                } catch (Exception e) {
-//                    throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Could not find category");
-//                }
+                listingCategoryService.saveListingCategory(categoryService.findCategoryDAOByName(categoryName),
+                        listing);
             }
         }catch (Exception e){throw new StatusCodeException(HttpStatus.BAD_REQUEST, "could not find category");}
         // The for-loop goes through the communities of listing, adding them to the
