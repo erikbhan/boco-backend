@@ -11,4 +11,5 @@ public interface RatingRepository extends JpaRepository<RatingDAO, Integer> {
     RatingDAO findRatingDAOSByRatingID(int id);
     List<RatingDAO> findByRentAndRenterIsReceiverOfRatingTrue(RentDAO rentDAO);
     List<RatingDAO> findByRentAndRenterIsReceiverOfRatingFalse(RentDAO rentDAO);
+    List<RatingDAO> findByRent(RentDAO rentDAO);
 }
