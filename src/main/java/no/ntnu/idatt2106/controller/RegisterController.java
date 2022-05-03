@@ -29,26 +29,37 @@ public class RegisterController {
     /**
      * Endpoint for registering new users. Creates a new user from the given information and saves it to the DB.
      * @param regInfo information given in request
-     * @throws StatusCodeException if e-mail is already in use in the DB.
+     * @throws StatusCodeException if the request is invalid.
      */
     @PostMapping("/register")
     @ApiResponse(responseCode = "200", description = "User registered successfully")
     @ApiResponse(responseCode = "400", description = "Bad Request; e-mail in use")
     @Operation(summary = "Register a new user with the given information")
     public void registerNewUserAccount(@RequestBody RegisterUserDTO regInfo) throws StatusCodeException {
+        if (regInfo.getEmail().length() < 5) throw new StatusCodeException(HttpStatus.BAD_REQUEST, "E-mail is too short");
+        if (regInfo.getEmail() == null) throw new StatusCodeException(HttpStatus.BAD_REQUEST, "E-mail is null");
+        if (regInfo.getFirstName() == null) throw new StatusCodeException(HttpStatus.BAD_REQUEST, "First name is null");
+        if (regInfo.getFirstName().length() < 1) throw new StatusCodeException(HttpStatus.BAD_REQUEST, "First name is empty");
+        if (regInfo.getLastName().length() < 1) throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Last name is empty");
+        if (regInfo.getLastName() == null) throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Last name is null");
+        if (regInfo.getAddress() == null) throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Address is null");
+        if (regInfo.getAddress().length() < 1) throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Address is empty");
+        if (regInfo.getPassword() == null) throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Password is null");
+        if (regInfo.getPassword().length() < 8) throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Password is less than 8 characters");
         if (userService.findUserByEmail(regInfo.getEmail()) != null) throw new StatusCodeException(HttpStatus.BAD_REQUEST, "E-mail in use");
         
         HashUtil hashUtil = new HashUtil();
         byte[] salt = hashUtil.getRandomSalt();
         byte[] hashedPassword = hashUtil.getHashedPassword(regInfo.getPassword(), salt);
         
-        UserDAO newUser = new UserDAO();
-        newUser.setSalt(Base64.getEncoder().encodeToString(salt));
-        newUser.setHash(Base64.getEncoder().encodeToString(hashedPassword));
-        newUser.setEmail(regInfo.getEmail());
-        newUser.setFirstName(regInfo.getFirstName());
-        newUser.setLastName(regInfo.getLastName());
-        newUser.setAddress(regInfo.getAddress());
+        UserDAO newUser = new UserDAO(
+                regInfo.getEmail(),
+                regInfo.getFirstName(),
+                regInfo.getLastName(),
+                regInfo.getAddress(),
+                null,
+                Base64.getEncoder().encodeToString(salt),
+                Base64.getEncoder().encodeToString(hashedPassword));
 
         userService.saveUser(newUser);
     }
