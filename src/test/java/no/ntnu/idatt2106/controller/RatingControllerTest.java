@@ -135,7 +135,7 @@ public class RatingControllerTest {
         mockMvc.perform(get("/rating/10002/israted")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
-                .andExpect(status().isOk());
+                .andExpect(status().is3xxRedirection());
     }
 
     @Test
@@ -145,7 +145,7 @@ public class RatingControllerTest {
         mockMvc.perform(get("/rating/10000/israted")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
-                .andExpect(status().is4xxClientError());
+                .andExpect(status().isOk());
     }
 
     public static String asJsonString(final Object obj) {
