@@ -103,7 +103,7 @@ public class ListingControllerTest {
      * @throws Exception
      */
     @Test
-    public void createListingWithNonExistingCategry_shouldThrow400error() throws Exception {
+    public void createListingWithNonExistingCategory_shouldThrow400error() throws Exception {
         categories = new String[]{"Salse", "Utstyr"};
         communityIDs = new int[]{1000, 1001};
         mockMvc.perform(post("/listing")
