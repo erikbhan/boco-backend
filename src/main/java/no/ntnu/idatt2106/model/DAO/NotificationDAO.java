@@ -1,5 +1,7 @@
 package no.ntnu.idatt2106.model.DAO;
 
+import org.hibernate.annotations.Check;
+
 import javax.persistence.*;
 
 /**

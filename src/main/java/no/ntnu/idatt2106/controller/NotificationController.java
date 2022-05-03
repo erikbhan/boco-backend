@@ -8,6 +8,8 @@ import no.ntnu.idatt2106.model.DAO.NotificationDAO;
 import no.ntnu.idatt2106.model.DTO.ChatMessageDTO;
 import no.ntnu.idatt2106.model.DTO.NotificationDTO;
 import no.ntnu.idatt2106.model.DTO.TokenDTO;
+import no.ntnu.idatt2106.service.ChatService;
+import no.ntnu.idatt2106.service.CommunityRequestService;
 import no.ntnu.idatt2106.service.NotificationService;
 import no.ntnu.idatt2106.util.TokenUtil;
 import org.springframework.http.HttpStatus;
@@ -22,9 +24,13 @@ import java.util.List;
 public class NotificationController {
 
     private final NotificationService notificationService;
+    private final CommunityRequestService communityRequestService;
+    private final ChatService chatService;
 
-    public NotificationController(NotificationService notificationService) {
+    public NotificationController(NotificationService notificationService, CommunityRequestService communityRequestService, ChatService chatService) {
         this.notificationService = notificationService;
+        this.communityRequestService = communityRequestService;
+        this.chatService = chatService;
     }
 
 
@@ -34,15 +40,20 @@ public class NotificationController {
      */
     @Operation(summary = "Adds community request notification")
     @ApiResponse(responseCode = "201", description = "CREATED")
+    @ApiResponse(responseCode = "400", description = "CommunityRequest not found")
+    @ApiResponse(responseCode = "400", description = "Could not add notification")
     @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
-    @PostMapping("notification/addcommunityrequest")
-    public void addCommunityRequestNotification(NotificationDTO notificationDTO) throws StatusCodeException {
+    @PostMapping("notifications/communities/joinrequest")
+    public void addCommunityRequestNotification(@RequestBody NotificationDTO notificationDTO) throws StatusCodeException {
         NotificationDAO notificationDAO = notificationService.turnDTOIntoDAO(notificationDTO);
         try{
             TokenDTO userToken = TokenUtil.getDataJWT();
             int tokenUserId = userToken.getAccountId();
         } catch (Exception e) {
             throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "Token not found");
+        }
+        if(communityRequestService.getById(notificationDTO.getCommunityRequestID()) == null){
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Could not find communityRequest with that id.");
         }
         try {
             notificationService.saveCommunityRequestNotification(notificationDAO);
@@ -79,15 +90,20 @@ public class NotificationController {
      */
     @Operation(summary = "Adds chat message notification")
     @ApiResponse(responseCode = "201", description = "CREATED")
+    @ApiResponse(responseCode = "400", description = "ChatMessage not found")
+    @ApiResponse(responseCode = "400", description = "Could not add notification")
     @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
-    @PostMapping("notification/addchat")
-    public void addChatMessageNotification(NotificationDTO notificationDTO) throws StatusCodeException {
+    @PostMapping("notifications/chat")
+    public void addChatMessageNotification(@RequestBody NotificationDTO notificationDTO) throws StatusCodeException {
         NotificationDAO notificationDAO = notificationService.turnDTOIntoDAO(notificationDTO);
         try{
             TokenDTO userToken = TokenUtil.getDataJWT();
             int tokenUserId = userToken.getAccountId();
         } catch (Exception e) {
             throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "Token not found");
+        }
+        if(chatService.getById(notificationDTO.getChatMessageID()) == null){
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Could not find chatMessage with that id.");
         }
         try {
             notificationService.saveChatMessageNotification(notificationDAO);

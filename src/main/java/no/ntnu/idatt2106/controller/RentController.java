@@ -28,7 +28,7 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @ApiResponse(responseCode = "401", description = "Not authenticated")
-// @RequireAuth
+@RequireAuth
 public class RentController {
     private final RentService rentService;
     private final UserService userService;

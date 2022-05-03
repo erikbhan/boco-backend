@@ -61,11 +61,11 @@ public class NotificationService {
     }
 
     public void saveCommunityRequestNotification(NotificationDAO notificationDAO) {
-
+        notificationRepository.save(notificationDAO);
     }
 
     public void saveChatMessageNotification(NotificationDAO notificationDAO) {
-
+        notificationRepository.save(notificationDAO);
     }
 
     public NotificationDAO turnDTOIntoDAO(NotificationDTO notificationDTO) {
