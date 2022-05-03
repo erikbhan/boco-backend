@@ -15,7 +15,7 @@ public class ImageDAO {
     @Column(length=16777215, name = "image")
     private byte[] image;
 
-    @Column(name = "user_id")
+    @JoinColumn(name = "user_id")
     @ManyToOne
     private UserDAO user;
 
