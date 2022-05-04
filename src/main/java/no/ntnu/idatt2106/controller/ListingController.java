@@ -72,8 +72,7 @@ public class ListingController {
     }
 
     /**
-     * 
-     * @param userID Owner of the listing
+     *
      * @return A list of all the user's listings
      * @throws StatusCodeException
      */
