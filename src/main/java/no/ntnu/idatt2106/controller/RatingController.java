@@ -137,12 +137,16 @@ public class RatingController {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Rent not found");
         }
         int tokenUserID = userToken.getAccountId();
+        if (ratingDTO.getScore() < 0 || ratingDTO.getScore() > 5) {
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Rating can not be less than 0 or more than 5");
+        }
         if (userService.findUserByUserId(tokenUserID) != null){
             RatingDAO dao = new RatingDAO();
             dao.setComment(ratingDTO.getComment());
             dao.setScore(ratingDTO.getScore());
             dao.setRenterIsReceiverOfRating(ratingDTO.isRenterReceiverOfRating());
             dao.setRent(rentService.getRentFromId(ratingDTO.getRentID()));
+            System.out.println(ratingIsGivenByCurrentUser(ratingDTO.getRentID()));
             if (!ratingIsGivenByCurrentUser(ratingDTO.getRentID())){
                 ratingService.saveRating(dao);
                 throw new StatusCodeException(HttpStatus.CREATED, "Rating posted!");

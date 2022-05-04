@@ -195,6 +195,17 @@ public class RentService {
         return rentRepository.findRentDAOSByRenter(user);
     }
 
+    public void deleteAllRentsFromUser(UserDAO user) {
+        List<RentDAO> rents = findAllRentDAOWithRenterId(user.getUserID());
+        for (RentDAO rentDAO:rents) {
+            rentDAO.setDeleted(true);
+        }
+        rents = findAllRentDAOWithOwnerId(user.getUserID());
+        for (RentDAO rentDAO:rents) {
+            rentDAO.setDeleted(true);
+        }
+    }
+
     /**
      * Converts a LocalDateTime objet into a long of the milliseconds counting  from midnight 1.1.1970
      * @param ldt LocalDateTime of the date and time you want to convert

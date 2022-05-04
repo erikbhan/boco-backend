@@ -32,8 +32,8 @@ import no.ntnu.idatt2106.model.DTO.ListingDTO;
  */
 @RestController
 @CrossOrigin
-@ApiResponse(responseCode = "401", description = "Unauthorized")
 @RequireAuth
+@ApiResponse(responseCode = "401", description = "Unauthorized")
 public class ListingController {
     private final ListingService listingService;
     private final ListingCategoryService listingCategoryService;
@@ -59,23 +59,20 @@ public class ListingController {
     }
 
     /**
-     * Got all of user listings
-     * @return Returns every single listing in the DB
+     * Get all listings in the database
      */
     @ApiResponse(responseCode = "200", description = "All listings returned")
     @Operation(summary = "Returning every single listing")
     @GetMapping("/listing")
     public List<ListingDTO> getAllListings() {
         List<ListingDAO> listingDAOs = listingService.getAllListings();
-        List<ListingDTO> listingDTOs = 
+        List<ListingDTO> listingDTOs =
         listingService.convertMultipleFromListingDAOToDTO(listingCategoryService, communityListingService, listingDAOs);
         return listingDTOs;
     }
 
     /**
-     *
-     * @return A list of all the user's listings
-     * @throws StatusCodeException
+     * Finds all the active users listings
      */
     @ApiResponse(responseCode = "200", description = "All of a user's listings")
     @ApiResponse(responseCode = "400", description = "User doesnt exist")
@@ -100,9 +97,7 @@ public class ListingController {
     /**
      * Method for finding a specific listing by a listingID
      * 
-     * @param listingID
-     * @return A specific listing
-     * @throws StatusCodeException
+     * @param listingID the listing id to be searched for
      */
     @ApiResponse(responseCode = "200", description = "Listing found")
     @ApiResponse(responseCode = "400", description = "Item doesnt exist")
@@ -121,8 +116,7 @@ public class ListingController {
     /**
      * The method to post a listing.
      * 
-     * @param listingDTO Object
-     * @throws StatusCodeException
+     * @param listingDTO The listing to be posted
      */
     @Operation(summary = "Post Listing and adding all the listing's categories to the ListingCategory junction table")
     @ApiResponse(responseCode = "200", description = "Listing posted")
@@ -161,10 +155,8 @@ public class ListingController {
     }
 
     /**
-     *
      * A method to post a listing with given availability
-     * @param listingDTO
-     * @throws StatusCodeException
+     * @param listingDTO The listing to be posted, containing unavailable times
      */
     @ApiResponse(responseCode = "200", description = "Listing created, unavailable times added")
     @ApiResponse(responseCode = "400", description = "User not found")
