@@ -133,6 +133,9 @@ public class RatingController {
         } catch (NullPointerException e) {
             throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "No token found");
         }
+        if (rentService.getRentFromId(ratingDTO.getRentID()) == null) {
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Rent not found");
+        }
         int tokenUserID = userToken.getAccountId();
         if (userService.findUserByUserId(tokenUserID) != null){
             RatingDAO dao = new RatingDAO();
@@ -141,11 +144,7 @@ public class RatingController {
             dao.setRenterIsReceiverOfRating(ratingDTO.isRenterReceiverOfRating());
             dao.setRent(rentService.getRentFromId(ratingDTO.getRentID()));
             if (!ratingIsGivenByCurrentUser(ratingDTO.getRentID())){
-                try {
-                    ratingService.saveRating(dao);
-                } catch (DataIntegrityViolationException e){
-                    throw new StatusCodeException(HttpStatus.BAD_REQUEST, "rentID not found");
-                }
+                ratingService.saveRating(dao);
                 throw new StatusCodeException(HttpStatus.CREATED, "Rating posted!");
             } else {
                 throw new StatusCodeException(HttpStatus.FORBIDDEN, "This user has already given a rating for this rent instance");

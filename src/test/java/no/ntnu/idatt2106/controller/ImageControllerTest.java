@@ -2,8 +2,6 @@ package no.ntnu.idatt2106.controller;
 
 import no.ntnu.idatt2106.BocoApplication;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
-import no.ntnu.idatt2106.repository.CommunityRepository;
-import no.ntnu.idatt2106.service.CommunityService;
 import no.ntnu.idatt2106.service.LoginService;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -26,7 +24,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -54,7 +51,7 @@ public class ImageControllerTest {
 
     @BeforeEach
     void login() throws ServletException, IOException {
-        user = new UserDAO(2022,"test@email.com", "test", "user", "gløshaugen", "ok", "l/hjdIHi9Us2uJZ7MP/urY6ALjISdukPrN5sjpD7wTMEV+DnQkWzOF3qfnO6r2PnIQM6zP7ZcdEYh0Gdok8nFQ==", "Ge7Y9frKWdgKcAysHdYCIoOOsAcn9We3f2+C74xlc6kWQZn2scBE8sEf4iZezwsmG/KdeeEuspZD9Q4Ojt27Hg==");
+        user = new UserDAO(2022, "test@email.com", "test", "user", "gløshaugen", "ok", "l/hjdIHi9Us2uJZ7MP/urY6ALjISdukPrN5sjpD7wTMEV+DnQkWzOF3qfnO6r2PnIQM6zP7ZcdEYh0Gdok8nFQ==", "Ge7Y9frKWdgKcAysHdYCIoOOsAcn9We3f2+C74xlc6kWQZn2scBE8sEf4iZezwsmG/KdeeEuspZD9Q4Ojt27Hg==");
         userToken = loginService.successfulAuthentication(user);
     }
 
@@ -66,14 +63,14 @@ public class ImageControllerTest {
     }
 
     @Test
-    public void imageController_getImageInvalidId_ShouldGive4xx() throws Exception {
+    public void imageController_getImageInvalidId_ShouldBe4xx() throws Exception {
         mockMvc.perform(get("/images/999999999999999999")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError());
     }
 
     @Test
-    public void imageController_getImageValidId_ShouldGive200() throws Exception {
+    public void imageController_getImageValidId_ShouldBeOk() throws Exception {
         mockMvc.perform(get("/images/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -81,7 +78,7 @@ public class ImageControllerTest {
     }
 
     @Test
-    public void imageController_deleteImageOwned_ShouldGive200() throws Exception {
+    public void imageController_deleteImageOwned_ShouldBeOk() throws Exception {
         mockMvc.perform(delete("/images/2")
                         .header("Authorization", "Bearer " + userToken)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -89,13 +86,12 @@ public class ImageControllerTest {
     }
 
     @Test
-    public void imageController_deleteImageNotOwned_ShouldGive4xx() throws Exception {
+    public void imageController_deleteImageNotOwned_ShouldBe4xx() throws Exception {
         mockMvc.perform(delete("/images/2")
                         .header("Authorization", "Bearer " + userToken)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError());
     }
-
 
 
 }
