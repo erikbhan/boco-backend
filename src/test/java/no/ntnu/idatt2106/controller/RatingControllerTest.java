@@ -98,25 +98,47 @@ public class RatingControllerTest {
         mockMvc.perform(get("/rating/3000/average/renter").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
     }
 
-    @Order(1)
     @Test
     void ratingController_postNewRating_ShouldBeOK() throws Exception {
         user = new UserDAO(2022, "test@email.com", "test", "user", "gløshaugen", "ok", "l/hjdIHi9Us2uJZ7MP/urY6ALjISdukPrN5sjpD7wTMEV+DnQkWzOF3qfnO6r2PnIQM6zP7ZcdEYh0Gdok8nFQ==", "Ge7Y9frKWdgKcAysHdYCIoOOsAcn9We3f2+C74xlc6kWQZn2scBE8sEf4iZezwsmG/KdeeEuspZD9Q4Ojt27Hg==");
         userToken = loginService.successfulAuthentication(user);
         mockMvc.perform(post("/rating/save")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(new RatingDTO(696969, 1, "work bro????", false, 10001)))
+                        .content(asJsonString(new RatingDTO(696969, 1, "work bro????", true, 10001)))
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isCreated());
     }
 
-    @Order(2)
+    @Test
+    void ratingController_postRatingFromUserThatHasAlreadyRatedRent_ShouldBe4xx() throws Exception {
+        user = new UserDAO(2022, "test@email.com", "test", "user", "gløshaugen", "ok", "l/hjdIHi9Us2uJZ7MP/urY6ALjISdukPrN5sjpD7wTMEV+DnQkWzOF3qfnO6r2PnIQM6zP7ZcdEYh0Gdok8nFQ==", "Ge7Y9frKWdgKcAysHdYCIoOOsAcn9We3f2+C74xlc6kWQZn2scBE8sEf4iZezwsmG/KdeeEuspZD9Q4Ojt27Hg==");
+        userToken = loginService.successfulAuthentication(user);
+        mockMvc.perform(post("/rating/save")
+                        .content(asJsonString(new RatingDTO(98732, 1, "This fucking jekk man jesus christ it doesnt work bro????", false, 10002)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + userToken)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError());
+    }
+
     @Test
     void ratingController_postRatingWithNonexistentRent_ShouldBe4xx() throws Exception {
         user = new UserDAO(2022, "test@email.com", "test", "user", "gløshaugen", "ok", "l/hjdIHi9Us2uJZ7MP/urY6ALjISdukPrN5sjpD7wTMEV+DnQkWzOF3qfnO6r2PnIQM6zP7ZcdEYh0Gdok8nFQ==", "Ge7Y9frKWdgKcAysHdYCIoOOsAcn9We3f2+C74xlc6kWQZn2scBE8sEf4iZezwsmG/KdeeEuspZD9Q4Ojt27Hg==");
         userToken = loginService.successfulAuthentication(user);
         mockMvc.perform(post("/rating/save")
                         .content(asJsonString(new RatingDTO(9876, 1, "This fucking jekk man jesus christ it doesnt work bro????", false, 777777)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + userToken)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    void ratingController_postRatingWithScore6_ShouldBe4xx() throws Exception {
+        user = new UserDAO(2022, "test@email.com", "test", "user", "gløshaugen", "ok", "l/hjdIHi9Us2uJZ7MP/urY6ALjISdukPrN5sjpD7wTMEV+DnQkWzOF3qfnO6r2PnIQM6zP7ZcdEYh0Gdok8nFQ==", "Ge7Y9frKWdgKcAysHdYCIoOOsAcn9We3f2+C74xlc6kWQZn2scBE8sEf4iZezwsmG/KdeeEuspZD9Q4Ojt27Hg==");
+        userToken = loginService.successfulAuthentication(user);
+        mockMvc.perform(post("/rating/save")
+                        .content(asJsonString(new RatingDTO(9876, 6, "This fucking jekk man jesus christ it doesnt work bro????", false, 10002)))
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken)
                         .accept(MediaType.APPLICATION_JSON))

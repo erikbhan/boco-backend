@@ -16,4 +16,3 @@ DELETE FROM public.listing;
 DELETE FROM public.listing_picture;
 DELETE FROM public.notification;
 DELETE FROM public.user;
-
