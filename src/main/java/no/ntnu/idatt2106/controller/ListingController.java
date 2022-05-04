@@ -195,6 +195,41 @@ public class ListingController {
         throw new StatusCodeException(HttpStatus.OK, "listing created, unavailable times added");
     }
 
+    @Operation(summary = "Change or modify a listing")
+    @ApiResponse(responseCode = "200", description = "Listing modified")
+    @ApiResponse(responseCode = "400", description = "User not found")
+    @PostMapping("/listing/change")
+    public boolean changeListing(@RequestBody ListingDTO listingDTO) throws StatusCodeException {
+        // Creates a ListingDAO with the information from the DTO.
+        ListingDAO listing = listingService.findListingByListingId(listingDTO.getListingID());
+        listing.setTitle(listingDTO.getTitle());
+        listing.setDescription(listingDTO.getDescription());
+        listing.setAddress(listingDTO.getAddress());
+        listing.setPricePerDay(listingDTO.getPricePerDay());
+        listing.setUser(userService.findUserByUserId(listingDTO.getUserID()));
+        if (listing.getUser() == null) {
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User not found");
+        }
+        // Saves the DAO to the DB
+        listingService.saveListing(listing);
+        // The for-loop goes through the categories of listing, adding them to the
+        // listingCategory table.
+        try {
+            for (String categoryName : listingDTO.getCategoryNames()) {
+                listingCategoryService.saveListingCategory(categoryService.findCategoryDAOByName(categoryName),
+                        listing);
+            }
+        }catch (Exception e){throw new StatusCodeException(HttpStatus.BAD_REQUEST, "could not find category");}
+        // The for-loop goes through the communities of listing, adding them to the
+        // communityListing table.
+        // Finds communities using communityIDs
+        for (int communityID : listingDTO.getCommunityIDs()) {
+            communityListingService.saveCommunityListing(communityService.findCommunityDAOByCommunityID(communityID),
+                    listing);
+        }
+        return true;
+    }
+
     /**
      * Gets all the intervals where the listing with the given listingID
      * is unavailable.
