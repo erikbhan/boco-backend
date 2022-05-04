@@ -106,6 +106,14 @@ public class RentDAO{
 
     public void setDeleted(boolean deleted) {isDeleted = deleted;}
 
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     @Override
     public String toString() {
         return "RentDAO{" +
