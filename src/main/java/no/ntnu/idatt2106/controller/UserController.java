@@ -4,11 +4,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import no.ntnu.idatt2106.exception.StatusCodeException;
 import no.ntnu.idatt2106.middleware.RequireAuth;
+import no.ntnu.idatt2106.model.DAO.ListingDAO;
+import no.ntnu.idatt2106.model.DAO.UserCommunityDAO;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
+import no.ntnu.idatt2106.model.DTO.CommunityDTO;
 import no.ntnu.idatt2106.model.DTO.TokenDTO;
 import no.ntnu.idatt2106.model.DTO.UserDTO;
-import no.ntnu.idatt2106.service.LoginService;
-import no.ntnu.idatt2106.service.UserService;
+import no.ntnu.idatt2106.service.*;
 import no.ntnu.idatt2106.util.TokenUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The main controller for the api requests related to the user.
@@ -27,10 +31,17 @@ import java.security.NoSuchAlgorithmException;
 public class UserController {
     private final UserService userService;
     private final LoginService loginService;
+    private final ListingService listingService;
+    private final UserCommunityService userCommunityService;
+    private final RentService rentService;
 
-    public UserController(UserService userService, LoginService loginService) {
+    public UserController(UserService userService, LoginService loginService, ListingService listingService,
+                          UserCommunityService userCommunityService, RentService rentService) {
         this.userService = userService;
         this.loginService = loginService;
+        this.listingService = listingService;
+        this.userCommunityService = userCommunityService;
+        this.rentService = rentService;
     }
 
     /**
@@ -80,5 +91,38 @@ public class UserController {
             e.printStackTrace();
             throw new StatusCodeException(HttpStatus.INTERNAL_SERVER_ERROR, "How did you get here");
         }
+    }
+
+    @PutMapping("/user/delete")
+    public boolean deleteAccount() throws StatusCodeException {
+        Integer tokenUserId;
+        try {
+            TokenDTO userToken = TokenUtil.getDataJWT();
+            tokenUserId = userToken.getAccountId();
+        } catch (Exception e) {
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Token not found");
+        }
+
+        UserDAO userDAO = userService.findUserByUserId(tokenUserId);
+        List<ListingDAO> listings = listingService.getAllOfUsersListings(userDAO);
+        for (ListingDAO listing:listings) {
+            //TODO: listing.setIsDeleted(true);
+        }
+
+        List<CommunityDTO> communities = userCommunityService.getAllCommunitiesForUser(userDAO);
+
+        for (CommunityDTO community : communities) {
+            userCommunityService.deleteUserFromAllGroups(userDAO);
+        }
+
+        rentService.deleteAllRentsFromUser(userDAO);
+
+        userDAO.setFirstName("Slettet");
+        userDAO.setLastName("Konto: " + userDAO.getUserID());
+        userDAO.setPicture("");
+        userDAO.setHash("");
+        userDAO.setSalt("");
+        userDAO.setAddress("");
+        userDAO.setEmail("");
     }
 }
