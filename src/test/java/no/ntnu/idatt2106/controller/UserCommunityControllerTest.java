@@ -3,13 +3,10 @@ package no.ntnu.idatt2106.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import no.ntnu.idatt2106.BocoApplication;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
-import no.ntnu.idatt2106.model.DTO.UserDTO;
 import no.ntnu.idatt2106.repository.CommunityRepository;
-import no.ntnu.idatt2106.repository.UserRepository;
 import no.ntnu.idatt2106.service.LoginService;
 import no.ntnu.idatt2106.service.UserCommunityService;
 import no.ntnu.idatt2106.service.UserService;
-import org.junit.Before;
 import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +15,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -77,149 +73,147 @@ public class UserCommunityControllerTest {
 
     @BeforeEach
     void login() throws ServletException, IOException {
-        user = new UserDAO(1,"test@test.com", "Test", "Testesen", "gløshaugen", "ok", "l/hjdIHi9Us2uJZ7MP/urY6ALjISdukPrN5sjpD7wTMEV+DnQkWzOF3qfnO6r2PnIQM6zP7ZcdEYh0Gdok8nFQ==", "Ge7Y9frKWdgKcAysHdYCIoOOsAcn9We3f2+C74xlc6kWQZn2scBE8sEf4iZezwsmG/KdeeEuspZD9Q4Ojt27Hg==");
+        user = new UserDAO(1, "test@test.com", "Test", "Testesen", "gløshaugen", "ok", "l/hjdIHi9Us2uJZ7MP/urY6ALjISdukPrN5sjpD7wTMEV+DnQkWzOF3qfnO6r2PnIQM6zP7ZcdEYh0Gdok8nFQ==", "Ge7Y9frKWdgKcAysHdYCIoOOsAcn9We3f2+C74xlc6kWQZn2scBE8sEf4iZezwsmG/KdeeEuspZD9Q4Ojt27Hg==");
         userToken = loginService.successfulAuthentication(user);
 
     }
 
 
-
     @Test
-    public void userCommunityController_addUserToCommunity_ShouldGive200OK() throws Exception {
+    void userCommunityController_addUserToCommunity_ShouldBeOk() throws Exception {
         mvc.perform(post("/communities/1000/join")
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Bearer " + userToken))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().is2xxSuccessful());
     }
 
     @Test
-    public void userCommunityController_addUserToCommunityWhereUserAlreadyIsInCommunity_ShouldGive4xxError() throws Exception {
+    void userCommunityController_addUserToCommunityWhereUserAlreadyIsInCommunity_ShouldBe4xx() throws Exception {
         mvc.perform(post("/communities/1001/join")
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Bearer " + userToken))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().is4xxClientError());
     }
 
     @Test
-    public void userCommunityController_addUserToCommunity_ShouldGive4xxError() throws Exception {
+    void userCommunityController_addUserToCommunity_ShouldBe4xx() throws Exception {
         mvc.perform(post("/communities/200/join")
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Bearer " + userToken))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().is4xxClientError());
     }
 
     @Test
-    public void userCommunityController_getCommunitiesForUser_ShouldGive200OK() throws Exception {
+    void userCommunityController_getCommunitiesForUser_ShouldBeOk() throws Exception {
         mvc.perform(get("/user/communities")
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Bearer " + userToken))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().is2xxSuccessful());
     }
 
     @Test
-    public void userCommunityController_removeUserFromCommunity_ShouldGive200OK() throws Exception {
+    void userCommunityController_removeUserFromCommunity_ShouldBeOk() throws Exception {
         mvc.perform(patch("/communities/4444/leave")
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Bearer " + userToken))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk());
     }
 
 
     @Test
-    public void userCommunityController_checkIfUserIsAdmin_ShouldGiveTrue() throws Exception {
+    void userCommunityController_checkIfUserIsAdmin_ShouldBeTrue() throws Exception {
         MvcResult mvcResult = mvc.perform(get("/communities/4000/user/admin")
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Bearer " + userToken))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + userToken))
                 .andReturn();
 
         boolean isAdmin = Boolean.parseBoolean(mvcResult.getResponse().getContentAsString());
 
-        assert(isAdmin);
+        assert (isAdmin);
 
     }
 
 
     @Test
-    public void userCommunityController_checkIfUserIsAdmin_ShouldGiveFalse() throws Exception {
+    void userCommunityController_checkIfUserIsAdmin_ShouldBeFalse() throws Exception {
         MvcResult mvcResult = mvc.perform(get("/communities/1001/user/admin")
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Bearer " + userToken))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + userToken))
                 .andReturn();
 
         boolean isAdmin = Boolean.parseBoolean(mvcResult.getResponse().getContentAsString());
 
-        assert(!isAdmin);
+        assert (!isAdmin);
 
     }
 
     @Test
-    public void userCommunityController_checkIfUserIsInCommunity_ShouldGiveTrue() throws Exception {
+    void userCommunityController_checkIfUserIsInCommunity_ShouldBeTrue() throws Exception {
         MvcResult mvcResult = mvc.perform(get("/communities/4000/user/status")
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Bearer " + userToken))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + userToken))
                 .andReturn();
 
         boolean isInCommunity = Boolean.parseBoolean(mvcResult.getResponse().getContentAsString());
 
-        assert(isInCommunity);
+        assert (isInCommunity);
 
     }
 
     @Test
-    public void userCommunityController_checkIfUserIsInCommunity_ShouldGiveFalse() throws Exception {
+    void userCommunityController_checkIfUserIsInCommunity_ShouldBeFalse() throws Exception {
         MvcResult mvcResult = mvc.perform(get("/communities/4002/user/status")
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Bearer " + userToken))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + userToken))
                 .andReturn();
 
         boolean isInCommunity = Boolean.parseBoolean(mvcResult.getResponse().getContentAsString());
 
-        assert(!isInCommunity);
+        assert (!isInCommunity);
 
     }
 
     //leave a community you're not in (400)
 
     @Test
-    public void userCommunityController_removeUserFromCommunity_WhenNotIn_ShouldGive4xxError() throws Exception {
+    void userCommunityController_removeUserFromCommunity_WhenNotIn_ShouldBe4xx() throws Exception {
         mvc.perform(patch("/communities/8888/leave")
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Bearer " + userToken))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().is4xxClientError());
     }
 
 
     @Test
-    public void userCommunityController_addUserToPrivateCommunity_ShouldGive4xxError() throws Exception {
+    void userCommunityController_addUserToPrivateCommunity_ShouldBe4xx() throws Exception {
         mvc.perform(post("/communities/8888/join")
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Bearer " + userToken))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().is4xxClientError());
     }
 
 
-
     @Test
-    public void userCommunityController_removeUserFromCommunity_WhenAdmin_ShouldGive4xxError() throws Exception {
+    void userCommunityController_removeUserFromCommunity_WhenAdmin_ShouldBe4xx() throws Exception {
         mvc.perform(patch("/communities/4000/leave")
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Bearer " + userToken))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().is4xxClientError());
     }
 
     @Test
-    public void userCommunityController_removeUserFromCommunity_WhenAdmin_ShouldGive200Ok() throws Exception {
+    void userCommunityController_removeUserFromCommunity_WhenAdmin_ShouldBeOk() throws Exception {
         mvc.perform(patch("/communities/4001/leave")
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Bearer " + userToken))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void userCommunityController_removeUserFromCommunity_ShouldGive4xxError() throws Exception {
+    void userCommunityController_removeUserFromCommunity_ShouldBe4xx() throws Exception {
         mvc.perform(patch("/communities/8000/leave")
-                .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Bearer " + userToken))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().is4xxClientError());
     }
 

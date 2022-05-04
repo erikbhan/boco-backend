@@ -77,34 +77,23 @@ public class ListingControllerTest {
     }
 
     @Test
-    public void getAllListings_ShouldBeOK() throws Exception {
+    void listingController_getAllListings_ShouldBeOK() throws Exception {
         mockMvc.perform(get("/listing").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
     }
 
-
-    /**
-     * Posting listing with all vallid fields. Should be good
-     *
-     * @throws Exception
-     */
     @Test
-    public void createListing_shouldBeOK() throws Exception {
-        categories = new String[] { "Fussball", "Utstyr" };
-        communityIDs = new int[] {100001, 100002};
+    void listingController_createListing_shouldBeOK() throws Exception {
+        categories = new String[]{"Fussball", "Utstyr"};
+        communityIDs = new int[]{100001, 100002};
         mockMvc.perform(post("/listing")
-                .content(asJsonString(new ListingDTO("Jekk", "Beskrivelse", 4.0, "Adresse", 4321, categories, communityIDs)))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+                        .content(asJsonString(new ListingDTO("Jekk", "Beskrivelse", 4.0, "Adresse", 4321, categories, communityIDs)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
-    /**
-     * Posting Listing with invalid category. Should throw error
-     *
-     * @throws Exception
-     */
     @Test
-    public void createListingWithNonExistingCategory_shouldThrow400error() throws Exception {
+    void listingController_createListingWithNonExistingCategory_shouldBe4xx() throws Exception {
         categories = new String[]{"Salse", "Utstyr"};
         communityIDs = new int[]{1000, 1001};
         mockMvc.perform(post("/listing")
@@ -115,22 +104,23 @@ public class ListingControllerTest {
     }
 
     @Test
-    public void getAvailabilityOfListing() throws Exception {
+    void listingController_getAvailabilityOfListing_ShouldBeOk() throws Exception {
         mockMvc.perform(get("/listing/1234/availability").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
     }
 
     @Test
-    public void getAvailabilityOfNonExistingListing() throws Exception {
+    void listingController_getAvailabilityOfNonExistingListing_ShouldBe4xx() throws Exception {
         mockMvc.perform(get("/listing/987654321/availability").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
     }
 
-    public void searchForListingWithExistingTitleInDB_ShouldBeOK() throws Exception{
+    @Test
+    void listingController_searchForListingWithExistingTitleInDB_ShouldBeOK() throws Exception {
         mockMvc.perform(get("/listing/title/Fisking").contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk());
+                .andExpect(status().isOk());
     }
 
     @Test
-    void listingController_getAllPicturesForAListing_ShouldGiveOk() throws Exception {
+    void listingController_listingController_getAllPicturesForAListing_ShouldBeOk() throws Exception {
         mockMvc.perform(get("/listing/4040/pictures")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -138,12 +128,12 @@ public class ListingControllerTest {
     }
 
     @Test
-    void listingController_getAllPicturesForAListing_ShouldGiveError() throws Exception {
+    void listingController_getAllPicturesForAListing_ShouldBe4xx() throws Exception {
         mockMvc.perform(get("/listing/0/pictures")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError());
     }
-    
+
     public static String asJsonString(final Object obj) {
         try {
             return new ObjectMapper().writeValueAsString(obj);
