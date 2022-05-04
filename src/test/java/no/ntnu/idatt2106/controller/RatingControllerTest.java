@@ -65,42 +65,42 @@ public class RatingControllerTest {
 
     @Test
     public void getAllRatingsAsRenterForUser_ShouldBeOK() throws Exception {
-        mockMvc.perform(get("/rating/4321/as_renter").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+        mockMvc.perform(get("/rating/4321/renter").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
     }
 
     @Test
     public void getAllRatingsAsRenterForNonExistingUser_ShouldBe4xx() throws Exception {
-        mockMvc.perform(get("/rating/3000/as_renter").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
+        mockMvc.perform(get("/rating/3000/renter").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
     }
 
     @Test
     public void getAllRatingsAsOwnerForUser_ShouldBeOK() throws Exception {
-        mockMvc.perform(get("/rating/4321/as_owner").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+        mockMvc.perform(get("/rating/4321/owner").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
     }
 
     @Test
     public void getAllRatingsAsOwnerForNonExistingUser_ShouldBe4xx() throws Exception {
-        mockMvc.perform(get("/rating/3000/as_owner").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
+        mockMvc.perform(get("/rating/3000/owner").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
     }
 
     @Test
     public void getAverageRatingsAsOwnerForUser_ShouldBeOK() throws Exception {
-        mockMvc.perform(get("/rating/4321/average_as_owner").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+        mockMvc.perform(get("/rating/4321/average/owner").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
     }
 
     @Test
     public void getAverageRatingsAsOwnerForUserAsNonExistingUser_ShouldBe4xx() throws Exception {
-        mockMvc.perform(get("/rating/3000/average_as_owner").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
+        mockMvc.perform(get("/rating/3000/average/owner").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
     }
 
     @Test
     public void getAverageRatingsAsRenterForUser_ShouldBeOK() throws Exception {
-        mockMvc.perform(get("/rating/4321/average_as_renter").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+        mockMvc.perform(get("/rating/4321/average/renter").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
     }
 
     @Test
     public void getAverageRatingsAsRenterForUserAsNonExistingUser_ShouldBe4xx() throws Exception {
-        mockMvc.perform(get("/rating/3000/average_as_renter").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
+        mockMvc.perform(get("/rating/3000/average/renter").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
     }
 
     @Order(1)
