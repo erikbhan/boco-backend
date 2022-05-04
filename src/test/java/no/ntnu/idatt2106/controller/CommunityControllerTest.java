@@ -75,7 +75,7 @@ public class CommunityControllerTest {
     }
 
     @Test
-    void communityController_showAllCommunities_ShouldGive2xxOK() throws Exception {
+    void communityController_showAllCommunities_ShouldBeOK() throws Exception {
         mockMvc.perform(get("/communities")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
@@ -84,7 +84,7 @@ public class CommunityControllerTest {
     }
 
     @Test
-    void communityController_showAllCommunitiesMatchingSearchTerm_ShouldGive2xxOK() throws Exception {
+    void communityController_showAllCommunitiesMatchingSearchTerm_ShouldBeOK() throws Exception {
         mockMvc.perform(get("/communities/search?search_word=MC")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
@@ -120,7 +120,7 @@ public class CommunityControllerTest {
     }
 
     @Test
-    void communityController_getCommunity_ShouldGive4xxerror() throws Exception {
+    void communityController_getCommunity_ShouldBe4xx() throws Exception {
         mockMvc.perform(get("/community/99999")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
@@ -128,7 +128,7 @@ public class CommunityControllerTest {
     }
 
     @Test
-    void communityController_getAllListingsInACommunity_ShouldGiveOk() throws Exception {
+    void communityController_getAllListingsInACommunity_ShouldBeOk() throws Exception {
         mockMvc.perform(get("/community/4444/listings")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
@@ -137,7 +137,7 @@ public class CommunityControllerTest {
     }
 
     @Test
-    void communityController_getAllListingsInACommunity_ShouldGive4xxerror() throws Exception {
+    void communityController_getAllListingsInACommunity_ShouldBe4xx() throws Exception {
         mockMvc.perform(get("/community/99999/listings")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
@@ -145,7 +145,7 @@ public class CommunityControllerTest {
     }
 
     @Test
-    void communityController_showAllCommunitiesMatchingSearchTerm_ShouldGive4xxError() throws Exception {
+    void communityController_showAllCommunitiesMatchingSearchTerm_ShouldBe4xx() throws Exception {
         mockMvc.perform(get("/communities/search/?search_word=Oldboys")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))

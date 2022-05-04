@@ -77,12 +77,12 @@ public class ListingControllerTest {
     }
 
     @Test
-    public void getAllListings_ShouldBeOK() throws Exception {
+    void listingController_getAllListings_ShouldBeOK() throws Exception {
         mockMvc.perform(get("/listing").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
     }
 
     @Test
-    public void createListing_shouldBeOK() throws Exception {
+    void listingController_createListing_shouldBeOK() throws Exception {
         categories = new String[]{"Fussball", "Utstyr"};
         communityIDs = new int[]{100001, 100002};
         mockMvc.perform(post("/listing")
@@ -93,7 +93,7 @@ public class ListingControllerTest {
     }
 
     @Test
-    public void createListingWithNonExistingCategory_shouldThrow400error() throws Exception {
+    void listingController_createListingWithNonExistingCategory_shouldThrow400error() throws Exception {
         categories = new String[]{"Salse", "Utstyr"};
         communityIDs = new int[]{1000, 1001};
         mockMvc.perform(post("/listing")
@@ -104,22 +104,23 @@ public class ListingControllerTest {
     }
 
     @Test
-    public void getAvailabilityOfListing() throws Exception {
+    void listingController_getAvailabilityOfListing() throws Exception {
         mockMvc.perform(get("/listing/1234/availability").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
     }
 
     @Test
-    public void getAvailabilityOfNonExistingListing() throws Exception {
+    void listingController_getAvailabilityOfNonExistingListing() throws Exception {
         mockMvc.perform(get("/listing/987654321/availability").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
     }
 
-    public void searchForListingWithExistingTitleInDB_ShouldBeOK() throws Exception {
+    @Test
+    void listingController_searchForListingWithExistingTitleInDB_ShouldBeOK() throws Exception {
         mockMvc.perform(get("/listing/title/Fisking").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     @Test
-    void listingController_getAllPicturesForAListing_ShouldGiveOk() throws Exception {
+    void listingController_listingController_getAllPicturesForAListing_ShouldGiveOk() throws Exception {
         mockMvc.perform(get("/listing/4040/pictures")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())

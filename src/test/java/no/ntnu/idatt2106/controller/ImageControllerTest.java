@@ -63,7 +63,7 @@ public class ImageControllerTest {
     }
 
     @Test
-    public void imageController_getImageInvalidId_ShouldGive4xx() throws Exception {
+    public void imageController_getImageInvalidId_ShouldBe4xx() throws Exception {
         mockMvc.perform(get("/images/999999999999999999")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError());
