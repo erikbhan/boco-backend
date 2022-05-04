@@ -16,6 +16,8 @@ public class ListingPictureDAO {
     @JoinColumn(name = "listing_id", nullable = false)
     private ListingDAO listing;
 
+    public ListingPictureDAO(){}
+
     public ListingPictureDAO(String picture, ListingDAO listing) {
         this.picture = picture;
         this.listing = listing;
