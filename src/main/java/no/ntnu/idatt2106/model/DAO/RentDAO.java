@@ -131,6 +131,7 @@ public class RentDAO{
 
     public void setDeleted(boolean deleted) {isDeleted = deleted;}
 
+
     @Override
     public String toString() {
         return "RentDAO{" +

@@ -50,7 +50,7 @@ public class RentDTO {
         this.listingId = rentDAO.getListing().getListingID();
         this.renterId = rentDAO.getRenter().getUserID();
         this.createdAt = rentDAO.getCreatedAt();
-        //this.message = rentDAO.getMessage();
+        this.message = rentDAO.getMessage();
     }
 
     public RentDTO(long fromTime, long toTime, Boolean isAccepted, int listingId, int renterId, String message) {

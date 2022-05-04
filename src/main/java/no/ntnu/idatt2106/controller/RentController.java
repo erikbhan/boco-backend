@@ -60,14 +60,10 @@ public class RentController {
         if(userDAO != null) {
             List<RentDAO> rentHistoryDAO = rentService
                     .findAllRentDAOWithRenterIdAndStatus(userDAO.getUserID(), true);
-
-            if(rentHistoryDAO != null && rentHistoryDAO.size() > 0) {
-                rentHistoryDAO = rentService.filterListOfRentDAOOnDeleted(rentHistoryDAO);
-                List<RentDTO> rentHistory = rentService
-                        .convertListOfRentDAOToListOfRentDTO(rentHistoryDAO);
-                return rentHistory;
-            }
-            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "No rent history was found for a user with this id");
+            rentHistoryDAO = rentService.filterListOfRentDAOOnDeleted(rentHistoryDAO);
+            List<RentDTO> rentHistory = rentService
+                    .convertListOfRentDAOToListOfRentDTO(rentHistoryDAO);
+            return rentHistory;
         }
         throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User id is not valid");
     }
@@ -90,12 +86,9 @@ public class RentController {
             List<RentDAO> rentHistoryDAO = rentService
                     .findAllRentDAOWithRenterId(userDAO.getUserID());
 
-            if(rentHistoryDAO != null && rentHistoryDAO.size() > 0) {
-                List<RentDTO> rentHistory = rentService
-                        .convertListOfRentDAOToListOfRentDTO(rentHistoryDAO);
-                return rentHistory;
-            }
-            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "No rent history was found for a user with this id");
+            List<RentDTO> rentHistory = rentService
+                    .convertListOfRentDAOToListOfRentDTO(rentHistoryDAO);
+            return rentHistory;
         }
         throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User id is not valid");
     }
@@ -118,12 +111,9 @@ public class RentController {
             List<RentDAO> rentHistoryDAO = rentService
                     .findAllRentDAOWithOwnerId(userDAO.getUserID());
 
-            if(rentHistoryDAO != null && rentHistoryDAO.size() > 0) {
-                List<RentDTO> rentHistory = rentService
-                        .convertListOfRentDAOToListOfRentDTO(rentHistoryDAO);
-                return rentHistory;
-            }
-            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "No rent history was found for a user with this id");
+            List<RentDTO> rentHistory = rentService
+                    .convertListOfRentDAOToListOfRentDTO(rentHistoryDAO);
+            return rentHistory;
         }
         throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User id is not valid");
     }
@@ -134,7 +124,7 @@ public class RentController {
      * @throws Exception
      */
     @GetMapping("/user/profile/rent/history/owner")
-    @Operation(summary = "Get a list of all rent agreements for a user, both accepted and not.")
+    @Operation(summary = "Get a list of all rent agreements for a user, only the accepted ones.")
     @ApiResponse(responseCode = "200", description = "Returns the rented item history of this owner, deleted items are not included")
     @ApiResponse(responseCode = "400", description = "User or rent history not found in the DB")
     public List<RentDTO> getRentHistoryOfOwner() throws Exception {
@@ -148,13 +138,10 @@ public class RentController {
             List<RentDAO> rentHistoryDAO = rentService
                     .filterAListOfRentDAOByStatusOfAgreement(rentHistoryFull,true);
 
-            if(rentHistoryDAO != null && rentHistoryDAO.size() > 0) {
-                rentHistoryDAO = rentService.filterListOfRentDAOOnDeleted(rentHistoryDAO);
-                List<RentDTO> rentHistory = rentService
-                        .convertListOfRentDAOToListOfRentDTO(rentHistoryDAO);
-                return rentHistory;
-            }
-            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "No rent history was found for a user with this id");
+            rentHistoryDAO = rentService.filterListOfRentDAOOnDeleted(rentHistoryDAO);
+            List<RentDTO> rentHistory = rentService
+                    .convertListOfRentDAOToListOfRentDTO(rentHistoryDAO);
+            return rentHistory;
         }
         throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User id is not valid");
     }

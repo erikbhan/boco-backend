@@ -20,7 +20,7 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @RequireAuth
-@ApiResponse(responseCode = "200", description = "OK")
+@ApiResponse(responseCode = "401", description = "Unauthorized")
 public class NotificationController {
 
     private final NotificationService notificationService;
@@ -33,18 +33,16 @@ public class NotificationController {
         this.chatService = chatService;
     }
 
-
     /**
-     * Adds a community request notification to the database.
+     * Adds a community join request notification to the database.
      * @param notificationDTO Notification DTO for adding to the database.
      */
-    @Operation(summary = "Adds community request notification")
+    @Operation(summary = "Adds community join request notification")
     @ApiResponse(responseCode = "201", description = "CREATED")
     @ApiResponse(responseCode = "400", description = "CommunityRequest not found")
     @ApiResponse(responseCode = "400", description = "Could not add notification")
-    @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
     @PostMapping("notifications/communities/joinrequest")
-    public void addCommunityRequestNotification(@RequestBody NotificationDTO notificationDTO) throws StatusCodeException {
+    public void addCommunityJoinRequestNotification(@RequestBody NotificationDTO notificationDTO) throws StatusCodeException {
         NotificationDAO notificationDAO = notificationService.turnDTOIntoDAO(notificationDTO);
         try{
             TokenDTO userToken = TokenUtil.getDataJWT();
@@ -53,23 +51,23 @@ public class NotificationController {
             throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "Token not found");
         }
         if(communityRequestService.getById(notificationDTO.getCommunityRequestID()) == null){
-            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Could not find communityRequest with that id.");
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Could not find community join request with that id.");
         }
         try {
             notificationService.saveCommunityRequestNotification(notificationDAO);
         } catch (Exception e) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Couldn't add community request notification");
         }
-        throw new StatusCodeException(HttpStatus.CREATED, "Community request notification added");
+        throw new StatusCodeException(HttpStatus.CREATED, "Community join request notification added");
     }
 
     /**
      * Gets all the community request notifications for the user that is logged in when the get call is made.
      */
-    @Operation(summary = "Gets community request notifications for the authenticated user")
-    @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
-    @GetMapping("notification/getcommunityrequest")
-    public List<NotificationDTO> getCommunityRequestNotification() throws StatusCodeException {
+    @Operation(summary = "Gets community join request notifications for the authenticated user")
+    @ApiResponse(responseCode = "400", description = "Could not fetch notifications")
+    @GetMapping("notifications/communities/joinrequests")
+    public List<NotificationDTO> getCommunityJoinRequestNotification() throws StatusCodeException {
         int tokenUserId;
         try{
             TokenDTO userToken = TokenUtil.getDataJWT();
@@ -80,7 +78,7 @@ public class NotificationController {
         try {
             return notificationService.getCommunityRequestNotifications(tokenUserId);
         } catch (Exception e) {
-            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Couldn't get community request notification");
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Couldn't get community join request notification");
         }
     }
 
@@ -92,7 +90,6 @@ public class NotificationController {
     @ApiResponse(responseCode = "201", description = "CREATED")
     @ApiResponse(responseCode = "400", description = "ChatMessage not found")
     @ApiResponse(responseCode = "400", description = "Could not add notification")
-    @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
     @PostMapping("notifications/chat")
     public void addChatMessageNotification(@RequestBody NotificationDTO notificationDTO) throws StatusCodeException {
         NotificationDAO notificationDAO = notificationService.turnDTOIntoDAO(notificationDTO);
@@ -114,13 +111,11 @@ public class NotificationController {
     }
 
     /**
-     * Gets lastest chat message for the user from each message sender.
-     * @return
-     * @throws StatusCodeException
+     * Gets the last chat message notification from each sender to the authenticated user
      */
     @Operation(summary = "Gets latest chat message notification from each sender to the authenticated user")
-    @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
-    @GetMapping("notification/getchat")
+    @ApiResponse(responseCode = "400", description = "Could not retrieve message notifications")
+    @GetMapping("notifications/chat")
     public List<ChatMessageDTO> getLastChatMessageNotificationFromEachSender() throws StatusCodeException {
         int tokenUserId;
         try{
@@ -137,12 +132,10 @@ public class NotificationController {
     }
 
     /**
-     * @return number of unread messages for a user.
-     * @throws StatusCodeException When token is not found in header.
+     * Finds the number of unread messages for a user.
      */
     @Operation(summary = "Gets number of unread messages for a user")
-    @GetMapping("notification/amountofmessages")
-    @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
+    @GetMapping("notifications/chat/amount")
     public int getNumberOfUnreadMessages() throws StatusCodeException {
         int tokenUserId;
         try{
@@ -159,35 +152,28 @@ public class NotificationController {
      * @param notificationID ID of notification to be set as seen.
      */
     @Operation(summary = "Sets a notification as seen")
-    @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
     @ApiResponse(responseCode = "400", description = "BAD_REQUEST")
-    @PutMapping("notification/{notificationID}/setseen")
+    @ApiResponse(responseCode = "401", description = "User unauthorized to change notification")
+    @PatchMapping("notification/{notificationID}/seen")
     public void setNotificationAsSeen(@PathVariable int notificationID) throws StatusCodeException {
         int tokenUserId;
         NotificationDAO notificationDAO;
-
-        //Checks if the person making the request is logged in.
         try{
             TokenDTO userToken = TokenUtil.getDataJWT();
             tokenUserId = userToken.getAccountId();
         } catch (Exception e) {
             throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "Token not found");
         }
-
-        //Checks if the notification ID exists in the database.
         try {
             notificationDAO = notificationService.getNotificationFromNotificationId(notificationID);
         } catch (Exception e) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Notification ID not found");
         }
-
-        //Checks if the user who is making the request is the owner of the notification.
         if (notificationDAO.getChatMessage().getReceivingUser().getUserID() == tokenUserId ||
                 notificationDAO.getCommunityRequest().getUser().getUserID() == tokenUserId) {
             notificationService.getNotificationFromNotificationId(notificationID).setSeen(true);
         } else {
             throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "User not authorized to change this notification");
         }
-
     }
 }
