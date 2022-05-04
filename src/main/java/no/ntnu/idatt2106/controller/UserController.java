@@ -94,7 +94,7 @@ public class UserController {
     }
 
     @PutMapping("/user/delete")
-    public boolean deleteAccount() throws StatusCodeException {
+    public void deleteAccount() throws StatusCodeException {
         Integer tokenUserId;
         try {
             TokenDTO userToken = TokenUtil.getDataJWT();
