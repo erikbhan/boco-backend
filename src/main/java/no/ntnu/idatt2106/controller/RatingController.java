@@ -40,7 +40,7 @@ public class RatingController {
     @Operation(summary = "Finds ratings for user as renter")
     @ApiResponse(responseCode = "200", description = "Returns a list of rating DTOs for user as renter")
     @ApiResponse(responseCode = "400", description = "User not found in database")
-    @GetMapping("/rating/{userID}/as_renter")
+    @GetMapping("/rating/{userID}/renter")
     public List<RatingDTO> getAsRenter(@PathVariable int userID) throws StatusCodeException {
         List<RatingDTO> ratings = ratingService.findRatingsAsRenterByUserID(userID);
         if (userService.findUserByUserId(userID) == null){
@@ -58,7 +58,7 @@ public class RatingController {
     @Operation(summary = "Finds ratings for user as owner")
     @ApiResponse(responseCode = "200", description = "Returns a list of rating DTOs for user as owner")
     @ApiResponse(responseCode = "400", description = "User not found in database")
-    @GetMapping("/rating/{userID}/as_owner")
+    @GetMapping("/rating/{userID}/owner")
     public List<RatingDTO> getAsOwner(@PathVariable int userID) throws StatusCodeException {
         List<RatingDTO> ratings = ratingService.findRatingsAsOwnerByUserID(userID);
         if (userService.findUserByUserId(userID) == null){
@@ -87,7 +87,7 @@ public class RatingController {
     @Operation(summary = "Finds average rating of user as owner")
     @ApiResponse(responseCode = "200", description = "returns the average rating of the user as owner")
     @ApiResponse(responseCode = "400", description = "User not found in database")
-    @GetMapping("/rating/{userID}/average_as_owner")
+    @GetMapping("/rating/{userID}/average/owner")
     public float getAverageRatingAsOwner(@PathVariable int userID) throws StatusCodeException {
         if (userService.findUserByUserId(userID) != null) {
             try{
@@ -101,7 +101,7 @@ public class RatingController {
     @Operation(summary = "Finds average rating of user as renter")
     @ApiResponse(responseCode = "200", description = "returns the average rating of the user as renter")
     @ApiResponse(responseCode = "400", description = "User not found in database")
-    @GetMapping("/rating/{userID}/average_as_renter")
+    @GetMapping("/rating/{userID}/average/renter")
     public float getAverageRatingAsRenter(@PathVariable int userID) throws StatusCodeException {
         if (userService.findUserByUserId(userID) != null) {
             try {
@@ -123,6 +123,7 @@ public class RatingController {
     @ApiResponse(responseCode = "201", description = "Returns true if the rating was posted")
     @ApiResponse(responseCode = "401", description = "Token not found")
     @ApiResponse(responseCode = "400", description = "User not found in database")
+    @ApiResponse(responseCode = "403", description = "User has already given a rating for this rent instance")
     @PostMapping("/rating/save")
     @RequireAuth
     public boolean postRating(@RequestBody RatingDTO ratingDTO) throws StatusCodeException {
@@ -132,6 +133,9 @@ public class RatingController {
         } catch (NullPointerException e) {
             throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "No token found");
         }
+        if (rentService.getRentFromId(ratingDTO.getRentID()) == null) {
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Rent not found");
+        }
         int tokenUserID = userToken.getAccountId();
         if (userService.findUserByUserId(tokenUserID) != null){
             RatingDAO dao = new RatingDAO();
@@ -139,12 +143,12 @@ public class RatingController {
             dao.setScore(ratingDTO.getScore());
             dao.setRenterIsReceiverOfRating(ratingDTO.isRenterReceiverOfRating());
             dao.setRent(rentService.getRentFromId(ratingDTO.getRentID()));
-            try {
+            if (!ratingIsGivenByCurrentUser(ratingDTO.getRentID())){
                 ratingService.saveRating(dao);
-            } catch (DataIntegrityViolationException e){
-                throw new StatusCodeException(HttpStatus.BAD_REQUEST, "rentID not found");
+                throw new StatusCodeException(HttpStatus.CREATED, "Rating posted!");
+            } else {
+                throw new StatusCodeException(HttpStatus.FORBIDDEN, "This user has already given a rating for this rent instance");
             }
-            throw new StatusCodeException(HttpStatus.CREATED, "Rating posted!");
         }
         throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Could not find user");
     }
@@ -152,6 +156,7 @@ public class RatingController {
     @Operation(summary = "Checks to see if the current user has given a rating to the owner/renter of a rent")
     @ApiResponse(responseCode = "200", description = "User has not given by the user")
     @ApiResponse(responseCode = "302", description = "Rating has been given by the user")
+    @ApiResponse(responseCode = "401", description = "Unauthorized")
     @ApiResponse(responseCode = "404", description = "Rent not found")
     @GetMapping("rating/{rentid}/israted")
     public boolean ratingIsGivenByCurrentUser(@PathVariable int rentid) throws StatusCodeException {
@@ -162,18 +167,12 @@ public class RatingController {
             throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "No token found");
         }
         int tokenUserID = userToken.getAccountId();
-
         RentDAO rentDAO;
         try{
             rentDAO = rentService.getRentFromId(rentid);
         } catch (Exception e) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Rent not found");
         }
-        
-        if (ratingService.userHasGivenRating(userService.findUserByUserId(tokenUserID), rentid)) {
-            throw new StatusCodeException(HttpStatus.FOUND, "Rating given by user");
-        }
-        throw new StatusCodeException(HttpStatus.OK, "Rating not found");
-
+        return ratingService.userHasGivenRating(userService.findUserByUserId(tokenUserID), rentid);
     }
 }
