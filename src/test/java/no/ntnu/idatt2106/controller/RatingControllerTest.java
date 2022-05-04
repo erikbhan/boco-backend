@@ -17,6 +17,7 @@ import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -123,23 +124,27 @@ public class RatingControllerTest {
     }
 
     @Test
-    void ratingController_seeIfUserHasGivenRatingWhenUserHasGivenRating_ShouldBeOK() throws Exception {
+    void ratingController_seeIfUserHasGivenRatingWhenUserHasGivenRating_ShouldBeTrue() throws Exception {
         user = new UserDAO(2022, "test@email.com", "test", "user", "gløshaugen", "ok", "l/hjdIHi9Us2uJZ7MP/urY6ALjISdukPrN5sjpD7wTMEV+DnQkWzOF3qfnO6r2PnIQM6zP7ZcdEYh0Gdok8nFQ==", "Ge7Y9frKWdgKcAysHdYCIoOOsAcn9We3f2+C74xlc6kWQZn2scBE8sEf4iZezwsmG/KdeeEuspZD9Q4Ojt27Hg==");
         userToken = loginService.successfulAuthentication(user);
-        mockMvc.perform(get("/rating/10002/israted")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "Bearer " + userToken))
-                .andExpect(status().is3xxRedirection());
+        MvcResult result = mockMvc.perform(get("/rating/10002/israted")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + userToken)).andReturn();
+
+        boolean hasGivenRating = Boolean.parseBoolean(result.getResponse().getContentAsString());
+        assert (hasGivenRating);
     }
 
     @Test
-    void ratingController_seeIfUserHasGivenRatingWhenUserHasNotGivenRating_ShouldBe4xx() throws Exception {
+    void ratingController_seeIfUserHasGivenRatingWhenUserHasNotGivenRating_ShouldBeFalse() throws Exception {
         user = new UserDAO(2022, "test@email.com", "test", "user", "gløshaugen", "ok", "l/hjdIHi9Us2uJZ7MP/urY6ALjISdukPrN5sjpD7wTMEV+DnQkWzOF3qfnO6r2PnIQM6zP7ZcdEYh0Gdok8nFQ==", "Ge7Y9frKWdgKcAysHdYCIoOOsAcn9We3f2+C74xlc6kWQZn2scBE8sEf4iZezwsmG/KdeeEuspZD9Q4Ojt27Hg==");
         userToken = loginService.successfulAuthentication(user);
-        mockMvc.perform(get("/rating/10000/israted")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "Bearer " + userToken))
-                .andExpect(status().isOk());
+        MvcResult result = mockMvc.perform(get("/rating/10000/israted")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + userToken)).andReturn();
+
+        boolean hasGivenRating = Boolean.parseBoolean(result.getResponse().getContentAsString());
+        assert (!hasGivenRating);
     }
 
     public static String asJsonString(final Object obj) {
