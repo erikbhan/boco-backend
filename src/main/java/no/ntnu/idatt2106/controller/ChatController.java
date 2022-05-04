@@ -31,7 +31,7 @@ public class ChatController {
 
     /**
      * Method to handle websocket connection and broadcast messages
-     * @param chatStatusDTO
+     * @param chatStatusDTO DTO containing the chat status, sender and receiver
      */
     @MessageMapping("/chat")
     public void handleChat(@Payload ChatStatusDTO chatStatusDTO) {
@@ -39,26 +39,38 @@ public class ChatController {
                 Integer.toString(chatStatusDTO.getTo()), "/queue/messages", chatStatusDTO);
     }
 
+    /**
+     * A method to get all chat messages between the active user and the given user
+     * @param userId The id of the second user in the conversation
+     */
     @GetMapping("/chats/users/{userId}/messages")
     @RequireAuth
     @ApiResponse(responseCode = "200", description = "Returns all messages in a conversation.")
     @ApiResponse(responseCode = "401", description = "Unauthorized")
     @Operation(summary = "Get all messages in a conversation.", tags = {"Chat"})
-    public ChatMessageDTO[] getChatMessages(@PathVariable int userId){
+    public ChatMessageDTO[] getChatMessages(@PathVariable int userId) throws Exception {
         TokenDTO tokenDTO = TokenUtil.getDataJWT(TokenUtil.getToken());
         return chatService.getConversation(tokenDTO.getAccountId(), userId);
     }
 
+    /**
+     * A method to get all the conversations of the active user
+     */
     @GetMapping("/chats/users")
     @RequireAuth
     @ApiResponse(responseCode = "200", description = "Returns all conversations.")
     @ApiResponse(responseCode = "401", description = "Unauthorized access.")
     @Operation(summary = "Get all conversations.", tags = {"Chat"})
-    public ConversationDTO[] getAllConversations() throws Exception {
+    public ConversationDTO[] getAllConversations(){
         TokenDTO tokenDTO = TokenUtil.getDataJWT(TokenUtil.getToken());
         return chatService.getAllConversations(tokenDTO.getAccountId());
     }
 
+    /**
+     * A method to send a new message to a given user
+     * @param userId The recipient of the message
+     * @param newMessageDTO The message to be sent
+     */
     @PostMapping("/chats/users/{userId}/messages")
     @RequireAuth
     @ApiResponse(responseCode = "200", description = "Create a new message.")
@@ -66,10 +78,8 @@ public class ChatController {
     @Operation(summary = "Creates a new message in a conversation", tags = {"Chat"})
     public void sendMessage(@PathVariable int userId, @RequestBody NewMessageDTO newMessageDTO) throws Exception {
         TokenDTO tokenDTO = TokenUtil.getDataJWT(TokenUtil.getToken());
-
         UserDAO userDAO = userService.findUserByUserId(userId);
         if(userDAO == null) throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User does not exist");
-
         chatService.createMessage(
                 userDAO,
                 userService.findUserByUserId(tokenDTO.getAccountId()),
