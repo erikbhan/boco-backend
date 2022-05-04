@@ -73,7 +73,7 @@ public class CommunityRequestController {
         boolean adminStatus = ucdForAdmin.isAdministrator();
 
         if (adminStatus){
-            if(communityRequestService.findRequest(userId, communityId)==1){
+            if(Integer.valueOf(communityRequestService.findRequest(userId, communityId)) != null){
                 UserDAO userDAO = userService.findUserByUserId(userId);
                 communityRequestService.acceptRequest(userDAO, communityDAO);
                 communityRequestService.removeRequest(userId, communityId);
