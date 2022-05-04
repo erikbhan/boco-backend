@@ -1,25 +1,33 @@
 package no.ntnu.idatt2106.service;
 
 import no.ntnu.idatt2106.model.DAO.ChatMessageDAO;
+import no.ntnu.idatt2106.model.DAO.RentDAO;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
 import no.ntnu.idatt2106.model.DTO.*;
 import no.ntnu.idatt2106.repository.ChatMessageRepository;
+import no.ntnu.idatt2106.repository.RentRepository;
 import no.ntnu.idatt2106.repository.UserRepository;
+import no.ntnu.idatt2106.util.TokenUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 public class ChatService {
 
     private final ChatMessageRepository _chatMessageRepository;
     private final UserRepository _userRepository;
+    private final UserService _userService;
+    private final RentRepository rentRepository;
 
-    public ChatService(ChatMessageRepository chatMessageRepository, UserRepository userRepository) {
+    public ChatService(ChatMessageRepository chatMessageRepository, UserRepository userRepository, UserService userService, RentRepository rentRepository) {
         _chatMessageRepository = chatMessageRepository;
         _userRepository = userRepository;
+        _userService = userService;
+        this.rentRepository = rentRepository;
     }
 
     public ChatMessageDAO getById(int id){
@@ -31,6 +39,7 @@ public class ChatService {
             .map(ChatMessageDTO::new)
             .toArray(ChatMessageDTO[]::new);
     }
+
 
     public ConversationDTO[] getAllConversations(int accountId) {
         int[] list = _chatMessageRepository.getConversationUsers(accountId);

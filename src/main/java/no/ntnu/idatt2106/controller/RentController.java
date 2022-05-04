@@ -227,4 +227,13 @@ public class RentController {
     public RentDTO[] getAllRents() {
         return rentService.getAllRents();
     }
+
+    @Operation(summary = "Returns all rents between two users")
+    @ApiResponse(responseCode = "200", description = "Returns all rents between two users")
+    @GetMapping("/renting/user/{userID}/all")
+    public RentDTO[] getAllRentsUser(@PathVariable int userID) {
+        TokenDTO userToken = TokenUtil.getDataJWT();
+        int id = userToken.getAccountId();
+        return rentService.getAllRents(userID, id);
+    }
 }

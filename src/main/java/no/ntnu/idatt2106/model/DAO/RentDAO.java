@@ -29,6 +29,8 @@ public class RentDAO{
     private boolean isDeleted;
     @Column(name = "message")
     private String message;
+    @Column (name = "created_at")
+    private long createdAt;
     @ManyToOne
     @JoinColumn(name = "listing_owner_id", nullable = false)
     private ListingDAO listing;
@@ -42,6 +44,7 @@ public class RentDAO{
         this.isAccepted = isAccepted;
         this.listing = listing;
         this.renter = renter;
+        this.createdAt = System.currentTimeMillis();
     }
 
     public RentDAO(RentDTO rentDTO) {
@@ -49,9 +52,31 @@ public class RentDAO{
         this.toTime = rentDTO.getToTime();
         this.isAccepted = rentDTO.getIsAccepted();
         this.message = rentDTO.getMessage();
+        this.createdAt = rentDTO.getCreatedAt();
     }
 
     public RentDAO() {
+        this.createdAt = System.currentTimeMillis();
+    }
+
+    public boolean isAccepted() {
+        return isAccepted;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public long getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(long createdAt) {
+        this.createdAt = createdAt;
     }
 
     public int getRentID() {
