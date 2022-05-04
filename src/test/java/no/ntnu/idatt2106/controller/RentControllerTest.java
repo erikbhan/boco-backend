@@ -27,13 +27,11 @@ import javax.servlet.ServletException;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -70,11 +68,11 @@ public class RentControllerTest {
 
     @BeforeEach
     void login() throws ServletException, IOException {
-        user = new UserDAO(2022,"test@email.com", "test", "user", "gløshaugen", "ok", "l/hjdIHi9Us2uJZ7MP/urY6ALjISdukPrN5sjpD7wTMEV+DnQkWzOF3qfnO6r2PnIQM6zP7ZcdEYh0Gdok8nFQ==", "Ge7Y9frKWdgKcAysHdYCIoOOsAcn9We3f2+C74xlc6kWQZn2scBE8sEf4iZezwsmG/KdeeEuspZD9Q4Ojt27Hg==");
+        user = new UserDAO(2022, "test@email.com", "test", "user", "gløshaugen", "ok", "l/hjdIHi9Us2uJZ7MP/urY6ALjISdukPrN5sjpD7wTMEV+DnQkWzOF3qfnO6r2PnIQM6zP7ZcdEYh0Gdok8nFQ==", "Ge7Y9frKWdgKcAysHdYCIoOOsAcn9We3f2+C74xlc6kWQZn2scBE8sEf4iZezwsmG/KdeeEuspZD9Q4Ojt27Hg==");
         userToken = loginService.successfulAuthentication(user);
-        user2 = new UserDAO(10,"test@email.com", "test", "user", "gløshaugen", "ok", "l/hjdIHi9Us2uJZ7MP/urY6ALjISdukPrN5sjpD7wTMEV+DnQkWzOF3qfnO6r2PnIQM6zP7ZcdEYh0Gdok8nFQ==", "Ge7Y9frKWdgKcAysHdYCIoOOsAcn9We3f2+C74xlc6kWQZn2scBE8sEf4iZezwsmG/KdeeEuspZD9Q4Ojt27Hg==");
+        user2 = new UserDAO(10, "test@email.com", "test", "user", "gløshaugen", "ok", "l/hjdIHi9Us2uJZ7MP/urY6ALjISdukPrN5sjpD7wTMEV+DnQkWzOF3qfnO6r2PnIQM6zP7ZcdEYh0Gdok8nFQ==", "Ge7Y9frKWdgKcAysHdYCIoOOsAcn9We3f2+C74xlc6kWQZn2scBE8sEf4iZezwsmG/KdeeEuspZD9Q4Ojt27Hg==");
         user2Token = loginService.successfulAuthentication(user2);
-        user2 = new UserDAO(3034,"test@email.com", "test", "user", "gløshaugen", "ok", "l/hjdIHi9Us2uJZ7MP/urY6ALjISdukPrN5sjpD7wTMEV+DnQkWzOF3qfnO6r2PnIQM6zP7ZcdEYh0Gdok8nFQ==", "Ge7Y9frKWdgKcAysHdYCIoOOsAcn9We3f2+C74xlc6kWQZn2scBE8sEf4iZezwsmG/KdeeEuspZD9Q4Ojt27Hg==");
+        user2 = new UserDAO(3034, "test@email.com", "test", "user", "gløshaugen", "ok", "l/hjdIHi9Us2uJZ7MP/urY6ALjISdukPrN5sjpD7wTMEV+DnQkWzOF3qfnO6r2PnIQM6zP7ZcdEYh0Gdok8nFQ==", "Ge7Y9frKWdgKcAysHdYCIoOOsAcn9We3f2+C74xlc6kWQZn2scBE8sEf4iZezwsmG/KdeeEuspZD9Q4Ojt27Hg==");
         ownerToken = loginService.successfulAuthentication(user2);
     }
 
@@ -155,16 +153,16 @@ public class RentControllerTest {
 
     @Test
     void rentController_saveRentingAgreementForRenter_ShouldBeOk() throws Exception {
-        LocalDateTime ldt = LocalDateTime.of(1997,12,13,12,12,12);
+        LocalDateTime ldt = LocalDateTime.of(1997, 12, 13, 12, 12, 12);
         mockMvc.perform(post("/renting/renter/save")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(new RentDTO(rentService.fromLocalDateTimeToMillis(ldt), rentService.fromLocalDateTimeToMillis(ldt), false,1235,2022)))
+                        .content(asJsonString(new RentDTO(rentService.fromLocalDateTimeToMillis(ldt), rentService.fromLocalDateTimeToMillis(ldt), false, 1235, 2022)))
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk());
     }
 
     @Test
-    void rentController_deleteRent_ShouldBeOk() throws Exception{
+    void rentController_deleteRent_ShouldBeOk() throws Exception {
         mockMvc.perform(put("/renting/10001/delete")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
@@ -187,11 +185,11 @@ public class RentControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
         String ans = result.getResponse().getContentAsString();
-        assert(ans.contentEquals("Accepted rent"));
+        assert (ans.contentEquals("Accepted rent"));
     }
 
     @Test
-    void rentController_acceptNonExistingRent_ShouldBe4xx() throws  Exception {
+    void rentController_acceptNonExistingRent_ShouldBe4xx() throws Exception {
         mockMvc.perform(post("/api/renting/10002/accept")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))

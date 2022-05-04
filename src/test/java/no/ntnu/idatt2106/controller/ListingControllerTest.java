@@ -81,28 +81,17 @@ public class ListingControllerTest {
         mockMvc.perform(get("/listing").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
     }
 
-
-    /**
-     * Posting listing with all vallid fields. Should be good
-     *
-     * @throws Exception
-     */
     @Test
     public void createListing_shouldBeOK() throws Exception {
-        categories = new String[] { "Fussball", "Utstyr" };
-        communityIDs = new int[] {100001, 100002};
+        categories = new String[]{"Fussball", "Utstyr"};
+        communityIDs = new int[]{100001, 100002};
         mockMvc.perform(post("/listing")
-                .content(asJsonString(new ListingDTO("Jekk", "Beskrivelse", 4.0, "Adresse", 4321, categories, communityIDs)))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+                        .content(asJsonString(new ListingDTO("Jekk", "Beskrivelse", 4.0, "Adresse", 4321, categories, communityIDs)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
-    /**
-     * Posting Listing with invalid category. Should throw error
-     *
-     * @throws Exception
-     */
     @Test
     public void createListingWithNonExistingCategory_shouldThrow400error() throws Exception {
         categories = new String[]{"Salse", "Utstyr"};
@@ -124,9 +113,9 @@ public class ListingControllerTest {
         mockMvc.perform(get("/listing/987654321/availability").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
     }
 
-    public void searchForListingWithExistingTitleInDB_ShouldBeOK() throws Exception{
+    public void searchForListingWithExistingTitleInDB_ShouldBeOK() throws Exception {
         mockMvc.perform(get("/listing/title/Fisking").contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk());
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -143,7 +132,7 @@ public class ListingControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError());
     }
-    
+
     public static String asJsonString(final Object obj) {
         try {
             return new ObjectMapper().writeValueAsString(obj);

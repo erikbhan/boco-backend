@@ -59,7 +59,7 @@ public class RegisterControllerTest {
             ScriptUtils.executeSqlScript(conn, new ClassPathResource("registerData.sql"));
         }
     }
-    
+
     @After
     void teardown(@Autowired DataSource dataSource) throws SQLException {
         try (Connection conn = dataSource.getConnection()) {
@@ -69,18 +69,20 @@ public class RegisterControllerTest {
 
     /**
      * Makes sure that a correct register user request will give HTTP status code 200
+     *
      * @throws Exception if a status code different from 200 is given
      */
     @Test
     public void registerController_register_ShouldGive200OK() throws Exception {
         mvc.perform(post("/register")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(new RegisterUserDTO("erna@solberg.no", "hackerman", "Erna", "Solberg", "Oslo"))))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(new RegisterUserDTO("erna@solberg.no", "hackerman", "Erna", "Solberg", "Oslo"))))
                 .andExpect(status().is2xxSuccessful());
     }
 
     /**
      * Assures that when given a in-use e-mail, a 400 Bad Request status code
+     *
      * @throws Exception when test fails
      */
     @Test
@@ -88,19 +90,20 @@ public class RegisterControllerTest {
         mvc.perform(post("/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(new RegisterUserDTO(
-                        "erna@solberg.no", "hackerman", 
+                        "erna@solberg.no", "hackerman",
                         "Erna", "Solberg", "Oslo"))));
 
         mvc.perform(post("/register")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(new RegisterUserDTO(
-                        "erna@solberg.no", "hackerman", 
-                        "Erna", "Solberg", "Oslo"))))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(new RegisterUserDTO(
+                                "erna@solberg.no", "hackerman",
+                                "Erna", "Solberg", "Oslo"))))
                 .andExpect(status().is4xxClientError());
     }
 
     /**
      * Utility method to generate JSON-strings from objects
+     *
      * @param obj the object to generate a a JSON-string from
      * @return a JSON-string of the object
      */
