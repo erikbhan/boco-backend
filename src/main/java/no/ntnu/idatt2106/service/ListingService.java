@@ -45,7 +45,7 @@ public class ListingService {
      * @return All listings
      */
     public List<ListingDAO> getAllListings() {
-        return listingRepository.findAll();
+        return listingRepository.findAllByDeletedIsFalse();
     }
 
     /**
@@ -126,7 +126,7 @@ public class ListingService {
      * @return Returns a list of all listing daos in the db with this owner dao.
      */
     public List<ListingDAO> findAllListingDAOByIdOfOwner(UserDAO ownerId) {
-        return listingRepository.findAllByUser(ownerId);
+        return listingRepository.findAllByUserAndDeletedIsFalse(ownerId);
     }
 
     public List<ListingDAO> findListingsByUserDAO(UserDAO user) {
