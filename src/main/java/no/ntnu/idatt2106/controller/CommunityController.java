@@ -20,6 +20,7 @@ import no.ntnu.idatt2106.util.TokenUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -97,8 +98,10 @@ public class CommunityController {
      * Deletes a community from the database
      * @param communityId ID of the community to be deleted
      */
-    @Operation(summary = "Deletes a community from the database")
     @RequireAuth
+    @Operation(summary = "Deletes a community from the database")
+    @ApiResponse(responseCode = "401", description = "User not part of given community")
+    @ApiResponse(responseCode = "401", description = "User not admin of given community")
     @ApiResponse(responseCode = "404", description = "Community not found")
     @DeleteMapping("/communities/{communityId}/remove")
     public void removeCommunity(@PathVariable int communityId) throws StatusCodeException {
@@ -120,12 +123,9 @@ public class CommunityController {
     /**
      * A method to get all members in a community.
      * @param communityId The id of the community to search for.
-     * @return Returns a list of all the members in the given community.
-     * @throws StatusCodeException
      */
     @Operation(summary = "Returns all members in a community")
-    @ApiResponse(responseCode = "200", description = "Returns a list of all members in the community")
-    @ApiResponse(responseCode = "400", description = "No communities was found, or no users in given community")
+    @ApiResponse(responseCode = "400", description = "No communities was found")
     @ApiResponse(responseCode = "417", description = "No members in members list")
     @GetMapping("/community/{communityId}/members")
     @RequireAuth
@@ -136,12 +136,10 @@ public class CommunityController {
         }
         List<UserCommunityDAO> userCommunityDAOs = userCommunityService
                 .findAllMembersInACommunityByCommunity(communityDAO);
-
         if(userCommunityDAOs != null) {
             try {
                 List<UserDAO> membersDAO = userCommunityService
                         .makeListOfAllMembersInACommunity(userCommunityDAOs);
-
                 List<UserDTO> membersList = userService.convertListUserDAOToListUserDTO(membersDAO);
                 if(membersList != null) {
                     return membersList;
@@ -151,7 +149,7 @@ public class CommunityController {
                 throw new StatusCodeException(HttpStatus.EXPECTATION_FAILED, "Member list is empty");
             }
         }
-        throw new StatusCodeException(HttpStatus.BAD_REQUEST, "No users in this community");
+        return new ArrayList<UserDTO>();
     }
 
     /**
