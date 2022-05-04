@@ -53,6 +53,23 @@ public class ChatService {
             conversations[i] = new ConversationDTO(chatMessageDTO, new PublicUserDTO(user));
         }
 
+        List<RentDAO> rentalRequests = rentRepository.findAllByListing_User_UserID(accountId);
+        for (RentDAO rentalRequest : rentalRequests) {
+            boolean found = false;
+            for (ConversationDTO conversation : conversations) {
+                if (conversation.getRecipient().getUserId() == rentalRequest.getRenter().getUserID()) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                ChatMessageDTO message = new ChatMessageDTO(-1, "Rental Request", rentalRequest.getCreatedAt(), accountId, rentalRequest.getRenter().getUserID());
+                ConversationDTO conversation = new ConversationDTO(message, new PublicUserDTO(_userRepository.getById(rentalRequest.getRenter().getUserID())));
+                conversations = Stream.concat(Arrays.stream(conversations), Stream.of(conversation)).toArray(ConversationDTO[]::new);
+            }
+        }
+
+
         return conversations;
     }
 
