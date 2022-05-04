@@ -70,7 +70,7 @@ public class ImageControllerTest {
     }
 
     @Test
-    public void imageController_getImageValidId_ShouldGive200() throws Exception {
+    public void imageController_getImageValidId_ShouldBeOk() throws Exception {
         mockMvc.perform(get("/images/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -78,7 +78,7 @@ public class ImageControllerTest {
     }
 
     @Test
-    public void imageController_deleteImageOwned_ShouldGive200() throws Exception {
+    public void imageController_deleteImageOwned_ShouldBeOk() throws Exception {
         mockMvc.perform(delete("/images/2")
                         .header("Authorization", "Bearer " + userToken)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -86,7 +86,7 @@ public class ImageControllerTest {
     }
 
     @Test
-    public void imageController_deleteImageNotOwned_ShouldGive4xx() throws Exception {
+    public void imageController_deleteImageNotOwned_ShouldBe4xx() throws Exception {
         mockMvc.perform(delete("/images/2")
                         .header("Authorization", "Bearer " + userToken)
                         .contentType(MediaType.APPLICATION_JSON))

@@ -80,7 +80,7 @@ public class UserCommunityControllerTest {
 
 
     @Test
-    void userCommunityController_addUserToCommunity_ShouldGive200OK() throws Exception {
+    void userCommunityController_addUserToCommunity_ShouldBeOk() throws Exception {
         mvc.perform(post("/communities/1000/join")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
@@ -88,7 +88,7 @@ public class UserCommunityControllerTest {
     }
 
     @Test
-    void userCommunityController_addUserToCommunityWhereUserAlreadyIsInCommunity_ShouldGive4xxError() throws Exception {
+    void userCommunityController_addUserToCommunityWhereUserAlreadyIsInCommunity_ShouldBe4xx() throws Exception {
         mvc.perform(post("/communities/1001/join")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
@@ -96,7 +96,7 @@ public class UserCommunityControllerTest {
     }
 
     @Test
-    void userCommunityController_addUserToCommunity_ShouldGive4xxError() throws Exception {
+    void userCommunityController_addUserToCommunity_ShouldBe4xx() throws Exception {
         mvc.perform(post("/communities/200/join")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
@@ -104,7 +104,7 @@ public class UserCommunityControllerTest {
     }
 
     @Test
-    void userCommunityController_getCommunitiesForUser_ShouldGive200OK() throws Exception {
+    void userCommunityController_getCommunitiesForUser_ShouldBeOk() throws Exception {
         mvc.perform(get("/user/communities")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
@@ -112,7 +112,7 @@ public class UserCommunityControllerTest {
     }
 
     @Test
-    void userCommunityController_removeUserFromCommunity_ShouldGive200OK() throws Exception {
+    void userCommunityController_removeUserFromCommunity_ShouldBeOk() throws Exception {
         mvc.perform(patch("/communities/4444/leave")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
@@ -121,7 +121,7 @@ public class UserCommunityControllerTest {
 
 
     @Test
-    void userCommunityController_checkIfUserIsAdmin_ShouldGiveTrue() throws Exception {
+    void userCommunityController_checkIfUserIsAdmin_ShouldBeTrue() throws Exception {
         MvcResult mvcResult = mvc.perform(get("/communities/4000/user/admin")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
@@ -135,7 +135,7 @@ public class UserCommunityControllerTest {
 
 
     @Test
-    void userCommunityController_checkIfUserIsAdmin_ShouldGiveFalse() throws Exception {
+    void userCommunityController_checkIfUserIsAdmin_ShouldBeFalse() throws Exception {
         MvcResult mvcResult = mvc.perform(get("/communities/1001/user/admin")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
@@ -148,7 +148,7 @@ public class UserCommunityControllerTest {
     }
 
     @Test
-    void userCommunityController_checkIfUserIsInCommunity_ShouldGiveTrue() throws Exception {
+    void userCommunityController_checkIfUserIsInCommunity_ShouldBeTrue() throws Exception {
         MvcResult mvcResult = mvc.perform(get("/communities/4000/user/status")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
@@ -161,7 +161,7 @@ public class UserCommunityControllerTest {
     }
 
     @Test
-    void userCommunityController_checkIfUserIsInCommunity_ShouldGiveFalse() throws Exception {
+    void userCommunityController_checkIfUserIsInCommunity_ShouldBeFalse() throws Exception {
         MvcResult mvcResult = mvc.perform(get("/communities/4002/user/status")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
@@ -176,7 +176,7 @@ public class UserCommunityControllerTest {
     //leave a community you're not in (400)
 
     @Test
-    void userCommunityController_removeUserFromCommunity_WhenNotIn_ShouldGive4xxError() throws Exception {
+    void userCommunityController_removeUserFromCommunity_WhenNotIn_ShouldBe4xx() throws Exception {
         mvc.perform(patch("/communities/8888/leave")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
@@ -185,7 +185,7 @@ public class UserCommunityControllerTest {
 
 
     @Test
-    void userCommunityController_addUserToPrivateCommunity_ShouldGive4xxError() throws Exception {
+    void userCommunityController_addUserToPrivateCommunity_ShouldBe4xx() throws Exception {
         mvc.perform(post("/communities/8888/join")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
@@ -194,7 +194,7 @@ public class UserCommunityControllerTest {
 
 
     @Test
-    void userCommunityController_removeUserFromCommunity_WhenAdmin_ShouldGive4xxError() throws Exception {
+    void userCommunityController_removeUserFromCommunity_WhenAdmin_ShouldBe4xx() throws Exception {
         mvc.perform(patch("/communities/4000/leave")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
@@ -202,7 +202,7 @@ public class UserCommunityControllerTest {
     }
 
     @Test
-    void userCommunityController_removeUserFromCommunity_WhenAdmin_ShouldGive200Ok() throws Exception {
+    void userCommunityController_removeUserFromCommunity_WhenAdmin_ShouldBeOk() throws Exception {
         mvc.perform(patch("/communities/4001/leave")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
@@ -210,7 +210,7 @@ public class UserCommunityControllerTest {
     }
 
     @Test
-    void userCommunityController_removeUserFromCommunity_ShouldGive4xxError() throws Exception {
+    void userCommunityController_removeUserFromCommunity_ShouldBe4xx() throws Exception {
         mvc.perform(patch("/communities/8000/leave")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))

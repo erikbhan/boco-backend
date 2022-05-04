@@ -93,7 +93,7 @@ public class ListingControllerTest {
     }
 
     @Test
-    void listingController_createListingWithNonExistingCategory_shouldThrow400error() throws Exception {
+    void listingController_createListingWithNonExistingCategory_shouldBe4xx() throws Exception {
         categories = new String[]{"Salse", "Utstyr"};
         communityIDs = new int[]{1000, 1001};
         mockMvc.perform(post("/listing")
@@ -104,12 +104,12 @@ public class ListingControllerTest {
     }
 
     @Test
-    void listingController_getAvailabilityOfListing() throws Exception {
+    void listingController_getAvailabilityOfListing_ShouldBeOk() throws Exception {
         mockMvc.perform(get("/listing/1234/availability").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
     }
 
     @Test
-    void listingController_getAvailabilityOfNonExistingListing() throws Exception {
+    void listingController_getAvailabilityOfNonExistingListing_ShouldBe4xx() throws Exception {
         mockMvc.perform(get("/listing/987654321/availability").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
     }
 
@@ -120,7 +120,7 @@ public class ListingControllerTest {
     }
 
     @Test
-    void listingController_listingController_getAllPicturesForAListing_ShouldGiveOk() throws Exception {
+    void listingController_listingController_getAllPicturesForAListing_ShouldBeOk() throws Exception {
         mockMvc.perform(get("/listing/4040/pictures")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -128,7 +128,7 @@ public class ListingControllerTest {
     }
 
     @Test
-    void listingController_getAllPicturesForAListing_ShouldGiveError() throws Exception {
+    void listingController_getAllPicturesForAListing_ShouldBe4xx() throws Exception {
         mockMvc.perform(get("/listing/0/pictures")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError());

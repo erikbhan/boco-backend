@@ -73,7 +73,7 @@ public class RegisterControllerTest {
      * @throws Exception if a status code different from 200 is given
      */
     @Test
-    void registerController_register_ShouldGive200OK() throws Exception {
+    void registerController_register_ShouldBeOk() throws Exception {
         mvc.perform(post("/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(new RegisterUserDTO("erna@solberg.no", "hackerman", "Erna", "Solberg", "Oslo"))))
@@ -86,7 +86,7 @@ public class RegisterControllerTest {
      * @throws Exception when test fails
      */
     @Test
-    void registerController_register_ShouldGive400Error() throws Exception {
+    void registerController_register_ShouldBe4xx() throws Exception {
         mvc.perform(post("/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(new RegisterUserDTO(

@@ -68,7 +68,7 @@ public class LoginControllerTest {
 
     //Tests that 200 code is given when providing correct email and password
     @Test
-    void loginController_login_ShouldGive200OK() throws Exception {
+    void loginController_login_ShouldBeOk() throws Exception {
         mvc.perform(post("/login/authentication")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(new LoginDTO("test@email.com", "hei"))))
@@ -77,7 +77,7 @@ public class LoginControllerTest {
 
     //Tests that 4xx error code is given when providing wrong email and password
     @Test
-    void loginController_login_ShouldGive4xxError() throws Exception {
+    void loginController_login_ShouldBe4xx() throws Exception {
         mvc.perform(post("/login/authentication")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(new LoginDTO("feilemail@email.com", "detteeretdårligpassord"))))

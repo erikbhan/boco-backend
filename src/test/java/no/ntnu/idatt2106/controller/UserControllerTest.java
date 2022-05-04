@@ -83,7 +83,7 @@ public class UserControllerTest {
     }
 
     @Test
-    void userController_getAUserFromUserId_ShouldGive4xxError() throws Exception {
+    void userController_getAUserFromUserId_ShouldBe4xx() throws Exception {
         mockMvc.perform(get("/users/10/profile")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + user2Token))
