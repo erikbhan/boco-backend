@@ -4,20 +4,31 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import no.ntnu.idatt2106.exception.StatusCodeException;
 import no.ntnu.idatt2106.middleware.RequireAuth;
+import no.ntnu.idatt2106.model.DAO.ListingDAO;
+import no.ntnu.idatt2106.model.DAO.ListingPictureDAO;
+import no.ntnu.idatt2106.model.DTO.TokenDTO;
 import no.ntnu.idatt2106.service.ImageService;
+import no.ntnu.idatt2106.service.ListingPictureService;
+import no.ntnu.idatt2106.service.ListingService;
 import no.ntnu.idatt2106.util.TokenUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 public class ImageController {
 
     private ImageService imageService;
+    private ListingService listingService;
+    private ListingPictureService listingPictureService;
 
-    public ImageController(ImageService imageService) {
+    public ImageController(ImageService imageService, ListingService listingService, ListingPictureService listingPictureService) {
         this.imageService = imageService;
+        this.listingService = listingService;
+        this.listingPictureService = listingPictureService;
     }
 
     @GetMapping(
@@ -64,4 +75,19 @@ public class ImageController {
         if(!deleted) throw new StatusCodeException(HttpStatus.NOT_FOUND, "Image not found");
     }
 
+    @RequireAuth
+    @Operation(summary = "adds pictures to users last added listing")
+    @PostMapping(value = "/listing/pictures")
+    public void addImagesToListing(@RequestBody List<String> images) throws StatusCodeException {
+        if (images.size()==0){
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "No images was sent");
+        }
+        TokenDTO userToken = TokenUtil.getDataJWT();
+        int tokenUserId = userToken.getAccountId();
+        ListingDAO listing = listingService.getUsersLastPostedListing(tokenUserId);
+        for (String image:images){
+            ListingPictureDAO picture = new ListingPictureDAO(image, listing);
+            listingPictureService.save(picture);
+        }
+    }
 }

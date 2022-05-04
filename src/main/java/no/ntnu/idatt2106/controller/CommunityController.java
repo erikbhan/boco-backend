@@ -149,18 +149,15 @@ public class CommunityController {
                 throw new StatusCodeException(HttpStatus.EXPECTATION_FAILED, "Member list is empty");
             }
         }
-        return new ArrayList<UserDTO>();
+        return new ArrayList<>();
     }
 
     /**
      * A method for returning a community by community id.
      * @param communityId The id of the community
-     * @return Returns a community if it is found or an error message if not.
-     * @throws StatusCodeException
      */
     @RequireAuth
     @Operation(summary = "Returns a community with the correct id")
-    @ApiResponse(responseCode = "200", description = "Returns the community")
     @ApiResponse(responseCode = "400", description = "No communities was found")
     @GetMapping("/community/{communityId}")
     public CommunityDTO getCommunity(@PathVariable int communityId) throws StatusCodeException {
@@ -168,19 +165,15 @@ public class CommunityController {
         if (communityDAO == null) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Community not found");
         }
-
         return new CommunityDTO(communityDAO);
     }
 
     /**
      * A method for getting all listings in a community.
      * @param communityId The id of the community
-     * @return Returns a list of all listings in the community.
-     * @throws StatusCodeException
      */
     @RequireAuth
     @Operation(summary = "Returns a community with the correct id")
-    @ApiResponse(responseCode = "200", description = "Returns the community")
     @ApiResponse(responseCode = "400", description = "No communities was found")
     @ApiResponse(responseCode = "417", description = "No listings in the community")
     @GetMapping("/community/{communityId}/listings")

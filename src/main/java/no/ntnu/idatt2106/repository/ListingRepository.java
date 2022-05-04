@@ -28,4 +28,6 @@ public interface ListingRepository extends JpaRepository<ListingDAO, Integer> {
     @Query("SELECT m FROM ListingDAO m WHERE m.title LIKE %:title%")     
     List<ListingDAO> findAllByTitleLike(@Param("title") String title);
 
+    @Query(value = "SELECT MAX(listing_id) FROM public.listing WHERE user_id=?1", nativeQuery = true)
+    ListingDAO findLastAddedListingByUser (int userID);
 }
