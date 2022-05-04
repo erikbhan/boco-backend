@@ -31,8 +31,8 @@ import no.ntnu.idatt2106.model.DTO.ListingDTO;
  */
 @RestController
 @CrossOrigin
-@ApiResponse(responseCode = "401", description = "Unauthorized")
 @RequireAuth
+@ApiResponse(responseCode = "401", description = "Unauthorized")
 public class ListingController {
     private final ListingService listingService;
     private final ListingCategoryService listingCategoryService;

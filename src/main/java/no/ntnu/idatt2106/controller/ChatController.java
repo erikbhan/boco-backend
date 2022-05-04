@@ -42,9 +42,9 @@ public class ChatController {
     @GetMapping("/chats/users/{userId}/messages")
     @RequireAuth
     @ApiResponse(responseCode = "200", description = "Returns all messages in a conversation.")
-    @ApiResponse(responseCode = "401", description = "Unauthorized access.")
+    @ApiResponse(responseCode = "401", description = "Unauthorized")
     @Operation(summary = "Get all messages in a conversation.", tags = {"Chat"})
-    public ChatMessageDTO[] getChatMessages(@PathVariable int userId) throws Exception {
+    public ChatMessageDTO[] getChatMessages(@PathVariable int userId){
         TokenDTO tokenDTO = TokenUtil.getDataJWT(TokenUtil.getToken());
         return chatService.getConversation(tokenDTO.getAccountId(), userId);
     }
