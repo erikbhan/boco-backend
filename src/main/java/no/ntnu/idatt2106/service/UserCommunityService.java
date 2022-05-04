@@ -76,6 +76,11 @@ public class UserCommunityService {
         return communityDTOList;
     }
 
+    public void deleteUserFromAllGroups(UserDAO user) {
+        List<UserCommunityDAO> communities = userCommunityRepository.findAllByUserID(user);
+        userCommunityRepository.deleteAll(communities);
+    }
+
     public UserCommunityDAO getByIds(int userId, CommunityDAO communityDAO) {
         List<UserCommunityDAO> communities = userCommunityRepository.findAllByUserID(userService.findUserByUserId(userId));
         for (UserCommunityDAO userCommunityDAO:communities) {

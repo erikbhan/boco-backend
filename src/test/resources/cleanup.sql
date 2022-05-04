@@ -1,4 +1,5 @@
 DELETE FROM public.listing_picture;
+DELETE FROM public.rating;
 DELETE FROM public.listing_category;
 DELETE FROM public.category;
 DELETE FROM public.chat_message;
@@ -14,6 +15,4 @@ DELETE FROM public.rent;
 DELETE FROM public.listing;
 DELETE FROM public.listing_picture;
 DELETE FROM public.notification;
-DELETE FROM public.rating;
 DELETE FROM public.user;
-
