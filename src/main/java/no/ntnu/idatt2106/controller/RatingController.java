@@ -152,6 +152,7 @@ public class RatingController {
     @Operation(summary = "Checks to see if the current user has given a rating to the owner/renter of a rent")
     @ApiResponse(responseCode = "200", description = "User has not given by the user")
     @ApiResponse(responseCode = "302", description = "Rating has been given by the user")
+    @ApiResponse(responseCode = "401", description = "Unauthorized")
     @ApiResponse(responseCode = "404", description = "Rent not found")
     @GetMapping("rating/{rentid}/israted")
     public boolean ratingIsGivenByCurrentUser(@PathVariable int rentid) throws StatusCodeException {

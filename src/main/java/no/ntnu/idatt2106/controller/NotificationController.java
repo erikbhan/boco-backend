@@ -35,10 +35,10 @@ public class NotificationController {
 
 
     /**
-     * Adds a community request notification to the database.
+     * Adds a community join request notification to the database.
      * @param notificationDTO Notification DTO for adding to the database.
      */
-    @Operation(summary = "Adds community request notification")
+    @Operation(summary = "Adds community join request notification")
     @ApiResponse(responseCode = "201", description = "CREATED")
     @ApiResponse(responseCode = "400", description = "CommunityRequest not found")
     @ApiResponse(responseCode = "400", description = "Could not add notification")
@@ -53,20 +53,20 @@ public class NotificationController {
             throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "Token not found");
         }
         if(communityRequestService.getById(notificationDTO.getCommunityRequestID()) == null){
-            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Could not find communityRequest with that id.");
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Could not find community join request with that id.");
         }
         try {
             notificationService.saveCommunityRequestNotification(notificationDAO);
         } catch (Exception e) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Couldn't add community request notification");
         }
-        throw new StatusCodeException(HttpStatus.CREATED, "Community request notification added");
+        throw new StatusCodeException(HttpStatus.CREATED, "Community join request notification added");
     }
 
     /**
      * Gets all the community request notifications for the user that is logged in when the get call is made.
      */
-    @Operation(summary = "Gets community request notifications for the authenticated user")
+    @Operation(summary = "Gets community join request notifications for the authenticated user")
     @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
     @GetMapping("notifications/communities/joinrequests")
     public List<NotificationDTO> getCommunityRequestNotification() throws StatusCodeException {
@@ -80,7 +80,7 @@ public class NotificationController {
         try {
             return notificationService.getCommunityRequestNotifications(tokenUserId);
         } catch (Exception e) {
-            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Couldn't get community request notification");
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Couldn't get community join request notification");
         }
     }
 
@@ -120,7 +120,7 @@ public class NotificationController {
      */
     @Operation(summary = "Gets latest chat message notification from each sender to the authenticated user")
     @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
-    @GetMapping("notification/getchat")
+    @GetMapping("notifications/chat")
     public List<ChatMessageDTO> getLastChatMessageNotificationFromEachSender() throws StatusCodeException {
         int tokenUserId;
         try{
@@ -141,7 +141,7 @@ public class NotificationController {
      * @throws StatusCodeException When token is not found in header.
      */
     @Operation(summary = "Gets number of unread messages for a user")
-    @GetMapping("notification/amountofmessages")
+    @GetMapping("notifications/chat/amount")
     @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
     public int getNumberOfUnreadMessages() throws StatusCodeException {
         int tokenUserId;
@@ -161,7 +161,7 @@ public class NotificationController {
     @Operation(summary = "Sets a notification as seen")
     @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
     @ApiResponse(responseCode = "400", description = "BAD_REQUEST")
-    @PutMapping("notification/{notificationID}/setseen")
+    @PatchMapping("notification/{notificationID}/seen")
     public void setNotificationAsSeen(@PathVariable int notificationID) throws StatusCodeException {
         int tokenUserId;
         NotificationDAO notificationDAO;
