@@ -65,10 +65,8 @@ public class ListingController {
     @GetMapping("/listing")
     public List<ListingDTO> getAllListings() {
         List<ListingDAO> listingDAOs = listingService.getAllListings();
-        System.out.println(listingDAOs);
         List<ListingDTO> listingDTOs =
         listingService.convertMultipleFromListingDAOToDTO(listingCategoryService, communityListingService, listingDAOs);
-        System.out.println(listingDTOs);
         return listingDTOs;
     }
 
