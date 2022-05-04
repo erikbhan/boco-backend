@@ -21,4 +21,6 @@ public interface RentRepository extends JpaRepository<RentDAO, Long> {
     List<RentDAO> findAllByListing(ListingDAO listingId);
 
     RentDAO findByRentID(int rentId);
+
+    List<RentDAO> findAllByRenterIDOrListingOwnerID_UserID(UserDAO renterID, UserDAO listingOwnerID_userID);
 }

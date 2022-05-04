@@ -211,7 +211,7 @@ public class RentController {
     @Operation(summary = "Deletes rent")
     @ApiResponse(responseCode = "200", description = "The status of the rent request was set to deleted")
     @ApiResponse(responseCode = "400", description = "Rent not found in DB")
-    @PutMapping("/renting/{rentId}/delete")
+    @DeleteMapping("/renting/{rentId}/delete")
     public String deleteRent(@PathVariable() int rentId) throws StatusCodeException {
         RentDAO rent = rentService.getRentFromId(rentId);
         if (rent == null) {
@@ -219,5 +219,12 @@ public class RentController {
         }
         rentService.deleteRent(rentId);
         return "Deleted rent";
+    }
+
+    @Operation(summary = "Returns all rents where the user is either a renter or a owner")
+    @ApiResponse(responseCode = "200", description = "Returns all rents")
+    @GetMapping("/renting/all")
+    public RentDTO[] getAllRents() {
+        return rentService.getAllRents();
     }
 }
