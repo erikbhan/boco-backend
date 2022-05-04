@@ -56,6 +56,16 @@ public class ListingService {
         return listingRepository.findAllFromListingDAOByUser(userDAO);
     }
 
+    public List<ListingDAO> getAllOfNonDeletedListings(UserDAO userDAO){
+        List<ListingDAO> allUserListings = listingRepository.findAllFromListingDAOByUser(userDAO);
+        List<ListingDAO> allNonDeletedUserListings = new ArrayList<>();
+        for(ListingDAO listing: allUserListings){
+            if(!listing.isDeleted()){
+                allNonDeletedUserListings.add(listing);
+            }
+        }
+        return allNonDeletedUserListings;
+    }
     /**
      * Finds a specific listing
      * 

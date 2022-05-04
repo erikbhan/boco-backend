@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -90,7 +91,7 @@ public class ListingController {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User doesnt exist");
         }
         //Gets all the listing daos of the user
-        List<ListingDAO> listingDAOs = listingService.getAllOfUsersListings(user);
+        List<ListingDAO> listingDAOs = listingService.getAllOfNonDeletedListings(user);
         //Converts all the DAOs to DTO, to include categories and communities.
         List<ListingDTO> listingDTOs = 
         listingService.convertListOfListingDAOToListOfListingDTO(listingDAOs);
@@ -136,6 +137,7 @@ public class ListingController {
         listing.setAddress(listingDTO.getAddress());
         listing.setPricePerDay(listingDTO.getPricePerDay());
         listing.setUser(userService.findUserByUserId(listingDTO.getUserID()));
+        listing.setDeleted(false);
         if (listing.getUser() == null) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User not found");
         }
@@ -248,5 +250,21 @@ public class ListingController {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "PictureDAOs list is null");
         }
         throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Listing id must be larger than 0");
+    }
+
+    @Operation(summary = "Set boolean deleted in Listing to true")
+    @ApiResponse(responseCode = "200", description = "Listing set to deleted")
+    @PutMapping("/listing/{listingId}")
+    public void setListingToDeleted(@PathVariable int listingId){
+        // TokenDTO userToken = TokenUtil.getDataJWT();
+        // Integer tokenUserId = Integer.valueOf(userToken.getAccountId());
+        // UserDAO user = userService.findUserByUserId(tokenUserId);
+        // if(listingService.findListingByListingId(listingId).getUser() == user)){
+        //     listingService.findListingByListingId(listingId).setDeleted(true);
+        // } 
+        System.out.println("ListingID: " + listingId);
+        ListingDAO listing = listingService.findListingByListingId(listingId);
+        listing.setDeleted(true);
+        listingService.saveListing(listing);
     }
 }

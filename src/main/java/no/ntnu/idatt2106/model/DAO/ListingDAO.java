@@ -20,6 +20,8 @@ public class ListingDAO{
     private double pricePerDay;
     @Column(name = "address")
     private String address;
+    @Column(name = "isDeleted")
+    private boolean deleted;
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
     private UserDAO user;
@@ -72,4 +74,13 @@ public class ListingDAO{
     public void setUser(UserDAO user) {
         this.user = user;
     }
+
+    public boolean isDeleted() {
+        return this.deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+    
 }
