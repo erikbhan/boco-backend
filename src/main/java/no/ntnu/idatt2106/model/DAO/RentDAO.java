@@ -29,8 +29,8 @@ public class RentDAO{
     private boolean isDeleted = false;
     @Column(name = "message")
     private String message;
-    @Column (name = "created_at")
-    private long createdAt;
+    @Column (name = "created_at", nullable = false)
+    private long createdAt = System.currentTimeMillis();
     @ManyToOne
     @JoinColumn(name = "listing_owner_id", nullable = false)
     private ListingDAO listing;
