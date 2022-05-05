@@ -16,8 +16,4 @@ public interface CommunityListingRepository extends JpaRepository<CommunityListi
     List<CommunityListingDAO> findAllFromCommunityListingDAOByListingID(ListingDAO listingID);
     CommunityListingDAO findByCommunityIDAndListingID(CommunityDAO community, ListingDAO listing);
     List<CommunityListingDAO> findAllByCommunityID(CommunityDAO communityDAO);
-
-    @Modifying
-    @Query(value = "DELETE FROM community_listing WHERE listing_id = ?1", nativeQuery = true)
-    void deleteByListing(int listingId);
 }

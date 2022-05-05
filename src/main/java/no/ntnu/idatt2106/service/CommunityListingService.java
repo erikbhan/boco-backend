@@ -51,8 +51,10 @@ public class CommunityListingService {
     }
 
     public void deleteAllWithListing(ListingDAO listing){
-        System.out.println(listing.getListingID());
-        communityListingRepository.deleteByListing(listing.getListingID());
+        List<CommunityListingDAO> communityListings = communityListingRepository.findAllFromCommunityListingDAOByListingID(listing);
+        for (CommunityListingDAO dao:communityListings){
+            communityListingRepository.delete(dao);
+        }
     }
 
     public List<CommunityListingDAO> getAllCommunityListingForCommunity(CommunityDAO communityDAO) {
