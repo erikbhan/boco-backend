@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import no.ntnu.idatt2106.exception.StatusCodeException;
 import no.ntnu.idatt2106.middleware.RequireAuth;
 import no.ntnu.idatt2106.model.DAO.CommunityDAO;
-import no.ntnu.idatt2106.model.DAO.CommunityRequestDAO;
 import no.ntnu.idatt2106.model.DAO.UserCommunityDAO;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
 import no.ntnu.idatt2106.model.DTO.CommunityRequestDTO;
@@ -20,7 +19,6 @@ import no.ntnu.idatt2106.util.TokenUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -73,7 +71,7 @@ public class CommunityRequestController {
         boolean adminStatus = ucdForAdmin.isAdministrator();
 
         if (adminStatus){
-            if(communityRequestService.findRequest(userId, communityId)==1){
+            if(Integer.valueOf(communityRequestService.findRequest(userId, communityId)) != null){
                 UserDAO userDAO = userService.findUserByUserId(userId);
                 communityRequestService.acceptRequest(userDAO, communityDAO);
                 communityRequestService.removeRequest(userId, communityId);

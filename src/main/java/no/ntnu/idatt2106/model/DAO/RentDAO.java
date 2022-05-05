@@ -20,13 +20,13 @@ public class RentDAO{
     @Column(name = "rent_id")
     private int rentID;
     @Column(name = "from_time")
-    private long fromTime;
+    private long fromTime = System.currentTimeMillis();
     @Column(name = "to_time")
-    private long toTime;
+    private long toTime = System.currentTimeMillis();
     @Column(name = "is_accepted")
-    private boolean isAccepted;
+    private boolean isAccepted = false;
     @Column(name = "is_deleted")
-    private boolean isDeleted;
+    private boolean isDeleted = false;
     @Column(name = "message")
     private String message;
     @Column (name = "created_at")
@@ -132,6 +132,14 @@ public class RentDAO{
     public boolean isDeleted() {return isDeleted;}
 
     public void setDeleted(boolean deleted) {isDeleted = deleted;}
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
     @Override
     public String toString() {

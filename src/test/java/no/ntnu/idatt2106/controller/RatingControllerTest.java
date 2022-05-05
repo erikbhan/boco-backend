@@ -3,8 +3,6 @@ package no.ntnu.idatt2106.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import no.ntnu.idatt2106.BocoApplication;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
-import no.ntnu.idatt2106.model.DTO.CommunityDTO;
-import no.ntnu.idatt2106.model.DTO.ListingDTO;
 import no.ntnu.idatt2106.model.DTO.RatingDTO;
 import no.ntnu.idatt2106.service.LoginService;
 import no.ntnu.idatt2106.service.RatingService;
@@ -19,11 +17,9 @@ import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
-import javax.servlet.ServletException;
 import javax.sql.DataSource;
-import javax.transaction.TransactionScoped;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -51,7 +47,6 @@ public class RatingControllerTest {
     @BeforeAll
     static void setup(@Autowired DataSource dataSource) throws SQLException {
         try (Connection conn = dataSource.getConnection()) {
-            ScriptUtils.executeSqlScript(conn, new ClassPathResource("ratingCleanup.sql"));
             ScriptUtils.executeSqlScript(conn, new ClassPathResource("ratingData.sql"));
         }
     }
@@ -59,69 +54,67 @@ public class RatingControllerTest {
     @AfterAll
     static void cleanup(@Autowired DataSource dataSource) throws SQLException {
         try (Connection conn = dataSource.getConnection()) {
-            ScriptUtils.executeSqlScript(conn, new ClassPathResource("ratingCleanup.sql"));
+            ScriptUtils.executeSqlScript(conn, new ClassPathResource("cleanup.sql"));
         }
     }
 
     @Test
-    public void getAllRatingsAsRenterForUser_ShouldBeOK() throws Exception {
-        mockMvc.perform(get("/rating/4321/as_renter").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+    void ratingController_getAllRatingsAsRenterForUser_ShouldBeOK() throws Exception {
+        mockMvc.perform(get("/rating/4321/renter").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
     }
 
     @Test
-    public void getAllRatingsAsRenterForNonExistingUser_ShouldBe4xx() throws Exception {
-        mockMvc.perform(get("/rating/3000/as_renter").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
+    void ratingController_getAllRatingsAsRenterForNonExistingUser_ShouldBe4xx() throws Exception {
+        mockMvc.perform(get("/rating/3000/renter").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
     }
 
     @Test
-    public void getAllRatingsAsOwnerForUser_ShouldBeOK() throws Exception {
-        mockMvc.perform(get("/rating/4321/as_owner").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+    void ratingController_getAllRatingsAsOwnerForUser_ShouldBeOK() throws Exception {
+        mockMvc.perform(get("/rating/4321/owner").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
     }
 
     @Test
-    public void getAllRatingsAsOwnerForNonExistingUser_ShouldBe4xx() throws Exception {
-        mockMvc.perform(get("/rating/3000/as_owner").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
+    void ratingController_getAllRatingsAsOwnerForNonExistingUser_ShouldBe4xx() throws Exception {
+        mockMvc.perform(get("/rating/3000/owner").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
     }
 
     @Test
-    public void getAverageRatingsAsOwnerForUser_ShouldBeOK() throws Exception {
-        mockMvc.perform(get("/rating/4321/average_as_owner").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+    void ratingController_getAverageRatingsAsOwnerForUser_ShouldBeOK() throws Exception {
+        mockMvc.perform(get("/rating/4321/average/owner").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
     }
 
     @Test
-    public void getAverageRatingsAsOwnerForUserAsNonExistingUser_ShouldBe4xx() throws Exception {
-        mockMvc.perform(get("/rating/3000/average_as_owner").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
+    void ratingController_getAverageRatingsAsOwnerForUserAsNonExistingUser_ShouldBe4xx() throws Exception {
+        mockMvc.perform(get("/rating/3000/average/owner").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
     }
 
     @Test
-    public void getAverageRatingsAsRenterForUser_ShouldBeOK() throws Exception {
-        mockMvc.perform(get("/rating/4321/average_as_renter").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+    void ratingController_getAverageRatingsAsRenterForUser_ShouldBeOK() throws Exception {
+        mockMvc.perform(get("/rating/4321/average/renter").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
     }
 
     @Test
-    public void getAverageRatingsAsRenterForUserAsNonExistingUser_ShouldBe4xx() throws Exception {
-        mockMvc.perform(get("/rating/3000/average_as_renter").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
+    void ratingController_getAverageRatingsAsRenterForUserAsNonExistingUser_ShouldBe4xx() throws Exception {
+        mockMvc.perform(get("/rating/3000/average/renter").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
     }
 
-    @Order(1)
     @Test
-    public void postNewRating_ShouldBeOK() throws Exception {
-        user = new UserDAO(2022,"test@email.com", "test", "user", "gløshaugen", "ok", "l/hjdIHi9Us2uJZ7MP/urY6ALjISdukPrN5sjpD7wTMEV+DnQkWzOF3qfnO6r2PnIQM6zP7ZcdEYh0Gdok8nFQ==", "Ge7Y9frKWdgKcAysHdYCIoOOsAcn9We3f2+C74xlc6kWQZn2scBE8sEf4iZezwsmG/KdeeEuspZD9Q4Ojt27Hg==");
+    void ratingController_postNewRating_ShouldBeOK() throws Exception {
+        user = new UserDAO(2022, "test@email.com", "test", "user", "gløshaugen", "ok", "l/hjdIHi9Us2uJZ7MP/urY6ALjISdukPrN5sjpD7wTMEV+DnQkWzOF3qfnO6r2PnIQM6zP7ZcdEYh0Gdok8nFQ==", "Ge7Y9frKWdgKcAysHdYCIoOOsAcn9We3f2+C74xlc6kWQZn2scBE8sEf4iZezwsmG/KdeeEuspZD9Q4Ojt27Hg==");
         userToken = loginService.successfulAuthentication(user);
         mockMvc.perform(post("/rating/save")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(new RatingDTO(696969,1, "work bro????", false, 10001)))
+                        .content(asJsonString(new RatingDTO(696969, 1, "work bro????", true, 10001)))
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isCreated());
     }
 
-    @Order(2)
     @Test
-    public void postRatingWithNonexistentRent_ShouldBe4xx() throws Exception {
-        user = new UserDAO(2022,"test@email.com", "test", "user", "gløshaugen", "ok", "l/hjdIHi9Us2uJZ7MP/urY6ALjISdukPrN5sjpD7wTMEV+DnQkWzOF3qfnO6r2PnIQM6zP7ZcdEYh0Gdok8nFQ==", "Ge7Y9frKWdgKcAysHdYCIoOOsAcn9We3f2+C74xlc6kWQZn2scBE8sEf4iZezwsmG/KdeeEuspZD9Q4Ojt27Hg==");
+    void ratingController_postRatingFromUserThatHasAlreadyRatedRent_ShouldBe4xx() throws Exception {
+        user = new UserDAO(2022, "test@email.com", "test", "user", "gløshaugen", "ok", "l/hjdIHi9Us2uJZ7MP/urY6ALjISdukPrN5sjpD7wTMEV+DnQkWzOF3qfnO6r2PnIQM6zP7ZcdEYh0Gdok8nFQ==", "Ge7Y9frKWdgKcAysHdYCIoOOsAcn9We3f2+C74xlc6kWQZn2scBE8sEf4iZezwsmG/KdeeEuspZD9Q4Ojt27Hg==");
         userToken = loginService.successfulAuthentication(user);
         mockMvc.perform(post("/rating/save")
-                        .content(asJsonString(new RatingDTO(9876,1, "This fucking jekk man jesus christ it doesnt work bro????", false, 777777)))
+                        .content(asJsonString(new RatingDTO(98732, 1, "This fucking jekk man jesus christ it doesnt work bro????", false, 10002)))
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken)
                         .accept(MediaType.APPLICATION_JSON))
@@ -129,23 +122,51 @@ public class RatingControllerTest {
     }
 
     @Test
-    public void seeIfUserHasGivenRatingWhenUserHasGivenRating_ShouldBeOK() throws Exception {
-        user = new UserDAO(2022,"test@email.com", "test", "user", "gløshaugen", "ok", "l/hjdIHi9Us2uJZ7MP/urY6ALjISdukPrN5sjpD7wTMEV+DnQkWzOF3qfnO6r2PnIQM6zP7ZcdEYh0Gdok8nFQ==", "Ge7Y9frKWdgKcAysHdYCIoOOsAcn9We3f2+C74xlc6kWQZn2scBE8sEf4iZezwsmG/KdeeEuspZD9Q4Ojt27Hg==");
+    void ratingController_postRatingWithNonexistentRent_ShouldBe4xx() throws Exception {
+        user = new UserDAO(2022, "test@email.com", "test", "user", "gløshaugen", "ok", "l/hjdIHi9Us2uJZ7MP/urY6ALjISdukPrN5sjpD7wTMEV+DnQkWzOF3qfnO6r2PnIQM6zP7ZcdEYh0Gdok8nFQ==", "Ge7Y9frKWdgKcAysHdYCIoOOsAcn9We3f2+C74xlc6kWQZn2scBE8sEf4iZezwsmG/KdeeEuspZD9Q4Ojt27Hg==");
         userToken = loginService.successfulAuthentication(user);
-        mockMvc.perform(get("/rating/10002/israted")
+        mockMvc.perform(post("/rating/save")
+                        .content(asJsonString(new RatingDTO(9876, 1, "This fucking jekk man jesus christ it doesnt work bro????", false, 777777)))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "Bearer " + userToken))
-                .andExpect(status().is3xxRedirection());
+                        .header("Authorization", "Bearer " + userToken)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError());
     }
 
     @Test
-    public void seeIfUserHasGivenRatingWhenUserHasNotGivenRating_ShouldBe4xx() throws Exception {
-        user = new UserDAO(2022,"test@email.com", "test", "user", "gløshaugen", "ok", "l/hjdIHi9Us2uJZ7MP/urY6ALjISdukPrN5sjpD7wTMEV+DnQkWzOF3qfnO6r2PnIQM6zP7ZcdEYh0Gdok8nFQ==", "Ge7Y9frKWdgKcAysHdYCIoOOsAcn9We3f2+C74xlc6kWQZn2scBE8sEf4iZezwsmG/KdeeEuspZD9Q4Ojt27Hg==");
+    void ratingController_postRatingWithScore6_ShouldBe4xx() throws Exception {
+        user = new UserDAO(2022, "test@email.com", "test", "user", "gløshaugen", "ok", "l/hjdIHi9Us2uJZ7MP/urY6ALjISdukPrN5sjpD7wTMEV+DnQkWzOF3qfnO6r2PnIQM6zP7ZcdEYh0Gdok8nFQ==", "Ge7Y9frKWdgKcAysHdYCIoOOsAcn9We3f2+C74xlc6kWQZn2scBE8sEf4iZezwsmG/KdeeEuspZD9Q4Ojt27Hg==");
         userToken = loginService.successfulAuthentication(user);
-        mockMvc.perform(get("/rating/10000/israted")
+        mockMvc.perform(post("/rating/save")
+                        .content(asJsonString(new RatingDTO(9876, 6, "This fucking jekk man jesus christ it doesnt work bro????", false, 10002)))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "Bearer " + userToken))
-                .andExpect(status().isOk());
+                        .header("Authorization", "Bearer " + userToken)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    void ratingController_seeIfUserHasGivenRatingWhenUserHasGivenRating_ShouldBeTrue() throws Exception {
+        user = new UserDAO(2022, "test@email.com", "test", "user", "gløshaugen", "ok", "l/hjdIHi9Us2uJZ7MP/urY6ALjISdukPrN5sjpD7wTMEV+DnQkWzOF3qfnO6r2PnIQM6zP7ZcdEYh0Gdok8nFQ==", "Ge7Y9frKWdgKcAysHdYCIoOOsAcn9We3f2+C74xlc6kWQZn2scBE8sEf4iZezwsmG/KdeeEuspZD9Q4Ojt27Hg==");
+        userToken = loginService.successfulAuthentication(user);
+        MvcResult result = mockMvc.perform(get("/rating/10002/israted")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + userToken)).andReturn();
+
+        boolean hasGivenRating = Boolean.parseBoolean(result.getResponse().getContentAsString());
+        assert (hasGivenRating);
+    }
+
+    @Test
+    void ratingController_seeIfUserHasGivenRatingWhenUserHasNotGivenRating_ShouldBeFalse() throws Exception {
+        user = new UserDAO(2022, "test@email.com", "test", "user", "gløshaugen", "ok", "l/hjdIHi9Us2uJZ7MP/urY6ALjISdukPrN5sjpD7wTMEV+DnQkWzOF3qfnO6r2PnIQM6zP7ZcdEYh0Gdok8nFQ==", "Ge7Y9frKWdgKcAysHdYCIoOOsAcn9We3f2+C74xlc6kWQZn2scBE8sEf4iZezwsmG/KdeeEuspZD9Q4Ojt27Hg==");
+        userToken = loginService.successfulAuthentication(user);
+        MvcResult result = mockMvc.perform(get("/rating/10000/israted")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + userToken)).andReturn();
+
+        boolean hasGivenRating = Boolean.parseBoolean(result.getResponse().getContentAsString());
+        assert (!hasGivenRating);
     }
 
     public static String asJsonString(final Object obj) {

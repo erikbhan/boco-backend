@@ -31,4 +31,8 @@ public class ListingPictureService {
         }
         return convertedList;
     }
+
+    public void save(ListingPictureDAO picture){
+        listingPictureRepository.save(picture);
+    }
 }

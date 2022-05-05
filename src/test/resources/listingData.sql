@@ -10,8 +10,8 @@ VALUES (100002, 'Fisk for folk', 'Ravnkloa', 'Det regner fisk', 'imagen a place 
 INSERT INTO public.user (user_id, email, first_name, last_name, address, picture, salt, hash)
 VALUES (666666, 'test@email.com', 'test', 'user', 'gløshaugen', 'ok', 'l/hjdIHi9Us2uJZ7MP/urY6ALjISdukPrN5sjpD7wTMEV+DnQkWzOF3qfnO6r2PnIQM6zP7ZcdEYh0Gdok8nFQ==', 'Ge7Y9frKWdgKcAysHdYCIoOOsAcn9We3f2+C74xlc6kWQZn2scBE8sEf4iZezwsmG/KdeeEuspZD9Q4Ojt27Hg==');
 
-INSERT INTO public.listing(listing_id, address, description, price_per_day, title, user_id)
-VALUES (4040, 'hoi', 'hei', 2, 'Folk og fe', 666666);
+INSERT INTO public.listing(listing_id, address, description, price_per_day, title, user_id, deleted)
+VALUES (4040, 'hoi', 'hei', 2, 'Folk og fe', 666666, false);
 
 INSERT INTO public.listing_picture(listing_picture_id, picture, listing_id)
 VALUES (999, 'oki', 4040);
@@ -19,8 +19,8 @@ VALUES (999, 'oki', 4040);
 INSERT INTO public.user (user_id, email, first_name, last_name, address, picture, salt, hash)
 VALUES (4321, 'test@email.com', 'test', 'user', 'gløshaugen', 'ok', 'l/hjdIHi9Us2uJZ7MP/urY6ALjISdukPrN5sjpD7wTMEV+DnQkWzOF3qfnO6r2PnIQM6zP7ZcdEYh0Gdok8nFQ==', 'Ge7Y9frKWdgKcAysHdYCIoOOsAcn9We3f2+C74xlc6kWQZn2scBE8sEf4iZezwsmG/KdeeEuspZD9Q4Ojt27Hg==');
 
-INSERT INTO public.listing(listing_id, address, description, price_per_day, title, user_id)
-VALUES (1234, 'kjopmansgata', 'you look cute', 14, 'pls holp', 4321);
+INSERT INTO public.listing(listing_id, address, description, price_per_day, title, user_id, deleted)
+VALUES (1234, 'kjopmansgata', 'you look cute', 14, 'pls holp', 4321, false);
 
 INSERT INTO public.rent(rent_id, from_time, is_accepted, to_time, listing_owner_id, renter_id, is_deleted)
 VALUES (10000, 1609329600000, true, 1609358400000, 1234, 4321, false);

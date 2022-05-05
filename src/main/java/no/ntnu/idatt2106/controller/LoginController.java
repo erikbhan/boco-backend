@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
 @RestController
-@ApiResponse(responseCode = "401", description = "Unauthorized")
 @CrossOrigin
 public class LoginController {
     private final UserService userService;
@@ -33,14 +32,12 @@ public class LoginController {
     @PostMapping("/login/authentication")
     public String login(@RequestBody LoginDTO loginDTO)
             throws StatusCodeException {
-
         try {
             if (!loginService.attemptAuthentication(loginDTO.getEmail(), loginDTO.getPassword()))
                 throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Login failed");
             UserDAO user = userService.findUserByEmail(loginDTO.getEmail());
             return loginService.successfulAuthentication(user);
         } catch (NoSuchAlgorithmException | IOException | ServletException e) {
-
             e.printStackTrace();
             throw new StatusCodeException(HttpStatus.INTERNAL_SERVER_ERROR, "How did you get here");
     }}}

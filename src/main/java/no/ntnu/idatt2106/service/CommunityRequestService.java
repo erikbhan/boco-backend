@@ -38,7 +38,7 @@ public class CommunityRequestService {
         communityRequestRepository.save(communityRequestDAO);
     }
 
-    public int  findRequest(int user_id, int community_id){
+    public int findRequest(int user_id, int community_id){
         return communityRequestRepository.findId(user_id, community_id);
     }
 
