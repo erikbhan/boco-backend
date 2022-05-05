@@ -38,11 +38,16 @@ public class CommunityRequestController {
         this.userService = userService;
     }
 
+    /**
+     * Sends a request to join a private community
+     * @param communityId The id of the community you want to join
+     * @param communityRequestDTO The requestDTO containing the join request information
+     */
     @Operation(summary = "Sends request to join a community")
+    @ApiResponse(responseCode = "400", description = "No community was found")
+    @ApiResponse(responseCode = "400", description = "Community is not private")
+    @ApiResponse(responseCode = "400", description = "User is already in this community")
     @PostMapping("/communities/{communityId}/private/join")
-    @ApiResponse(responseCode = "200", description = "Sent request")
-    @ApiResponse(responseCode = "400", description = "Illegal operation")
-    @ApiResponse(responseCode = "500", description = "Unexpected error")
     public void joinPrivateCommunity(@PathVariable int communityId, @RequestBody CommunityRequestDTO communityRequestDTO) throws StatusCodeException {
         TokenDTO token = TokenUtil.getDataJWT();
         CommunityDAO communityDAO = communityRepository.findCommunityDAOByCommunityID(communityId);
@@ -55,21 +60,22 @@ public class CommunityRequestController {
         if (userCommunityService.userIsInCommunity(token.getAccountId(),communityDAO)){
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User is already in this community");
         }
-
         communityRequestService.addNewRequest(communityDAO,userService.findUserByUserId(token.getAccountId()), communityRequestDTO.getMessage());
     }
 
-
+    /**
+     * Accepts a community join request
+     * @param communityId The community to look for the join request in
+     * @param userId The user id of the user to accept
+     */
     @Operation(summary = "Accepts a users request to join a community")
+    @ApiResponse(responseCode = "400", description = "Active user is not admin")
     @PostMapping("/communities/{communityId}/requests")
-    @ApiResponse(responseCode = "200", description = "Accepted request")
-    @ApiResponse(responseCode = "400", description = "Illegal operation")
     public void acceptCommunityRequest(@PathVariable int communityId, @RequestParam int userId) throws StatusCodeException {
         TokenDTO token = TokenUtil.getDataJWT();
         CommunityDAO communityDAO = communityRepository.findCommunityDAOByCommunityID(communityId);
         UserCommunityDAO ucdForAdmin = userCommunityService.getByIds(token.getAccountId(), communityDAO );
         boolean adminStatus = ucdForAdmin.isAdministrator();
-
         if (adminStatus){
             if(Integer.valueOf(communityRequestService.findRequest(userId, communityId)) != null){
                 UserDAO userDAO = userService.findUserByUserId(userId);
