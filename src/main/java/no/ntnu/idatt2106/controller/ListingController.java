@@ -258,7 +258,7 @@ public class ListingController {
 
     /**
      * A method for gettig all pictures for a listing from the DB.
-     * @param listingid The id ofz the listing
+     * @param listingid The id of the listing
      * @return Returns a list of all pictures or an http status error code.
      * @throws StatusCodeException
      */
@@ -289,6 +289,7 @@ public class ListingController {
      */
     @Operation(summary = "Set boolean deleted in Listing to true")
     @ApiResponse(responseCode = "200", description = "Listing set to deleted")
+    @ApiResponse(responseCode = "500", description = "Unexpected erro")
     @DeleteMapping("/listing/{listingId}")
     public void setListingToDeleted(@PathVariable int listingId) throws StatusCodeException{
         try{
@@ -299,7 +300,7 @@ public class ListingController {
         listingService.saveListing(listing);
         }
         catch(Exception e){
-            throw new StatusCodeException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error");
+            throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "Unexpected error");
         }
     }
 }
