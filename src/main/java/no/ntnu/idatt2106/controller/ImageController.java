@@ -54,10 +54,9 @@ public class ImageController {
     @ApiResponse(responseCode = "201", description = "Image added")
     @ApiResponse(responseCode = "400", description = "Image already exists")
     @RequireAuth
-    public @ResponseBody int addImage(@RequestBody byte[] image) throws StatusCodeException {
+    public @ResponseBody int addImage(@RequestBody byte[] image){
         int accountId = TokenUtil.getDataJWT(TokenUtil.getToken()).getAccountId();
         int imageID = imageService.addImage(image, accountId);
-        if(imageID == -1) throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Image already exists");
         return imageID;
     }
 
@@ -91,5 +90,15 @@ public class ImageController {
             listingPictureService.save(picture);
         }
         throw new StatusCodeException(HttpStatus.OK, "pictures added");
+    }
+
+    @RequireAuth
+    @Operation(summary = "Changes the listings images to the given list")
+    @ApiResponse(responseCode = "200", description = "Listing pictures updated")
+    @PutMapping(value = "/listing/{listingId}/pictures")
+    public void changeListingsImages(@RequestBody List<String> images, @PathVariable int listingId) throws StatusCodeException {
+        ListingDAO listing = listingService.findListingByListingId(listingId);
+        listingPictureService.changeListingsPictures(images,listing);
+        throw new StatusCodeException(HttpStatus.OK, "Listing Pictures updated");
     }
 }

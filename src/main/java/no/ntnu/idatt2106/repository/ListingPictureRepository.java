@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface ListingPictureRepository extends JpaRepository<ListingPictureDAO, Integer> {
     List<ListingPictureDAO> findAllByListing(ListingDAO listing);
+    boolean existsByListingAndPicture(ListingDAO listing, String picture);
+    ListingPictureDAO findByListingAndPicture(ListingDAO listing, String picture);
 }

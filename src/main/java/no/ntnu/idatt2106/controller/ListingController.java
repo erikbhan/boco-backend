@@ -276,11 +276,11 @@ public class ListingController {
     }
 
     /**
-     * Set listing variable "deleted" to true to hide them from user. Doesnt actually delete listing to dont create problems with ratings
+     * Set listing variable "deleted" to true to hide them from user. Doesn't actually delete listing to dont create problems with ratings
      * @param listingId The ID of the listing to be set to deleted
      */
     @Operation(summary = "Set boolean deleted in Listing to true")
-    @ApiResponse(responseCode = "500", description = "Unexpected erro")
+    @ApiResponse(responseCode = "401", description = "Unexpected error")
     @DeleteMapping("/listing/{listingId}")
     public void setListingToDeleted(@PathVariable int listingId) throws StatusCodeException{
         try{

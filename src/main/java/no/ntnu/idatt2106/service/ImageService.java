@@ -42,6 +42,9 @@ public class ImageService {
      */
     public int addImage(byte[] image, int userID) {
         UserDAO user = _userRepository.getById(userID);
+        if (_imageRepository.findImageDAOByUserAndImage(user, image) != null){
+            return _imageRepository.findImageDAOByUserAndImage(user, image).getImageId();
+        }
         ImageDAO imageDAO = new ImageDAO();
         imageDAO.setImage(image);
         imageDAO.setUser(user);
