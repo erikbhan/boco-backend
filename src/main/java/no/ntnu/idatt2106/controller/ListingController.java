@@ -169,6 +169,7 @@ public class ListingController {
         listing.setAddress(listingDTO.getAddress());
         listing.setPricePerDay(listingDTO.getPricePerDay());
         listing.setUser(userService.findUserByUserId(listingDTO.getUserID()));
+        listing.setDeleted(false);
         if (listing.getUser() == null) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User not found");
         }
