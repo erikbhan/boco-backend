@@ -115,7 +115,6 @@ public class UserService {
     }
 
     public void clearUserInfo(UserDAO userDAO) {
-
         userDAO.setFirstName("Slettet");
         userDAO.setLastName("Konto: " + userDAO.getUserID());
         userDAO.setPicture("");
@@ -123,5 +122,6 @@ public class UserService {
         userDAO.setSalt("");
         userDAO.setAddress("");
         userDAO.setEmail("");
+        userRepository.save(userDAO);
     }
 }
