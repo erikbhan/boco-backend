@@ -19,7 +19,6 @@ public class RequireAuthAspect {
         @Before(value = "@within(RequireAuth) || @annotation(RequireAuth)")
         public void requireAuth(JoinPoint joinpoint) throws Exception {
                 String token = TokenUtil.getToken();
-                System.out.println(token);
                 if(token == null || token.isBlank() || token.isEmpty()){
                         throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "Unauthorized");
                 }
