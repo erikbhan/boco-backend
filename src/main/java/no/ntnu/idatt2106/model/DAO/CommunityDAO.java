@@ -31,7 +31,7 @@ public class CommunityDAO {
     @Column(name = "description")
     private String description;
     @Column(name = "visibility")
-    private int visibility;
+    private int visibility = 0;
     @Column(name = "location")
     private String location;
     @Column(name = "picture")

@@ -107,6 +107,7 @@ public class ListingService {
         ListingDTO listingDTO = new ListingDTO(listingDAO.getTitle(), listingDAO.getDescription(),
                 listingDAO.getPricePerDay(), listingDAO.getAddress(), listingDAO.getUser().getUserID(), categoryNames,
                 communityIDs);
+        listingDTO.setListingID(listingDAO.getListingID());
         return listingDTO;
     }
 

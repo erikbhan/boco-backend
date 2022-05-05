@@ -11,11 +11,11 @@ public class RatingDAO {
     @Column(name = "rating_id")
     private int ratingID;
     @Column(name= "score")
-    private int score;
+    private int score = 3;
     @Column(name = "comment")
     private String comment;
     @Column(name= "renter_is_receiver_of_rating")
-    private boolean renterIsReceiverOfRating;
+    private boolean renterIsReceiverOfRating = false;
     @ManyToOne
     @JoinColumn(name = "rent_id", nullable = false)
     private RentDAO rent;
