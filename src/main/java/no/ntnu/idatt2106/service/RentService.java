@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -220,6 +221,20 @@ public class RentService {
     }
 
     /**
+     * Sets any past rents for a listing to isdeleted = true
+     * @param listingID The listing ID of the listing to check for.
+     */
+    public void deletePastRentRequests(int listingID) {
+        List<RentDAO> rentDAOS = rentRepository.findRentDAOSByListing(listingService.getListingDAOByID(listingID));
+        for (RentDAO rentDAO : rentDAOS) {
+            if (rentDAO.getToTime() < System.currentTimeMillis()) {
+                rentDAO.setDeleted(true);
+                rentRepository.save(rentDAO);
+            }
+        }
+    }
+
+    /**
      * Finds all the intervals where the listing with the given listingID
      * is unavailable.
      * @param listingID The listingId of the listing you want to check
@@ -227,7 +242,7 @@ public class RentService {
      *         corresponding ending times
      */
     public List<List<Long>> getNonAvailableTimes(int listingID){
-        List<RentDAO> rentDAOs= rentRepository.findRentDAOSByListing(listingService.getListingDAOByID(listingID));
+        List<RentDAO> rentDAOs = rentRepository.findRentDAOSByListing(listingService.getListingDAOByID(listingID));
         ArrayList<List<Long>> nonAvailableTimes = new ArrayList<>();
         for(RentDAO rentDAO:rentDAOs) {
             ArrayList<Long> addThis = new ArrayList<>();

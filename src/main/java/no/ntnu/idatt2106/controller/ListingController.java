@@ -110,7 +110,6 @@ public class ListingController {
     @ApiResponse(responseCode = "400", description = "Could not find one of the given categories")
     @PostMapping("/listing")
     public boolean postListing(@RequestBody ListingDTO listingDTO) throws StatusCodeException {
-        //TODO: Gjøre at du ikke kan poste hvis tiden er opptatt.
         ListingDAO listing = new ListingDAO();
         listing.setTitle(listingDTO.getTitle());
         listing.setDescription(listingDTO.getDescription());
@@ -229,8 +228,10 @@ public class ListingController {
         if (listingService.findListingByListingId(listingID) == null){
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Listing was not found");
         }
+        rentService.deletePastRentRequests(listingID);
         return rentService.getNonAvailableTimes(listingID);
     }
+
     /**
      * Gets every listing with title containing requested phrase
      * @param title
