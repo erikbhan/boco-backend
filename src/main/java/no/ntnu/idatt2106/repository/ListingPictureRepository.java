@@ -4,7 +4,8 @@ import no.ntnu.idatt2106.model.DAO.ListingDAO;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import no.ntnu.idatt2106.model.DAO.ListingPictureDAO;
-import org.springframework.stereotype.Repository;;import java.util.List;
+import org.springframework.stereotype.Repository;
+import java.util.List;
 
 @Repository
 public interface ListingPictureRepository extends JpaRepository<ListingPictureDAO, Integer> {
