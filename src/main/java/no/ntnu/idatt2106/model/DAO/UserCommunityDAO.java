@@ -21,7 +21,7 @@ public class UserCommunityDAO {
      private UserDAO userID;
 
      @Column(name = "is_administrator")
-     private boolean isAdministrator;
+     private boolean isAdministrator = false;
 
      public UserCommunityDAO(CommunityDAO community, UserDAO user, boolean isAdministrator) {
           this.communityID = community;
