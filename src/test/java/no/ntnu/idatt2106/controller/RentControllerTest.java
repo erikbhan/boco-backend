@@ -158,7 +158,7 @@ public class RentControllerTest {
         LocalDateTime ldt = LocalDateTime.of(1997,12,13,12,12,12);
         mockMvc.perform(post("/renting/renter/save")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(new RentDTO(rentService.fromLocalDateTimeToMillis(ldt), rentService.fromLocalDateTimeToMillis(ldt), false,1235,2022)))
+                        .content(asJsonString(new RentDTO(rentService.fromLocalDateTimeToMillis(ldt), rentService.fromLocalDateTimeToMillis(ldt), false,1235,2022, false)))
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk());
     }
