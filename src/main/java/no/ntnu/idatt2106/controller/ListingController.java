@@ -246,19 +246,18 @@ public class ListingController {
         throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Listing id must be larger than 0");
     }
 
+    /**
+     * Set listing variable "deleted" to true to hide them from user. Doesnt actually delete listing to dont create problems with ratings
+     * @param listingId The ID of the listing to be set to deleted
+     */
     @Operation(summary = "Set boolean deleted in Listing to true")
     @ApiResponse(responseCode = "200", description = "Listing set to deleted")
     @PutMapping("/listing/{listingId}")
     public void setListingToDeleted(@PathVariable int listingId){
-        // TokenDTO userToken = TokenUtil.getDataJWT();
-        // Integer tokenUserId = Integer.valueOf(userToken.getAccountId());
-        // UserDAO user = userService.findUserByUserId(tokenUserId);
-        // if(listingService.findListingByListingId(listingId).getUser() == user)){
-        //     listingService.findListingByListingId(listingId).setDeleted(true);
-        // } 
-        System.out.println("ListingID: " + listingId);
+        //Finds the listing from the DB
         ListingDAO listing = listingService.findListingByListingId(listingId);
         listing.setDeleted(true);
+        //Saves the change
         listingService.saveListing(listing);
     }
 }

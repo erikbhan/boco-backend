@@ -58,9 +58,16 @@ public class ListingService {
         return listingRepository.findAllFromListingDAOByUser(userDAO);
     }
 
+    /**
+     * Retrieves all listings where variable deleted is false.
+     * @param userDAO
+     * @return
+     */
     public List<ListingDAO> getAllOfNonDeletedListings(UserDAO userDAO){
+        //Finds all user listings
         List<ListingDAO> allUserListings = listingRepository.findAllFromListingDAOByUser(userDAO);
         List<ListingDAO> allNonDeletedUserListings = new ArrayList<>();
+        //Finds all user listings where deleted is false
         for(ListingDAO listing: allUserListings){
             if(!listing.isDeleted()){
                 allNonDeletedUserListings.add(listing);
