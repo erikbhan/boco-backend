@@ -88,7 +88,7 @@ public class RentControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].*", hasSize(8)));
+                .andExpect(jsonPath("$[0].*", hasSize(9)));
     }
 
     @Test
@@ -105,7 +105,7 @@ public class RentControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + ownerToken))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].*", hasSize(8)));
+                .andExpect(jsonPath("$[0].*", hasSize(9)));
     }
 
     @Test
@@ -122,7 +122,7 @@ public class RentControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].*", hasSize(8)));
+                .andExpect(jsonPath("$[0].*", hasSize(9)));
     }
 
     @Test
@@ -139,7 +139,7 @@ public class RentControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + ownerToken))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].*", hasSize(8)));
+                .andExpect(jsonPath("$[0].*", hasSize(9)));
     }
 
     @Test
@@ -162,7 +162,7 @@ public class RentControllerTest {
 
     @Test
     void rentController_deleteRent_ShouldBeOk() throws Exception {
-        mockMvc.perform(put("/renting/10001/delete")
+        mockMvc.perform(delete("/renting/10001/delete")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk());
