@@ -72,7 +72,8 @@ public class CommunityController {
                     .convertListCommunityDAOToListCommunityDTO(listOfCommunityDAOs);
             return listOfCommunities;
         }
-        throw new StatusCodeException(HttpStatus.BAD_REQUEST, "No communities was found");
+        List<CommunityDTO> emptyList = new ArrayList<>();
+        return emptyList;
     }
 
     /**
