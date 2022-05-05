@@ -155,7 +155,7 @@ public class CommunityController {
      * @param communityId The id of the community
      */
     @Operation(summary = "Returns a community with the correct id")
-    @ApiResponse(responseCode = "400", description = "No communities was found")
+    @ApiResponse(responseCode = "400", description = "No community was found")
     @GetMapping("/community/{communityId}")
     public CommunityDTO getCommunity(@PathVariable int communityId) throws StatusCodeException {
         CommunityDAO communityDAO = communityService.findCommunityDAOByCommunityID(communityId);
@@ -178,6 +178,25 @@ public class CommunityController {
         if (communityDAO == null) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Community not found");
         }
+        if(communityDAO.getVisibility()==0){
+            try{
+                TokenDTO token = TokenUtil.getDataJWT();
+                UserDAO user = userService.findUserByUserId(token.getAccountId());
+                if (user==null){
+                    throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Could not find user/ not logged in ");
+                }
+
+                if(!userCommunityService.userIsInCommunity(user.getUserID(),communityDAO)){
+                    throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Community is private and you're not in it");
+                }
+            }
+            catch (Exception e){
+                e.printStackTrace();
+                throw new StatusCodeException(HttpStatus.BAD_REQUEST, "not logged in");
+            }
+
+        }
+
         List<ListingDAO> listingDAOS = listingService.getAllListingsInACommunity(communityDAO);
 
         List<ListingDTO> listings = listingService
