@@ -90,5 +90,6 @@ public class ImageController {
             ListingPictureDAO picture = new ListingPictureDAO(image, listing);
             listingPictureService.save(picture);
         }
+        throw new StatusCodeException(HttpStatus.OK, "pictures added");
     }
 }
