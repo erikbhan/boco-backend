@@ -71,4 +71,11 @@ public class CommunityRequestService {
     public CommunityRequestDAO getById(int id){
         return communityRequestRepository.findByCommunityRequestID(id);
     }
+
+    public void deleteRequestsForUser(UserDAO userDAO) {
+        List<CommunityRequestDAO> requests = communityRequestRepository.findAllByUser(userDAO);
+        for(CommunityRequestDAO communityRequestDAO:requests) {
+            communityRequestRepository.delete(communityRequestDAO);
+        }
+    }
 }
