@@ -9,6 +9,7 @@ import no.ntnu.idatt2106.service.LoginService;
 import no.ntnu.idatt2106.service.UserService;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -37,7 +38,6 @@ public class CommunityRequestTest {
     @Autowired
     private MockMvc mockMvc;
     String userToken;
-    UserDAO user;
 
     @Autowired
     LoginService loginService;
@@ -125,6 +125,41 @@ public class CommunityRequestTest {
         assert (communityRequestService.getRequestsForCommunity(3004).size() == 1);
     }
 
+    @Test
+    void communityRequestController_removeOwnCommunityRequest_ShouldBeOk() throws Exception {
+        UserDAO user = userService.findUserByUserId(2022);
+        userToken = loginService.successfulAuthentication(user);
+
+        mockMvc.perform(patch("/communities/3005/requests/remove")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + userToken)).andExpect(status().isOk());
+
+        assert (communityRequestService.getRequestsForCommunity(3005).size() == 0);
+    }
+
+    @Test
+    void communityRequestController_rejectCommunityRequestAsAdmin_ShouldBeOk() throws Exception {
+        UserDAO user = userService.findUserByUserId(2022);
+        userToken = loginService.successfulAuthentication(user);
+
+        mockMvc.perform(post("/communities/3006/requests/?userId=2023")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + userToken)).andExpect(status().isOk());
+
+        assert (communityRequestService.getRequestsForCommunity(3006).isEmpty());
+    }
+
+    @Test
+    void communityRequestController_rejectCommunityRequestNotAsAdmin_ShouldBe4xx() throws Exception {
+        UserDAO user = userService.findUserByUserId(2022);
+        userToken = loginService.successfulAuthentication(user);
+
+        mockMvc.perform(post("/communities/3007/requests/?userId=2023")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + userToken)).andExpect(status().is4xxClientError());
+
+        assert (communityRequestService.getRequestsForCommunity(3007).size() == 1);
+    }
 
     public static String asJsonString(final Object obj) {
         try {
