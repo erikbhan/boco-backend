@@ -178,21 +178,24 @@ public class CommunityController {
         if (communityDAO == null) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Community not found");
         }
+        UserDAO user;
         if(communityDAO.getVisibility()==0){
             try{
                 TokenDTO token = TokenUtil.getDataJWT();
-                UserDAO user = userService.findUserByUserId(token.getAccountId());
-                if (user==null){
-                    throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Could not find user/ not logged in ");
-                }
+                user = userService.findUserByUserId(token.getAccountId());
 
-                if(!userCommunityService.userIsInCommunity(user.getUserID(),communityDAO)){
-                    throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Community is private and you're not in it");
-                }
             }
             catch (Exception e){
                 e.printStackTrace();
                 throw new StatusCodeException(HttpStatus.BAD_REQUEST, "not logged in");
+            }
+
+            if (user==null){
+                throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Could not find user/ not logged in ");
+            }
+
+            if(!userCommunityService.userIsInCommunity(user.getUserID(),communityDAO)){
+                throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Community is private and you're not in it");
             }
 
         }
