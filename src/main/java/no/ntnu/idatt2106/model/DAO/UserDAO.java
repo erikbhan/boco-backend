@@ -105,4 +105,18 @@ public class UserDAO {
     public String getHash() {return hash;}
 
     public void setHash(String hash) {this.hash = hash;}
+
+    @Override
+    public String toString() {
+        return "UserDAO{" + "\n" +
+                "userID= " + userID + "\n" +
+                "email= " + email + "\n" +
+                "firstName= " + firstName + "\n" +
+                "lastName= " + lastName + '\n' +
+                "address= " + address + '\n' +
+                "picture= " + picture + '\n' +
+                "salt= " + salt + '\n' +
+                "hash= " + hash + '\n' +
+                '}';
+    }
 }
