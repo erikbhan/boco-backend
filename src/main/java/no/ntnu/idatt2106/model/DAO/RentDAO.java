@@ -38,13 +38,14 @@ public class RentDAO{
     @JoinColumn(name = "renter_id", nullable = false)
     private UserDAO renter;
 
-    public RentDAO(long fromTime, long toTime, boolean isAccepted, ListingDAO listing, UserDAO renter) {
+    public RentDAO(long fromTime, long toTime, boolean isAccepted, ListingDAO listing, UserDAO renter, boolean isDeleted) {
         this.fromTime = fromTime;
         this.toTime = toTime;
         this.isAccepted = isAccepted;
         this.listing = listing;
         this.renter = renter;
         this.createdAt = System.currentTimeMillis();
+        this.isDeleted = isDeleted;
     }
 
     public RentDAO(RentDTO rentDTO) {
@@ -53,6 +54,7 @@ public class RentDAO{
         this.isAccepted = rentDTO.getIsAccepted();
         this.message = rentDTO.getMessage();
         this.createdAt = rentDTO.getCreatedAt();
+        this.isDeleted = rentDTO.isDeleted();
     }
 
     public RentDAO() {

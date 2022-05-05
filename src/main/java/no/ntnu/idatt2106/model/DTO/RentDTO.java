@@ -21,14 +21,16 @@ public class RentDTO {
     String message;
     int listingOwnerId;
     Long createdAt;
+    boolean isDeleted;
 
-    public RentDTO(long fromTime, long toTime, Boolean isAccepted, int listingId, int renterId) {
+    public RentDTO(long fromTime, long toTime, Boolean isAccepted, int listingId, int renterId, boolean isDeleted) {
         this.fromTime = fromTime;
         this.toTime = toTime;
         this.isAccepted = isAccepted;
         this.listingId = listingId;
         this.renterId = renterId;
         this.createdAt = System.currentTimeMillis();
+        this.isDeleted = isDeleted;
     }
 
     public RentDTO(int rentId, long fromTime, long toTime, Boolean isAccepted, int listingId, int renterId) {
@@ -50,7 +52,8 @@ public class RentDTO {
         this.listingId = rentDAO.getListing().getListingID();
         this.renterId = rentDAO.getRenter().getUserID();
         this.createdAt = rentDAO.getCreatedAt();
-        this.message = rentDAO.getMessage();
+        this.isDeleted = rentDAO.isDeleted();
+        //this.message = rentDAO.getMessage();
     }
 
     public RentDTO(long fromTime, long toTime, Boolean isAccepted, int listingId, int renterId, String message) {
@@ -137,5 +140,13 @@ public class RentDTO {
 
     public long getCreatedAt() {
         return createdAt;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 }
