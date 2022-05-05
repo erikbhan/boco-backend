@@ -257,7 +257,7 @@ public class ListingController {
 
     /**
      * A method for gettig all pictures for a listing from the DB.
-     * @param listingid The id of the listing
+     * @param listingid The id ofz the listing
      * @return Returns a list of all pictures or an http status error code.
      * @throws StatusCodeException
      */
@@ -284,15 +284,21 @@ public class ListingController {
     /**
      * Set listing variable "deleted" to true to hide them from user. Doesnt actually delete listing to dont create problems with ratings
      * @param listingId The ID of the listing to be set to deleted
+     * @throws StatusCodeException
      */
     @Operation(summary = "Set boolean deleted in Listing to true")
     @ApiResponse(responseCode = "200", description = "Listing set to deleted")
     @PutMapping("/listing/{listingId}")
-    public void setListingToDeleted(@PathVariable int listingId){
+    public void setListingToDeleted(@PathVariable int listingId) throws StatusCodeException{
+        try{
         //Finds the listing from the DB
         ListingDAO listing = listingService.findListingByListingId(listingId);
         listing.setDeleted(true);
         //Saves the change
         listingService.saveListing(listing);
+        }
+        catch(Exception e){
+            throw new StatusCodeException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error");
+        }
     }
 }

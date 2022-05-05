@@ -12,15 +12,16 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 
-// @Aspect
-// @Component
+@Aspect
+@Component
 public class RequireAuthAspect {
 
         @Before(value = "@within(RequireAuth) || @annotation(RequireAuth)")
         public void requireAuth(JoinPoint joinpoint) throws Exception {
                 String token = TokenUtil.getToken();
+                System.out.println(token);
                 if(token == null || token.isBlank() || token.isEmpty()){
-                        throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "Unauthorized");
+                        throw new StatusCodeException(HttpStatus.BAD_GATEWAY, "Unauthorized");
                 }
 
                 MethodSignature methodSignature = (MethodSignature) joinpoint.getSignature();
@@ -32,11 +33,11 @@ public class RequireAuthAspect {
                 }
 
                 if(requireAuth == null) {
-                        throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "Unauthorized");
+                        throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Unauthorized");
                 }
 
                 if(!TokenUtil.verifyToken(token)) {
-                        throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "Unauthorized");
+                        throw new StatusCodeException(HttpStatus.INTERNAL_SERVER_ERROR, "Unauthorized");
                 }
 
         }
