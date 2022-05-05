@@ -2,9 +2,8 @@ package no.ntnu.idatt2106.controller;
 
 import java.util.List;
 
-import no.ntnu.idatt2106.model.DAO.ListingPictureDAO;
+import no.ntnu.idatt2106.model.DAO.*;
 import no.ntnu.idatt2106.model.DTO.ListingPictureDTO;
-import no.ntnu.idatt2106.model.DAO.RentDAO;
 import no.ntnu.idatt2106.model.DTO.ListingWithUnavailabilityDTO;
 import no.ntnu.idatt2106.model.DTO.TokenDTO;
 import no.ntnu.idatt2106.service.*;
@@ -24,8 +23,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import no.ntnu.idatt2106.exception.StatusCodeException;
 import no.ntnu.idatt2106.middleware.RequireAuth;
-import no.ntnu.idatt2106.model.DAO.ListingDAO;
-import no.ntnu.idatt2106.model.DAO.UserDAO;
 import no.ntnu.idatt2106.model.DTO.ListingDTO;
 
 /**
@@ -128,6 +125,10 @@ public class ListingController {
         listingService.saveListing(listing);
         try {
             for (String categoryName : listingDTO.getCategoryNames()) {
+                if (categoryService.findCategoryDAOByName(categoryName) == null){
+                    CategoryDAO cat = new CategoryDAO(categoryName);
+                    categoryService.addCategory(cat);
+                }
                 listingCategoryService.saveListingCategory(categoryService.findCategoryDAOByName(categoryName),
                         listing);
             }
@@ -161,6 +162,10 @@ public class ListingController {
         }
         listingService.saveListing(listing);
         for (String categoryName : listingDTO.getCategoryNames()) {
+            if (categoryService.findCategoryDAOByName(categoryName) == null){
+                CategoryDAO cat = new CategoryDAO(categoryName);
+                categoryService.addCategory(cat);
+            }
             listingCategoryService.saveListingCategory(categoryService.findCategoryDAOByName(categoryName),
                     listing);
         }
@@ -193,6 +198,10 @@ public class ListingController {
         listingService.saveListing(listing);
         try {
             for (String categoryName : listingDTO.getCategoryNames()) {
+                if (categoryService.findCategoryDAOByName(categoryName) == null){
+                    CategoryDAO cat = new CategoryDAO(categoryName);
+                    categoryService.addCategory(cat);
+                }
                 listingCategoryService.saveListingCategory(categoryService.findCategoryDAOByName(categoryName),
                         listing);
             }
