@@ -11,12 +11,7 @@ import no.ntnu.idatt2106.service.*;
 import no.ntnu.idatt2106.util.TokenUtil;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -198,7 +193,7 @@ public class ListingController {
     @Operation(summary = "Change or modify a listing")
     @ApiResponse(responseCode = "200", description = "Listing modified")
     @ApiResponse(responseCode = "400", description = "User not found")
-    @PostMapping("/listing/change")
+    @PutMapping("/listing/change")
     public boolean changeListing(@RequestBody ListingDTO listingDTO) throws StatusCodeException {
         // Creates a ListingDAO with the information from the DTO.
         ListingDAO listing = listingService.findListingByListingId(listingDTO.getListingID());
