@@ -227,7 +227,7 @@ public class RentService {
     public void deletePastRentRequests(int listingID) {
         List<RentDAO> rentDAOS = rentRepository.findRentDAOSByListing(listingService.getListingDAOByID(listingID));
         for (RentDAO rentDAO : rentDAOS) {
-            if (rentDAO.getFromTime() < System.currentTimeMillis()) {
+            if (rentDAO.getToTime() < System.currentTimeMillis()) {
                 rentDAO.setDeleted(true);
                 rentRepository.save(rentDAO);
             }

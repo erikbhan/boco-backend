@@ -11,7 +11,6 @@ import no.ntnu.idatt2106.service.NotificationService;
 import no.ntnu.idatt2106.service.RentService;
 import no.ntnu.idatt2106.service.UserService;
 import no.ntnu.idatt2106.model.DTO.TokenDTO;
-import no.ntnu.idatt2106.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
