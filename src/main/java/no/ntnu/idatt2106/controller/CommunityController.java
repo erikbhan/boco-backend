@@ -79,7 +79,6 @@ public class CommunityController {
      * A method which searches the community table in the DB for communities with a name containing the search word.
      * @param search_word The letter or word to search for, may be the name of the community.
      */
-    @RequireAuth
     @Operation(summary = "Show all communities with name containing the search word")
     @ApiResponse(responseCode = "400", description = "No communities was found")
     @ApiResponse(responseCode = "401", description = "Unauthorized")
@@ -126,7 +125,6 @@ public class CommunityController {
      * A method to get all members in a community.
      * @param communityId The id of the community to search for.
      */
-    @RequireAuth
     @Operation(summary = "Returns all members in a community")
     @ApiResponse(responseCode = "400", description = "No communities was found")
     @ApiResponse(responseCode = "401", description = "Unauthorized")
@@ -159,7 +157,6 @@ public class CommunityController {
      * A method for returning a community by community id.
      * @param communityId The id of the community
      */
-    @RequireAuth
     @Operation(summary = "Returns a community with the correct id")
     @ApiResponse(responseCode = "400", description = "No communities was found")
     @ApiResponse(responseCode = "401", description = "Unauthorized")
@@ -176,7 +173,6 @@ public class CommunityController {
      * A method for getting all listings in a community.
      * @param communityId The id of the community
      */
-    @RequireAuth
     @Operation(summary = "Returns a community with the correct id")
     @ApiResponse(responseCode = "400", description = "No communities was found")
     @ApiResponse(responseCode = "401", description = "Unauthorized")
