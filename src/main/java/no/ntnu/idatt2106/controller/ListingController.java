@@ -72,6 +72,7 @@ public class ListingController {
     /**
      * Finds all the active users listings
      */
+    @Operation(summary = "Finds all the active listings of the user")
     @ApiResponse(responseCode = "200", description = "All of a user's listings")
     @ApiResponse(responseCode = "400", description = "User doesnt exist")
     @GetMapping("/listing/userListings")
@@ -97,6 +98,7 @@ public class ListingController {
      * 
      * @param listingID the listing id to be searched for
      */
+    @Operation(summary = "Get a listingDTO through a listingID")
     @ApiResponse(responseCode = "200", description = "Listing found")
     @ApiResponse(responseCode = "400", description = "Item doesnt exist")
     @GetMapping("/listing/{listingID}")
@@ -246,6 +248,7 @@ public class ListingController {
      * @param title
      * @return List of DTOs containing the requested title in title 
      */
+    @Operation(summary = "Gets all listings with a title matching the input title")
     @GetMapping("/listing/title/{title}")
     public List<ListingDTO> searchForListingsByTitle(@PathVariable String title){
         return listingService.getListingDTOByTitle(title, listingCategoryService, communityListingService);
