@@ -19,13 +19,18 @@ public class RentDTO {
     ListingDTO listing;
     int renterId;
     String message;
+    int listingOwnerId;
+    Long createdAt;
+    boolean isDeleted;
 
-    public RentDTO(long fromTime, long toTime, Boolean isAccepted, int listingId, int renterId) {
+    public RentDTO(long fromTime, long toTime, Boolean isAccepted, int listingId, int renterId, boolean isDeleted) {
         this.fromTime = fromTime;
         this.toTime = toTime;
         this.isAccepted = isAccepted;
         this.listingId = listingId;
         this.renterId = renterId;
+        this.createdAt = System.currentTimeMillis();
+        this.isDeleted = isDeleted;
     }
 
     public RentDTO(int rentId, long fromTime, long toTime, Boolean isAccepted, int listingId, int renterId) {
@@ -35,6 +40,7 @@ public class RentDTO {
         this.isAccepted = isAccepted;
         this.listingId = listingId;
         this.renterId = renterId;
+        this.createdAt = System.currentTimeMillis();
     }
 
     public RentDTO(RentDAO rentDAO) {
@@ -45,6 +51,8 @@ public class RentDTO {
         this.listing = new ListingDTO(rentDAO.getListing());
         this.listingId = rentDAO.getListing().getListingID();
         this.renterId = rentDAO.getRenter().getUserID();
+        this.createdAt = rentDAO.getCreatedAt();
+        this.isDeleted = rentDAO.isDeleted();
         this.message = rentDAO.getMessage();
     }
 
@@ -55,9 +63,12 @@ public class RentDTO {
         this.listingId = listingId;
         this.renterId = renterId;
         this.message = message;
+        this.createdAt = System.currentTimeMillis();
     }
 
-    public RentDTO() {}
+    public RentDTO() {
+        this.createdAt = System.currentTimeMillis();
+    }
    
     public int getRentId() {
         return this.rentId;
@@ -125,5 +136,17 @@ public class RentDTO {
 
     public void setListing(ListingDTO listing) {
         this.listing = listing;
+    }
+
+    public long getCreatedAt() {
+        return createdAt;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 }

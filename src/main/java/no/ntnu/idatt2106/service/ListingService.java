@@ -21,13 +21,11 @@ import org.springframework.stereotype.Service;
 public class ListingService {
     private final ListingRepository listingRepository;
     private final CommunityListingService communityListingService;
-    private final UserService userService;
     
     public ListingService(ListingRepository listingRepository,
-                          CommunityListingService communityListingService, UserService userService) {
+                          CommunityListingService communityListingService) {
         this.listingRepository = listingRepository;
         this.communityListingService = communityListingService;
-        this.userService = userService;
     }
     
     /**
@@ -124,6 +122,7 @@ public class ListingService {
         ListingDTO listingDTO = new ListingDTO(listingDAO.getTitle(), listingDAO.getDescription(),
                 listingDAO.getPricePerDay(), listingDAO.getAddress(), listingDAO.getUser().getUserID(), categoryNames,
                 communityIDs);
+        listingDTO.setListingID(listingDAO.getListingID());
         return listingDTO;
     }
 
@@ -189,5 +188,12 @@ public class ListingService {
 
     public ListingDAO getUsersLastPostedListing(int userID){
         return listingRepository.findLastAddedListingByUser(userID);
+    }
+
+    public void deleteListingsForUser(UserDAO userDAO) {
+        List<ListingDAO> listings = getAllOfUsersListings(userDAO);
+        for (ListingDAO listing:listings) {
+            listing.setDeleted(true);
+        }
     }
 }
