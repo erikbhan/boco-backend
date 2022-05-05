@@ -68,15 +68,18 @@ public class CommunityRequestTest {
         userToken = loginService.successfulAuthentication(user);
 
         mockMvc.perform(post("/communities/3000/private/join")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(new CommunityRequestDTO("Hello, i want to join please")))
-                        .header("Authorization", "Bearer " + userToken)).andExpect(status().isOk());
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(new CommunityRequestDTO("Hello, i want to join please")))
+                .header("Authorization", "Bearer " + userToken)).andExpect(status().isOk());
 
         assert (communityRequestService.getRequestsForCommunity(3000).size() == 1);
     }
 
     @Test
     void communityRequestController_sendRequestToPublicCommunity_ShouldBe4xx() throws Exception {
+        UserDAO user = userService.findUserByUserId(2022);
+        userToken = loginService.successfulAuthentication(user);
+
         mockMvc.perform(post("/communities/3001/private/join")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(new CommunityRequestDTO("Hello, i want to join please")))
@@ -87,6 +90,9 @@ public class CommunityRequestTest {
 
     @Test
     void communityRequestController_sendRequestToAlreadyJoinedCommunity_ShouldBe4xx() throws Exception {
+        UserDAO user = userService.findUserByUserId(2022);
+        userToken = loginService.successfulAuthentication(user);
+
         mockMvc.perform(post("/communities/3002/private/join")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(new CommunityRequestDTO("Hello, i want to join please")))
@@ -95,6 +101,29 @@ public class CommunityRequestTest {
         assert (communityRequestService.getRequestsForCommunity(3002).isEmpty());
     }
 
+    @Test
+    void communityRequestController_acceptCommunityRequestAsAdmin_ShouldBeOk() throws Exception {
+        UserDAO user = userService.findUserByUserId(2022);
+        userToken = loginService.successfulAuthentication(user);
+
+        mockMvc.perform(post("/communities/3003/requests/?userId=2023")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + userToken)).andExpect(status().isOk());
+
+        assert (communityRequestService.getRequestsForCommunity(3003).isEmpty());
+    }
+
+    @Test
+    void communityRequestController_acceptCommunityRequestNotAsAdmin_ShouldBe4xx() throws Exception {
+        UserDAO user = userService.findUserByUserId(2022);
+        userToken = loginService.successfulAuthentication(user);
+
+        mockMvc.perform(post("/communities/3004/requests/?userId=2023")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + userToken)).andExpect(status().is4xxClientError());
+
+        assert (communityRequestService.getRequestsForCommunity(3004).size() == 1);
+    }
 
 
     public static String asJsonString(final Object obj) {
