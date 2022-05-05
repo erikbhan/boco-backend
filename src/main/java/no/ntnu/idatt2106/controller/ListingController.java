@@ -278,6 +278,7 @@ public class ListingController {
         ListingDAO listing = listingService.findListingByListingId(listingId);
         listing.setDeleted(true);
         listingService.saveListing(listing);
+        communityListingService.deleteAllWithListing(listing);
         }
         catch(Exception e){
             throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "Unexpected error");
