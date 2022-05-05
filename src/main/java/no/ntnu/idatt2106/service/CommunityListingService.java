@@ -19,6 +19,10 @@ public class CommunityListingService {
         this.communityListingRepository = communityListingRepository;
     }
 
+    public CommunityListingDAO getByCommunityAndListing(CommunityDAO community, ListingDAO listing){
+        return communityListingRepository.findByCommunityIDAndListingID(community, listing);
+    }
+
     /**
      * Saves a communityListingDAO to the CommunityListing junction table
      * @param communityDAO
@@ -44,6 +48,13 @@ public class CommunityListingService {
             communityIDs[i] = communityDAOs.get(i).getCommunity().getCommunityID();
         }
         return communityIDs;
+    }
+
+    public void deleteAllWithListing(ListingDAO listing){
+        List<CommunityListingDAO> communityListings = communityListingRepository.findAllFromCommunityListingDAOByListingID(listing);
+        for (CommunityListingDAO dao:communityListings){
+            communityListingRepository.delete(dao);
+        }
     }
 
     public List<CommunityListingDAO> getAllCommunityListingForCommunity(CommunityDAO communityDAO) {

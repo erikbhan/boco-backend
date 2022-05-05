@@ -38,7 +38,6 @@ public class RatingService {
      * @param rating The RatingDAO of the new rating you want to store in the DB.
      */
     public void saveRating(RatingDAO rating) {
-        System.out.println("New rating: '" + rating.getScore() + ", " + rating.getComment());
         ratingRepository.save(rating);
     }
 
