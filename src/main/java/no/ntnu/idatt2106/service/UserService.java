@@ -114,7 +114,7 @@ public class UserService {
         return false;
     }
 
-    public void deleteUser(UserDAO userDAO) {
+    public void clearUserInfo(UserDAO userDAO) {
 
         userDAO.setFirstName("Slettet");
         userDAO.setLastName("Konto: " + userDAO.getUserID());

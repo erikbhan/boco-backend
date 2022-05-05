@@ -124,7 +124,7 @@ public class UserController {
         listingService.deleteListingsForUser(userDAO);
         userCommunityService.deleteUserFromAllGroups(userDAO);
         rentService.deleteAllRentsFromUser(userDAO);
-        userService.deleteUser(userDAO);
+        userService.clearUserInfo(userDAO);
 
         throw new StatusCodeException(HttpStatus.OK, "User deleted");
     }
