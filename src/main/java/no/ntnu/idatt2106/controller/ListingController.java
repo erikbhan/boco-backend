@@ -80,7 +80,7 @@ public class ListingController {
         if (user == null) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User doesn't exist");
         }
-        List<ListingDAO> listingDAOs = listingService.getAllOfUsersListings(user);
+        List<ListingDAO> listingDAOs = listingService.getAllOfNonDeletedListings(user);
         List<ListingDTO> listingDTOs = 
         listingService.convertListOfListingDAOToListOfListingDTO(listingDAOs);
         return listingDTOs;
