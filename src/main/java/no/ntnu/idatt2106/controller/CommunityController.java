@@ -54,7 +54,7 @@ public class CommunityController {
         TokenDTO userToken = TokenUtil.getDataJWT();
         int tokenUserId = userToken.getAccountId();
         communityService.addCommunity(communityDAO);
-        userCommunityService.addUserToCommunity(tokenUserId, communityDAO);
+        userCommunityService.addUserAsAdminToCommunity(tokenUserId, communityDAO);
         throw new StatusCodeException(HttpStatus.CREATED, "Community created");
     }
 
