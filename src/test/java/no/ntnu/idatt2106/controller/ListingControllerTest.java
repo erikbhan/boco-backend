@@ -62,6 +62,9 @@ public class ListingControllerTest {
     CategoryService categoryService;
 
     @Autowired
+    RentService rentService;
+
+    @Autowired
     ListingCategoryRepository listingCategoryRepository;
 
     @Autowired
@@ -114,6 +117,14 @@ public class ListingControllerTest {
         mockMvc.perform(get("/listing/1234/availability").contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void listingController_getAvailabilityOfListingRemovesPastRent_ShouldBeOk() throws Exception {
+        mockMvc.perform(get("/listing/12345/availability").contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().isOk());
+        assert (rentService.getRentFromId(10002).isDeleted());
     }
 
     @Test
