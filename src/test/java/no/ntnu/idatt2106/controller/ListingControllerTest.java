@@ -110,18 +110,6 @@ public class ListingControllerTest {
     }
 
     @Test
-    void listingController_createListingWithNonExistingCategory_shouldBe4xx() throws Exception {
-        categories = new String[]{"Salse", "Utstyr"};
-        communityIDs = new int[]{1000, 1001};
-        mockMvc.perform(post("/listing")
-                        .content(asJsonString(new ListingDTO("Jekk", "Beskrivelse", 4.0, "Adresse", 4321, categories, communityIDs)))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Bearer " + userToken))
-                .andExpect(status().is4xxClientError());
-    }
-
-    @Test
     void listingController_getAvailabilityOfListing_ShouldBeOk() throws Exception {
         mockMvc.perform(get("/listing/1234/availability").contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", "Bearer " + userToken))
