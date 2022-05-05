@@ -184,6 +184,8 @@ public class RentController {
     @PutMapping("/renting/{rentId}/accept")
     public String acceptRentRequest(@PathVariable() int rentId) throws StatusCodeException {
         RentDAO rent = rentService.getRentFromId(rentId);
+        TokenDTO tokenDTO = TokenUtil.getDataJWT();
+        if(rent.getListing().getUser().getUserID() != tokenDTO.getAccountId()) throw new StatusCodeException(HttpStatus.FORBIDDEN, "Only the owner can delete a rent request");
         if (rent == null) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Could not find rent with ID: " + rentId);
         }
@@ -201,6 +203,8 @@ public class RentController {
     @DeleteMapping("/renting/{rentId}/delete")
     public String deleteRent(@PathVariable() int rentId) throws StatusCodeException {
         RentDAO rent = rentService.getRentFromId(rentId);
+        TokenDTO tokenDTO = TokenUtil.getDataJWT();
+        if(rent.getListing().getUser().getUserID() != tokenDTO.getAccountId()) throw new StatusCodeException(HttpStatus.FORBIDDEN, "Only the owner can delete a rent request");
         if (rent == null) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Could not find rent with ID: " + rentId);
         }
