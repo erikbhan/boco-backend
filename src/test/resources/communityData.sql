@@ -29,7 +29,7 @@ INSERT INTO public.community(community_id, name, description, visibility, locati
 VALUES (4002, 'Sander MC klubb', 'vi som liker motorsykkel og heter Sander', 0, 'Elgeseter gate(midt på natta)', 'bilde');
 
 INSERT INTO public.community(community_id, name, description, visibility, location, picture)
-VALUES (4444, 'Aleks MC klubb', 'vi som liker motorsykkel og heter Aleks', 0, 'Elgeseter gate(midt på natta)', 'bilde');
+VALUES (4444, 'Aleks MC klubb', 'vi som liker motorsykkel og heter Aleks', 1, 'Elgeseter gate(midt på natta)', 'bilde');
 
 
 

@@ -86,10 +86,14 @@ public class CommunityRequestController {
         else throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Needs admin status to perform this operation");
     }
 
+    /**
+     * Removes the active user's community join request for the community
+     * with the given community id
+     * @param communityId The id of the community to remove the request from
+     */
     @Operation(summary = "Removes own request to join a community")
+    @ApiResponse(responseCode = "400", description = "Given community does not exist")
     @PatchMapping("/communities/{communityId}/requests/remove")
-    @ApiResponse(responseCode = "200", description = "Removed request")
-    @ApiResponse(responseCode = "400", description = "Illegal operation")
     public void removeCommunityRequest(@PathVariable int communityId) throws StatusCodeException {
         TokenDTO token = TokenUtil.getDataJWT();
         CommunityDAO communityDAO = communityRepository.findCommunityDAOByCommunityID(communityId);
@@ -100,10 +104,15 @@ public class CommunityRequestController {
 
     }
 
+    /**
+     * Removes the given user's community join request for the community
+     * with the given community id
+     * @param communityId The community id of the community to remove from
+     * @param userId The user id of the owner of the request we want to remove
+     */
     @Operation(summary = "Removes a users request to join a community")
-    @PatchMapping("/communitites/{communityId}/requests/reject")
-    @ApiResponse(responseCode = "200", description = "Removed request")
-    @ApiResponse(responseCode = "400", description = "Illegal operation")
+    @ApiResponse(responseCode = "400", description = "Given community does not exist")
+    @PatchMapping("/communities/{communityId}/requests/reject")
     public void rejectCommunityRequest(@PathVariable int communityId, @RequestParam int userId) throws StatusCodeException {
         TokenDTO token = TokenUtil.getDataJWT();
         CommunityDAO communityDAO = communityRepository.findCommunityDAOByCommunityID(communityId);
@@ -118,16 +127,18 @@ public class CommunityRequestController {
 
     }
 
+    /**
+     * Gets all users that have requested to join the given community
+     * @param communityId The community to check for requests in
+     */
     @Operation(summary = "Gets all requests in a community")
+    @ApiResponse(responseCode = "400", description = "Active user is not admin")
     @GetMapping("/communities/{communityId}/requests")
-    @ApiResponse(responseCode = "200", description = "Found users")
-    @ApiResponse(responseCode = "400", description = "Illegal operation")
     public List<UserDTO> getRequests(@PathVariable int communityId) throws StatusCodeException {
         TokenDTO token = TokenUtil.getDataJWT();
         CommunityDAO communityDAO = communityRepository.findCommunityDAOByCommunityID(communityId);
         UserCommunityDAO ucd = userCommunityService.getByIds(token.getAccountId(), communityDAO );
         boolean adminStatus = ucd.isAdministrator();
-
         if(ucd!=null && adminStatus){
             return communityRequestService.getRequestsForCommunity(communityId);
         }
