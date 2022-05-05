@@ -72,8 +72,7 @@ public class CommunityController {
                     .convertListCommunityDAOToListCommunityDTO(listOfCommunityDAOs);
             return listOfCommunities;
         }
-        List<CommunityDTO> emptyList = new ArrayList<>();
-        return emptyList;
+        return new ArrayList<>();
     }
 
     /**
