@@ -21,11 +21,13 @@ import org.springframework.stereotype.Service;
 public class ListingService {
     private final ListingRepository listingRepository;
     private final CommunityListingService communityListingService;
+    private final UserService userService;
     
     public ListingService(ListingRepository listingRepository,
-                          CommunityListingService communityListingService) {
+                          CommunityListingService communityListingService, UserService userService) {
         this.listingRepository = listingRepository;
         this.communityListingService = communityListingService;
+        this.userService = userService;
     }
     
     /**
@@ -43,7 +45,7 @@ public class ListingService {
      * @return All listings
      */
     public List<ListingDAO> getAllListings() {
-        return listingRepository.findAll();
+        return listingRepository.findAllByDeletedIsFalse();
     }
 
     /**
@@ -125,7 +127,7 @@ public class ListingService {
      * @return Returns a list of all listing daos in the db with this owner dao.
      */
     public List<ListingDAO> findAllListingDAOByIdOfOwner(UserDAO ownerId) {
-        return listingRepository.findAllByUser(ownerId);
+        return listingRepository.findAllByUserAndDeletedIsFalse(ownerId);
     }
 
     public List<ListingDAO> findListingsByUserDAO(UserDAO user) {
@@ -167,5 +169,9 @@ public class ListingService {
             convertedList.add(new ListingDTO(list.get(i)));
         }
         return convertedList;
+    }
+
+    public ListingDAO getUsersLastPostedListing(int userID){
+        return listingRepository.findLastAddedListingByUser(userID);
     }
 }

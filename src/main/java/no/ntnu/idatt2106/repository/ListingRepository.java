@@ -20,12 +20,15 @@ public interface ListingRepository extends JpaRepository<ListingDAO, Integer> {
     //Finds all listings of one user
     List<ListingDAO> findAllFromListingDAOByUser(UserDAO userID);
     ListingDAO findListingDAOByListingID(int listingId);
-    List<ListingDAO> findAllByUser(UserDAO userId);
+    List<ListingDAO> findAllByUserAndDeletedIsFalse(UserDAO userId);
     List<ListingDAO> findListingDAOSByUser(UserDAO user);
+    List<ListingDAO> findAllByDeletedIsFalse();
 
 
     //Finds all listings with title containing a phrase
     @Query("SELECT m FROM ListingDAO m WHERE m.title LIKE %:title%")     
     List<ListingDAO> findAllByTitleLike(@Param("title") String title);
 
+    @Query(value = "SELECT MAX(listing_id) FROM public.listing WHERE user_id=?1", nativeQuery = true)
+    ListingDAO findLastAddedListingByUser (int userID);
 }
