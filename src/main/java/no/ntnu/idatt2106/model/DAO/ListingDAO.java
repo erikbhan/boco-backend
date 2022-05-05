@@ -65,15 +65,7 @@ public class ListingDAO{
     public void setAddress(String address) {
         this.address = address;
     }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
-
+    
     public UserDAO getUser() {
         return this.user;
     }
@@ -81,4 +73,13 @@ public class ListingDAO{
     public void setUser(UserDAO user) {
         this.user = user;
     }
+
+    public boolean isDeleted() {
+        return this.deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+    
 }

@@ -11,7 +11,14 @@ import no.ntnu.idatt2106.service.*;
 import no.ntnu.idatt2106.util.TokenUtil;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -81,7 +88,7 @@ public class ListingController {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User doesnt exist");
         }
         //Gets all the listing daos of the user
-        List<ListingDAO> listingDAOs = listingService.getAllOfUsersListings(user);
+        List<ListingDAO> listingDAOs = listingService.getAllOfNonDeletedListings(user);
         //Converts all the DAOs to DTO, to include categories and communities.
         List<ListingDTO> listingDTOs = 
         listingService.convertListOfListingDAOToListOfListingDTO(listingDAOs);
@@ -125,6 +132,7 @@ public class ListingController {
         listing.setPricePerDay(listingDTO.getPricePerDay());
         listing.setDeleted(false);
         listing.setUser(userService.findUserByUserId(listingDTO.getUserID()));
+        listing.setDeleted(false);
         if (listing.getUser() == null) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User not found");
         }
@@ -164,6 +172,7 @@ public class ListingController {
         listing.setDeleted(false);
         listing.setPricePerDay(listingDTO.getPricePerDay());
         listing.setUser(userService.findUserByUserId(listingDTO.getUserID()));
+        listing.setDeleted(false);
         if (listing.getUser() == null) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User not found");
         }
@@ -271,5 +280,27 @@ public class ListingController {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "PictureDAOs list is null");
         }
         throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Listing id must be larger than 0");
+    }
+
+    /**
+     * Set listing variable "deleted" to true to hide them from user. Doesnt actually delete listing to dont create problems with ratings
+     * @param listingId The ID of the listing to be set to deleted
+     * @throws StatusCodeException
+     */
+    @Operation(summary = "Set boolean deleted in Listing to true")
+    @ApiResponse(responseCode = "200", description = "Listing set to deleted")
+    @ApiResponse(responseCode = "500", description = "Unexpected erro")
+    @DeleteMapping("/listing/{listingId}")
+    public void setListingToDeleted(@PathVariable int listingId) throws StatusCodeException{
+        try{
+        //Finds the listing from the DB
+        ListingDAO listing = listingService.findListingByListingId(listingId);
+        listing.setDeleted(true);
+        //Saves the change
+        listingService.saveListing(listing);
+        }
+        catch(Exception e){
+            throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "Unexpected error");
+        }
     }
 }
