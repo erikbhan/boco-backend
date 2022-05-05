@@ -1,5 +1,6 @@
 package no.ntnu.idatt2106.service;
 
+import antlr.Token;
 import no.ntnu.idatt2106.model.DAO.RentDAO;
 import no.ntnu.idatt2106.model.DAO.ListingDAO;
 import no.ntnu.idatt2106.model.DAO.NotificationDAO;
@@ -7,12 +8,15 @@ import no.ntnu.idatt2106.model.DAO.UserDAO;
 import no.ntnu.idatt2106.model.DTO.ListingWithUnavailabilityDTO;
 import no.ntnu.idatt2106.model.DTO.RentDTO;
 import no.ntnu.idatt2106.repository.RentRepository;
+import no.ntnu.idatt2106.util.TokenUtil;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * This class is uses the access-point to the rent table in the DB.
@@ -247,5 +251,27 @@ public class RentService {
             unavailabilityRents.add(rentDAO);
         }
         return unavailabilityRents;
+    }
+
+    public RentDTO[] getAllRents() {
+        // Get accountId
+        UserDAO account = userService.findUserByUserId(TokenUtil.getDataJWT(TokenUtil.getToken()).getAccountId());
+        List<RentDAO> rentDAOs = rentRepository.findAllByRenterOrListing_User(account, account);
+        RentDTO[] rentDTOs = new RentDTO[rentDAOs.size()];
+        for (int i = 0; i < rentDAOs.size(); i++) {
+            rentDTOs[i] = new RentDTO(rentDAOs.get(i));
+        }
+        return rentDTOs;
+    }
+
+    public RentDTO[] getAllRents(int userID, int userID2) {
+        List<RentDTO> rents = Arrays.stream(this.getAllRents())
+                .filter(r -> (r.getRenterId() == userID || r.getRenterId() == userID2) && (r.getListing().getListingID() == userID || r.getListing().getListingID() == userID2))
+                .toList();
+        RentDTO[] rentDTOs = new RentDTO[rents.size()];
+        for (int i = 0; i < rents.size(); i++) {
+            rentDTOs[i] = rents.get(i);
+        }
+        return rentDTOs;
     }
 }
