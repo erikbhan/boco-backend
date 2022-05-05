@@ -23,4 +23,6 @@ public class CategoryService {
     public CategoryDAO findCategoryDAOByName(String name){
         return categoryRepository.findCategoryDAOByName(name);
     }
+
+    public void addCategory(CategoryDAO category){categoryRepository.save(category);}
 }
