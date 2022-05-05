@@ -21,7 +21,7 @@ public class RequireAuthAspect {
                 String token = TokenUtil.getToken();
                 System.out.println(token);
                 if(token == null || token.isBlank() || token.isEmpty()){
-                        throw new StatusCodeException(HttpStatus.BAD_GATEWAY, "Unauthorized");
+                        throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "Unauthorized");
                 }
 
                 MethodSignature methodSignature = (MethodSignature) joinpoint.getSignature();
@@ -33,11 +33,11 @@ public class RequireAuthAspect {
                 }
 
                 if(requireAuth == null) {
-                        throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Unauthorized");
+                        throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "Unauthorized");
                 }
 
                 if(!TokenUtil.verifyToken(token)) {
-                        throw new StatusCodeException(HttpStatus.INTERNAL_SERVER_ERROR, "Unauthorized");
+                        throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "Unauthorized");
                 }
 
         }
