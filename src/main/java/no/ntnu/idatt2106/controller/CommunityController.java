@@ -25,7 +25,6 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@ApiResponse(responseCode = "401", description = "Unauthorized")
 public class CommunityController {
     private final CommunityService communityService;
     private final UserCommunityService userCommunityService;
@@ -48,6 +47,7 @@ public class CommunityController {
     @RequireAuth
     @Operation(summary = "Add community to database")
     @ApiResponse(responseCode = "201", description = "Community created")
+    @ApiResponse(responseCode = "401", description = "Unauthorized")
     @PostMapping("/communities/create")
     public void addCommunity(@RequestBody CommunityDTO communityDTO) throws StatusCodeException {
         CommunityDAO communityDAO = communityService.turnCommunityDTOIntoCommunityDAO(communityDTO);
@@ -82,6 +82,7 @@ public class CommunityController {
     @RequireAuth
     @Operation(summary = "Show all communities with name containing the search word")
     @ApiResponse(responseCode = "400", description = "No communities was found")
+    @ApiResponse(responseCode = "401", description = "Unauthorized")
     @GetMapping("/communities/search")
     public List<CommunityDTO> showAllCommunitiesMatchingSearchTerm(@RequestParam(name = "search_word") String search_word) throws StatusCodeException {
         List<CommunityDAO> listOfCommunityDAOs = communityService
@@ -101,6 +102,7 @@ public class CommunityController {
     @RequireAuth
     @Operation(summary = "Deletes a community from the database")
     @ApiResponse(responseCode = "400", description = "Community not found")
+    @ApiResponse(responseCode = "401", description = "Unauthorized")
     @ApiResponse(responseCode = "401", description = "User not part of given community")
     @ApiResponse(responseCode = "401", description = "User not admin of given community")
     @DeleteMapping("/communities/{communityId}/remove")
@@ -127,6 +129,7 @@ public class CommunityController {
     @RequireAuth
     @Operation(summary = "Returns all members in a community")
     @ApiResponse(responseCode = "400", description = "No communities was found")
+    @ApiResponse(responseCode = "401", description = "Unauthorized")
     @ApiResponse(responseCode = "417", description = "No members in members list")
     @GetMapping("/community/{communityId}/members")
     public List<UserDTO> getMembersInCommunity(@PathVariable int communityId) throws StatusCodeException {
@@ -159,6 +162,7 @@ public class CommunityController {
     @RequireAuth
     @Operation(summary = "Returns a community with the correct id")
     @ApiResponse(responseCode = "400", description = "No communities was found")
+    @ApiResponse(responseCode = "401", description = "Unauthorized")
     @GetMapping("/community/{communityId}")
     public CommunityDTO getCommunity(@PathVariable int communityId) throws StatusCodeException {
         CommunityDAO communityDAO = communityService.findCommunityDAOByCommunityID(communityId);
@@ -175,6 +179,7 @@ public class CommunityController {
     @RequireAuth
     @Operation(summary = "Returns a community with the correct id")
     @ApiResponse(responseCode = "400", description = "No communities was found")
+    @ApiResponse(responseCode = "401", description = "Unauthorized")
     @ApiResponse(responseCode = "417", description = "No listings in the community")
     @GetMapping("/community/{communityId}/listings")
     public List<ListingDTO> getAllListingsInACommunity(@PathVariable int communityId) throws StatusCodeException {

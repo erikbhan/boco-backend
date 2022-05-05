@@ -32,28 +32,34 @@ public class ImageController {
         this.listingPictureService = listingPictureService;
     }
 
+    /**
+     * Gets the image with the given image id
+     * @param imageID The id of the requested image
+     */
+    @Operation(summary = "Get image", description = "Get image")
+    @ApiResponse(responseCode = "400", description = "Image not found")
     @GetMapping(
             value = "/images/{imageID}",
             produces = MediaType.IMAGE_PNG_VALUE
     )
-    @Operation(summary = "Get image", description = "Get image")
-    @ApiResponse(responseCode = "404", description = "Image not found")
-    @ApiResponse(responseCode = "200", description = "Image found")
     public @ResponseBody byte[] getImage(@PathVariable int imageID) throws StatusCodeException {
         byte[] img = imageService.getImage(imageID);
-        if(img == null) throw new StatusCodeException(HttpStatus.NOT_FOUND, "Image not found");
+        if(img == null) throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Image not found");
         return img;
     }
 
+    /**
+     * Adds an image to the database
+     * @param image The image to be added
+     */
+    @RequireAuth
+    @Operation(summary = "Add image", description = "Add image")
+    @ApiResponse(responseCode = "400", description = "Image already exists")
     @PostMapping(
             value = "/images",
             consumes = MediaType.IMAGE_PNG_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    @Operation(summary = "Add image", description = "Add image")
-    @ApiResponse(responseCode = "201", description = "Image added")
-    @ApiResponse(responseCode = "400", description = "Image already exists")
-    @RequireAuth
     public @ResponseBody int addImage(@RequestBody byte[] image) throws StatusCodeException {
         int accountId = TokenUtil.getDataJWT(TokenUtil.getToken()).getAccountId();
         int imageID = imageService.addImage(image, accountId);
@@ -61,27 +67,34 @@ public class ImageController {
         return imageID;
     }
 
-    @DeleteMapping(
-            value = "/images/{imageID}"
-    )
-    @Operation(summary = "Delete image", description = "Delete image")
-    @ApiResponse(responseCode = "404", description = "Image not found")
-    @ApiResponse(responseCode = "200", description = "Image deleted")
-    @ApiResponse(responseCode = "403", description = "User not allowed to delete image")
+    /**
+     * Deletes an image from the database
+     * @param imageID The id of the image you want to delete
+     */
     @RequireAuth
+    @Operation(summary = "Delete image", description = "Delete image")
+    @ApiResponse(responseCode = "400", description = "Image not found")
+    @ApiResponse(responseCode = "403", description = "User not owner of image, not allowed to delete")
+    @DeleteMapping(value = "/images/{imageID}")
     public void deleteImage(@PathVariable int imageID) throws StatusCodeException {
         int accountId = TokenUtil.getDataJWT(TokenUtil.getToken()).getAccountId();
         if(!imageService.ownsImage(imageID, accountId)) throw new StatusCodeException(HttpStatus.FORBIDDEN, "User does not own image");
         boolean deleted = imageService.deleteImage(imageID);
-        if(!deleted) throw new StatusCodeException(HttpStatus.NOT_FOUND, "Image not found");
+        if(!deleted) throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Image not found");
     }
 
+    /**
+     * Adds multiple image links to the database, and connects them to a listing
+     * @param images A list of image links to be added
+     */
     @RequireAuth
     @Operation(summary = "adds pictures to users last added listing")
+    @ApiResponse(responseCode = "200", description = "Pictures added")
+    @ApiResponse(responseCode = "400", description = "No image was received")
     @PostMapping(value = "/listing/pictures")
     public void addImagesToListing(@RequestBody List<String> images) throws StatusCodeException {
         if (images.size()==0){
-            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "No images was sent");
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "No images was received");
         }
         TokenDTO userToken = TokenUtil.getDataJWT();
         int tokenUserId = userToken.getAccountId();

@@ -55,7 +55,6 @@ public class ListingController {
     /**
      * Get all listings in the database
      */
-    @ApiResponse(responseCode = "200", description = "All listings returned")
     @Operation(summary = "Returning every single listing")
     @GetMapping("/listing")
     public List<ListingDTO> getAllListings() {
@@ -66,23 +65,19 @@ public class ListingController {
     }
 
     /**
-     * Finds all the active users listings
+     * Finds all the active user's listings
      */
-    @ApiResponse(responseCode = "200", description = "All of a user's listings")
-    @ApiResponse(responseCode = "400", description = "User doesnt exist")
+    @Operation(summary = "Returning every listing of the active user")
+    @ApiResponse(responseCode = "400", description = "User doesn't exist")
     @GetMapping("/listing/userListings")
     public List<ListingDTO> getAllOfAUsersListings() throws StatusCodeException {
         TokenDTO userToken = TokenUtil.getDataJWT();
         Integer tokenUserId = Integer.valueOf(userToken.getAccountId());
         UserDAO user = userService.findUserByUserId(tokenUserId);
-        // Checks if the user exist
         if (user == null) {
-            //Exception is thrown if the user does not exist
-            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User doesnt exist");
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User doesn't exist");
         }
-        //Gets all the listing daos of the user
         List<ListingDAO> listingDAOs = listingService.getAllOfUsersListings(user);
-        //Converts all the DAOs to DTO, to include categories and communities.
         List<ListingDTO> listingDTOs = 
         listingService.convertListOfListingDAOToListOfListingDTO(listingDAOs);
         return listingDTOs;
@@ -90,34 +85,28 @@ public class ListingController {
 
     /**
      * Method for finding a specific listing by a listingID
-     * 
-     * @param listingID the listing id to be searched for
+     * @param listingID the listing id of the listing to be searched for
      */
-    @ApiResponse(responseCode = "200", description = "Listing found")
-    @ApiResponse(responseCode = "400", description = "Item doesnt exist")
+    @Operation(summary = "Gets the listing with the given listing id")
+    @ApiResponse(responseCode = "400", description = "Item doesn't exist")
     @GetMapping("/listing/{listingID}")
     public ListingDTO getListingDAOByID(@PathVariable int listingID) throws StatusCodeException {
         ListingDAO listingDAO = listingService.getListingDAOByID(listingID);
-        //Checks if the listing exists
         if (listingDAO == null) {
-            //If the listing does not exist an exception is thrown
-            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Item doesnt exist");
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Item doesn't exist");
         }
-        //If the listing exists it is converted to a DTO and returned
         return listingService.convertOneListingDAOToDTO(listingCategoryService, communityListingService, listingDAO);
     }
 
     /**
-     * The method to post a listing.
-     * 
+     * Method for posting a listing.
      * @param listingDTO The listing to be posted
      */
     @Operation(summary = "Post Listing and adding all the listing's categories to the ListingCategory junction table")
-    @ApiResponse(responseCode = "200", description = "Listing posted")
     @ApiResponse(responseCode = "400", description = "User not found")
+    @ApiResponse(responseCode = "400", description = "Could not find one of the given categories")
     @PostMapping("/listing")
     public boolean postListing(@RequestBody ListingDTO listingDTO) throws StatusCodeException {
-        // Creates a ListingDAO with the information from the DTO.
         ListingDAO listing = new ListingDAO();
         listing.setTitle(listingDTO.getTitle());
         listing.setDescription(listingDTO.getDescription());
@@ -128,19 +117,13 @@ public class ListingController {
         if (listing.getUser() == null) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User not found");
         }
-        // Saves the DAO to the DB
         listingService.saveListing(listing);
-        // The for-loop goes through the categories of listing, adding them to the
-        // listingCategory table.
         try {
             for (String categoryName : listingDTO.getCategoryNames()) {
                 listingCategoryService.saveListingCategory(categoryService.findCategoryDAOByName(categoryName),
                         listing);
             }
         }catch (Exception e){throw new StatusCodeException(HttpStatus.BAD_REQUEST, "could not find category");}
-        // The for-loop goes through the communities of listing, adding them to the
-        // communityListing table.
-        // Finds communities using communityIDs
         for (int communityID : listingDTO.getCommunityIDs()) {
             communityListingService.saveCommunityListing(communityService.findCommunityDAOByCommunityID(communityID),
                     listing);
@@ -149,13 +132,13 @@ public class ListingController {
     }
 
     /**
-     * A method to post a listing with given availability
+     * A method for posting a listing with given availability
      * @param listingDTO The listing to be posted, containing unavailable times
      */
+    @Operation(summary = "Post Listing and adding all the listing's categories to the ListingCategory junction table")
     @ApiResponse(responseCode = "200", description = "Listing created, unavailable times added")
     @ApiResponse(responseCode = "400", description = "User not found")
     @PostMapping("/listing/dates")
-    @Operation(summary = "Post Listing and adding all the listing's categories to the ListingCategory junction table")
     public void postListingWithDate(@RequestBody ListingWithUnavailabilityDTO listingDTO) throws StatusCodeException {
         ListingDAO listing = new ListingDAO();
         listing.setTitle(listingDTO.getTitle());
@@ -189,7 +172,6 @@ public class ListingController {
     @ApiResponse(responseCode = "400", description = "User not found")
     @PutMapping("/listing/change")
     public boolean changeListing(@RequestBody ListingDTO listingDTO) throws StatusCodeException {
-        // Creates a ListingDAO with the information from the DTO.
         ListingDAO listing = listingService.findListingByListingId(listingDTO.getListingID());
         listing.setTitle(listingDTO.getTitle());
         listing.setDescription(listingDTO.getDescription());
@@ -199,19 +181,13 @@ public class ListingController {
         if (listing.getUser() == null) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User not found");
         }
-        // Saves the DAO to the DB
         listingService.saveListing(listing);
-        // The for-loop goes through the categories of listing, adding them to the
-        // listingCategory table.
         try {
             for (String categoryName : listingDTO.getCategoryNames()) {
                 listingCategoryService.saveListingCategory(categoryService.findCategoryDAOByName(categoryName),
                         listing);
             }
-        }catch (Exception e){throw new StatusCodeException(HttpStatus.BAD_REQUEST, "could not find category");}
-        // The for-loop goes through the communities of listing, adding them to the
-        // communityListing table.
-        // Finds communities using communityIDs
+        }catch (Exception e){throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Could not find category");}
         for (int communityID : listingDTO.getCommunityIDs()) {
             communityListingService.saveCommunityListing(communityService.findCommunityDAOByCommunityID(communityID),
                     listing);
