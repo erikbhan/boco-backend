@@ -129,6 +129,7 @@ public class ListingController {
         listing.setDescription(listingDTO.getDescription());
         listing.setAddress(listingDTO.getAddress());
         listing.setPricePerDay(listingDTO.getPricePerDay());
+        listing.setDeleted(false);
         listing.setUser(userService.findUserByUserId(listingDTO.getUserID()));
         listing.setDeleted(false);
         if (listing.getUser() == null) {
@@ -167,6 +168,7 @@ public class ListingController {
         listing.setTitle(listingDTO.getTitle());
         listing.setDescription(listingDTO.getDescription());
         listing.setAddress(listingDTO.getAddress());
+        listing.setDeleted(false);
         listing.setPricePerDay(listingDTO.getPricePerDay());
         listing.setUser(userService.findUserByUserId(listingDTO.getUserID()));
         listing.setDeleted(false);

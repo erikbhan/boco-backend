@@ -20,8 +20,9 @@ public interface ListingRepository extends JpaRepository<ListingDAO, Integer> {
     //Finds all listings of one user
     List<ListingDAO> findAllFromListingDAOByUser(UserDAO userID);
     ListingDAO findListingDAOByListingID(int listingId);
-    List<ListingDAO> findAllByUser(UserDAO userId);
+    List<ListingDAO> findAllByUserAndDeletedIsFalse(UserDAO userId);
     List<ListingDAO> findListingDAOSByUser(UserDAO user);
+    List<ListingDAO> findAllByDeletedIsFalse();
 
 
     //Finds all listings with title containing a phrase

@@ -58,7 +58,7 @@ VALUES (4444, 1, false);
 
 
 
-INSERT INTO public.listing(listing_id, address, description, price_per_day, title, user_id)
-VALUES (5000, 'kjopmansgata', 'yo', 21, 'get over here', 1);
+INSERT INTO public.listing(listing_id, address, description, price_per_day, title, user_id, deleted)
+VALUES (5000, 'kjopmansgata', 'yo', 21, 'get over here', 1, false);
 
 INSERT INTO public.community_listing(community_id, listing_id) VALUES (4444, 5000);

@@ -106,7 +106,7 @@ public class UserController {
         UserDAO userDAO = userService.findUserByUserId(tokenUserId);
         List<ListingDAO> listings = listingService.getAllOfUsersListings(userDAO);
         for (ListingDAO listing:listings) {
-            //TODO: listing.setIsDeleted(true);
+            listing.setDeleted(true);
         }
 
         List<CommunityDTO> communities = userCommunityService.getAllCommunitiesForUser(userDAO);
