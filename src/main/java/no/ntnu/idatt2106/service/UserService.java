@@ -23,12 +23,12 @@ import java.util.List;
  */
 @Service
 public class UserService {
+
     private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-
 
     /**
      * A method to find a specific user by their unique user id.
@@ -112,5 +112,16 @@ public class UserService {
             return true;
         }
         return false;
+    }
+
+    public void deleteUser(UserDAO userDAO) {
+
+        userDAO.setFirstName("Slettet");
+        userDAO.setLastName("Konto: " + userDAO.getUserID());
+        userDAO.setPicture("");
+        userDAO.setHash("");
+        userDAO.setSalt("");
+        userDAO.setAddress("");
+        userDAO.setEmail("");
     }
 }
