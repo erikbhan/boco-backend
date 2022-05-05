@@ -105,4 +105,5 @@ public class UserDAO {
     public String getHash() {return hash;}
 
     public void setHash(String hash) {this.hash = hash;}
+    
 }

@@ -44,6 +44,18 @@ public class UserCommunityService {
            return true;
     }
 
+    public boolean addUserAsAdminToCommunity(int user, CommunityDAO communityDAO){
+        UserCommunityDAO userCommunity = new UserCommunityDAO(communityDAO, userService.findUserByUserId(user), false);
+        try {
+            setAdmin(userCommunity);
+            userCommunityRepository.save(userCommunity);
+        }
+        catch (Exception e){
+            return false;
+        }
+        return true;
+    }
+
 
     public boolean removeUserFromCommunity(UserCommunityDAO ucd){
         if(userIsInCommunity(ucd.getUser().getUserID(), ucd.getCommunity())){
@@ -113,5 +125,9 @@ public class UserCommunityService {
             communities.add(communityService.findCommunityDAOByCommunityID(communityID));
         }
         return communities;
+    }
+
+    public List<Integer> getIdOfAllAdminCommunities(int userID){
+        return userCommunityRepository.getAdminCommunityIDs(userID);
     }
 }
