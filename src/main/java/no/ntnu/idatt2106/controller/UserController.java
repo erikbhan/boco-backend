@@ -99,7 +99,7 @@ public class UserController {
      * Removes a user and removes identifying information without removing ratings or other important data.
      * Ratings will no longer have personal information.
      */
-    @PutMapping("/user/delete")
+    @DeleteMapping("/user/delete")
     @Operation(summary = "Deletes a user and removes all identifying information")
     @ApiResponse(responseCode = "200", description = "OK")
     @ApiResponse(responseCode = "400", description = "Token not found")

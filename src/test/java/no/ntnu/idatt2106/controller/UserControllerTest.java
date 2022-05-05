@@ -23,8 +23,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -103,7 +102,7 @@ public class UserControllerTest {
     void userController_deleteUser_ShouldBeTrue() throws Exception {
         UserDAO user = userService.findUserByUserId(2023);
         userToken = loginService.successfulAuthentication(user);
-        mockMvc.perform(put("/user/delete")
+        mockMvc.perform(delete("/user/delete")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken));
 

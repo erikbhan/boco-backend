@@ -235,6 +235,7 @@ public class ListingController {
      * @param title
      * @return List of DTOs containing the requested title in title 
      */
+    @Operation(summary = "Gets all listings with a title matching the input title")
     @GetMapping("/listing/title/{title}")
     public List<ListingDTO> searchForListingsByTitle(@PathVariable String title){
         return listingService.getListingDTOByTitle(title, listingCategoryService, communityListingService);
