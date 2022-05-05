@@ -110,6 +110,7 @@ public class ListingController {
     @ApiResponse(responseCode = "400", description = "Could not find one of the given categories")
     @PostMapping("/listing")
     public boolean postListing(@RequestBody ListingDTO listingDTO) throws StatusCodeException {
+        //TODO: Gjøre at du ikke kan poste hvis tiden er opptatt.
         ListingDAO listing = new ListingDAO();
         listing.setTitle(listingDTO.getTitle());
         listing.setDescription(listingDTO.getDescription());
