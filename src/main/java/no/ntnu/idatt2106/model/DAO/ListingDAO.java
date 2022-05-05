@@ -17,11 +17,11 @@ public class ListingDAO{
     @Column(name = "description")
     private String description;
     @Column(name = "price_per_day")
-    private double pricePerDay;
+    private double pricePerDay = 1;
     @Column(name = "address")
     private String address;
     @Column(name = "deleted")
-    private boolean deleted;
+    private boolean deleted = false;
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
     private UserDAO user;
