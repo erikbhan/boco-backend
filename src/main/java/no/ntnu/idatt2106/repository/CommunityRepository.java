@@ -17,4 +17,6 @@ public interface CommunityRepository extends JpaRepository<CommunityDAO, Integer
     //Remove the @Param and @Query when hibernate version is updated to 5.6.9 or more.
     @Query("SELECT m FROM CommunityDAO m WHERE m.name LIKE %:name%")
     List<CommunityDAO> findAllByNameLike(@Param("name") String name);
+
+
 }

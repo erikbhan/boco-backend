@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -81,7 +82,14 @@ public class UserCommunityController {
         return ucd.isAdministrator();
     }
 
-
+    @Operation(summary = "Gets the IDs of the communities the user is admin in")
+    @GetMapping("/communities/admin")
+    @ApiResponse(responseCode = "200")
+    public List<Integer> getAdminCommunities(){
+        TokenDTO userToken = TokenUtil.getDataJWT();
+        Integer tokenUserId = Integer.valueOf(userToken.getAccountId());
+        return userCommunityService.getIdOfAllAdminCommunities(tokenUserId);
+    }
 
     @Operation(summary = "Remove user from community")
     @PatchMapping("/communities/{communityId}/leave")

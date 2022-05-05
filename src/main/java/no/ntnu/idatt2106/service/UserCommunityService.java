@@ -114,4 +114,8 @@ public class UserCommunityService {
         }
         return communities;
     }
+
+    public List<Integer> getIdOfAllAdminCommunities(int userID){
+        return userCommunityRepository.getAdminCommunityIDs(userID);
+    }
 }
