@@ -100,16 +100,16 @@ public class CommunityController {
      */
     @RequireAuth
     @Operation(summary = "Deletes a community from the database")
+    @ApiResponse(responseCode = "400", description = "Community not found")
     @ApiResponse(responseCode = "401", description = "User not part of given community")
     @ApiResponse(responseCode = "401", description = "User not admin of given community")
-    @ApiResponse(responseCode = "404", description = "Community not found")
     @DeleteMapping("/communities/{communityId}/remove")
     public void removeCommunity(@PathVariable int communityId) throws StatusCodeException {
         TokenDTO userToken = TokenUtil.getDataJWT();
         int tokenUserId = userToken.getAccountId();
         CommunityDAO communityDAO = communityService.findCommunityDAOByCommunityID(communityId);
         if (communityDAO == null) {
-            throw new StatusCodeException(HttpStatus.NOT_FOUND, "Community not found");
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Community not found");
         }
         UserCommunityDAO userCommunityDAO = userCommunityService.getByIds(tokenUserId, communityDAO);
         if (userCommunityDAO == null) {
@@ -124,11 +124,11 @@ public class CommunityController {
      * A method to get all members in a community.
      * @param communityId The id of the community to search for.
      */
+    @RequireAuth
     @Operation(summary = "Returns all members in a community")
     @ApiResponse(responseCode = "400", description = "No communities was found")
     @ApiResponse(responseCode = "417", description = "No members in members list")
     @GetMapping("/community/{communityId}/members")
-    @RequireAuth
     public List<UserDTO> getMembersInCommunity(@PathVariable int communityId) throws StatusCodeException {
         CommunityDAO communityDAO = communityService.findCommunityDAOByCommunityID(communityId);
         if (communityDAO == null) {

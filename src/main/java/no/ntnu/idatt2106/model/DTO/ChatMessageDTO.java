@@ -2,6 +2,8 @@ package no.ntnu.idatt2106.model.DTO;
 
 import no.ntnu.idatt2106.model.DAO.ChatMessageDAO;
 
+import java.time.LocalDateTime;
+
 public class ChatMessageDTO {
     private int id;
     private String content;

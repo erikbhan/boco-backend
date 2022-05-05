@@ -18,8 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
+
 
 /**
  * The main controller for the api requests related to the user.
@@ -34,18 +33,20 @@ public class UserController {
     private final ListingService listingService;
     private final UserCommunityService userCommunityService;
     private final RentService rentService;
+    private final CommunityRequestService communityRequestService;
 
-    public UserController(UserService userService, LoginService loginService, ListingService listingService,
-                          UserCommunityService userCommunityService, RentService rentService) {
+    public UserController(UserService userService, LoginService loginService, ListingService listingService, UserCommunityService userCommunityService, RentService rentService, CommunityRequestService communityRequestService) {
         this.userService = userService;
         this.loginService = loginService;
         this.listingService = listingService;
         this.userCommunityService = userCommunityService;
         this.rentService = rentService;
+        this.communityRequestService = communityRequestService;
     }
 
     /**
      * A method for finding a user from a user id.
+     *
      * @return Returns a response entity containing either the UserDAO object or
      * the http status not found if the user is not found within the DB.
      */
@@ -55,7 +56,7 @@ public class UserController {
     @ApiResponse(responseCode = "404", description = "User not found in the DB")
     public UserDTO getAUserFromUserId(@PathVariable() int userid) throws StatusCodeException {
         UserDAO user = userService.findUserByUserId(userid);
-        if(user == null) {
+        if (user == null) {
             throw new StatusCodeException(HttpStatus.NOT_FOUND, "User not found in DB");
         }
         return new UserDTO(user);
@@ -63,6 +64,7 @@ public class UserController {
 
     /**
      * A method for changing the password of a user.
+     *
      * @param password The password you want to change into.
      * @return Returns a new token for the changed user.
      * @throws StatusCodeException
@@ -78,7 +80,7 @@ public class UserController {
             UserDAO userDAO = userService.findUserByUserId(tokenUserId);
 
             //Changes the password json string back into the two passwords
-            String trimmedPassword = password.substring(28, password.length()-3);
+            String trimmedPassword = password.substring(28, password.length() - 3);
             String[] twoPasswords = trimmedPassword.split("\",\"");
             String newPassword = twoPasswords[0];
             String oldPassword = twoPasswords[1].substring(14);
@@ -93,9 +95,18 @@ public class UserController {
         }
     }
 
+    /**
+     * Removes a user and removes identifying information without removing ratings or other important data.
+     * Ratings will no longer have personal information.
+     */
     @PutMapping("/user/delete")
+    @Operation(summary = "Deletes a user and removes all identifying information")
+    @ApiResponse(responseCode = "200", description = "OK")
+    @ApiResponse(responseCode = "400", description = "Token not found")
+    @ApiResponse(responseCode = "400", description = "Could not fetch user")
     public void deleteAccount() throws StatusCodeException {
         Integer tokenUserId;
+        UserDAO userDAO;
         try {
             TokenDTO userToken = TokenUtil.getDataJWT();
             tokenUserId = userToken.getAccountId();
@@ -103,26 +114,18 @@ public class UserController {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Token not found");
         }
 
-        UserDAO userDAO = userService.findUserByUserId(tokenUserId);
-        List<ListingDAO> listings = listingService.getAllOfUsersListings(userDAO);
-        for (ListingDAO listing:listings) {
-            listing.setDeleted(true);
+        try {
+            userDAO = userService.findUserByUserId(tokenUserId);
+        } catch (Exception e) {
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Could not fetch user");
         }
 
-        List<CommunityDTO> communities = userCommunityService.getAllCommunitiesForUser(userDAO);
-
-        for (CommunityDTO community : communities) {
-            userCommunityService.deleteUserFromAllGroups(userDAO);
-        }
-
+        communityRequestService.deleteRequestsForUser(userDAO);
         rentService.deleteAllRentsFromUser(userDAO);
+        listingService.deleteListingsForUser(userDAO);
+        userCommunityService.deleteUserFromAllGroups(userDAO);
+        userService.clearUserInfo(userDAO);
 
-        userDAO.setFirstName("Slettet");
-        userDAO.setLastName("Konto: " + userDAO.getUserID());
-        userDAO.setPicture("");
-        userDAO.setHash("");
-        userDAO.setSalt("");
-        userDAO.setAddress("");
-        userDAO.setEmail("");
+        throw new StatusCodeException(HttpStatus.OK, "User deleted");
     }
 }

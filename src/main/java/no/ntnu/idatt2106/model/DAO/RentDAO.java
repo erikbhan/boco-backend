@@ -29,6 +29,8 @@ public class RentDAO{
     private boolean isDeleted = false;
     @Column(name = "message")
     private String message;
+    @Column (name = "created_at", nullable = false)
+    private long createdAt = System.currentTimeMillis();
     @ManyToOne
     @JoinColumn(name = "listing_owner_id", nullable = false)
     private ListingDAO listing;
@@ -36,12 +38,14 @@ public class RentDAO{
     @JoinColumn(name = "renter_id", nullable = false)
     private UserDAO renter;
 
-    public RentDAO(long fromTime, long toTime, boolean isAccepted, ListingDAO listing, UserDAO renter) {
+    public RentDAO(long fromTime, long toTime, boolean isAccepted, ListingDAO listing, UserDAO renter, boolean isDeleted) {
         this.fromTime = fromTime;
         this.toTime = toTime;
         this.isAccepted = isAccepted;
         this.listing = listing;
         this.renter = renter;
+        this.createdAt = System.currentTimeMillis();
+        this.isDeleted = isDeleted;
     }
 
     public RentDAO(RentDTO rentDTO) {
@@ -49,9 +53,32 @@ public class RentDAO{
         this.toTime = rentDTO.getToTime();
         this.isAccepted = rentDTO.getIsAccepted();
         this.message = rentDTO.getMessage();
+        this.createdAt = rentDTO.getCreatedAt();
+        this.isDeleted = rentDTO.isDeleted();
     }
 
     public RentDAO() {
+        this.createdAt = System.currentTimeMillis();
+    }
+
+    public boolean isAccepted() {
+        return isAccepted;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public long getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(long createdAt) {
+        this.createdAt = createdAt;
     }
 
     public int getRentID() {
@@ -106,13 +133,6 @@ public class RentDAO{
 
     public void setDeleted(boolean deleted) {isDeleted = deleted;}
 
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
 
     @Override
     public String toString() {

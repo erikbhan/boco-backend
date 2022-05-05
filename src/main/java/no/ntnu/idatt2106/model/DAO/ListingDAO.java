@@ -71,7 +71,7 @@ public class ListingDAO{
     }
 
     public void setDeleted(boolean deleted) {
-        deleted = deleted;
+        this.deleted = deleted;
     }
 
     public UserDAO getUser() {
