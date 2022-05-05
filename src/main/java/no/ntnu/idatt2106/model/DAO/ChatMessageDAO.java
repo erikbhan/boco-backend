@@ -20,9 +20,9 @@ public class ChatMessageDAO {
     @Column(name = "text")
     private String text;
     @Column(name = "time_sent")
-    private long timeSent;
+    private long timeSent = System.currentTimeMillis();
     @Column(name = "is_read")
-    private Boolean isRead;
+    private Boolean isRead = false;
     @ManyToOne
     @JoinColumn(name = "sending_user_id", nullable = false)
     private UserDAO sendingUser;

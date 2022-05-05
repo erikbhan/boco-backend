@@ -17,9 +17,9 @@ public class NotificationDAO {
     @Column(name = "notification_id")
     private int notificationID;
     @Column(name= "is_seen")
-    private boolean isSeen;
+    private boolean isSeen = false;
     @Column(name= "created_time")
-    private long createdTime;
+    private long createdTime = System.currentTimeMillis();
     @ManyToOne
     @JoinColumn(name = "chat_message", nullable = true)
     private ChatMessageDAO chatMessage;
