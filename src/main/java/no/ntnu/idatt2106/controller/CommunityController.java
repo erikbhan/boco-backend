@@ -113,10 +113,9 @@ public class CommunityController {
         UserCommunityDAO userCommunityDAO = userCommunityService.getByIds(tokenUserId, communityDAO);
         if (!userCommunityService.userIsInCommunity(tokenUserId, communityDAO)) {
             throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "User not a part of this community");
-        } else if (!userCommunityDAO.isAdministrator()) {
-            throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "User not an admin in this community");
         }
         List<UserCommunityDAO> users = userCommunityService.findAllMembersInACommunityByCommunity(communityDAO);
+
         for (UserCommunityDAO user:users) {
             userCommunityService.removeUserFromCommunity(user);
         }
