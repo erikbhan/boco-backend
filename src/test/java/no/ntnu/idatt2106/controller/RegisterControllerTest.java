@@ -76,6 +76,8 @@ public class RegisterControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(new RegisterUserDTO("erna@solberg.no", "hackerman", "Erna", "Solberg", "Oslo"))))
                 .andExpect(status().is2xxSuccessful());
+
+        assert (userService.findUserByEmail("erna@solberg.no") != null);
     }
 
     /**
