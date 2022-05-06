@@ -42,6 +42,7 @@ public class ChatController {
     /**
      * A method to get all chat messages between the active user and the given user
      * @param userId The id of the second user in the conversation
+     * @return An array of chatMessageDTOs from the given user
      */
     @GetMapping("/chats/users/{userId}/messages")
     @RequireAuth
@@ -53,6 +54,7 @@ public class ChatController {
 
     /**
      * A method to get all the conversations of the active user
+     * @return An array of conversations for the active user
      */
     @GetMapping("/chats/users")
     @RequireAuth
