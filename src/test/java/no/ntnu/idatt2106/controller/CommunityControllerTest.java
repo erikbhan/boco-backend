@@ -107,6 +107,8 @@ public class CommunityControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk());
+
+        assert (communityService.findCommunityDAOByCommunityID(9999) == null);
     }
 
     @Test

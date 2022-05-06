@@ -4,18 +4,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import no.ntnu.idatt2106.exception.StatusCodeException;
 import no.ntnu.idatt2106.middleware.RequireAuth;
-import no.ntnu.idatt2106.model.DAO.CommunityDAO;
-import no.ntnu.idatt2106.model.DAO.ListingDAO;
-import no.ntnu.idatt2106.model.DAO.UserCommunityDAO;
-import no.ntnu.idatt2106.model.DAO.UserDAO;
+import no.ntnu.idatt2106.model.DAO.*;
 import no.ntnu.idatt2106.model.DTO.CommunityDTO;
 import no.ntnu.idatt2106.model.DTO.ListingDTO;
 import no.ntnu.idatt2106.model.DTO.TokenDTO;
 import no.ntnu.idatt2106.model.DTO.UserDTO;
-import no.ntnu.idatt2106.service.CommunityService;
-import no.ntnu.idatt2106.service.ListingService;
-import no.ntnu.idatt2106.service.UserCommunityService;
-import no.ntnu.idatt2106.service.UserService;
+import no.ntnu.idatt2106.service.*;
 import no.ntnu.idatt2106.util.TokenUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -31,14 +25,14 @@ public class CommunityController {
     private final UserCommunityService userCommunityService;
     private final UserService userService;
     private final ListingService listingService;
+    private final CommunityListingService communityListingService;
 
-    public CommunityController(CommunityService communityService,
-                               UserCommunityService userCommunityService, UserService userService,
-                               ListingService listingService) {
+    public CommunityController(CommunityService communityService, UserCommunityService userCommunityService, UserService userService, ListingService listingService, CommunityListingService communityListingService) {
         this.communityService = communityService;
         this.userCommunityService = userCommunityService;
         this.userService = userService;
         this.listingService = listingService;
+        this.communityListingService = communityListingService;
     }
 
     /**
@@ -66,7 +60,7 @@ public class CommunityController {
     public List<CommunityDTO> showAllCommunities(){
         List<CommunityDAO> listOfCommunityDAOs = communityService
                 .findAll();
-        if(listOfCommunityDAOs != null && listOfCommunityDAOs.size() > 0) {
+        if (listOfCommunityDAOs != null && listOfCommunityDAOs.size() > 0) {
             List<CommunityDTO> listOfCommunities = communityService
                     .convertListCommunityDAOToListCommunityDTO(listOfCommunityDAOs);
             return listOfCommunities;
@@ -83,7 +77,7 @@ public class CommunityController {
     public List<CommunityDTO> showAllCommunitiesMatchingSearchTerm(@RequestParam(name = "search_word") String search_word) throws StatusCodeException {
         List<CommunityDAO> listOfCommunityDAOs = communityService
                 .findAllCommunityDAOWithContainingAGivenName(search_word);
-        if(listOfCommunityDAOs != null && listOfCommunityDAOs.size() > 0) {
+        if (listOfCommunityDAOs != null && listOfCommunityDAOs.size() > 0) {
             List<CommunityDTO> listOfCommunities = communityService
                     .convertListCommunityDAOToListCommunityDTO(listOfCommunityDAOs);
             return listOfCommunities;
@@ -108,11 +102,19 @@ public class CommunityController {
         if (communityDAO == null) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Community not found");
         }
-        UserCommunityDAO userCommunityDAO = userCommunityService.getByIds(tokenUserId, communityDAO);
-        if (userCommunityDAO == null) {
+        if (!userCommunityService.userIsInCommunity(tokenUserId, communityDAO)) {
             throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "User not a part of this community");
-        } else if (!userCommunityDAO.isAdministrator()) {
+        }
+        List<UserCommunityDAO> users = userCommunityService.findAllMembersInACommunityByCommunity(communityDAO);
+        if (!userCommunityService.userIsAdminInCommunity(tokenUserId, communityId)) {
             throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "User not an admin in this community");
+        }
+        for (UserCommunityDAO user : users) {
+            userCommunityService.removeUserFromCommunity(user);
+        }
+        List<CommunityListingDAO> listings = communityListingService.getAllCommunityListingForCommunity(communityDAO);
+        for (CommunityListingDAO listing : listings) {
+            communityListingService.deleteCommunityListing(listing);
         }
         communityService.removeCommunity(communityDAO);
     }
@@ -132,12 +134,12 @@ public class CommunityController {
         }
         List<UserCommunityDAO> userCommunityDAOs = userCommunityService
                 .findAllMembersInACommunityByCommunity(communityDAO);
-        if(userCommunityDAOs != null) {
+        if (userCommunityDAOs != null) {
             try {
                 List<UserDAO> membersDAO = userCommunityService
                         .makeListOfAllMembersInACommunity(userCommunityDAOs);
                 List<UserDTO> membersList = userService.convertListUserDAOToListUserDTO(membersDAO);
-                if(membersList != null) {
+                if (membersList != null) {
                     return membersList;
                 }
                 throw new StatusCodeException(HttpStatus.EXPECTATION_FAILED, "Member list is empty");
@@ -177,22 +179,21 @@ public class CommunityController {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Community not found");
         }
         UserDAO user;
-        if(communityDAO.getVisibility()==0){
-            try{
+        if (communityDAO.getVisibility() == 0) {
+            try {
                 TokenDTO token = TokenUtil.getDataJWT();
                 user = userService.findUserByUserId(token.getAccountId());
 
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 throw new StatusCodeException(HttpStatus.BAD_REQUEST, "not logged in");
             }
 
-            if (user==null){
+            if (user == null) {
                 throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Could not find user/ not logged in ");
             }
 
-            if(!userCommunityService.userIsInCommunity(user.getUserID(),communityDAO)){
+            if (!userCommunityService.userIsInCommunity(user.getUserID(), communityDAO)) {
                 throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Community is private and you're not in it");
             }
 
@@ -203,7 +204,7 @@ public class CommunityController {
         List<ListingDTO> listings = listingService
                 .convertListOfListingDAOToListOfListingDTO(listingDAOS);
 
-        if(listings == null) {
+        if (listings == null) {
             throw new StatusCodeException(HttpStatus.EXPECTATION_FAILED, "No listings in the community");
         }
         return listings;
