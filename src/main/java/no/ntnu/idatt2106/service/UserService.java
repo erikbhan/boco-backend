@@ -1,7 +1,6 @@
 package no.ntnu.idatt2106.service;
 
 import no.ntnu.idatt2106.model.DAO.UserDAO;
-import no.ntnu.idatt2106.model.DTO.CommunityDTO;
 import no.ntnu.idatt2106.model.DTO.UserDTO;
 import no.ntnu.idatt2106.repository.UserRepository;
 
@@ -10,17 +9,13 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Optional;
 
 
 import no.ntnu.idatt2106.util.HashUtil;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
-/**
- * A class meant to use the access-point made to the User table in the DB.
- * This class uses methods from the {@link no.ntnu.idatt2106.repository.UserRepository UserRepository}
- */
 @Service
 public class UserService {
 
@@ -38,6 +33,7 @@ public class UserService {
     public UserDAO findUserByUserId(int userId) {
         return userRepository.findUserDAOByUserID(userId);
     }
+
     /**
      * A method to find a user by their email.
      * @param email The email of the user you want to find
@@ -45,20 +41,6 @@ public class UserService {
      */
     public UserDAO findUserByEmail(String email) {
         return userRepository.findUserDAOByEmail(email);
-    }
-
-    /**
-     * A method for finding the full name of a user.
-     * @param userId The user id of the user
-     * @return Returns the full name of the user with the specific user id.
-     */
-    public String findFullNameFromUserId(int userId) {
-        UserDAO user = userRepository.findUserDAOByUserID(userId);
-        if(user == null) {
-            return "No such user";
-        }
-        String fullName = user.getFirstName() + " " + user.getLastName();
-        return fullName;
     }
 
     /**
@@ -70,24 +52,24 @@ public class UserService {
     }
 
     /**
-     * A method for finding all users with the same full name.
-     * @param firstName The first name of the users.
-     * @param lastName The last name of the users.
-     * @return Returns a list of UserDAOs containing all users in the DB
-     * with the same full name as the one you search for.
+     * Converts a list of user DAOs to a list of user DTOs
+     * @param list A list of user DAOs
+     * @return A list of user DTOs
      */
-    public List<UserDAO> findAllUsersWithSameFullName(String firstName, String lastName) {
-        return userRepository.findUserDAOByFirstNameAndLastName(firstName, lastName);
-    }
-
     public List<UserDTO> convertListUserDAOToListUserDTO(List<UserDAO> list) {
         List<UserDTO> convertedList = new ArrayList<>();
-        for(int i = 0; i < list.size(); i++) {
+        for (int i = 0; i < list.size(); i++) {
             convertedList.add(new UserDTO(list.get(i)));
         }
         return convertedList;
     }
 
+    /**
+     * Change a password for a user
+     * @param userDAO  User to change password for
+     * @param password Password to change to
+     * @return UserDAO of the user that has gotten password changed
+     */
     public UserDAO changePasswordForUser(UserDAO userDAO, String password) {
         HashUtil hashUtil = new HashUtil();
         byte[] salt = hashUtil.getRandomSalt();
@@ -100,6 +82,12 @@ public class UserService {
         return userDAO;
     }
 
+    /**
+     * Method that authenticates password
+     * @param user     User that has the password
+     * @param password Password to authenticate
+     * @return boolean that explains if the operation succeeded or not
+     */
     public boolean attemptAuthenticationOfPassword(UserDAO user, String password) throws NoSuchAlgorithmException {
         if (user == null) {
             return false;
@@ -114,6 +102,10 @@ public class UserService {
         return false;
     }
 
+    /**
+     * Method that clears all personal data from a user, this method is used when deleting a user to keep ratings given
+     * @param userDAO User to clear
+     */
     public void clearUserInfo(UserDAO userDAO) {
         userDAO.setFirstName("Slettet");
         userDAO.setLastName("Konto: " + userDAO.getUserID());
