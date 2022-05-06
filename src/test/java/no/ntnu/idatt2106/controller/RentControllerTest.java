@@ -181,13 +181,10 @@ public class RentControllerTest {
 
     @Test
     void rentController_acceptRent_ShouldBeOk() throws Exception {
-        MvcResult result = mockMvc.perform(put("/renting/10000/accept")
+        mockMvc.perform(put("/renting/10000/accept")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))
-                .andExpect(status().isOk())
-                .andReturn();
-        String ans = result.getResponse().getContentAsString();
-        assert (ans.contentEquals("Accepted rent"));
+                .andExpect(status().isOk());
     }
 
     @Test

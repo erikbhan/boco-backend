@@ -36,8 +36,9 @@ public class ImageController {
     /**
      * Gets the image with the given image id
      * @param imageID The id of the requested image
+     * @return an image
      */
-    @Operation(summary = "Get image", description = "Get image")
+    @Operation(summary = "Get image")
     @ApiResponse(responseCode = "400", description = "Image not found")
     @GetMapping(
             value = "/images/{imageID}",
@@ -52,18 +53,17 @@ public class ImageController {
     /**
      * Adds an image to the database
      * @param image The image to be added
+     * @return the id of the image that was added
      */
     @RequireAuth
     @Transactional
-    @Operation(summary = "Add image", description = "Add image")
-    @ApiResponse(responseCode = "201", description = "Image added")
-    @ApiResponse(responseCode = "400", description = "Image already exists")
+    @Operation(summary = "Add image")
     @PostMapping(
             value = "/images",
             consumes = MediaType.IMAGE_PNG_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public @ResponseBody int addImage(@RequestBody byte[] image) throws StatusCodeException {
+    public @ResponseBody int addImage(@RequestBody byte[] image){
         int accountId = TokenUtil.getDataJWT(TokenUtil.getToken()).getAccountId();
         int imageID = imageService.addImage(image, accountId);
         return imageID;
@@ -72,9 +72,10 @@ public class ImageController {
     /**
      * Deletes an image from the database
      * @param imageID The id of the image you want to delete
+     *
      */
     @RequireAuth
-    @Operation(summary = "Delete image", description = "Delete image")
+    @Operation(summary = "Delete image")
     @ApiResponse(responseCode = "400", description = "Image not found")
     @ApiResponse(responseCode = "403", description = "User not owner of image, not allowed to delete")
     @DeleteMapping(value = "/images/{imageID}")
@@ -108,6 +109,11 @@ public class ImageController {
         throw new StatusCodeException(HttpStatus.OK, "pictures added");
     }
 
+    /**
+     * Method to change images in a listing
+     * @param images the images the user wants to change to
+     * @param listingId the listing id of the listing the user wants to change
+     */
     @RequireAuth
     @Operation(summary = "Changes the listings images to the given list")
     @ApiResponse(responseCode = "200", description = "Listing pictures updated")

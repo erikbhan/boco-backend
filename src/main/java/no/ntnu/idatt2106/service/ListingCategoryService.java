@@ -22,6 +22,10 @@ public class ListingCategoryService {
         this.listingCategoryRepository = listingCategoryRepository;
     }
 
+    /**
+     * Save a ListingCategoryDAO
+     * @param listingCategoryDAO ListingCategoryDAO to save
+     */
     public void save(ListingCategoryDAO listingCategoryDAO) {
         listingCategoryRepository.save(listingCategoryDAO);
     }
@@ -29,7 +33,6 @@ public class ListingCategoryService {
     /**
      * Creates a LisitingCategoryDAO with a CategoryDAO and ListingDAO, and saves it
      * to the junction table.
-     * 
      * @param categoryDAO
      * @param listingDAO
      */
@@ -41,8 +44,7 @@ public class ListingCategoryService {
     }
 
     /**
-     * Gets al ist of all the category names of the cateogories related to a listing
-     * 
+     * Gets a list of all the category names of the cateogories related to a listing
      * @param listingDAO
      * @return List fo category names
      */

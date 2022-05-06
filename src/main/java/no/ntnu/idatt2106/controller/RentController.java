@@ -26,19 +26,14 @@ import java.util.List;
  */
 @RestController
 @CrossOrigin
-@ApiResponse(responseCode = "401", description = "Not authenticated")
+@ApiResponse(responseCode = "401", description = "Unauthorized")
 @RequireAuth
 public class RentController {
     private final RentService rentService;
     private final UserService userService;
 
-    ListingService listingService;
-    NotificationService notificationService;
-
-    public RentController(RentService rentService, ListingService listingService, NotificationService notificationService, UserService userService) {
+    public RentController(RentService rentService,UserService userService) {
         this.rentService = rentService;
-        this.listingService = listingService;
-        this.notificationService = notificationService;
         this.userService = userService;
     }
 
@@ -46,12 +41,10 @@ public class RentController {
      * A method to get all rented objects for a user.
      * This method returns a list of all objects rented by the user.
      * @return Returns a list of all objects rented by the user.
-     * @throws Exception
      */
     @GetMapping("/user/profile/rent/history")
     @Operation(summary = "Get the full list of rent objects which a user has rented")
-    @ApiResponse(responseCode = "200", description = "Returns the rent history of the user, deleted items are not included")
-    @ApiResponse(responseCode = "400", description = "User or rent history not found in the DB")
+    @ApiResponse(responseCode = "400", description = "User not found in the database")
     public List<RentDTO> getRentHistoryOfUser() throws Exception {
         TokenDTO userToken = TokenUtil.getDataJWT();
         Integer tokenUserId = Integer.valueOf(userToken.getAccountId());
@@ -71,12 +64,10 @@ public class RentController {
      * A method to get the full rent history for a user.
      * This method returns a list of all rent objects for the user.
      * @return Returns a list of all rent objects for the user.
-     * @throws Exception
      */
     @GetMapping("/user/profile/rent/history/all")
     @Operation(summary = "Get a list of all rent agreements for a user, both accepted and not.")
-    @ApiResponse(responseCode = "200", description = "Returns every instance where this user has rented an item from another user")
-    @ApiResponse(responseCode = "400", description = "User or rent history not found in the DB")
+    @ApiResponse(responseCode = "400", description = "User not found in the database")
     public List<RentDTO> getFullRentHistoryOfUser() throws Exception {
         TokenDTO userToken = TokenUtil.getDataJWT();
         Integer tokenUserId = Integer.valueOf(userToken.getAccountId());
@@ -84,7 +75,6 @@ public class RentController {
         if(userDAO != null) {
             List<RentDAO> rentHistoryDAO = rentService
                     .findAllRentDAOWithRenterId(userDAO.getUserID());
-
             List<RentDTO> rentHistory = rentService
                     .convertListOfRentDAOToListOfRentDTO(rentHistoryDAO);
             return rentHistory;
@@ -96,12 +86,10 @@ public class RentController {
      * A method to get the full rent history for a owner.
      * This method returns a list of all rent objects listed by the owner.
      * @return Returns a list of all rent objects listed by the user.
-     * @throws Exception
      */
     @GetMapping("/user/profile/rent/history/owner/all")
     @Operation(summary = "Get a list of all rent agreements for a user, both accepted and not.")
-    @ApiResponse(responseCode = "200", description = "Returns every instance where this owner has rented out an item")
-    @ApiResponse(responseCode = "400", description = "User or rent history not found in the DB")
+    @ApiResponse(responseCode = "400", description = "User not found in the database")
     public List<RentDTO> getFullRentHistoryOfOwner() throws Exception {
         TokenDTO userToken = TokenUtil.getDataJWT();
         Integer tokenUserId = Integer.valueOf(userToken.getAccountId());
@@ -109,7 +97,6 @@ public class RentController {
         if(userDAO != null) {
             List<RentDAO> rentHistoryDAO = rentService
                     .findAllRentDAOWithOwnerId(userDAO.getUserID());
-
             List<RentDTO> rentHistory = rentService
                     .convertListOfRentDAOToListOfRentDTO(rentHistoryDAO);
             return rentHistory;
@@ -120,12 +107,10 @@ public class RentController {
     /**
      * A method to get the full rent history of all rented objects belonging to the owner.
      * @return Returns a list of all rented objects listed by the owner which has also been rented by someone.
-     * @throws Exception
      */
     @GetMapping("/user/profile/rent/history/owner")
-    @Operation(summary = "Get a list of all rent agreements for a user, only the accepted ones.")
-    @ApiResponse(responseCode = "200", description = "Returns the rented item history of this owner, deleted items are not included")
-    @ApiResponse(responseCode = "400", description = "User or rent history not found in the DB")
+    @Operation(summary = "Get a list of all rent agreements for a user, only the accepted ones")
+    @ApiResponse(responseCode = "400", description = "User not found in the database")
     public List<RentDTO> getRentHistoryOfOwner() throws Exception {
         TokenDTO userToken = TokenUtil.getDataJWT();
         Integer tokenUserId = Integer.valueOf(userToken.getAccountId());
@@ -133,10 +118,8 @@ public class RentController {
         if(userDAO != null) {
             List<RentDAO> rentHistoryFull = rentService
                     .findAllRentDAOWithOwnerId(userDAO.getUserID());
-
             List<RentDAO> rentHistoryDAO = rentService
                     .filterAListOfRentDAOByStatusOfAgreement(rentHistoryFull,true);
-
             rentHistoryDAO = rentService.filterListOfRentDAOOnDeleted(rentHistoryDAO);
             List<RentDTO> rentHistory = rentService
                     .convertListOfRentDAOToListOfRentDTO(rentHistoryDAO);
@@ -150,12 +133,11 @@ public class RentController {
      * Returns a string with the success message or a http status error if the method fails.
      * @param rentDTO The format of the rent agreement.
      * @return Returns a string with the success message or a http status error if the method fails.
-     * @throws StatusCodeException
      */
     @PostMapping("/renting/renter/save")
     @Operation(summary = "A method for saving a new rent agreement to the DB")
     @ApiResponse(responseCode = "200", description = "The rent agreement was saved to the DB")
-    @ApiResponse(responseCode = "406", description = "The token does not contain the account id")
+    @ApiResponse(responseCode = "401", description = "Token not found")
     @ApiResponse(responseCode = "418", description = "This entry already exists in the DB")
     public String saveRentingAgreementForRenter(@RequestBody RentDTO rentDTO) throws StatusCodeException {
         TokenDTO userToken = TokenUtil.getDataJWT();
@@ -170,7 +152,7 @@ public class RentController {
             }
             throw new StatusCodeException(HttpStatus.I_AM_A_TEAPOT, "The save did not work");
         }
-        throw new StatusCodeException(HttpStatus.NOT_ACCEPTABLE, "The token is missing the account id");
+        throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "Token not found");
     }
 
     /**
@@ -178,16 +160,14 @@ public class RentController {
      * @param rentId ID for rent to be accepted
      */
     @Operation(summary = "Accepts rent")
-    @ApiResponse(responseCode = "200", description = "The status of the rent request was set to accepted")
     @ApiResponse(responseCode = "400", description = "Rent not found in DB")
     @PutMapping("/renting/{rentId}/accept")
-    public String acceptRentRequest(@PathVariable() int rentId) throws StatusCodeException {
+    public void acceptRentRequest(@PathVariable() int rentId) throws StatusCodeException {
         RentDAO rent = rentService.getRentFromId(rentId);
         if (rent == null) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Could not find rent with ID: " + rentId);
         }
         rentService.acceptRent(rent);
-        return "Accepted rent";
     }
 
     /**
@@ -195,27 +175,32 @@ public class RentController {
      * @param rentId ID for rent to be deleted
      */
     @Operation(summary = "Deletes rent")
-    @ApiResponse(responseCode = "200", description = "The status of the rent request was set to deleted")
     @ApiResponse(responseCode = "400", description = "Rent not found in DB")
     @DeleteMapping("/renting/{rentId}/delete")
-    public String deleteRent(@PathVariable() int rentId) throws StatusCodeException {
+    public void deleteRent(@PathVariable() int rentId) throws StatusCodeException {
         RentDAO rent = rentService.getRentFromId(rentId);
         if (rent == null) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Could not find rent with ID: " + rentId);
         }
         rentService.deleteRent(rentId);
-        return "Deleted rent";
     }
 
+    /**
+     * Finds all rents where the user is either the renter or the owner
+     * @return An array of rents
+     */
     @Operation(summary = "Returns all rents where the user is either a renter or a owner")
-    @ApiResponse(responseCode = "200", description = "Returns all rents")
     @GetMapping("/renting/all")
     public RentDTO[] getAllRents() {
         return rentService.getAllRents();
     }
 
+    /**
+     * Finds all rents between the active user and the given user, regardless of their roles in the different rents
+     * @param userID The user id of the other user to search for
+     * @return An array of rents
+     */
     @Operation(summary = "Returns all rents between two users")
-    @ApiResponse(responseCode = "200", description = "Returns all rents between two users")
     @GetMapping("/renting/user/{userID}/all")
     public RentDTO[] getAllRentsUser(@PathVariable int userID) {
         TokenDTO userToken = TokenUtil.getDataJWT();

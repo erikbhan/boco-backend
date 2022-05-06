@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @CrossOrigin
 public class ChatController {
-
     private SimpMessagingTemplate simpMessagingTemplate;
     private final ChatService chatService;
     private final UserService userService;
@@ -42,24 +41,22 @@ public class ChatController {
     /**
      * A method to get all chat messages between the active user and the given user
      * @param userId The id of the second user in the conversation
+     * @return An array of chatMessageDTOs from the given user
      */
     @GetMapping("/chats/users/{userId}/messages")
     @RequireAuth
-    @ApiResponse(responseCode = "200", description = "Returns all messages in a conversation.")
-    @ApiResponse(responseCode = "401", description = "Unauthorized")
     @Operation(summary = "Get all messages in a conversation.", tags = {"Chat"})
-    public ChatMessageDTO[] getChatMessages(@PathVariable int userId) throws Exception {
+    public ChatMessageDTO[] getChatMessages(@PathVariable int userId){
         TokenDTO tokenDTO = TokenUtil.getDataJWT(TokenUtil.getToken());
         return chatService.getConversation(tokenDTO.getAccountId(), userId);
     }
 
     /**
      * A method to get all the conversations of the active user
+     * @return all the conversations the current user is part of
      */
     @GetMapping("/chats/users")
     @RequireAuth
-    @ApiResponse(responseCode = "200", description = "Returns all conversations.")
-    @ApiResponse(responseCode = "401", description = "Unauthorized access.")
     @Operation(summary = "Get all conversations.", tags = {"Chat"})
     public ConversationDTO[] getAllConversations(){
         TokenDTO tokenDTO = TokenUtil.getDataJWT(TokenUtil.getToken());
@@ -73,7 +70,6 @@ public class ChatController {
      */
     @PostMapping("/chats/users/{userId}/messages")
     @RequireAuth
-    @ApiResponse(responseCode = "200", description = "Create a new message.")
     @ApiResponse(responseCode = "401", description = "Missing authentication access.")
     @Operation(summary = "Creates a new message in a conversation", tags = {"Chat"})
     public void sendMessage(@PathVariable int userId, @RequestBody NewMessageDTO newMessageDTO) throws Exception {

@@ -46,45 +46,38 @@ public class UserController {
 
     /**
      * A method for finding a user from a user id.
-     *
      * @return Returns a response entity containing either the UserDAO object or
      * the http status not found if the user is not found within the DB.
      */
     @GetMapping("/users/{userid}/profile")
     @Operation(summary = "Get at user by the user id")
-    @ApiResponse(responseCode = "200", description = "Returns a user with the given user id")
-    @ApiResponse(responseCode = "404", description = "User not found in the DB")
+    @ApiResponse(responseCode = "400", description = "User not found in the DB")
     public UserDTO getAUserFromUserId(@PathVariable() int userid) throws StatusCodeException {
         UserDAO user = userService.findUserByUserId(userid);
         if (user == null) {
-            throw new StatusCodeException(HttpStatus.NOT_FOUND, "User not found in DB");
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User not found in DB");
         }
         return new UserDTO(user);
     }
 
     /**
      * A method for changing the password of a user.
-     *
      * @param password The password you want to change into.
      * @return Returns a new token for the changed user.
-     * @throws StatusCodeException
      */
     @PutMapping("/user/password/change")
     @Operation(summary = "Change the password of the user with the given user token")
-    @ApiResponse(responseCode = "200", description = "Returns a new token for the changed user")
     @ApiResponse(responseCode = "400", description = "User not found in the DB")
+    @ApiResponse(responseCode = "500", description = "Unexpected error")
     public String changePasswordOfUser(@RequestBody String password) throws StatusCodeException, ServletException, IOException {
         try {
             TokenDTO userToken = TokenUtil.getDataJWT();
             Integer tokenUserId = Integer.valueOf(userToken.getAccountId());
             UserDAO userDAO = userService.findUserByUserId(tokenUserId);
-
-            //Changes the password json string back into the two passwords
             String trimmedPassword = password.substring(28, password.length() - 3);
             String[] twoPasswords = trimmedPassword.split("\",\"");
             String newPassword = twoPasswords[0];
             String oldPassword = twoPasswords[1].substring(14);
-
             if (!userService.attemptAuthenticationOfPassword(userDAO, oldPassword))
                 throw new StatusCodeException(HttpStatus.BAD_REQUEST, "The password did not match");
             UserDAO changedUser = userService.changePasswordForUser(userDAO, newPassword);
@@ -101,8 +94,8 @@ public class UserController {
      */
     @DeleteMapping("/user/delete")
     @Operation(summary = "Deletes a user and removes all identifying information")
-    @ApiResponse(responseCode = "200", description = "OK")
-    @ApiResponse(responseCode = "400", description = "Token not found")
+    @ApiResponse(responseCode = "200", description = "Usser deleted")
+    @ApiResponse(responseCode = "401", description = "Token not found")
     @ApiResponse(responseCode = "400", description = "Could not fetch user")
     public void deleteAccount() throws StatusCodeException {
         Integer tokenUserId;
@@ -111,21 +104,18 @@ public class UserController {
             TokenDTO userToken = TokenUtil.getDataJWT();
             tokenUserId = userToken.getAccountId();
         } catch (Exception e) {
-            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Token not found");
+            throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "Token not found");
         }
-
         try {
             userDAO = userService.findUserByUserId(tokenUserId);
         } catch (Exception e) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Could not fetch user");
         }
-
         communityRequestService.deleteRequestsForUser(userDAO);
         rentService.deleteAllRentsFromUser(userDAO);
         listingService.deleteListingsForUser(userDAO);
         userCommunityService.deleteUserFromAllGroups(userDAO);
         userService.clearUserInfo(userDAO);
-
         throw new StatusCodeException(HttpStatus.OK, "User deleted");
     }
 }

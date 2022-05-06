@@ -38,12 +38,17 @@ public class NotificationService {
         return notificationRepository.findNotificationDAOByNotificationID(notificationId);
     }
 
-    public List<NotificationDTO> getCommunityRequestNotifications(int userID){
+    /**
+     * Gets all community request notifications
+     * @param userID userID to find notifications for
+     * @return A list of NotificationDTOs classified as community requests
+     */
+    public List<NotificationDTO> getCommunityRequestNotifications(int userID) {
         List<NotificationDTO> notifications = new ArrayList<>();
         List<CommunityDAO> adminCommunities = userCommunityService.getListOfAllAdminCommunities(userID);
-        for (CommunityDAO community : adminCommunities){
+        for (CommunityDAO community : adminCommunities) {
             List<CommunityRequestDAO> requests = communityRequestService.getRequestsByCommunity(community);
-            for (CommunityRequestDAO request : requests){
+            for (CommunityRequestDAO request : requests) {
                 NotificationDAO dao = notificationRepository.findNotificationDAOByCommunityRequest(request);
                 NotificationDTO dto = new NotificationDTO(false, dao.getCreatedTime(), dao.getCommunityRequest().getCommunityRequestID());
                 notifications.add(dto);
@@ -52,22 +57,45 @@ public class NotificationService {
         return notifications;
     }
 
-    public int getNumberOfUnreadMessages(int userID){
+    /**
+     * Gets the amount of unread messages for a user
+     * @param userID user to find messages for
+     * @return Integer containing the amount of messages that are unread
+     */
+    public int getNumberOfUnreadMessages(int userID) {
         return chatService.getUnreadMessages(userID);
     }
 
-    public List<ChatMessageDTO> getLastChatMessageFromDistinctSender(int userID){
+    /**
+     * Gets last chat message from every unique sender
+     * @param userID user to find messages for
+     * @return A list of ChatMessageDTOs
+     */
+    public List<ChatMessageDTO> getLastChatMessageFromDistinctSender(int userID) {
         return chatService.getLastReceivedMessagesFromDistinctSenders(userID);
     }
 
+    /**
+     * Saves a community request notification
+     * @param notificationDAO NotificationDAO to save
+     */
     public void saveCommunityRequestNotification(NotificationDAO notificationDAO) {
         notificationRepository.save(notificationDAO);
     }
 
+    /**
+     * Saves a chat request notification
+     * @param notificationDAO NotificationDAO to save
+     */
     public void saveChatMessageNotification(NotificationDAO notificationDAO) {
         notificationRepository.save(notificationDAO);
     }
 
+    /**
+     * Turns a NotificationDTO into a NotificationDAO
+     * @param notificationDTO DTO to turn into DAO
+     * @return NotificationDAO containing the information from the NotificationDTO
+     */
     public NotificationDAO turnDTOIntoDAO(NotificationDTO notificationDTO) {
         NotificationDAO notificationDAO = new NotificationDAO();
         notificationDAO.setChatMessage(chatService.getById(notificationDTO.getChatMessageID()));
