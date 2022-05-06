@@ -22,8 +22,14 @@ VALUES (4321, 'test@email.com', 'test', 'user', 'gløshaugen', 'ok', 'l/hjdIHi9U
 INSERT INTO public.listing(listing_id, address, description, price_per_day, title, user_id, deleted)
 VALUES (1234, 'kjopmansgata', 'you look cute', 14, 'pls holp', 4321, false);
 
-INSERT INTO public.rent(rent_id, from_time, is_accepted, to_time, listing_owner_id, renter_id, is_deleted, created_at)
-VALUES (10000, 1609329600000, true, 1609358400000, 1234, 4321, false, 1);
+INSERT INTO public.listing(listing_id, address, description, price_per_day, title, user_id, deleted)
+VALUES (12345, 'kjopmansgata', 'you look cute', 14, 'pls holp', 4321, false);
 
 INSERT INTO public.rent(rent_id, from_time, is_accepted, to_time, listing_owner_id, renter_id, is_deleted, created_at)
-VALUES (10001, 1610456400000, false, 1610467200000, 1234, 4321, false, 1);
+VALUES (10000, 2609329600000, true, 2609358400000, 1234, 4321, false, 1);
+
+INSERT INTO public.rent(rent_id, from_time, is_accepted, to_time, listing_owner_id, renter_id, is_deleted, created_at)
+VALUES (10001, 2610456400000, false, 2610467200000, 1234, 4321, false, 1);
+
+INSERT INTO public.rent(rent_id, from_time, is_accepted, to_time, listing_owner_id, renter_id, is_deleted, created_at)
+VALUES (10002, 1000000000000, false, 1000000000001, 12345, 4321, false, 1);

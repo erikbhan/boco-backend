@@ -2,6 +2,7 @@ package no.ntnu.idatt2106.controller;
 
 import no.ntnu.idatt2106.BocoApplication;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
+import no.ntnu.idatt2106.service.ImageService;
 import no.ntnu.idatt2106.service.LoginService;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -38,6 +39,9 @@ public class ImageControllerTest {
     private MockMvc mockMvc;
     String userToken;
     UserDAO user;
+
+    @Autowired
+    ImageService imageService;
 
     @Autowired
     private LoginService loginService;
@@ -83,6 +87,8 @@ public class ImageControllerTest {
                         .header("Authorization", "Bearer " + userToken)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
+
+        assert (imageService.getImage(2) == null);
     }
 
     @Test

@@ -44,9 +44,7 @@ public class CommunityRequestController {
      * @param communityRequestDTO The requestDTO containing the join request information
      */
     @Operation(summary = "Sends request to join a community")
-    @ApiResponse(responseCode = "400", description = "No community was found")
-    @ApiResponse(responseCode = "400", description = "Community is not private")
-    @ApiResponse(responseCode = "400", description = "User is already in this community")
+    @ApiResponse(responseCode = "400", description = "Invalid input data")
     @PostMapping("/communities/{communityId}/private/join")
     public void joinPrivateCommunity(@PathVariable int communityId, @RequestBody CommunityRequestDTO communityRequestDTO) throws StatusCodeException {
         TokenDTO token = TokenUtil.getDataJWT();
@@ -66,7 +64,7 @@ public class CommunityRequestController {
     /**
      * Accepts a community join request
      * @param communityId The community to look for the join request in
-     * @param userId The user id of the user to accept
+     * @param userId The id of the user to accept
      */
     @Operation(summary = "Accepts a users request to join a community")
     @ApiResponse(responseCode = "400", description = "Active user is not admin")
@@ -101,7 +99,6 @@ public class CommunityRequestController {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST,"Community does not exist" );
         }
         communityRequestService.removeRequest(token.getAccountId(), communityId);
-
     }
 
     /**
@@ -124,12 +121,12 @@ public class CommunityRequestController {
         if (adminStatus){
             communityRequestService.removeRequest(userId, communityId);
         }
-
     }
 
     /**
      * Gets all users that have requested to join the given community
      * @param communityId The community to check for requests in
+     * @return a list of all the users requesting to join a community
      */
     @Operation(summary = "Gets all requests in a community")
     @ApiResponse(responseCode = "400", description = "Active user is not admin")
@@ -144,6 +141,4 @@ public class CommunityRequestController {
         }
        else throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Needs admin status to see requests");
     }
-
-
 }

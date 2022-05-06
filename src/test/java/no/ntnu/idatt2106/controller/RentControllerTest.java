@@ -70,11 +70,11 @@ public class RentControllerTest {
 
     @BeforeEach
     void login() throws ServletException, IOException {
-        user = new UserDAO(2022,"test@email.com", "test", "user", "gløshaugen", "ok", "l/hjdIHi9Us2uJZ7MP/urY6ALjISdukPrN5sjpD7wTMEV+DnQkWzOF3qfnO6r2PnIQM6zP7ZcdEYh0Gdok8nFQ==", "Ge7Y9frKWdgKcAysHdYCIoOOsAcn9We3f2+C74xlc6kWQZn2scBE8sEf4iZezwsmG/KdeeEuspZD9Q4Ojt27Hg==");
+        user = new UserDAO(2022, "test@email.com", "test", "user", "gløshaugen", "ok", "l/hjdIHi9Us2uJZ7MP/urY6ALjISdukPrN5sjpD7wTMEV+DnQkWzOF3qfnO6r2PnIQM6zP7ZcdEYh0Gdok8nFQ==", "Ge7Y9frKWdgKcAysHdYCIoOOsAcn9We3f2+C74xlc6kWQZn2scBE8sEf4iZezwsmG/KdeeEuspZD9Q4Ojt27Hg==");
         userToken = loginService.successfulAuthentication(user);
-        user2 = new UserDAO(10,"test@email.com", "test", "user", "gløshaugen", "ok", "l/hjdIHi9Us2uJZ7MP/urY6ALjISdukPrN5sjpD7wTMEV+DnQkWzOF3qfnO6r2PnIQM6zP7ZcdEYh0Gdok8nFQ==", "Ge7Y9frKWdgKcAysHdYCIoOOsAcn9We3f2+C74xlc6kWQZn2scBE8sEf4iZezwsmG/KdeeEuspZD9Q4Ojt27Hg==");
+        user2 = new UserDAO(10, "test@email.com", "test", "user", "gløshaugen", "ok", "l/hjdIHi9Us2uJZ7MP/urY6ALjISdukPrN5sjpD7wTMEV+DnQkWzOF3qfnO6r2PnIQM6zP7ZcdEYh0Gdok8nFQ==", "Ge7Y9frKWdgKcAysHdYCIoOOsAcn9We3f2+C74xlc6kWQZn2scBE8sEf4iZezwsmG/KdeeEuspZD9Q4Ojt27Hg==");
         user2Token = loginService.successfulAuthentication(user2);
-        user2 = new UserDAO(3034,"test@email.com", "test", "user", "gløshaugen", "ok", "l/hjdIHi9Us2uJZ7MP/urY6ALjISdukPrN5sjpD7wTMEV+DnQkWzOF3qfnO6r2PnIQM6zP7ZcdEYh0Gdok8nFQ==", "Ge7Y9frKWdgKcAysHdYCIoOOsAcn9We3f2+C74xlc6kWQZn2scBE8sEf4iZezwsmG/KdeeEuspZD9Q4Ojt27Hg==");
+        user2 = new UserDAO(3034, "test@email.com", "test", "user", "gløshaugen", "ok", "l/hjdIHi9Us2uJZ7MP/urY6ALjISdukPrN5sjpD7wTMEV+DnQkWzOF3qfnO6r2PnIQM6zP7ZcdEYh0Gdok8nFQ==", "Ge7Y9frKWdgKcAysHdYCIoOOsAcn9We3f2+C74xlc6kWQZn2scBE8sEf4iZezwsmG/KdeeEuspZD9Q4Ojt27Hg==");
         ownerToken = loginService.successfulAuthentication(user2);
     }
 
@@ -95,7 +95,7 @@ public class RentControllerTest {
     }
 
     @Test
-    void rentController_getRentHistoryOfUser_ShouldGive4xxError() throws Exception {
+    void rentController_getRentHistoryOfUser_ShouldBe4xx() throws Exception {
         mockMvc.perform(get("/user/profile/rent/history")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + user2Token))
@@ -112,7 +112,7 @@ public class RentControllerTest {
     }
 
     @Test
-    void rentController_getFullRentHistoryOfOwner_ShouldGive4xxError() throws Exception {
+    void rentController_getFullRentHistoryOfOwner_ShouldBe4xx() throws Exception {
         mockMvc.perform(get("/user/profile/rent/history/owner/all")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + user2Token))
@@ -129,7 +129,7 @@ public class RentControllerTest {
     }
 
     @Test
-    void rentController_getFullRentHistoryOfUser_ShouldGive4xxError() throws Exception {
+    void rentController_getFullRentHistoryOfUser_ShouldBe4xx() throws Exception {
         mockMvc.perform(get("/user/profile/rent/history/all")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + user2Token))
@@ -146,7 +146,7 @@ public class RentControllerTest {
     }
 
     @Test
-    void rentController_getRentHistoryOfOwner_ShouldGive4xxError() throws Exception {
+    void rentController_getRentHistoryOfOwner_ShouldBe4xx() throws Exception {
         mockMvc.perform(get("/user/profile/rent/history/owner")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + user2Token))
@@ -155,16 +155,16 @@ public class RentControllerTest {
 
     @Test
     void rentController_saveRentingAgreementForRenter_ShouldBeOk() throws Exception {
-        LocalDateTime ldt = LocalDateTime.of(1997,12,13,12,12,12);
+        LocalDateTime ldt = LocalDateTime.of(1997, 12, 13, 12, 12, 12);
         mockMvc.perform(post("/renting/renter/save")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(new RentDTO(rentService.fromLocalDateTimeToMillis(ldt), rentService.fromLocalDateTimeToMillis(ldt), false,1235,2022, false)))
+                        .content(asJsonString(new RentDTO(rentService.fromLocalDateTimeToMillis(ldt), rentService.fromLocalDateTimeToMillis(ldt), false, 1235, 2022, false)))
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk());
     }
 
     @Test
-    void rentController_deleteRent_ShouldBeOk() throws Exception{
+    void rentController_deleteRent_ShouldBeOk() throws Exception {
         mockMvc.perform(delete("/renting/10001/delete")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + ownerToken))
@@ -181,17 +181,14 @@ public class RentControllerTest {
 
     @Test
     void rentController_acceptRent_ShouldBeOk() throws Exception {
-        MvcResult result = mockMvc.perform(put("/renting/10000/accept")
+        mockMvc.perform(put("/renting/10000/accept")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + ownerToken))
-                .andExpect(status().isOk())
-                .andReturn();
-        String ans = result.getResponse().getContentAsString();
-        assert(ans.contentEquals("Accepted rent"));
+                .andExpect(status().isOk());
     }
 
     @Test
-    void rentController_acceptNonExistingRent_ShouldBe4xx() throws  Exception {
+    void rentController_acceptNonExistingRent_ShouldBe4xx() throws Exception {
         mockMvc.perform(post("/api/renting/10002/accept")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + userToken))

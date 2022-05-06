@@ -21,16 +21,17 @@ import org.springframework.stereotype.Service;
 public class ListingService {
     private final ListingRepository listingRepository;
     private final CommunityListingService communityListingService;
-    
-    public ListingService(ListingRepository listingRepository,
-                          CommunityListingService communityListingService) {
+    private final ListingCategoryService listingCategoryService;
+
+    public ListingService(ListingRepository listingRepository, CommunityListingService communityListingService,
+                          ListingCategoryService listingCategoryService) {
         this.listingRepository = listingRepository;
         this.communityListingService = communityListingService;
+        this.listingCategoryService = listingCategoryService;
     }
-    
+
     /**
      * Saves a ListingDAO to the DB
-     * 
      * @param listingDAO
      */
     public void saveListing(ListingDAO listingDAO) {
@@ -39,7 +40,6 @@ public class ListingService {
 
     /**
      * Finds all Listings in the Listing table
-     * 
      * @return All listings
      */
     public List<ListingDAO> getAllListings() {
@@ -48,7 +48,6 @@ public class ListingService {
 
     /**
      * Finds all listing posted by a user
-     * 
      * @param userDAO
      * @return All the user's listings
      */
@@ -61,21 +60,21 @@ public class ListingService {
      * @param userDAO
      * @return
      */
-    public List<ListingDAO> getAllOfNonDeletedListings(UserDAO userDAO){
+    public List<ListingDAO> getAllOfNonDeletedListings(UserDAO userDAO) {
         //Finds all user listings
         List<ListingDAO> allUserListings = listingRepository.findAllFromListingDAOByUser(userDAO);
         List<ListingDAO> allNonDeletedUserListings = new ArrayList<>();
         //Finds all user listings where deleted is false
-        for(ListingDAO listing: allUserListings){
-            if(!listing.isDeleted()){
+        for (ListingDAO listing : allUserListings) {
+            if (!listing.isDeleted()) {
                 allNonDeletedUserListings.add(listing);
             }
         }
         return allNonDeletedUserListings;
     }
+
     /**
      * Finds a specific listing
-     * 
      * @param listingID
      * @return An optional with a specific listing
      */
@@ -86,31 +85,23 @@ public class ListingService {
     /**
      * Converts a list of ListingDAOs to ListingDTOs using the
      * convertOneListingDAOToDTO for every Object
-     * 
-     * @param listingCategoryService
-     * @param communityListingService
-     * @param listingDAOs             The list of DAOs that is to be converted
+     * @param listingDAOs The list of DAOs that is to be converted
      * @return A list of converted DTOs.
      */
-    public List<ListingDTO> convertMultipleFromListingDAOToDTO(ListingCategoryService listingCategoryService,
-            CommunityListingService communityListingService, List<ListingDAO> listingDAOs) {
+    public List<ListingDTO> convertMultipleFromListingDAOToDTO(List<ListingDAO> listingDAOs) {
         List<ListingDTO> listingDTOs = new ArrayList<>();
         for (ListingDAO listingDAO : listingDAOs) {
-            listingDTOs.add(convertOneListingDAOToDTO(listingCategoryService, communityListingService, listingDAO));
+            listingDTOs.add(convertOneListingDAOToDTO(listingDAO));
         }
         return listingDTOs;
     }
 
     /**
      * Method for converting a ListingDAO to a ListingDTO.
-     * 
-     * @param listingCategoryService
-     * @param communityListingService
-     * @param listingDAO              The ListingDAO that is to be converted
+     * @param listingDAO The ListingDAO that is to be converted
      * @return The converted ListingDAO, now a DTO
      */
-    public ListingDTO convertOneListingDAOToDTO(ListingCategoryService listingCategoryService,
-            CommunityListingService communityListingService, ListingDAO listingDAO) {
+    public ListingDTO convertOneListingDAOToDTO(ListingDAO listingDAO) {
         // Finds all the listing's categorynames through the listingCategory junction
         // table
         String[] categoryNames = listingCategoryService.getCategoryNamesByListingID(listingDAO);
@@ -145,54 +136,76 @@ public class ListingService {
         return listingRepository.findAllByUserAndDeletedIsFalse(ownerId);
     }
 
+    /**
+     * Find all listings posted by a user
+     * @param user user to find listings for
+     * @return A list of all the users ListingDAOs
+     */
     public List<ListingDAO> findListingsByUserDAO(UserDAO user) {
         return listingRepository.findListingDAOSByUser(user);
     }
 
     /**
-     * Returns a list of ListingDTOs with title containing requested phrase. 
+     * Returns a list of ListingDTOs with title containing requested phrase.
      * @param title
-     * @param listingCategoryService
-     * @param communityListingService
      * @return
      */
-    public List<ListingDTO> getListingDTOByTitle(String title, ListingCategoryService listingCategoryService,
-    CommunityListingService communityListingService){
+    public List<ListingDTO> getListingDTOByTitle(String title) {
         //Gets all lisitngDAOs with the requested title
         List<ListingDAO> listingDAOs = listingRepository.findAllByTitleLike(title);
         //Converts all the DAOs to DTOs
-        List<ListingDTO> listingDTOs = 
-        convertMultipleFromListingDAOToDTO(listingCategoryService, communityListingService, listingDAOs);
-        return listingDTOs;}
+        List<ListingDTO> listingDTOs =
+                convertMultipleFromListingDAOToDTO(listingDAOs);
+        return listingDTOs;
+    }
 
+    /**
+     * Get all listings from a community
+     * @param communityDAO Community to find listings for
+     * @return List of ListingDAOs from the community
+     */
     public List<ListingDAO> getAllListingsInACommunity(CommunityDAO communityDAO) {
         List<ListingDAO> listings = new ArrayList<>();
         List<CommunityListingDAO> communityListings = communityListingService
                 .getAllCommunityListingForCommunity(communityDAO);
 
-        if(communityListings != null) {
-            for(int i = 0; i < communityListings.size(); i++) {
+        if (communityListings != null) {
+            for (int i = 0; i < communityListings.size(); i++) {
                 listings.add(communityListings.get(i).getListing());
             }
         }
         return listings;
     }
 
+    /**
+     * Convert a list of ListingDAOs to a list of ListingDTOs
+     * @param list List of ListingDAOs to convert
+     * @return A list of ListingDTOs
+     */
     public List<ListingDTO> convertListOfListingDAOToListOfListingDTO(List<ListingDAO> list) {
         List<ListingDTO> convertedList = new ArrayList<>();
-        for(int i = 0; i < list.size(); i++) {
+        for (int i = 0; i < list.size(); i++) {
             convertedList.add(new ListingDTO(list.get(i)));
         }
         return convertedList;
     }
 
-    public ListingDAO getUsersLastPostedListing(int userID){
+    /**
+     * Gets the previous listing posted by a user
+     * @param userID user to find listing for
+     * @return ListingDAO that is the users last posted listing
+     */
+    public ListingDAO getUsersLastPostedListing(int userID) {
         return listingRepository.findLastAddedListingByUser(userID);
     }
 
+    /**
+     * Sets all listings made by a user to isDeleted = true
+     * @param userDAO user to delete listings for
+     */
     public void deleteListingsForUser(UserDAO userDAO) {
         List<ListingDAO> listings = getAllOfUsersListings(userDAO);
-        for (ListingDAO listing:listings) {
+        for (ListingDAO listing : listings) {
             listing.setDeleted(true);
         }
     }

@@ -29,11 +29,9 @@ public class RegisterController {
     /**
      * Endpoint for registering new users. Creates a new user from the given information and saves it to the DB.
      * @param regInfo information given in request
-     * @throws StatusCodeException if the request is invalid.
      */
     @PostMapping("/register")
-    @ApiResponse(responseCode = "200", description = "User registered successfully")
-    @ApiResponse(responseCode = "400", description = "Bad Request; e-mail in use")
+    @ApiResponse(responseCode = "400", description = "if any fields are not as expected")
     @Operation(summary = "Register a new user with the given information")
     public void registerNewUserAccount(@RequestBody RegisterUserDTO regInfo) throws StatusCodeException {
         if (regInfo.getEmail().length() < 5) throw new StatusCodeException(HttpStatus.BAD_REQUEST, "E-mail is too short");
