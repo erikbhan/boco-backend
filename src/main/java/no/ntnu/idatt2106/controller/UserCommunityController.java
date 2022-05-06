@@ -37,7 +37,11 @@ public class UserCommunityController {
         this.communityService = communityService;
     }
 
-
+    /**
+     * Method to join a community
+     * @param communityId the communityID of the community the user wants to join
+     * @throws StatusCodeException BadRequest When the user does something stupid kekW
+     */
     @Operation(summary = "Add user to a community")
     @PostMapping("/communities/{communityId}/join")
     @ApiResponse(responseCode = "200", description = "Added user to community")
@@ -61,7 +65,11 @@ public class UserCommunityController {
 
     }
 
-
+    /**
+     *
+     * @param communityId the community id of the community the user....
+     * @return
+     */
     @Operation(summary = "Get info about if the user is in community")
     @GetMapping("/communities/{communityId}/user/status")
     @ApiResponse(responseCode = "200")
@@ -71,7 +79,11 @@ public class UserCommunityController {
         return userCommunityService.userIsInCommunity(token.getAccountId(),communityDAO);
     }
 
-
+    /**
+     * Checks if the user is admin in the community
+     * @param communityId the community id of the community id you want to check if you are admin in
+     * @return the admin status of the user
+     */
     @Operation(summary = "Get info about if the user is admin in community")
     @GetMapping("/communities/{communityId}/user/admin")
     @ApiResponse(responseCode = "200")
@@ -82,6 +94,10 @@ public class UserCommunityController {
         return ucd.isAdministrator();
     }
 
+    /**
+     *
+     * @return a list of the communities (ids) the logged in user is admin of
+     */
     @Operation(summary = "Gets the IDs of the communities the user is admin in")
     @GetMapping("/communities/admin")
     @ApiResponse(responseCode = "200")
@@ -91,6 +107,11 @@ public class UserCommunityController {
         return userCommunityService.getIdOfAllAdminCommunities(tokenUserId);
     }
 
+    /**
+     *
+     * @param communityId of the community you want to leave
+     * @throws StatusCodeException
+     */
     @Operation(summary = "Remove user from community")
     @PatchMapping("/communities/{communityId}/leave")
     @ApiResponse(responseCode = "200", description = "Removed user from community")
@@ -132,6 +153,13 @@ public class UserCommunityController {
 
     }
 
+    /**
+     * Method for an admin to kick a user from a community
+     * @param communityId the communityID of the community you want to kick the user from
+     * @param userId of the user you want kicked
+     * @throws StatusCodeException when there are no other admins or
+     *                             you don't have admin status or kicking admins
+     */
     @Operation(summary = "Kicks a user from a community")
     @ApiResponse(responseCode = "200", description = "Kicked user")
     @ApiResponse(responseCode = "400", description = "Illegal operation")
@@ -156,11 +184,15 @@ public class UserCommunityController {
         }
     }
 
+    /**
+     *
+     * @return a list of the communities the user is part of
+     */
     @Operation(summary = "Get all communities the logged in user is part of")
     @ApiResponse(responseCode = "200", description = "Found communities")
     @ApiResponse(responseCode = "400", description = "Illegal operation")
     @GetMapping("/user/communities")
-    public ArrayList<CommunityDTO> getCommunitiesForUser() throws StatusCodeException {
+    public ArrayList<CommunityDTO> getCommunitiesForUser(){
         TokenDTO token = TokenUtil.getDataJWT();
         UserDAO user = userService.findUserByUserId(token.getAccountId());
         return userCommunityService.getAllCommunitiesForUser(user);
