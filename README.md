@@ -31,7 +31,7 @@ API_PORT=3000
 
 #### Running with Docker compose
 
-By far the easiest way to run our backend is through Docker Compose. This is because it automatically sets up and created the PostgreSQL database for you.
+By far the easiest way to run our backend is through Docker Compose. This is because it automatically configures and runs both the PostgreSQL database and the backend for you.
 
 To do this you need to install [Docker](https://docs.docker.com/get-docker/), and if you're on Linux you also need to install [Docker Compose](https://docs.docker.com/compose/install/) independently.
 
@@ -74,8 +74,11 @@ You also need to install the [JDK](https://www.oracle.com/java/technologies/down
 
 Afterwards, you need to install [Apache Maven](https://maven.apache.org/index.html), our dependency manager of choice.
 
+Then you need to uncomment the PostgreSQL config in the ``application.properties`` file located at ``src/main/resources/``. 
+
 Finally, you can run the API with
 
 ```bash
   mvn spring-boot:run
 ```
+
