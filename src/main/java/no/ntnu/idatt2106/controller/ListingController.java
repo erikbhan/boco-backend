@@ -106,6 +106,7 @@ public class ListingController {
     /**
      * Method for posting a listing.
      * @param listingDTO The listing to be posted
+     * @return returns true if the listing was posted succesfully, false if not
      */
     @Operation(summary = "Post Listing and adding all the listing's categories to the ListingCategory junction table")
     @ApiResponse(responseCode = "400", description = "User not found")
@@ -185,6 +186,7 @@ public class ListingController {
     /**
      * Updates the given listing in the database
      * @param listingDTO How the updated listing should look
+     * @return returns true if the update was succesful
      */
     @Operation(summary = "Change or modify a listing")
     @ApiResponse(responseCode = "400", description = "User not found")
@@ -222,6 +224,7 @@ public class ListingController {
      * Gets all the intervals where the listing with the given listingID
      * is unavailable.
      * @param listingID The listingId of the listing you want to check
+     * @return a list of all the non available times
      */
     @ApiResponse(responseCode = "400", description = "Listing doesnt exist")
     @GetMapping("/listing/{listingID}/availability")
@@ -237,6 +240,7 @@ public class ListingController {
     /**
      * Gets every listing with title containing requested phrase
      * @param title The phrase to search for
+     * @return a list of the listings matching the search word
      */
     @Operation(summary = "Gets all listings with a title matching the input title")
     @GetMapping("/listing/title/{title}")
@@ -247,6 +251,7 @@ public class ListingController {
     /**
      * A method for gettig all pictures for a listing from the DB.
      * @param listingid The id of the listing
+     * @return a list of images for the listing
      */
     @Operation(summary = "Get all pictures for a listing")
     @ApiResponse(responseCode = "400", description = "pictureDAO list is null")
