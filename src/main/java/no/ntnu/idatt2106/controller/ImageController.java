@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Controller
@@ -53,6 +54,7 @@ public class ImageController {
      * @param image The image to be added
      */
     @RequireAuth
+    @Transactional
     @Operation(summary = "Add image", description = "Add image")
     @ApiResponse(responseCode = "201", description = "Image added")
     @ApiResponse(responseCode = "400", description = "Image already exists")

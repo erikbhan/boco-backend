@@ -98,7 +98,7 @@ public class CommunityControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(new CommunityDTO("MCklubbssssss", "kul klubb", 0, "Opp og ned elgeseter gate midt på natten hele fukin tiden", "bilde")))
                         .header("Authorization", "Bearer " + userToken))
-                .andExpect(status().isCreated());
+                .andExpect(status().isOk());
     }
 
     @Test
