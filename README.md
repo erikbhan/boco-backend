@@ -1,4 +1,17 @@
 
+![Logo](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/th5xamgrr6se0x5ro4g6.png)
+
+
+# BoCo - Backend
+
+This is the API for the Borrow Company web application. The corresponding frontend is located [here](https://gitlab.stud.idi.ntnu.no/idatt2106_2022_02/boco-frontend).
+
+This project was developed between the 19th of April and The 6th of May, 2022 for the course *IDATT2106 - System development 2 with flexible project* at NTNU. Development follow the agile SCRUM workflow, and was divided into two distinct sprints with corresponding planning and review.
+## Screenshots
+
+![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+
+
 ## Run Locally
 
 Clone the project [*with SSH*](https://docs.gitlab.com/ee/user/ssh.html)
@@ -82,3 +95,31 @@ Finally, you can run the API with
   mvn spring-boot:run
 ```
 
+
+## Running Tests
+
+To run tests, run the following command
+
+```bash
+  mvn clean test
+```
+
+When building through Docker Compose, Docker automatically runs the tests and stops the launching process at failures.
+
+
+## Roadmap
+
+- Map feature
+
+
+## Authors
+- [Aune, Morten](https://gitlab.stud.idi.ntnu.no/morteaun)
+- [Burmann, Henrik August](https://gitlab.stud.idi.ntnu.no/henriabu)
+- [Hansen, Erik Borgeteien](https://gitlab.stud.idi.ntnu.no/erikbhan)
+- [Hjelljord, Oda Alida Fønstelien](https://gitlab.stud.idi.ntnu.no/oahjellj)
+- [Holthe, Aleksander Halvorsen](https://gitlab.stud.idi.ntnu.no/alekhal)
+- [Kanter, Haakon Tideman](https://gitlab.stud.idi.ntnu.no/haakotka)
+- [Kristiansen, Titus](https://gitlab.stud.idi.ntnu.no/titusk)
+- [Mudassar, Zara](https://gitlab.stud.idi.ntnu.no/zaramu)
+- [Røskaft, Håkon Eilertsen](https://gitlab.stud.idi.ntnu.no/haakoero)
+- [Schrader, Sander August Heggland](https://gitlab.stud.idi.ntnu.no/saschrad)
