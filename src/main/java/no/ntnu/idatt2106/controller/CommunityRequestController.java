@@ -128,6 +128,7 @@ public class CommunityRequestController {
     /**
      * Gets all users that have requested to join the given community
      * @param communityId The community to check for requests in
+     * @return a list of all the users requesting to join a community
      */
     @Operation(summary = "Gets all requests in a community")
     @ApiResponse(responseCode = "400", description = "Active user is not admin")

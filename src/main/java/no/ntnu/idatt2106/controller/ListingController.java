@@ -56,6 +56,7 @@ public class ListingController {
 
     /**
      * Get all listings in the database
+     * @return a list of all listings on BOCO
      */
     @Operation(summary = "Returning every single listing")
     @GetMapping("/listing")
@@ -68,6 +69,7 @@ public class ListingController {
 
     /**
      * Finds all the active user's listings
+     * @return a list of the user's active listings
      */
     @Operation(summary = "Returning every listing of the active user")
     @ApiResponse(responseCode = "400", description = "User doesn't exist")
@@ -88,6 +90,7 @@ public class ListingController {
     /**
      * Method for finding a specific listing by a listingID
      * @param listingID the listing id of the listing to be searched for
+     * @return a listing object
      */
     @Operation(summary = "Gets the listing with the given listing id")
     @ApiResponse(responseCode = "400", description = "Item doesn't exist")

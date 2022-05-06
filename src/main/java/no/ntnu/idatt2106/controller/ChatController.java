@@ -53,6 +53,7 @@ public class ChatController {
 
     /**
      * A method to get all the conversations of the active user
+     * @return all the conversations the current user is part of
      */
     @GetMapping("/chats/users")
     @RequireAuth
