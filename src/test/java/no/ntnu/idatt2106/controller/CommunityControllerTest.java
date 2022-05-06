@@ -93,12 +93,12 @@ public class CommunityControllerTest {
     }
 
     @Test
-    void communityController_saveNewCommunity_ShouldBeCreated() throws Exception {
+    void communityController_saveNewCommunity_ShouldBeOk() throws Exception {
         mockMvc.perform(post("/communities/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(new CommunityDTO("AleksMCKlubb", "kul klubb", 0, "Opp og ned elgeseter gate midt på natten hele fukin tiden", "bilde")))
                         .header("Authorization", "Bearer " + userToken))
-                .andExpect(status().isCreated());
+                .andExpect(status().isOk());
 
         assert (communityService.findAllCommunityDAOWithContainingAGivenName("AleksMCKlubb").size() == 1);
     }
