@@ -6,8 +6,6 @@ import no.ntnu.idatt2106.model.DAO.UserCommunityDAO;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
 import no.ntnu.idatt2106.model.DTO.UserDTO;
 import no.ntnu.idatt2106.repository.CommunityRepository;
-import no.ntnu.idatt2106.model.DAO.CommunityDAO;
-import no.ntnu.idatt2106.model.DAO.CommunityRequestDAO;
 import no.ntnu.idatt2106.repository.CommunityRequestRepository;
 import no.ntnu.idatt2106.repository.UserCommunityRepository;
 import org.springframework.stereotype.Service;
