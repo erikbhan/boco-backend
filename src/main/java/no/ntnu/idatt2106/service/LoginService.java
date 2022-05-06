@@ -27,7 +27,6 @@ public class LoginService {
     }
 
     public boolean attemptAuthentication(String email, String password) throws NoSuchAlgorithmException {
-
         UserDAO user = userService.findUserByEmail(email);
         if (user == null) {
             return false;
@@ -43,7 +42,6 @@ public class LoginService {
     }
 
     public String successfulAuthentication(UserDAO user) throws IOException, ServletException {
-
         Algorithm algorithm = Algorithm.HMAC256("tiL8yZXjlEvxKImZS0YeIQC5V29PFDcm2wSHn47texw6fpNKv34uqyWe/NUz5go3aAkRflcDFVfpfYwoLPZrFA==".getBytes(StandardCharsets.UTF_8));
         //Making a jwt token
         String access_token = JWT.create()
@@ -56,7 +54,7 @@ public class LoginService {
         return access_token;
     }
 
-    public TokenDTO tokenDTO(String token){
+    public TokenDTO tokenDTO(String token) {
         return TokenUtil.getDataJWT(token);
     }
 }

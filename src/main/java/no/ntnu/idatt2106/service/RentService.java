@@ -1,6 +1,5 @@
 package no.ntnu.idatt2106.service;
 
-import antlr.Token;
 import no.ntnu.idatt2106.model.DAO.RentDAO;
 import no.ntnu.idatt2106.model.DAO.ListingDAO;
 import no.ntnu.idatt2106.model.DAO.NotificationDAO;
@@ -13,11 +12,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 /**
  * This class is uses the access-point to the rent table in the DB.
@@ -143,6 +140,11 @@ public class RentService {
         return rentDAO;
     }
 
+    /**
+     * Turns a list of RentDAOs to a list of RentDTOs
+     * @param list List of RentDAOs to convert
+     * @return A list of RentDTOs
+     */
     public List<RentDTO> convertListOfRentDAOToListOfRentDTO(List<RentDAO> list) {
         List<RentDTO> convertedList = new ArrayList<>();
         for(int i = 0; i < list.size(); i++) {
@@ -196,10 +198,19 @@ public class RentService {
         return noDeletedRentDAOs;
     }
 
+    /**
+     * Find a list of RentDAOs that a user has rented
+     * @param user User to find rents for
+     * @return A list of RentDAOs
+     */
     public List<RentDAO> findRentByRenterID(UserDAO user){
         return rentRepository.findRentDAOSByRenter(user);
     }
 
+    /**
+     * Sets all RentDAOs connected to a user as asDeleted = true
+     * @param user user to delete RentDAOs for
+     */
     public void deleteAllRentsFromUser(UserDAO user) {
         List<RentDAO> rents = findAllRentDAOWithRenterId(user.getUserID());
         for (RentDAO rentDAO:rents) {
@@ -253,6 +264,11 @@ public class RentService {
         return nonAvailableTimes.subList(0,nonAvailableTimes.size());
     }
 
+    /**
+     * Turn a list of ListingWithUnavailabilityDTOs to RentDAOs
+     * @param dto List of ListingWithUnavailabilityDTOs
+     * @return A list of RentDAOs
+     */
     public List<RentDAO> turnListingWithUnavailabilityDTOIntoRentDAO(ListingWithUnavailabilityDTO dto) {
         ArrayList<RentDAO> unavailabilityRents = new ArrayList<>();
         for (List<Long> dates : dto.getUnavailabilityDates()){
@@ -268,6 +284,10 @@ public class RentService {
         return unavailabilityRents;
     }
 
+    /**
+     * Get all of a rents connected to a userID taken from JWT token.
+     * @return an array of RentDTOs for a user
+     */
     public RentDTO[] getAllRents() {
         // Get accountId
         UserDAO account = userService.findUserByUserId(TokenUtil.getDataJWT(TokenUtil.getToken()).getAccountId());
@@ -279,6 +299,12 @@ public class RentService {
         return rentDTOs;
     }
 
+    /**
+     * Get all rents connected between two specific users
+     * @param userID User 1
+     * @param userID2 User 2
+     * @return A list of RentDTOs that has renter/owner of user 1 and 2
+     */
     public RentDTO[] getAllRents(int userID, int userID2) {
         List<RentDTO> rents = Arrays.stream(this.getAllRents())
                 .filter(r -> (r.getRenterId() == userID && r.getListing().getUserID() == userID2) || (r.getListing().getUserID() == userID && r.getRenterId() == userID2))
