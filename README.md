@@ -31,7 +31,7 @@ POSTGRES_IP=localhost
 POSTGRES_PORT=5432
 POSTGRES_USER=boco
 POSTGRES_PASS=superSecureMegaAwesomePassword
-API_PORT=3000
+SERVER_PORT=3000
 ```
 
 #### Running with Docker compose
@@ -98,3 +98,6 @@ To run tests, run the following command
 After running the tests a test coverage report will be produced. This report is located in the folder `target/site`
 
 When building through Docker Compose, Docker automatically runs the tests and stops the launching process at failures.
+
+## API Documentation
+[API Docs via swagger](http://localhost:3000/api/swagger-ui/index.html#/)
