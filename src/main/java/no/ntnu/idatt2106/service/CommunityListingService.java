@@ -25,8 +25,8 @@ public class CommunityListingService {
 
     /**
      * Saves a communityListingDAO to the CommunityListing junction table
-     * @param communityDAO
-     * @param listingDAO
+     * @param communityDAO the community object where the listing will be posted
+     * @param listingDAO the listing object of the listing
      */
     public void saveCommunityListing(CommunityDAO communityDAO, ListingDAO listingDAO){
         CommunityListingDAO communityListingDAO = new CommunityListingDAO();
@@ -36,8 +36,8 @@ public class CommunityListingService {
     }
     /**
      * Finds all the communityIDs of a listing. 
-     * @param listingID
-     * @return
+     * @param listingID of the listing
+     * @return an array of the communityIDs of the communities that contain the listing
      */
     public int[] getCommunityListingIDsByListingID(ListingDAO listingID){
         //Finds all communityListings of a listing
@@ -50,6 +50,10 @@ public class CommunityListingService {
         return communityIDs;
     }
 
+    /**
+     *  A method to delete all ..?
+     * @param listing
+     */
     public void deleteAllWithListing(ListingDAO listing){
         List<CommunityListingDAO> communityListings = communityListingRepository.findAllFromCommunityListingDAOByListingID(listing);
         for (CommunityListingDAO dao:communityListings){
@@ -57,10 +61,19 @@ public class CommunityListingService {
         }
     }
 
+    /**
+     *  A method to retrieve all listings within a community
+     * @param communityDAO of the community the user wants to get listings from
+     * @return a list of all listings in the community
+     */
     public List<CommunityListingDAO> getAllCommunityListingForCommunity(CommunityDAO communityDAO) {
         return communityListingRepository.findAllByCommunityID(communityDAO);
     }
 
+    /**
+     * A method to delete a listing from a community
+     * @param communityListingDAO the user wants deleted
+     */
     public void deleteCommunityListing(CommunityListingDAO communityListingDAO) {
         communityListingRepository.delete(communityListingDAO);
     }

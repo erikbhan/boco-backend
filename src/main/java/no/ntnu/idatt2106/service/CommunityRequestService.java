@@ -30,6 +30,12 @@ public class CommunityRequestService {
         this.userService = userService;
     }
 
+    /**
+     * Method to add a new request to join a community
+     * @param communityDAO the community the user wants to join
+     * @param userDAO the user wanting to join the community
+     * @param message a message to the community's admin
+     */
     public void addNewRequest(CommunityDAO communityDAO, UserDAO userDAO, String message) {
         communityRequestDAO.setCommunity(communityDAO);
         communityRequestDAO.setUser(userDAO);
@@ -38,16 +44,32 @@ public class CommunityRequestService {
         communityRequestRepository.save(communityRequestDAO);
     }
 
+    /**
+     *  A method to find the id of the request in the database via user and community ids
+     * @param user_id the user
+     * @param community_id the community you want
+     * @return the id of the community request in the database
+     */
     public int findRequest(int user_id, int community_id){
         return communityRequestRepository.findId(user_id, community_id);
     }
 
+    /**
+     *  A method to remove a request from the database
+     * @param user_id of the user request to be removed
+     * @param community_id of the community the request shall be removed from
+     */
     public void removeRequest(int user_id, int community_id){
         int reqNr = findRequest(user_id, community_id);
         CommunityRequestDAO communityRequestDAO = communityRequestRepository.getById(reqNr);
         communityRequestRepository.delete(communityRequestDAO);
     }
 
+    /**
+     *
+     * @param userDAO
+     * @param communityDAO
+     */
     public void acceptRequest(UserDAO userDAO, CommunityDAO communityDAO){
         UserCommunityDAO userCommunityDAO = new UserCommunityDAO(communityDAO,userDAO, false);
         userCommunityRepository.save(userCommunityDAO);
