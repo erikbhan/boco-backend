@@ -120,7 +120,6 @@ public class UserCommunityController {
     public void leaveCommunity(@PathVariable int communityId) throws StatusCodeException{
         TokenDTO token = TokenUtil.getDataJWT();
         CommunityDAO communityDAO = communityRepository.findCommunityDAOByCommunityID(communityId);
-
         UserCommunityDAO ucd = userCommunityService.getByIds(token.getAccountId(), communityDAO );
 
         //Prevents admin from leaving group if there are no other admins, removes community if admin is the only one in the community
@@ -135,9 +134,7 @@ public class UserCommunityController {
                 throw new StatusCodeException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected server error");
             }
         }
-
         }
-
         if (communityDAO == null) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Community does not exist");
         }
@@ -148,18 +145,12 @@ public class UserCommunityController {
         if(!(userCommunityService.removeUserFromCommunity(ucd))){
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Unexpected error");
         }
-
-
-
-
     }
 
     /**
      * Method for an admin to kick a user from a community
      * @param communityId the communityID of the community you want to kick the user from
      * @param userId of the user you want kicked
-     * @throws StatusCodeException when there are no other admins or
-     *                             you don't have admin status or kicking admins
      */
     @Operation(summary = "Kicks a user from a community")
     @ApiResponse(responseCode = "200", description = "Kicked user")
@@ -168,9 +159,7 @@ public class UserCommunityController {
     public void kickUserFromCommunity(@PathVariable int communityId, @RequestParam int userId) throws StatusCodeException {
         TokenDTO token = TokenUtil.getDataJWT();
         CommunityDAO communityDAO = communityRepository.findCommunityDAOByCommunityID(communityId);
-
         UserCommunityDAO ucd = userCommunityService.getByIds(token.getAccountId(), communityDAO );
-
         UserCommunityDAO userToBeKicked = userCommunityService.getByIds(userId, communityDAO);
         if(ucd!=null && userToBeKicked != null){
             if(ucd.isAdministrator() && (!userToBeKicked.isAdministrator())){

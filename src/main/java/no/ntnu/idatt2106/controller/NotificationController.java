@@ -39,8 +39,7 @@ public class NotificationController {
      */
     @Operation(summary = "Adds community join request notification")
     @ApiResponse(responseCode = "201", description = "CREATED")
-    @ApiResponse(responseCode = "400", description = "CommunityRequest not found")
-    @ApiResponse(responseCode = "400", description = "Could not add notification")
+    @ApiResponse(responseCode = "400", description = "Unexpected error")
     @ApiResponse(responseCode = "401", description = "Token not found")
     @PostMapping("notifications/communities/joinrequest")
     public void addCommunityJoinRequestNotification(@RequestBody NotificationDTO notificationDTO) throws StatusCodeException {
@@ -91,8 +90,7 @@ public class NotificationController {
      */
     @Operation(summary = "Adds chat message notification")
     @ApiResponse(responseCode = "201", description = "Chat message notification added to the database")
-    @ApiResponse(responseCode = "400", description = "ChatMessage not found")
-    @ApiResponse(responseCode = "400", description = "Could not add notification")
+    @ApiResponse(responseCode = "400", description = "Unexpected error")
     @ApiResponse(responseCode = "401", description = "Token not found")
     @PostMapping("notifications/chat")
     public void addChatMessageNotification(@RequestBody NotificationDTO notificationDTO) throws StatusCodeException {
@@ -160,8 +158,7 @@ public class NotificationController {
      */
     @Operation(summary = "Sets a notification as seen")
     @ApiResponse(responseCode = "400", description = "Notification id not found")
-    @ApiResponse(responseCode = "401", description = "User unauthorized to change notification")
-    @ApiResponse(responseCode = "401", description = "Token not found")
+    @ApiResponse(responseCode = "401", description = "Unauthorized")
     @PatchMapping("notification/{notificationID}/seen")
     public void setNotificationAsSeen(@PathVariable int notificationID) throws StatusCodeException {
         int tokenUserId;

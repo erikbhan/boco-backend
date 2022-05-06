@@ -95,7 +95,7 @@ public class UserController {
     @DeleteMapping("/user/delete")
     @Operation(summary = "Deletes a user and removes all identifying information")
     @ApiResponse(responseCode = "200", description = "Usser deleted")
-    @ApiResponse(responseCode = "400", description = "Token not found")
+    @ApiResponse(responseCode = "401", description = "Token not found")
     @ApiResponse(responseCode = "400", description = "Could not fetch user")
     public void deleteAccount() throws StatusCodeException {
         Integer tokenUserId;
@@ -104,7 +104,7 @@ public class UserController {
             TokenDTO userToken = TokenUtil.getDataJWT();
             tokenUserId = userToken.getAccountId();
         } catch (Exception e) {
-            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Token not found");
+            throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "Token not found");
         }
         try {
             userDAO = userService.findUserByUserId(tokenUserId);

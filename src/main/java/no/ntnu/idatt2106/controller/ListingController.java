@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import no.ntnu.idatt2106.exception.StatusCodeException;
-import no.ntnu.idatt2106.middleware.RequireAuth;
 import no.ntnu.idatt2106.model.DTO.ListingDTO;
 
 /**
@@ -109,8 +108,7 @@ public class ListingController {
      * @return returns true if the listing was posted succesfully, false if not
      */
     @Operation(summary = "Post Listing and adding all the listing's categories to the ListingCategory junction table")
-    @ApiResponse(responseCode = "400", description = "User not found")
-    @ApiResponse(responseCode = "400", description = "Could not find one of the given categories")
+    @ApiResponse(responseCode = "400", description = "User or category not found")
     @PostMapping("/listing")
     public boolean postListing(@RequestBody ListingDTO listingDTO) throws StatusCodeException {
         ListingDAO listing = new ListingDAO();
@@ -189,8 +187,7 @@ public class ListingController {
      * @return returns true if the update was successful
      */
     @Operation(summary = "Change or modify a listing")
-    @ApiResponse(responseCode = "400", description = "User not found")
-    @ApiResponse(responseCode = "400", description = "Category not found")
+    @ApiResponse(responseCode = "400", description = "User or category not found")
     @PutMapping("/listing/change")
     public boolean changeListing(@RequestBody ListingDTO listingDTO) throws StatusCodeException {
         ListingDAO listing = listingService.findListingByListingId(listingDTO.getListingID());
@@ -254,8 +251,7 @@ public class ListingController {
      * @return a list of images for the listing
      */
     @Operation(summary = "Get all pictures for a listing")
-    @ApiResponse(responseCode = "400", description = "pictureDAO list is null")
-    @ApiResponse(responseCode = "400", description = "Listing id is invalid")
+    @ApiResponse(responseCode = "400", description = "pictureDAO list is null or listing id invalid")
     @GetMapping("/listing/{listingid}/pictures")
     public List<ListingPictureDTO> getAllPicturesForAListing(@PathVariable int listingid) throws StatusCodeException {
         if(listingid > 0) {

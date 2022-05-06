@@ -44,9 +44,7 @@ public class CommunityRequestController {
      * @param communityRequestDTO The requestDTO containing the join request information
      */
     @Operation(summary = "Sends request to join a community")
-    @ApiResponse(responseCode = "400", description = "No community was found")
-    @ApiResponse(responseCode = "400", description = "Community is not private")
-    @ApiResponse(responseCode = "400", description = "User is already in this community")
+    @ApiResponse(responseCode = "400", description = "Invalid input data")
     @PostMapping("/communities/{communityId}/private/join")
     public void joinPrivateCommunity(@PathVariable int communityId, @RequestBody CommunityRequestDTO communityRequestDTO) throws StatusCodeException {
         TokenDTO token = TokenUtil.getDataJWT();

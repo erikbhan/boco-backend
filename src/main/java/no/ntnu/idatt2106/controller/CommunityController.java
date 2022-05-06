@@ -93,8 +93,7 @@ public class CommunityController {
     @RequireAuth
     @Operation(summary = "Deletes a community from the database")
     @ApiResponse(responseCode = "400", description = "Community not found")
-    @ApiResponse(responseCode = "401", description = "User not part of given community")
-    @ApiResponse(responseCode = "401", description = "User not admin of given community")
+    @ApiResponse(responseCode = "401", description = "User not admin or part of given community")
     @DeleteMapping("/communities/{communityId}/remove")
     public void removeCommunity(@PathVariable int communityId) throws StatusCodeException {
         TokenDTO userToken = TokenUtil.getDataJWT();
