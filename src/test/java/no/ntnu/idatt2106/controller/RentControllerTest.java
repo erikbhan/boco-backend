@@ -167,7 +167,7 @@ public class RentControllerTest {
     void rentController_deleteRent_ShouldBeOk() throws Exception {
         mockMvc.perform(delete("/renting/10001/delete")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "Bearer " + userToken))
+                        .header("Authorization", "Bearer " + ownerToken))
                 .andExpect(status().isOk());
     }
 
@@ -183,7 +183,7 @@ public class RentControllerTest {
     void rentController_acceptRent_ShouldBeOk() throws Exception {
         mockMvc.perform(put("/renting/10000/accept")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "Bearer " + userToken))
+                        .header("Authorization", "Bearer " + ownerToken))
                 .andExpect(status().isOk());
     }
 

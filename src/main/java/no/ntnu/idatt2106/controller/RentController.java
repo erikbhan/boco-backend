@@ -167,6 +167,8 @@ public class RentController {
         if (rent == null) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Could not find rent with ID: " + rentId);
         }
+        TokenDTO tokenDTO = TokenUtil.getDataJWT();
+        if(rent.getListing().getUser().getUserID() != tokenDTO.getAccountId()) throw new StatusCodeException(HttpStatus.FORBIDDEN, "Only the owner can delete a rent request");
         rentService.acceptRent(rent);
     }
 
@@ -182,6 +184,8 @@ public class RentController {
         if (rent == null) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Could not find rent with ID: " + rentId);
         }
+        TokenDTO tokenDTO = TokenUtil.getDataJWT();
+        if(rent.getListing().getUser().getUserID() != tokenDTO.getAccountId()) throw new StatusCodeException(HttpStatus.FORBIDDEN, "Only the owner can delete a rent request");
         rentService.deleteRent(rentId);
     }
 
