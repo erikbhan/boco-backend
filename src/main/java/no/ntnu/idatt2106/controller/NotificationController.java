@@ -41,6 +41,7 @@ public class NotificationController {
     @ApiResponse(responseCode = "201", description = "CREATED")
     @ApiResponse(responseCode = "400", description = "CommunityRequest not found")
     @ApiResponse(responseCode = "400", description = "Could not add notification")
+    @ApiResponse(responseCode = "401", description = "Token not found")
     @PostMapping("notifications/communities/joinrequest")
     public void addCommunityJoinRequestNotification(@RequestBody NotificationDTO notificationDTO) throws StatusCodeException {
         NotificationDAO notificationDAO = notificationService.turnDTOIntoDAO(notificationDTO);
@@ -66,6 +67,7 @@ public class NotificationController {
      */
     @Operation(summary = "Gets community join request notifications for the authenticated user")
     @ApiResponse(responseCode = "400", description = "Could not fetch notifications")
+    @ApiResponse(responseCode = "401", description = "Token not found")
     @GetMapping("notifications/communities/joinrequests")
     public List<NotificationDTO> getCommunityJoinRequestNotification() throws StatusCodeException {
         int tokenUserId;
@@ -87,9 +89,10 @@ public class NotificationController {
      * @param notificationDTO Notification DTO for adding to the database.
      */
     @Operation(summary = "Adds chat message notification")
-    @ApiResponse(responseCode = "201", description = "CREATED")
+    @ApiResponse(responseCode = "201", description = "Chat message notification added to the database")
     @ApiResponse(responseCode = "400", description = "ChatMessage not found")
     @ApiResponse(responseCode = "400", description = "Could not add notification")
+    @ApiResponse(responseCode = "401", description = "Token not found")
     @PostMapping("notifications/chat")
     public void addChatMessageNotification(@RequestBody NotificationDTO notificationDTO) throws StatusCodeException {
         NotificationDAO notificationDAO = notificationService.turnDTOIntoDAO(notificationDTO);
@@ -115,6 +118,7 @@ public class NotificationController {
      */
     @Operation(summary = "Gets latest chat message notification from each sender to the authenticated user")
     @ApiResponse(responseCode = "400", description = "Could not retrieve message notifications")
+    @ApiResponse(responseCode = "401", description = "Token not found")
     @GetMapping("notifications/chat")
     public List<ChatMessageDTO> getLastChatMessageNotificationFromEachSender() throws StatusCodeException {
         int tokenUserId;
@@ -135,6 +139,7 @@ public class NotificationController {
      * Finds the number of unread messages for a user.
      */
     @Operation(summary = "Gets number of unread messages for a user")
+    @ApiResponse(responseCode = "401", description = "Token not found")
     @GetMapping("notifications/chat/amount")
     public int getNumberOfUnreadMessages() throws StatusCodeException {
         int tokenUserId;
@@ -152,8 +157,9 @@ public class NotificationController {
      * @param notificationID ID of notification to be set as seen.
      */
     @Operation(summary = "Sets a notification as seen")
-    @ApiResponse(responseCode = "400", description = "BAD_REQUEST")
+    @ApiResponse(responseCode = "400", description = "Notification id not found")
     @ApiResponse(responseCode = "401", description = "User unauthorized to change notification")
+    @ApiResponse(responseCode = "401", description = "Token not found")
     @PatchMapping("notification/{notificationID}/seen")
     public void setNotificationAsSeen(@PathVariable int notificationID) throws StatusCodeException {
         int tokenUserId;
