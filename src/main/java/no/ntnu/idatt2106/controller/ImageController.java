@@ -113,7 +113,6 @@ public class ImageController {
      * Method to change images in a listing
      * @param images the images the user wants to change to
      * @param listingId the listing id of the listing the user wants to change
-     * @throws StatusCodeException
      */
     @RequireAuth
     @Operation(summary = "Changes the listings images to the given list")
