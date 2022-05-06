@@ -2,29 +2,30 @@ version: '3'
 
 services:
   boco-db:
-    image: "postgres:14-alpine"
+    image: "postgres:14-alpine" #PostgreSQL version 14; alpine Linux for a smaller image
     container_name: boco-db
     volumes:
       - boco-data:/var/lib/postgresql/data
     ports:
-      - 5432:5432
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASS}
-      - POSTGRES_DB=boco
+      - POSTGRES_DB=${POSTGRES_DB}
 
   boco-api:
     build: ./
     container_name: boco-api
     environment:
-      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.PostgreSQLDialect
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://boco-db:5432/boco
+      # Notice that we're not using ${POSTGRES_IP} when using Docker
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://boco-db:${POSTGRES_PORT}/${POSTGRES_DB}
       - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
       - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASS}
-      - SPRING_JPA_OPEN_IN_VIEW=false
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.PostgreSQLDialect
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_OPEN_IN_VIEW=false
     ports:
-      - 3000:3000
+      - ${SERVER_PORT}:3000
     links:
       - boco-db
 
