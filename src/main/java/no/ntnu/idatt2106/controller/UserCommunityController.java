@@ -38,15 +38,15 @@ public class UserCommunityController {
     }
 
     /**
-     * Method to join a community
+     * Adds the active user to the community with the given community id
      * @param communityId the communityID of the community the user wants to join
-     * @throws StatusCodeException BadRequest When the community is private, the community does not exist or if the user is already in the community
      */
     @Operation(summary = "Join an open community")
     @PostMapping("/communities/{communityId}/join")
-    @ApiResponse(responseCode = "200", description = "Added user to community")
-    @ApiResponse(responseCode = "400", description = "Illegal operation")
-    @ApiResponse(responseCode = "500", description = "Unexpected error")
+    @ApiResponse(responseCode = "400", description = "Community does not exist")
+    @ApiResponse(responseCode = "400", description = "This community is private")
+    @ApiResponse(responseCode = "400", description = "User already in community")
+    @ApiResponse(responseCode = "500", description = "Unexpected server error")
     public void addUserToCommunity(@PathVariable int communityId) throws StatusCodeException {
         TokenDTO token = TokenUtil.getDataJWT();
         CommunityDAO communityDAO = communityRepository.findCommunityDAOByCommunityID(communityId);
@@ -60,9 +60,8 @@ public class UserCommunityController {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User is already in this community");
         }
         if (!(userCommunityService.addUserToCommunity(token.getAccountId(), communityDAO))){
-            throw new StatusCodeException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error");
+            throw new StatusCodeException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected server error");
         }
-
     }
 
     /**
@@ -72,7 +71,6 @@ public class UserCommunityController {
      */
     @Operation(summary = "Get info about if the user is in community")
     @GetMapping("/communities/{communityId}/user/status")
-    @ApiResponse(responseCode = "200")
     public boolean checkIfUserIsInCommunity(@PathVariable int communityId){
         TokenDTO token = TokenUtil.getDataJWT();
         CommunityDAO communityDAO = communityRepository.findCommunityDAOByCommunityID(communityId);
@@ -86,7 +84,6 @@ public class UserCommunityController {
      */
     @Operation(summary = "Get info about if the user is admin in community")
     @GetMapping("/communities/{communityId}/user/admin")
-    @ApiResponse(responseCode = "200")
     public boolean checkIfUserIsAdmin(@PathVariable int communityId){
         TokenDTO token = TokenUtil.getDataJWT();
         CommunityDAO communityDAO = communityRepository.findCommunityDAOByCommunityID(communityId);
@@ -95,12 +92,10 @@ public class UserCommunityController {
     }
 
     /**
-     *
-     * @return a list of the communities (ids) the logged in user is admin of
+     * @return a list of the communities (ids) the active user is admin in
      */
     @Operation(summary = "Gets the IDs of the communities the user is admin in")
     @GetMapping("/communities/admin")
-    @ApiResponse(responseCode = "200")
     public List<Integer> getAdminCommunities(){
         TokenDTO userToken = TokenUtil.getDataJWT();
         Integer tokenUserId = Integer.valueOf(userToken.getAccountId());
@@ -108,22 +103,20 @@ public class UserCommunityController {
     }
 
     /**
-     *
+     * Removes the active user from the given community
      * @param communityId of the community you want to leave
-     * @throws StatusCodeException
      */
     @Operation(summary = "Remove user from community")
     @PatchMapping("/communities/{communityId}/leave")
-    @ApiResponse(responseCode = "200", description = "Removed user from community")
-    @ApiResponse(responseCode = "400", description = "Illegal operation")
-    @ApiResponse(responseCode = "500", description = "Unexpected error")
+    @ApiResponse(responseCode = "400", description = "User not in given community")
+    @ApiResponse(responseCode = "400", description = "Community not found")
+    @ApiResponse(responseCode = "400", description = "Cannot leave community, needs new admin")
+    @ApiResponse(responseCode = "400", description = "Unexpected error")
+    @ApiResponse(responseCode = "500", description = "Unexpected server error")
     public void leaveCommunity(@PathVariable int communityId) throws StatusCodeException{
         TokenDTO token = TokenUtil.getDataJWT();
         CommunityDAO communityDAO = communityRepository.findCommunityDAOByCommunityID(communityId);
-
         UserCommunityDAO ucd = userCommunityService.getByIds(token.getAccountId(), communityDAO );
-
-        //Prevents admin from leaving group if there are no other admins, removes community if admin is the only one in the community
         if(ucd != null){
         if(ucd.isAdministrator() && (userCommunityService.findAllMembersInACommunityByCommunity(communityDAO).size()>=2)){
             if(userCommunityService.getAdminsSize(communityId)<=1){
@@ -135,9 +128,7 @@ public class UserCommunityController {
                 throw new StatusCodeException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected server error");
             }
         }
-
         }
-
         if (communityDAO == null) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Community does not exist");
         }
@@ -148,29 +139,21 @@ public class UserCommunityController {
         if(!(userCommunityService.removeUserFromCommunity(ucd))){
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Unexpected error");
         }
-
-
-
-
     }
 
     /**
      * Method for an admin to kick a user from a community
      * @param communityId the communityID of the community you want to kick the user from
      * @param userId of the user you want kicked
-     * @throws StatusCodeException when there are no other admins or
-     *                             you don't have admin status or kicking admins
      */
     @Operation(summary = "Kicks a user from a community")
-    @ApiResponse(responseCode = "200", description = "Kicked user")
-    @ApiResponse(responseCode = "400", description = "Illegal operation")
+    @ApiResponse(responseCode = "400", description = "Not admin of given community")
+    @ApiResponse(responseCode = "400", description = "Unexpected error")
     @PatchMapping("/communities/{communityId}/kick")
     public void kickUserFromCommunity(@PathVariable int communityId, @RequestParam int userId) throws StatusCodeException {
         TokenDTO token = TokenUtil.getDataJWT();
         CommunityDAO communityDAO = communityRepository.findCommunityDAOByCommunityID(communityId);
-
         UserCommunityDAO ucd = userCommunityService.getByIds(token.getAccountId(), communityDAO );
-
         UserCommunityDAO userToBeKicked = userCommunityService.getByIds(userId, communityDAO);
         if(ucd!=null && userToBeKicked != null){
             if(ucd.isAdministrator() && (!userToBeKicked.isAdministrator())){
@@ -186,12 +169,9 @@ public class UserCommunityController {
     }
 
     /**
-     *
      * @return a list of the communities the user is part of
      */
     @Operation(summary = "Get all communities the logged in user is part of")
-    @ApiResponse(responseCode = "200", description = "Found communities")
-    @ApiResponse(responseCode = "400", description = "Illegal operation")
     @GetMapping("/user/communities")
     public ArrayList<CommunityDTO> getCommunitiesForUser(){
         TokenDTO token = TokenUtil.getDataJWT();
