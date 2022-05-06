@@ -31,7 +31,7 @@ POSTGRES_IP=localhost
 POSTGRES_PORT=5432
 POSTGRES_USER=boco
 POSTGRES_PASS=superSecureMegaAwesomePassword
-API_PORT=3000
+SERVER_PORT=3000
 ```
 
 #### Running with Docker compose
