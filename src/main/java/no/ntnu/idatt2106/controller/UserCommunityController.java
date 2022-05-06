@@ -40,9 +40,9 @@ public class UserCommunityController {
     /**
      * Method to join a community
      * @param communityId the communityID of the community the user wants to join
-     * @throws StatusCodeException BadRequest When the user does something stupid kekW
+     * @throws StatusCodeException BadRequest When the community is private, the community does not exist or if the user is already in the community
      */
-    @Operation(summary = "Add user to a community")
+    @Operation(summary = "Join an open community")
     @PostMapping("/communities/{communityId}/join")
     @ApiResponse(responseCode = "200", description = "Added user to community")
     @ApiResponse(responseCode = "400", description = "Illegal operation")
@@ -54,7 +54,7 @@ public class UserCommunityController {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Community does not exist");
         }
         if(communityDAO.getVisibility()==0){
-            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "This community is invite only");
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "This community is private");
         }
         if (userCommunityService.userIsInCommunity(token.getAccountId(),communityDAO)){
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User is already in this community");
@@ -66,9 +66,9 @@ public class UserCommunityController {
     }
 
     /**
-     *
-     * @param communityId the community id of the community the user....
-     * @return
+     * Method to check if user is in a given community
+     * @param communityId the community id of the community the user wants to check if they're part of
+     * @return true if the user is in the community, false if not
      */
     @Operation(summary = "Get info about if the user is in community")
     @GetMapping("/communities/{communityId}/user/status")
@@ -144,6 +144,7 @@ public class UserCommunityController {
         if (!(userCommunityService.userIsInCommunity(token.getAccountId(),communityDAO))){
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "User is not in this community");
         }
+        assert ucd != null;
         if(!(userCommunityService.removeUserFromCommunity(ucd))){
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Unexpected error");
         }
