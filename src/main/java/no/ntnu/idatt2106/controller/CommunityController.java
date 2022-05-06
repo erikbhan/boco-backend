@@ -116,6 +116,10 @@ public class CommunityController {
         } else if (!userCommunityDAO.isAdministrator()) {
             throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "User not an admin in this community");
         }
+        List<UserCommunityDAO> users = userCommunityService.findAllMembersInACommunityByCommunity(communityDAO);
+        for (UserCommunityDAO user:users) {
+            userCommunityService.removeUserFromCommunity(user);
+        }
         communityService.removeCommunity(communityDAO);
     }
 
