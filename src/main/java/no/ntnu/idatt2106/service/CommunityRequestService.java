@@ -66,15 +66,20 @@ public class CommunityRequestService {
     }
 
     /**
-     *
-     * @param userDAO
-     * @param communityDAO
+     * A method to accept a users request to join a community
+     * @param userDAO the user that will be accepted
+     * @param communityDAO the community the user will become part of
      */
     public void acceptRequest(UserDAO userDAO, CommunityDAO communityDAO){
         UserCommunityDAO userCommunityDAO = new UserCommunityDAO(communityDAO,userDAO, false);
         userCommunityRepository.save(userCommunityDAO);
     }
 
+    /**
+     * A method to retrieve all the users with requests in a community
+     * @param communityId of the community the user wants to see the requests in
+     * @return a list of all the requests in the given community
+     */
     public List<UserDTO> getRequestsForCommunity(int communityId){
         CommunityDAO communityDAO = communityRepository.findCommunityDAOByCommunityID(communityId);
         List<CommunityRequestDAO> communityRequestDAOS = communityRequestRepository.findAllByCommunity(communityDAO);
@@ -86,14 +91,28 @@ public class CommunityRequestService {
         return userDTOS;
     }
 
+    /**
+     * A method to get all the communityrequest objects
+     * @param community of the community the user wants to see the requests in
+     * @return a list of CommunityRequestDAOS from that community
+     */
     public List<CommunityRequestDAO> getRequestsByCommunity(CommunityDAO community){
         return communityRequestRepository.findCommunityRequestDAOSByCommunity(community);
     }
 
+    /**
+     * Finds a given communityRequestDAO via the id
+     * @param id the id of the communityRequest
+     * @return the object matching the id
+     */
     public CommunityRequestDAO getById(int id){
         return communityRequestRepository.findByCommunityRequestID(id);
     }
 
+    /**
+     * A method to delete all community request for a user
+     * @param userDAO of the user that will remove all their requests
+     */
     public void deleteRequestsForUser(UserDAO userDAO) {
         List<CommunityRequestDAO> requests = communityRequestRepository.findAllByUser(userDAO);
         for(CommunityRequestDAO communityRequestDAO:requests) {
