@@ -52,14 +52,12 @@ public class CommunityService {
     }
 
     public boolean removeCommunity(CommunityDAO communityDAO) {
-//        try{
+        try{
             communityRepository.delete(communityDAO);
-//            return true;
-//        } catch (Exception e) {
-//            return false;
-//        }
-
-        return true;
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public List<CommunityDAO> findAll() {
