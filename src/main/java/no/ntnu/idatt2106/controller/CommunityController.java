@@ -51,9 +51,9 @@ public class CommunityController {
     }
 
     /**
-     * A method which finds all communities with visibility 1.
+     * A method that shows all communities
      */
-    @Operation(summary = "Show all visible communities")
+    @Operation(summary = "Show all communities")
     @GetMapping("/communities")
     public List<CommunityDTO> showAllCommunities(){
         List<CommunityDAO> listOfCommunityDAOs = communityService
