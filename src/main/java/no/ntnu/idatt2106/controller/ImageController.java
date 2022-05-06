@@ -36,6 +36,7 @@ public class ImageController {
     /**
      * Gets the image with the given image id
      * @param imageID The id of the requested image
+     * @return an image
      */
     @Operation(summary = "Get image")
     @ApiResponse(responseCode = "400", description = "Image not found")
@@ -52,6 +53,7 @@ public class ImageController {
     /**
      * Adds an image to the database
      * @param image The image to be added
+     * @return the id of the image that was added
      */
     @RequireAuth
     @Transactional
@@ -70,6 +72,7 @@ public class ImageController {
     /**
      * Deletes an image from the database
      * @param imageID The id of the image you want to delete
+     *
      */
     @RequireAuth
     @Operation(summary = "Delete image")
@@ -106,6 +109,12 @@ public class ImageController {
         throw new StatusCodeException(HttpStatus.OK, "pictures added");
     }
 
+    /**
+     * Method to change images in a listing
+     * @param images the images the user wants to change to
+     * @param listingId the listing id of the listing the user wants to change
+     * @throws StatusCodeException
+     */
     @RequireAuth
     @Operation(summary = "Changes the listings images to the given list")
     @ApiResponse(responseCode = "200", description = "Listing pictures updated")
