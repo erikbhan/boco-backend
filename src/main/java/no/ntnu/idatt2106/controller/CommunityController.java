@@ -104,18 +104,20 @@ public class CommunityController {
     @ApiResponse(responseCode = "401", description = "User not admin of given community")
     @DeleteMapping("/communities/{communityId}/remove")
     public void removeCommunity(@PathVariable int communityId) throws StatusCodeException {
+        boolean isAdmin = false;
         TokenDTO userToken = TokenUtil.getDataJWT();
         int tokenUserId = userToken.getAccountId();
         CommunityDAO communityDAO = communityService.findCommunityDAOByCommunityID(communityId);
         if (communityDAO == null) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Community not found");
         }
-        UserCommunityDAO userCommunityDAO = userCommunityService.getByIds(tokenUserId, communityDAO);
         if (!userCommunityService.userIsInCommunity(tokenUserId, communityDAO)) {
             throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "User not a part of this community");
         }
         List<UserCommunityDAO> users = userCommunityService.findAllMembersInACommunityByCommunity(communityDAO);
-
+        if (!userCommunityService.userIsAdminInCommunity(tokenUserId, communityId)) {
+            throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "User not an admin in this community");
+        }
         for (UserCommunityDAO user:users) {
             userCommunityService.removeUserFromCommunity(user);
         }

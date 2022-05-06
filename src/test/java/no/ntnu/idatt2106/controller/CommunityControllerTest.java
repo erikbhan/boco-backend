@@ -162,13 +162,13 @@ public class CommunityControllerTest {
                 .andExpect(status().is4xxClientError());
     }
 
-//    @Test
-//    void communityController_deleteCommunityFromNonMemberUser_ShouldBe4xx() throws Exception {
-//        mockMvc.perform(delete("/communities/4002/remove")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .header("Authorization", "Bearer " + userToken))
-//                .andExpect(status().is4xxClientError());
-//    }
+    @Test
+    void communityController_deleteCommunityFromNonMemberUser_ShouldBe4xx() throws Exception {
+        mockMvc.perform(delete("/communities/4002/remove")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().is4xxClientError());
+    }
 
     public static String asJsonString(final Object obj) {
         try {
