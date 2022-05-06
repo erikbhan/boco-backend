@@ -70,6 +70,8 @@ public class ChatService {
         }
 
 
+        // Sort so newest conversation is first
+        Arrays.sort(conversations, (o1, o2) -> Long.compare(o2.getLastMessage().getTimestamp(), o1.getLastMessage().getTimestamp()));
         return conversations;
     }
 
