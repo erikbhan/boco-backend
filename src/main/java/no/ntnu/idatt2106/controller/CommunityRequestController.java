@@ -66,7 +66,7 @@ public class CommunityRequestController {
     /**
      * Accepts a community join request
      * @param communityId The community to look for the join request in
-     * @param userId The user id of the user to accept
+     * @param userId The id of the user to accept
      */
     @Operation(summary = "Accepts a users request to join a community")
     @ApiResponse(responseCode = "400", description = "Active user is not admin")

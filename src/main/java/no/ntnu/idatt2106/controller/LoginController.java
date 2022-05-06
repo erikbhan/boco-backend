@@ -26,7 +26,7 @@ public class LoginController {
     }
 
     /**
-     * A method for logging in and authorising a user
+     * A method for logging in and authorizing a user
      * @param loginDTO A DTO containing email and password for the requested login
      * @return  A String with the user's token
      */

@@ -95,7 +95,7 @@ public class UserCommunityController {
     }
 
     /**
-     *
+     * Method to get all the communities a user is admin in
      * @return a list of the communities (ids) the logged in user is admin of
      */
     @Operation(summary = "Gets the IDs of the communities the user is admin in")
@@ -108,11 +108,11 @@ public class UserCommunityController {
     }
 
     /**
-     *
+     * Method to leave a community
      * @param communityId of the community you want to leave
      * @throws StatusCodeException
      */
-    @Operation(summary = "Remove user from community")
+    @Operation(summary = "Leaves a community")
     @PatchMapping("/communities/{communityId}/leave")
     @ApiResponse(responseCode = "200", description = "Removed user from community")
     @ApiResponse(responseCode = "400", description = "Illegal operation")
@@ -186,7 +186,7 @@ public class UserCommunityController {
     }
 
     /**
-     *
+     * A method to get all communities the current user is part of
      * @return a list of the communities the user is part of
      */
     @Operation(summary = "Get all communities the logged in user is part of")

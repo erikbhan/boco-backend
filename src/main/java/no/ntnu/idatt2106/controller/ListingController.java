@@ -143,7 +143,7 @@ public class ListingController {
     }
 
     /**
-     * A method for posting a listing with given availability
+     * A method for posting a listing with a given availability
      * @param listingDTO The listing to be posted, containing unavailable times
      */
     @Operation(summary = "Post Listing and adding all the listing's categories to the ListingCategory junction table")
@@ -186,7 +186,7 @@ public class ListingController {
     /**
      * Updates the given listing in the database
      * @param listingDTO How the updated listing should look
-     * @return returns true if the update was succesful
+     * @return returns true if the update was successful
      */
     @Operation(summary = "Change or modify a listing")
     @ApiResponse(responseCode = "400", description = "User not found")

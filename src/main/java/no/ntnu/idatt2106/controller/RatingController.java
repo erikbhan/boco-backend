@@ -32,7 +32,7 @@ public class RatingController {
     }
 
     /**
-     * A method for finding a ratings of a user as the renter of an item
+     * A method for finding ratings of a user as the renter of an item
      * @param userID The id of the user you want to find ratings of
      * @return A list of ratings for the given user
      */
@@ -48,7 +48,7 @@ public class RatingController {
     }
 
     /**
-     * A method for finding a ratings of a user as the owner of an item
+     * A method for finding ratings of a user as the owner of an item
      * @param userID The id of the user you want to find ratings of
      * @return A list of ratings for the given user
      */
@@ -64,10 +64,10 @@ public class RatingController {
     }
 
     /**
-     * A method for finding the average rating of a user with given userID
+     * A method for finding the average rating of a user with a given userID
      * This takes into account both the ratings received as renter and as owner
      * @param userID The id of the user you want to find the average rating of
-     * @return The average rating of the given user
+     * @return The average rating of the current user
      */
     @Operation(summary = "Finds average rating of user")
     @ApiResponse(responseCode = "400", description = "User not found in database")
@@ -117,7 +117,7 @@ public class RatingController {
     }
 
     /**
-     * A method that transforms a given ratingDTO into a ratingDAO, then adding
+     * A method that transforms a given ratingDTO into a ratingDAO, then adds
      * this ratingDAO to the database
      * @param ratingDTO The ratingDTO with the information to be added to the database
      */

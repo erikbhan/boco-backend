@@ -35,7 +35,7 @@ public class CommunityController {
     }
 
     /**
-     * Adds community to database
+     * Adds a community to the database
      * @param communityDTO community transfer object for community to add.
      */
     @RequireAuth
@@ -68,7 +68,7 @@ public class CommunityController {
     }
 
     /**
-     * A method which searches the community table in the DB for communities with a name containing the search word.
+     * A method which searches the community table in the database for communities with a name containing the search word.
      * @param search_word The letter or word to search for, may be the name of the community.
      * @return A list of communities matching the search word
      */
