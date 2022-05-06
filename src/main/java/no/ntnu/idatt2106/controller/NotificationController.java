@@ -64,7 +64,7 @@ public class NotificationController {
 
     /**
      * Gets all the community request notifications for the user that is logged in when the get call is made.
-     * @return ???
+     * @return A list of community request join notifications
      */
     @Operation(summary = "Gets community join request notifications for the authenticated user")
     @ApiResponse(responseCode = "400", description = "Could not fetch notifications")
@@ -115,13 +115,14 @@ public class NotificationController {
     }
 
     /**
-     * Gets the last chat message notification from each sender to the authenticated user
+     * Gets the last chat messages from each sender to the authenticated user
+     * @return A list of the last messages from each user
      */
     @Operation(summary = "Gets latest chat message notification from each sender to the authenticated user")
     @ApiResponse(responseCode = "400", description = "Could not retrieve message notifications")
     @ApiResponse(responseCode = "401", description = "Token not found")
     @GetMapping("notifications/chat")
-    public List<ChatMessageDTO> getLastChatMessageNotificationFromEachSender() throws StatusCodeException {
+    public List<ChatMessageDTO> getLastChatMessagesFromEachSender() throws StatusCodeException {
         int tokenUserId;
         try{
             TokenDTO userToken = TokenUtil.getDataJWT();
@@ -132,7 +133,7 @@ public class NotificationController {
         try {
             return notificationService.getLastChatMessageFromDistinctSender(tokenUserId);
         } catch (Exception e) {
-            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Couldn't get chat message notifications");
+            throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Couldn't get chat messages");
         }
     }
 

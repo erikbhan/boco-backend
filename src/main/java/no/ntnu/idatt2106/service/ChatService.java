@@ -45,6 +45,7 @@ public class ChatService {
         int[] list = _chatMessageRepository.getConversationUsers(accountId);
         UserDAO[] users = _userRepository.findAllByUserIds(list);
         ConversationDTO[] conversations = new ConversationDTO[users.length];
+
         // Get last message for each user
         for (int i = 0; i < users.length; i++) {
             UserDAO user = users[i];
@@ -68,7 +69,6 @@ public class ChatService {
                 conversations = Stream.concat(Arrays.stream(conversations), Stream.of(conversation)).toArray(ConversationDTO[]::new);
             }
         }
-
 
         return conversations;
     }

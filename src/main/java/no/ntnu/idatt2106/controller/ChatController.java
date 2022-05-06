@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @CrossOrigin
 public class ChatController {
-
     private SimpMessagingTemplate simpMessagingTemplate;
     private final ChatService chatService;
     private final UserService userService;
