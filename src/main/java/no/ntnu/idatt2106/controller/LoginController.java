@@ -25,8 +25,11 @@ public class LoginController {
         this.loginService = loginService;
     }
 
+    /**
+     * A method for logging in and authorising a user
+     * @param loginDTO A DTO containing email and password for the requested login
+     */
     @Operation(summary = "Log in the user")
-    @ApiResponse(responseCode = "200", description = "Login successful")
     @ApiResponse(responseCode = "400", description = "Login failed")
     @ApiResponse(responseCode = "500", description = "Unexpected server error")
     @PostMapping("/login/authentication")

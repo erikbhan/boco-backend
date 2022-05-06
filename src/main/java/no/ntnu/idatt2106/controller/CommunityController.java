@@ -19,7 +19,6 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@ApiResponse(responseCode = "401", description = "Unauthorized")
 public class CommunityController {
     private final CommunityService communityService;
     private final UserCommunityService userCommunityService;
@@ -41,9 +40,8 @@ public class CommunityController {
      */
     @RequireAuth
     @Operation(summary = "Add community to database")
-    @ApiResponse(responseCode = "201", description = "Community created")
     @PostMapping("/communities/create")
-    public int addCommunity(@RequestBody CommunityDTO communityDTO) throws StatusCodeException {
+    public int addCommunity(@RequestBody CommunityDTO communityDTO){
         CommunityDAO communityDAO = communityService.turnCommunityDTOIntoCommunityDAO(communityDTO);
         TokenDTO userToken = TokenUtil.getDataJWT();
         int tokenUserId = userToken.getAccountId();
@@ -73,6 +71,7 @@ public class CommunityController {
      * @param search_word The letter or word to search for, may be the name of the community.
      */
     @Operation(summary = "Show all communities with name containing the search word")
+    @ApiResponse(responseCode = "400", description = "No communities found")
     @GetMapping("/communities/search")
     public List<CommunityDTO> showAllCommunitiesMatchingSearchTerm(@RequestParam(name = "search_word") String search_word) throws StatusCodeException {
         List<CommunityDAO> listOfCommunityDAOs = communityService
