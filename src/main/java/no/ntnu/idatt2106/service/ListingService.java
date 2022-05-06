@@ -21,13 +21,15 @@ import org.springframework.stereotype.Service;
 public class ListingService {
     private final ListingRepository listingRepository;
     private final CommunityListingService communityListingService;
-    
-    public ListingService(ListingRepository listingRepository,
-                          CommunityListingService communityListingService) {
+    private final ListingCategoryService listingCategoryService;
+
+    public ListingService(ListingRepository listingRepository, CommunityListingService communityListingService,
+                          ListingCategoryService listingCategoryService) {
         this.listingRepository = listingRepository;
         this.communityListingService = communityListingService;
+        this.listingCategoryService = listingCategoryService;
     }
-    
+
     /**
      * Saves a ListingDAO to the DB
      * 
@@ -86,31 +88,24 @@ public class ListingService {
     /**
      * Converts a list of ListingDAOs to ListingDTOs using the
      * convertOneListingDAOToDTO for every Object
-     * 
-     * @param listingCategoryService
-     * @param communityListingService
      * @param listingDAOs             The list of DAOs that is to be converted
      * @return A list of converted DTOs.
      */
-    public List<ListingDTO> convertMultipleFromListingDAOToDTO(ListingCategoryService listingCategoryService,
-            CommunityListingService communityListingService, List<ListingDAO> listingDAOs) {
+    public List<ListingDTO> convertMultipleFromListingDAOToDTO(List<ListingDAO> listingDAOs) {
         List<ListingDTO> listingDTOs = new ArrayList<>();
         for (ListingDAO listingDAO : listingDAOs) {
-            listingDTOs.add(convertOneListingDAOToDTO(listingCategoryService, communityListingService, listingDAO));
+            listingDTOs.add(convertOneListingDAOToDTO(listingDAO));
         }
         return listingDTOs;
     }
 
     /**
      * Method for converting a ListingDAO to a ListingDTO.
-     * 
-     * @param listingCategoryService
-     * @param communityListingService
+     *
      * @param listingDAO              The ListingDAO that is to be converted
      * @return The converted ListingDAO, now a DTO
      */
-    public ListingDTO convertOneListingDAOToDTO(ListingCategoryService listingCategoryService,
-            CommunityListingService communityListingService, ListingDAO listingDAO) {
+    public ListingDTO convertOneListingDAOToDTO(ListingDAO listingDAO) {
         // Finds all the listing's categorynames through the listingCategory junction
         // table
         String[] categoryNames = listingCategoryService.getCategoryNamesByListingID(listingDAO);
@@ -152,17 +147,14 @@ public class ListingService {
     /**
      * Returns a list of ListingDTOs with title containing requested phrase. 
      * @param title
-     * @param listingCategoryService
-     * @param communityListingService
      * @return
      */
-    public List<ListingDTO> getListingDTOByTitle(String title, ListingCategoryService listingCategoryService,
-    CommunityListingService communityListingService){
+    public List<ListingDTO> getListingDTOByTitle(String title){
         //Gets all lisitngDAOs with the requested title
         List<ListingDAO> listingDAOs = listingRepository.findAllByTitleLike(title);
         //Converts all the DAOs to DTOs
         List<ListingDTO> listingDTOs = 
-        convertMultipleFromListingDAOToDTO(listingCategoryService, communityListingService, listingDAOs);
+        convertMultipleFromListingDAOToDTO(listingDAOs);
         return listingDTOs;}
 
     public List<ListingDAO> getAllListingsInACommunity(CommunityDAO communityDAO) {
