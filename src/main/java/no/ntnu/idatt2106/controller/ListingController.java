@@ -30,7 +30,6 @@ import no.ntnu.idatt2106.model.DTO.ListingDTO;
  */
 @RestController
 @CrossOrigin
-@ApiResponse(responseCode = "401", description = "Unauthorized")
 public class ListingController {
     private final ListingService listingService;
     private final ListingCategoryService listingCategoryService;
@@ -180,9 +179,13 @@ public class ListingController {
         throw new StatusCodeException(HttpStatus.OK, "listing created, unavailable times added");
     }
 
+    /**
+     * Updates the given listing in the database
+     * @param listingDTO How the updated listing should look
+     */
     @Operation(summary = "Change or modify a listing")
-    @ApiResponse(responseCode = "200", description = "Listing modified")
     @ApiResponse(responseCode = "400", description = "User not found")
+    @ApiResponse(responseCode = "400", description = "Category not found")
     @PutMapping("/listing/change")
     public boolean changeListing(@RequestBody ListingDTO listingDTO) throws StatusCodeException {
         ListingDAO listing = listingService.findListingByListingId(listingDTO.getListingID());
@@ -216,11 +219,7 @@ public class ListingController {
      * Gets all the intervals where the listing with the given listingID
      * is unavailable.
      * @param listingID The listingId of the listing you want to check
-     * @return A list containing lists of rent start times and their
-     *         corresponding ending times
-     * @throws StatusCodeException when the given listingID doesn't match up with anything in the db
      */
-    @ApiResponse(responseCode = "200", description = "Listing found")
     @ApiResponse(responseCode = "400", description = "Listing doesnt exist")
     @GetMapping("/listing/{listingID}/availability")
     @Operation(summary = "Returns a list representing availability of a listing")
@@ -234,8 +233,7 @@ public class ListingController {
 
     /**
      * Gets every listing with title containing requested phrase
-     * @param title
-     * @return List of DTOs containing the requested title in title 
+     * @param title The phrase to search for
      */
     @Operation(summary = "Gets all listings with a title matching the input title")
     @GetMapping("/listing/title/{title}")
@@ -248,8 +246,8 @@ public class ListingController {
      * @param listingid The id of the listing
      */
     @Operation(summary = "Get all pictures for a listing")
-    @ApiResponse(responseCode = "200", description = "All pictures are sent")
-    @ApiResponse(responseCode = "400", description = "Listing id is invalid, pictureDAO list is null or an exception occures")
+    @ApiResponse(responseCode = "400", description = "pictureDAO list is null")
+    @ApiResponse(responseCode = "400", description = "Listing id is invalid")
     @GetMapping("/listing/{listingid}/pictures")
     public List<ListingPictureDTO> getAllPicturesForAListing(@PathVariable int listingid) throws StatusCodeException {
         if(listingid > 0) {

@@ -101,7 +101,6 @@ public class CommunityRequestController {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST,"Community does not exist" );
         }
         communityRequestService.removeRequest(token.getAccountId(), communityId);
-
     }
 
     /**
@@ -124,7 +123,6 @@ public class CommunityRequestController {
         if (adminStatus){
             communityRequestService.removeRequest(userId, communityId);
         }
-
     }
 
     /**
@@ -144,6 +142,4 @@ public class CommunityRequestController {
         }
        else throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Needs admin status to see requests");
     }
-
-
 }
