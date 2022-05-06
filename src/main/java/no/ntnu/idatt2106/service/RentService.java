@@ -281,7 +281,7 @@ public class RentService {
 
     public RentDTO[] getAllRents(int userID, int userID2) {
         List<RentDTO> rents = Arrays.stream(this.getAllRents())
-                .filter(r -> (r.getRenterId() == userID || r.getRenterId() == userID2) && (r.getListing().getListingID() == userID || r.getListing().getListingID() == userID2))
+                .filter(r -> (r.getRenterId() == userID && r.getListing().getUserID() == userID2) || (r.getListing().getUserID() == userID && r.getRenterId() == userID2))
                 .toList();
         RentDTO[] rentDTOs = new RentDTO[rents.size()];
         for (int i = 0; i < rents.size(); i++) {
