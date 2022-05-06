@@ -1,16 +1,8 @@
-
-![Logo](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/th5xamgrr6se0x5ro4g6.png)
-
-
 # BoCo - Backend
 
 This is the API for the Borrow Company web application. The corresponding frontend is located [here](https://gitlab.stud.idi.ntnu.no/idatt2106_2022_02/boco-frontend).
 
 This project was developed between the 19th of April and The 6th of May, 2022 for the course *IDATT2106 - System development 2 with flexible project* at NTNU. Development follow the agile SCRUM workflow, and was divided into two distinct sprints with corresponding planning and review.
-## Screenshots
-
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
-
 
 ## Run Locally
 
