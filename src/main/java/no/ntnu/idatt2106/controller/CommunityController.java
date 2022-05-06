@@ -104,7 +104,6 @@ public class CommunityController {
     @ApiResponse(responseCode = "401", description = "User not admin of given community")
     @DeleteMapping("/communities/{communityId}/remove")
     public void removeCommunity(@PathVariable int communityId) throws StatusCodeException {
-        boolean isAdmin = false;
         TokenDTO userToken = TokenUtil.getDataJWT();
         int tokenUserId = userToken.getAccountId();
         CommunityDAO communityDAO = communityService.findCommunityDAOByCommunityID(communityId);
