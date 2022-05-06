@@ -37,7 +37,6 @@ public class CommunityController {
 
     /**
      * Adds community to database
-     *
      * @param communityDTO community transfer object for community to add.
      */
     @RequireAuth
@@ -72,7 +71,6 @@ public class CommunityController {
 
     /**
      * A method which searches the community table in the DB for communities with a name containing the search word.
-     *
      * @param search_word The letter or word to search for, may be the name of the community.
      */
     @Operation(summary = "Show all communities with name containing the search word")
@@ -91,7 +89,6 @@ public class CommunityController {
 
     /**
      * Deletes a community from the database
-     *
      * @param communityId ID of the community to be deleted
      */
     @RequireAuth
@@ -126,7 +123,6 @@ public class CommunityController {
 
     /**
      * A method to get all members in a community.
-     *
      * @param communityId The id of the community to search for.
      */
     @Operation(summary = "Returns all members in a community")
@@ -158,7 +154,6 @@ public class CommunityController {
 
     /**
      * A method for returning a community by community id.
-     *
      * @param communityId The id of the community
      */
     @Operation(summary = "Returns a community with the correct id")
@@ -174,7 +169,6 @@ public class CommunityController {
 
     /**
      * A method for getting all listings in a community.
-     *
      * @param communityId The id of the community
      */
     @Operation(summary = "Returns a community with the correct id")
