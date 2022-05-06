@@ -62,7 +62,7 @@ public class ListingController {
     public List<ListingDTO> getAllListings() {
         List<ListingDAO> listingDAOs = listingService.getAllListings();
         List<ListingDTO> listingDTOs =
-        listingService.convertMultipleFromListingDAOToDTO(listingCategoryService, communityListingService, listingDAOs);
+        listingService.convertMultipleFromListingDAOToDTO(listingDAOs);
         return listingDTOs;
     }
 
@@ -97,7 +97,7 @@ public class ListingController {
         if (listingDAO == null) {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Item doesn't exist");
         }
-        return listingService.convertOneListingDAOToDTO(listingCategoryService, communityListingService, listingDAO);
+        return listingService.convertOneListingDAOToDTO(listingDAO);
     }
 
     /**
@@ -238,7 +238,7 @@ public class ListingController {
     @Operation(summary = "Gets all listings with a title matching the input title")
     @GetMapping("/listing/title/{title}")
     public List<ListingDTO> searchForListingsByTitle(@PathVariable String title){
-        return listingService.getListingDTOByTitle(title, listingCategoryService, communityListingService);
+        return listingService.getListingDTOByTitle(title);
     }
 
     /**

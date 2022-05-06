@@ -96,7 +96,7 @@ public class ListingControllerTest {
     @Test
     void listingController_getAllListings_ShouldBeOK() throws Exception {
         mockMvc.perform(get("/listing").contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Bearer " + userToken))
+                        .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk());
     }
 
@@ -105,17 +105,19 @@ public class ListingControllerTest {
         categories = new String[]{"Fussball", "Utstyr"};
         communityIDs = new int[]{100001, 100002};
         mockMvc.perform(post("/listing")
-                        .content(asJsonString(new ListingDTO("Jekk", "Beskrivelse", 4.0, "Adresse", 4321, categories, communityIDs)))
+                        .content(asJsonString(new ListingDTO("testjekk", "Beskrivelse", 4.0, "Adresse", 4321, categories, communityIDs)))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Bearer " + userToken))
+                        .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk());
+
+        assert (listingService.getListingDTOByTitle("testjekk").size() == 1);
     }
 
     @Test
     void listingController_getAvailabilityOfListing_ShouldBeOk() throws Exception {
         mockMvc.perform(get("/listing/1234/availability").contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Bearer " + userToken))
+                        .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk());
     }
 
@@ -130,7 +132,7 @@ public class ListingControllerTest {
     @Test
     void listingController_getAvailabilityOfNonExistingListing_ShouldBe4xx() throws Exception {
         mockMvc.perform(get("/listing/987654321/availability").contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Bearer " + userToken))
+                        .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().is4xxClientError());
     }
 
@@ -145,7 +147,7 @@ public class ListingControllerTest {
     void listingController_listingController_getAllPicturesForAListing_ShouldBeOk() throws Exception {
         mockMvc.perform(get("/listing/4040/pictures")
                         .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Bearer " + userToken))
+                        .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].*", hasSize(2)));
     }
@@ -154,7 +156,7 @@ public class ListingControllerTest {
     void listingController_getAllPicturesForAListing_ShouldBe4xx() throws Exception {
         mockMvc.perform(get("/listing/0/pictures")
                         .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Bearer " + userToken))
+                        .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().is4xxClientError());
     }
 
