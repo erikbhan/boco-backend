@@ -4,18 +4,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import no.ntnu.idatt2106.exception.StatusCodeException;
 import no.ntnu.idatt2106.middleware.RequireAuth;
-import no.ntnu.idatt2106.model.DAO.CommunityDAO;
-import no.ntnu.idatt2106.model.DAO.ListingDAO;
-import no.ntnu.idatt2106.model.DAO.UserCommunityDAO;
-import no.ntnu.idatt2106.model.DAO.UserDAO;
+import no.ntnu.idatt2106.model.DAO.*;
 import no.ntnu.idatt2106.model.DTO.CommunityDTO;
 import no.ntnu.idatt2106.model.DTO.ListingDTO;
 import no.ntnu.idatt2106.model.DTO.TokenDTO;
 import no.ntnu.idatt2106.model.DTO.UserDTO;
-import no.ntnu.idatt2106.service.CommunityService;
-import no.ntnu.idatt2106.service.ListingService;
-import no.ntnu.idatt2106.service.UserCommunityService;
-import no.ntnu.idatt2106.service.UserService;
+import no.ntnu.idatt2106.service.*;
 import no.ntnu.idatt2106.util.TokenUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -31,18 +25,19 @@ public class CommunityController {
     private final UserCommunityService userCommunityService;
     private final UserService userService;
     private final ListingService listingService;
+    private final CommunityListingService communityListingService;
 
-    public CommunityController(CommunityService communityService,
-                               UserCommunityService userCommunityService, UserService userService,
-                               ListingService listingService) {
+    public CommunityController(CommunityService communityService, UserCommunityService userCommunityService, UserService userService, ListingService listingService, CommunityListingService communityListingService) {
         this.communityService = communityService;
         this.userCommunityService = userCommunityService;
         this.userService = userService;
         this.listingService = listingService;
+        this.communityListingService = communityListingService;
     }
 
     /**
      * Adds community to database
+     *
      * @param communityDTO community transfer object for community to add.
      */
     @RequireAuth
@@ -67,7 +62,7 @@ public class CommunityController {
     public List<CommunityDTO> showAllCommunities() throws StatusCodeException {
         List<CommunityDAO> listOfCommunityDAOs = communityService
                 .findAll();
-        if(listOfCommunityDAOs != null && listOfCommunityDAOs.size() > 0) {
+        if (listOfCommunityDAOs != null && listOfCommunityDAOs.size() > 0) {
             List<CommunityDTO> listOfCommunities = communityService
                     .convertListCommunityDAOToListCommunityDTO(listOfCommunityDAOs);
             return listOfCommunities;
@@ -77,6 +72,7 @@ public class CommunityController {
 
     /**
      * A method which searches the community table in the DB for communities with a name containing the search word.
+     *
      * @param search_word The letter or word to search for, may be the name of the community.
      */
     @Operation(summary = "Show all communities with name containing the search word")
@@ -85,7 +81,7 @@ public class CommunityController {
     public List<CommunityDTO> showAllCommunitiesMatchingSearchTerm(@RequestParam(name = "search_word") String search_word) throws StatusCodeException {
         List<CommunityDAO> listOfCommunityDAOs = communityService
                 .findAllCommunityDAOWithContainingAGivenName(search_word);
-        if(listOfCommunityDAOs != null && listOfCommunityDAOs.size() > 0) {
+        if (listOfCommunityDAOs != null && listOfCommunityDAOs.size() > 0) {
             List<CommunityDTO> listOfCommunities = communityService
                     .convertListCommunityDAOToListCommunityDTO(listOfCommunityDAOs);
             return listOfCommunities;
@@ -95,6 +91,7 @@ public class CommunityController {
 
     /**
      * Deletes a community from the database
+     *
      * @param communityId ID of the community to be deleted
      */
     @RequireAuth
@@ -117,14 +114,19 @@ public class CommunityController {
         if (!userCommunityService.userIsAdminInCommunity(tokenUserId, communityId)) {
             throw new StatusCodeException(HttpStatus.UNAUTHORIZED, "User not an admin in this community");
         }
-        for (UserCommunityDAO user:users) {
+        for (UserCommunityDAO user : users) {
             userCommunityService.removeUserFromCommunity(user);
+        }
+        List<CommunityListingDAO> listings = communityListingService.getAllCommunityListingForCommunity(communityDAO);
+        for (CommunityListingDAO listing : listings) {
+            communityListingService.deleteCommunityListing(listing);
         }
         communityService.removeCommunity(communityDAO);
     }
 
     /**
      * A method to get all members in a community.
+     *
      * @param communityId The id of the community to search for.
      */
     @Operation(summary = "Returns all members in a community")
@@ -138,12 +140,12 @@ public class CommunityController {
         }
         List<UserCommunityDAO> userCommunityDAOs = userCommunityService
                 .findAllMembersInACommunityByCommunity(communityDAO);
-        if(userCommunityDAOs != null) {
+        if (userCommunityDAOs != null) {
             try {
                 List<UserDAO> membersDAO = userCommunityService
                         .makeListOfAllMembersInACommunity(userCommunityDAOs);
                 List<UserDTO> membersList = userService.convertListUserDAOToListUserDTO(membersDAO);
-                if(membersList != null) {
+                if (membersList != null) {
                     return membersList;
                 }
                 throw new StatusCodeException(HttpStatus.EXPECTATION_FAILED, "Member list is empty");
@@ -156,6 +158,7 @@ public class CommunityController {
 
     /**
      * A method for returning a community by community id.
+     *
      * @param communityId The id of the community
      */
     @Operation(summary = "Returns a community with the correct id")
@@ -171,6 +174,7 @@ public class CommunityController {
 
     /**
      * A method for getting all listings in a community.
+     *
      * @param communityId The id of the community
      */
     @Operation(summary = "Returns a community with the correct id")
@@ -183,22 +187,21 @@ public class CommunityController {
             throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Community not found");
         }
         UserDAO user;
-        if(communityDAO.getVisibility()==0){
-            try{
+        if (communityDAO.getVisibility() == 0) {
+            try {
                 TokenDTO token = TokenUtil.getDataJWT();
                 user = userService.findUserByUserId(token.getAccountId());
 
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 throw new StatusCodeException(HttpStatus.BAD_REQUEST, "not logged in");
             }
 
-            if (user==null){
+            if (user == null) {
                 throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Could not find user/ not logged in ");
             }
 
-            if(!userCommunityService.userIsInCommunity(user.getUserID(),communityDAO)){
+            if (!userCommunityService.userIsInCommunity(user.getUserID(), communityDAO)) {
                 throw new StatusCodeException(HttpStatus.BAD_REQUEST, "Community is private and you're not in it");
             }
 
@@ -209,7 +212,7 @@ public class CommunityController {
         List<ListingDTO> listings = listingService
                 .convertListOfListingDAOToListOfListingDTO(listingDAOS);
 
-        if(listings == null) {
+        if (listings == null) {
             throw new StatusCodeException(HttpStatus.EXPECTATION_FAILED, "No listings in the community");
         }
         return listings;

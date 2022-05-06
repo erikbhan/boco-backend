@@ -60,4 +60,8 @@ public class CommunityListingService {
     public List<CommunityListingDAO> getAllCommunityListingForCommunity(CommunityDAO communityDAO) {
         return communityListingRepository.findAllByCommunityID(communityDAO);
     }
+
+    public void deleteCommunityListing(CommunityListingDAO communityListingDAO) {
+        communityListingRepository.delete(communityListingDAO);
+    }
 }
