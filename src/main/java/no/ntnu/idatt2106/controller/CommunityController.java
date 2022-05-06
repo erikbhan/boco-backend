@@ -43,22 +43,21 @@ public class CommunityController {
     @Operation(summary = "Add community to database")
     @ApiResponse(responseCode = "201", description = "Community created")
     @PostMapping("/communities/create")
-    public void addCommunity(@RequestBody CommunityDTO communityDTO) throws StatusCodeException {
+    public int addCommunity(@RequestBody CommunityDTO communityDTO) throws StatusCodeException {
         CommunityDAO communityDAO = communityService.turnCommunityDTOIntoCommunityDAO(communityDTO);
         TokenDTO userToken = TokenUtil.getDataJWT();
         int tokenUserId = userToken.getAccountId();
         communityService.addCommunity(communityDAO);
         userCommunityService.addUserAsAdminToCommunity(tokenUserId, communityDAO);
-        throw new StatusCodeException(HttpStatus.CREATED, "Community created");
+        return communityDAO.getCommunityID();
     }
 
     /**
      * A method which finds all communities with visibility 1.
      */
     @Operation(summary = "Show all visible communities")
-    @ApiResponse(responseCode = "400", description = "No communities was found")
     @GetMapping("/communities")
-    public List<CommunityDTO> showAllCommunities() throws StatusCodeException {
+    public List<CommunityDTO> showAllCommunities(){
         List<CommunityDAO> listOfCommunityDAOs = communityService
                 .findAll();
         if (listOfCommunityDAOs != null && listOfCommunityDAOs.size() > 0) {
@@ -74,7 +73,6 @@ public class CommunityController {
      * @param search_word The letter or word to search for, may be the name of the community.
      */
     @Operation(summary = "Show all communities with name containing the search word")
-    @ApiResponse(responseCode = "400", description = "No communities was found")
     @GetMapping("/communities/search")
     public List<CommunityDTO> showAllCommunitiesMatchingSearchTerm(@RequestParam(name = "search_word") String search_word) throws StatusCodeException {
         List<CommunityDAO> listOfCommunityDAOs = communityService
