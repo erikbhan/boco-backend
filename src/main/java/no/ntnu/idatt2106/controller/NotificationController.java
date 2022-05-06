@@ -64,6 +64,7 @@ public class NotificationController {
 
     /**
      * Gets all the community request notifications for the user that is logged in when the get call is made.
+     * @return ???
      */
     @Operation(summary = "Gets community join request notifications for the authenticated user")
     @ApiResponse(responseCode = "400", description = "Could not fetch notifications")

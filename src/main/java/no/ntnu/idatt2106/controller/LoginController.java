@@ -28,6 +28,7 @@ public class LoginController {
     /**
      * A method for logging in and authorising a user
      * @param loginDTO A DTO containing email and password for the requested login
+     * @return  A String with the user's token
      */
     @Operation(summary = "Log in the user")
     @ApiResponse(responseCode = "400", description = "Login failed")
