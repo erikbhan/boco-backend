@@ -100,5 +100,4 @@ After running the tests a test coverage report will be produced. This report is 
 When building through Docker Compose, Docker automatically runs the tests and stops the launching process at failures.
 
 ## API Documentation
-
-[API Docs via swagger](http://localhost:3000/api/swagger-ui/index.html#/listing-controller/setListingToDeleted)
+[API Docs via swagger](http://localhost:3000/api/swagger-ui/index.html#/)
