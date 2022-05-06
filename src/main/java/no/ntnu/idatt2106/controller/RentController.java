@@ -46,7 +46,6 @@ public class RentController {
      * A method to get all rented objects for a user.
      * This method returns a list of all objects rented by the user.
      * @return Returns a list of all objects rented by the user.
-     * @throws Exception
      */
     @GetMapping("/user/profile/rent/history")
     @Operation(summary = "Get the full list of rent objects which a user has rented")
@@ -71,7 +70,6 @@ public class RentController {
      * A method to get the full rent history for a user.
      * This method returns a list of all rent objects for the user.
      * @return Returns a list of all rent objects for the user.
-     * @throws Exception
      */
     @GetMapping("/user/profile/rent/history/all")
     @Operation(summary = "Get a list of all rent agreements for a user, both accepted and not.")
@@ -96,7 +94,6 @@ public class RentController {
      * A method to get the full rent history for a owner.
      * This method returns a list of all rent objects listed by the owner.
      * @return Returns a list of all rent objects listed by the user.
-     * @throws Exception
      */
     @GetMapping("/user/profile/rent/history/owner/all")
     @Operation(summary = "Get a list of all rent agreements for a user, both accepted and not.")
@@ -120,7 +117,6 @@ public class RentController {
     /**
      * A method to get the full rent history of all rented objects belonging to the owner.
      * @return Returns a list of all rented objects listed by the owner which has also been rented by someone.
-     * @throws Exception
      */
     @GetMapping("/user/profile/rent/history/owner")
     @Operation(summary = "Get a list of all rent agreements for a user, only the accepted ones.")
@@ -150,7 +146,6 @@ public class RentController {
      * Returns a string with the success message or a http status error if the method fails.
      * @param rentDTO The format of the rent agreement.
      * @return Returns a string with the success message or a http status error if the method fails.
-     * @throws StatusCodeException
      */
     @PostMapping("/renting/renter/save")
     @Operation(summary = "A method for saving a new rent agreement to the DB")
