@@ -2,6 +2,7 @@ package no.ntnu.idatt2106.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import no.ntnu.idatt2106.BocoApplication;
+import no.ntnu.idatt2106.model.DAO.RatingDAO;
 import no.ntnu.idatt2106.model.DAO.UserDAO;
 import no.ntnu.idatt2106.model.DTO.RatingDTO;
 import no.ntnu.idatt2106.service.LoginService;
@@ -22,6 +23,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -104,9 +106,12 @@ public class RatingControllerTest {
         userToken = loginService.successfulAuthentication(user);
         mockMvc.perform(post("/rating/save")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(new RatingDTO(696969, 1, "work bro????", true, 10001)))
+                        .content(asJsonString(new RatingDTO(6789123, 1, "work bro????", true, 10001)))
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isCreated());
+
+        List<RatingDAO> ratings = ratingService.findRatingsByRentID(10001);
+        assert (ratings.get(ratings.size() - 1).getComment().equals("work bro????"));
     }
 
     @Test
